@@ -24,6 +24,7 @@ Emre 50 kredi harcayarak bir dersin tüm çıkmış sınavlarını indirir ve 20
 | Açık duyuru | Kullanım koşullarında "Her dosya size özel işaretlenir" açıkça yazılır. Caydırıcılık ve KVKK aydınlatma yükümlülüğü için gerekli. | `PİLOT` |
 | `/kaynak` komutu | Moderatör, sızan dosyayı bota yükler; bot kodu okuyup kimin indirdiğini bulur. | `PİLOT` |
 | Piksel düzeyi gizli filigran | Görüntü piksellerine gömülü, gözle görülmeyen işaret. | `SONRA` |
+| İçerik varyantları | Değerli içerikte her kullanıcıya anlamı değişmeyen küçük farklılıklar içeren bir sürüm gönderilir. Elle yeniden yazmaya karşı da işe yarar. Bkz. [gizli-katmanlar/03](../gizli-katmanlar/03-tuzak-dosyalar.md). | `SONRA` |
 | Ortak havuz (commons) | 2-3 yıldan eski içerik herkese ücretsiz açılır ve filigran uygulanmaz. Bu içeriğin paylaşılması sızıntı sayılmaz. | `PİLOT` |
 
 ## Kademeli yaptırım
@@ -42,7 +43,7 @@ Bir kod bir hesabı gösterir, kişiyi değil. Bu yüzden:
 
 ## Bilinen açıklar
 
-- **Yeniden yazma:** Sorular elle yeniden yazılır veya yeniden dizilirse hiçbir filigran işe yaramaz.
+- **Yeniden yazma:** Sorular elle yeniden yazılırsa filigran işe yaramaz. İçerik varyantları bu açığı kısmen kapatır; ama içerik özetlenerek veya sözlü aktarılırsa hiçbir yöntem işe yaramaz.
 - **İşbirliği saldırısı (collusion):** İki kişi kopyalarını karşılaştırıp kodları bulabilir. Pilot ölçeğinde düşük olasılık.
 - **Kırpma / rötuş:** Görünür filigran emek harcanarak silinebilir.
 - Telegram 20 MB üzerindeki dosyaları bota indirtmez; bu dosyalar filigranlanamaz (yerel Bot API sunucusu ile 2 GB'a çıkar).

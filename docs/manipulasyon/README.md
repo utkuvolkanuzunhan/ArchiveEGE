@@ -3,6 +3,18 @@
 Bu klasör, ArchiveEGE sisteminin kötüye kullanılma yollarını ve her birine karşı alınan önlemleri toplar.
 Amaç: Sistemi kurmadan önce "biri bunu nasıl kandırır?" sorusunu sistematik olarak sormak.
 
+## Hedef: Her hileyi kârsız kılmak
+
+Her hileyi **imkânsız** kılmak mümkün değildir; bunu vaat eden hiçbir sistem yoktur (bankalar, sınav sistemleri ve oyun şirketleri dahil). Gerçekçi ve ulaşılabilir hedef şudur:
+
+> Her hile için, **beklenen kazanç < beklenen maliyet** olmalıdır.
+
+Beklenen maliyet = yakalanma olasılığı × ceza + hilenin gerektirdiği emek.
+
+Örnek: Sahte hesapla 20 başlangıç kredisi kazanmak için bir arkadaşının okul e-postasını ödünç alması gerekir (emek). Yakalanırsa iki hesap da uzaklaştırılır ve tüm itibarını kaybeder (ceza). Oysa aynı 20 krediyi tek bir iyi not yükleyerek kazanabilir. Hile yapmak, dürüst katkıdan daha zahmetli ve riskli hale gelir.
+
+Bu klasördeki her önlem, bu dengeyi hilecinin aleyhine çevirmek için vardır. Ek gizli önlemler (tuzak dosyalar, gizli yaptırım) [../gizli-katmanlar](../gizli-katmanlar/README.md) klasöründedir.
+
 ## Temel ilkeler
 
 1. **Her kural bir gün kandırılır.** Önlemler katmanlı olmalı; tek bir önleme güvenilmez.
@@ -21,6 +33,7 @@ Amaç: Sistemi kurmadan önce "biri bunu nasıl kandırır?" sorusunu sistematik
 | [04](04-sizinti.md) | Kredili içeriğin dışarı sızdırılması | Orta | Yüksek | Evet |
 | [05](05-rapor-kotuye-kullanimi.md) | Raporlama sisteminin kötüye kullanımı | Orta | Orta | Kısmen |
 | [06](06-yetkili-kotuye-kullanimi.md) | Moderatör / yönetici kötüye kullanımı | Yüksek | Düşük | Kısmen |
+| [07](07-katman-atlatma.md) | Erişim seviyelerini ve özel paylaşımı atlatma | Orta | Orta | Kısmen |
 
 **Etki:** Saldırı başarılı olursa sisteme verdiği zarar.
 **Olasılık:** Pilot ölçeğinde (yaklaşık 100-500 kullanıcı) denenme ihtimali.
