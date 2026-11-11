@@ -57,9 +57,13 @@
         if (o.kim) b.appendChild(el('span', 'kim', o.kim));
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);
-        var ms = o.ms == null ? 2600 : o.ms;
-        var t = setTimeout(function(){ if (b.parentNode) b.parentNode.removeChild(b); res(); }, U.reduceMotion() ? Math.min(ms, 800) : ms);
-        bubbleTimers.push(t);
+        var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;
+        var ms = o.ms == null ? Math.min(20000, Math.max(7000, 3000 + kelime * 600)) : o.ms;
+        var bitti = false;
+        function kapat(){ if (bitti) return; bitti = true; if (b.parentNode) b.parentNode.removeChild(b); res(); }
+        b.style.pointerEvents = 'auto'; b.style.cursor = 'pointer'; b.title = 'Kapatmak için tıkla';
+        b.addEventListener('click', kapat);
+        bubbleTimers.push(setTimeout(kapat, ms));
       });
     },
     clear: function(){

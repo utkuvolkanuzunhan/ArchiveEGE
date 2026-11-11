@@ -1966,9 +1966,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (o.kim) b.appendChild(el('span', 'kim', o.kim));
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);
-        var ms = o.ms == null ? 2600 : o.ms;
-        var t = setTimeout(function(){ if (b.parentNode) b.parentNode.removeChild(b); res(); }, U.reduceMotion() ? Math.min(ms, 800) : ms);
-        bubbleTimers.push(t);
+        var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;
+        var ms = o.ms == null ? Math.min(20000, Math.max(7000, 3000 + kelime * 600)) : o.ms;
+        var bitti = false;
+        function kapat(){ if (bitti) return; bitti = true; if (b.parentNode) b.parentNode.removeChild(b); res(); }
+        b.style.pointerEvents = 'auto'; b.style.cursor = 'pointer'; b.title = 'Kapatmak için tıkla';
+        b.addEventListener('click', kapat);
+        bubbleTimers.push(setTimeout(kapat, ms));
       });
     },
     clear: function(){
@@ -4935,6 +4939,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (runway.setObstacleState) safe(function(){ runway.setObstacleState('aktif'); });
         if (runway.say) safe(function(){ runway.say('anlatici', ob.iddia); });
 
+        if (ob.iddia) host.appendChild(mk('div', 'dusman-soru', ob.iddia));
         host.appendChild(mk('div', 'tuzak-talimat', 'Hatalı parçaya dokun.'));
         var cumle = mk('div', 'tuzak-cumle');
         cumle.setAttribute('role', 'group');

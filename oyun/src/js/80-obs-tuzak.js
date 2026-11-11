@@ -40,6 +40,7 @@
         if (runway.setObstacleState) safe(function(){ runway.setObstacleState('aktif'); });
         if (runway.say) safe(function(){ runway.say('anlatici', ob.iddia); });
 
+        if (ob.iddia) host.appendChild(mk('div', 'dusman-soru', ob.iddia));
         host.appendChild(mk('div', 'tuzak-talimat', 'Hatalı parçaya dokun.'));
         var cumle = mk('div', 'tuzak-cumle');
         cumle.setAttribute('role', 'group');
