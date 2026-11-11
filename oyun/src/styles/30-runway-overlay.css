@@ -1,0 +1,63 @@
+/* 30-runway-overlay.css (A4) Yolun üstündeki DOM katmanı: patron paneli, hasar sayıları, afiş, canavar halleri, sarsıntı. */
+#runway-overlay{position:absolute;inset:0;pointer-events:none;z-index:2}
+#boss-panel,#boss-panel button{pointer-events:auto}
+#boss-panel{position:absolute;right:1.5%;top:3%;width:34%;height:94%;display:flex;flex-direction:column;justify-content:space-between;gap:8px;
+  background:var(--panel);border:var(--bw) solid var(--line);border-radius:var(--r);box-shadow:6px 6px 0 var(--cyan);padding:12px;overflow:hidden}
+#boss-panel[hidden]{display:none}
+#boss-panel .boss-bubble{flex:0 0 auto;margin-bottom:8px}
+#boss-panel .monwrap{flex:1 1 auto;min-height:0;display:flex;justify-content:center;align-items:center;filter:drop-shadow(0 0 12px rgba(0,229,255,.6))}
+#boss-panel .mon{height:100%;max-height:100%;width:auto;max-width:100%}
+.boss-plate{text-align:center;display:flex;flex-direction:column;gap:2px}
+.boss-plate b{font-family:var(--font-d);font-weight:400;font-size:22px}
+.boss-plate span{font-size:var(--fs-small);color:var(--muted);font-weight:800}
+.boss-hp{flex:0 0 auto;display:grid;grid-template-columns:1fr 36px;gap:8px;align-items:center;font-weight:800}
+.boss-hp .track i{background:var(--red);box-shadow:none}
+#boss-panel.enter .monwrap{animation:slidein 1.7s cubic-bezier(.16,.84,.3,1) both}
+#boss-panel.enter .boss-bubble{animation:pop .5s 1.4s ease-out both}
+#boss-panel.enter .boss-plate{animation:fadein .6s 1.2s both}
+#boss-panel .monwrap.hit{animation:shake .45s linear}
+.runway-hit{animation:shake .45s linear}
+@keyframes slidein{from{transform:translateX(140%) scale(.55) rotate(8deg);opacity:0}55%{opacity:1}to{transform:none;opacity:1}}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+@keyframes shake{0%,100%{transform:none}20%{transform:translateX(-10px) rotate(-1.5deg)}40%{transform:translateX(10px) rotate(1.5deg)}60%{transform:translateX(-6px)}80%{transform:translateX(6px)}}
+
+/* hasar sayısı */
+#dmg-layer{position:absolute;inset:0}
+.dmg{position:absolute;display:flex;align-items:center;justify-content:center;width:170px;height:170px;margin:-85px 0 0 -85px;animation:floatup 1.2s ease-out both}
+.dmg svg{position:absolute;inset:0;width:100%;height:100%}
+.dmg svg polygon{fill:var(--yellow);stroke:var(--ink-dark);stroke-width:4}
+.dmg.alinan svg polygon{fill:var(--red)}
+.dmg.kritik svg polygon{fill:var(--magenta)}
+.dmg span{position:relative;font-family:var(--font-d);font-size:64px;color:#fff;-webkit-text-stroke:4px var(--ink-dark);paint-order:stroke fill;white-space:nowrap}
+@keyframes floatup{0%{opacity:0;transform:translateY(14px) scale(.6)}20%{opacity:1;transform:translateY(-6px) scale(1.15)}100%{opacity:0;transform:translateY(-80px)}}
+
+/* istasyon afişi */
+#stage-banner{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%) rotate(-2deg);font-family:var(--font-d);font-size:64px;color:#fff;
+  -webkit-text-stroke:4px var(--ink-dark);paint-order:stroke fill;white-space:nowrap;opacity:0}
+#stage-banner.show{animation:banner 1.8s ease-out both}
+@keyframes banner{0%{opacity:0;transform:translate(-50%,-50%) rotate(-2deg) scale(.5)}20%{opacity:1;transform:translate(-50%,-50%) rotate(-2deg) scale(1.1)}80%{opacity:1}100%{opacity:0;transform:translate(-50%,-50%) rotate(-2deg) scale(1)}}
+
+/* canavar çizimi (referans/common.css) */
+.mon *{stroke-linejoin:round;stroke-linecap:round}
+.mon .aura{fill:var(--m-aura);stroke:var(--m-auraline);stroke-width:var(--m-lw2);stroke-dasharray:var(--m-dash)}
+.mon .ray{fill:var(--m-ray);stroke:var(--m-rayl);stroke-width:var(--m-lw)}
+.mon .body{fill:var(--m-body);stroke:var(--m-line);stroke-width:var(--m-lw)}
+.mon .collar{fill:var(--m-collar);stroke:var(--m-line);stroke-width:var(--m-lw)}
+.mon .hair{fill:var(--m-hair);stroke:var(--m-line2);stroke-width:var(--m-lw)}
+.mon .face{fill:var(--m-skin);stroke:var(--m-line);stroke-width:var(--m-lw)}
+.mon .eye{fill:var(--m-eye);stroke:var(--m-line);stroke-width:var(--m-lws)}
+.mon .pupil{fill:var(--m-pupil);stroke:none}
+.mon .brow{fill:none;stroke:var(--m-line2);stroke-width:7}
+.mon .nose{fill:none;stroke:var(--m-line);stroke-width:var(--m-lws)}
+.mon .mous{fill:var(--m-mous);stroke:var(--m-line2);stroke-width:var(--m-lws)}
+.mon .mouth{fill:var(--m-mouth);stroke:var(--m-line);stroke-width:var(--m-lws)}
+.mon .fang{fill:#fff;stroke:none}
+.mon .acc{fill:var(--m-acc);stroke:var(--m-line2);stroke-width:var(--m-lws)}
+.mon .accl{fill:none;stroke:var(--m-line2);stroke-width:var(--m-lws)}
+.mon .ghost{fill:none;stroke:var(--m-line2);stroke-width:var(--m-lws);stroke-dasharray:6 6;opacity:.75}
+.mon .glass{fill:none;stroke:var(--m-line);stroke-width:4}
+.mon .label{fill:var(--m-label);font-family:var(--font-d);font-size:32px;text-anchor:middle}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;animation-delay:0s !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}
+}
