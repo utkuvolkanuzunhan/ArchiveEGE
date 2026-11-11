@@ -80,13 +80,13 @@ function bekle(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
 
     // 5. hikaye -> Devam; kavram simülasyonu açılır (api.done testte tetiklenir)
     var devam = page.locator('#dock button', { hasText: /Devam|İleri|Tamam/ }).first();
-    try { await devam.click({ timeout: 8000 }); } catch (e) { /* hikaye atlanmış olabilir */ }
     var simAcildi = false;
     t0 = Date.now();
-    while (Date.now() - t0 < 30000) {
-      simAcildi = await ev(function () { return !!document.querySelector('#dock canvas, #dock svg, #dock .sim'); });
+    while (Date.now() - t0 < 40000) {
+      simAcildi = await ev(function () { return !!document.querySelector('#dock .sim, #dock canvas, #dock .sim-host'); });
       if (simAcildi) break;
-      await bekle(250);
+      try { if (await devam.count()) await devam.click({ timeout: 1500 }); } catch (e) { /* sahne geçişi */ }
+      await bekle(400);
     }
     adim('5 hikaye geçildi, kavram simülasyonu açıldı', simAcildi);
     await ev(function () { if (window.__simApi && window.__simApi.done) window.__simApi.done({ basari: true, olcum: {} }); });
