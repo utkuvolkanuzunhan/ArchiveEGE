@@ -36,12 +36,12 @@
 
       host.innerHTML = '';
       var wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;width:100%;';
       var cv = document.createElement('canvas');
-      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.style.cssText = 'display:block;width:100%;height:clamp(112px,16vh,200px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
       cv.setAttribute('role','img');
       var bar = document.createElement('div');
-      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;';
+      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;';
       wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
 
       var ctlStyle = 'min-height:40px;padding:0 12px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);background:var(--panel2,#25164f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
@@ -69,7 +69,7 @@
       btn.addEventListener('click', function(){ gec(); });
       bar.appendChild(btn);
       var info = document.createElement('div');
-      info.style.cssText = 'flex:1 1 100%;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      info.style.cssText = 'flex:1 1 260px;font:700 15px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
       info.setAttribute('aria-live','polite');
       bar.appendChild(info);
 
@@ -183,18 +183,26 @@
 
         /* sol yarı: enerji merdiveni (En = -13.6/n²) */
         var lw = W * 0.46, top = 22, bot = H - 14, ex0 = 40, ex1 = lw - 8;
-        function yN(q){ return top + (bot - top) * (1 - 1 / (q * q)); }
-        c.font = '700 14px ' + fb; c.textBaseline = 'middle';
+        function yN(q){ return bot - (bot - top) * (1 - 1 / (q * q)); }
+        c.font = '700 12px ' + fb; c.textBaseline = 'middle';
+        var etY = [];
+        function etOk(yy){ for (var z = 0; z < etY.length; z++) if (Math.abs(etY[z] - yy) < 13) return false; return true; }
+        var sira = [n, m, 1, 2, 3, 4, 5, 6], goster = {};
+        for (i = 0; i < sira.length; i++) {
+          if (sira[i] >= 1 && !goster[sira[i]] && (i < 1 || etOk(yN(sira[i])))) { goster[sira[i]] = 1; etY.push(yN(sira[i])); }
+        }
         for (k = 1; k <= 6; k++) {
           var y = yN(k), sel = (k === n || k === m);
           c.strokeStyle = k === n ? yel : (k === m ? cyan : muted);
           c.globalAlpha = sel ? 1 : 0.6; c.lineWidth = sel ? 4 : 2;
           c.beginPath(); c.moveTo(ex0, y); c.lineTo(ex1, y); c.stroke();
           c.globalAlpha = 1; c.fillStyle = sel ? ink : muted;
+          if (!goster[k] && !sel) continue;
           c.textAlign = 'right'; c.fillText('n=' + k, ex0 - 4, y);
+          if (!goster[k]) continue;
           c.textAlign = 'left'; c.fillText(seviye(k).toFixed(2), ex1 - 42, y - 9);
         }
-        c.fillStyle = muted; c.textAlign = 'left'; c.fillText('eV', ex0, 9);
+        c.fillStyle = muted; c.textAlign = 'left'; c.fillText('eV', ex0 + 8, 9);
         if (n !== m) {
           var xa = (ex0 + ex1) / 2 + 6, ya = yN(n), yb = yN(m), dir = yb > ya ? 1 : -1;
           c.strokeStyle = fcol; c.fillStyle = fcol; c.lineWidth = 4;
