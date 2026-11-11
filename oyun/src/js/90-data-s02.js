@@ -51,12 +51,12 @@
       { id: "s02-o01", tip: "hikaye", baslik: "Zaman kapısı", kavram: null, agirlik: 1,
         yer: "Cambridge", yil: 1839, rivayet: false,
         satirlar: [
-          { kim: "selin", metin: "Ingot (külçe) hazır. Şimdi wafer (dilim) kesilecek, ama hangi plane (düzlem) boyunca?" },
-          { kim: "selin", metin: "Cevap 1839'da, Cambridge'de. Zaman kapısına!" },
+          { kim: "selin", metin: "1848'de Bravais: atoms (atomlar) yalnızca 14 lattice (kafes) türünde dizilir. 1913'te Bragg'lar X-ray (X-ışını) ile gördü." },
+          { kim: "selin", metin: "Kübik hücre: sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
-        gorev: "fcc unit cell (birim hücre) içinde kaç atom (atom) olduğunu determine (belirle).",
+        gorev: "fcc unit cell (birim hücre) atom (atom) sayısını determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
         ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },
       o03,

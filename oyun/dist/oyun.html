@@ -5084,7 +5084,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       if (destroyed) { return; }
       var dpr = window.devicePixelRatio || 1;
       W = Math.max(220, host.clientWidth || 300);
-      H = Math.max(180, Math.min(260, Math.round((window.innerHeight || 800) * 0.22)));
+      H = Math.max(150, Math.min(260, Math.round((window.innerHeight || 800) * 0.2)));
       canvas.style.height = H + 'px';
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -6193,16 +6193,16 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       for (i = 0; i < n; i++) slots.push(null);
 
       var root = el('div', 'kopru');
-      root.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+      root.style.cssText = 'display:flex;flex-direction:column;gap:4px;';
       var head = el('div', 'kopru-soru', ob.soru || 'Zinciri sıraya diz');
-      head.style.cssText = 'font-family:var(--font-d);font-size:18px;';
+      head.style.cssText = 'font-family:var(--font-d);font-size:17px;';
       var poolBox = el('div', 'kopru-havuz');
       poolBox.setAttribute('aria-label', 'Kartlar');
       poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
       var slotBox = el('ol', 'kopru-yuvalar');
       slotBox.style.cssText = 'display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none;';
       var bar = el('div', 'kopru-bar');
-      bar.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;';
+      bar.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;z-index:2;padding:4px 0;background:var(--panel,var(--bg,#1a1033));';
       var kontrol = el('button', 'btn primary kopru-kontrol', 'Kontrol');
       kontrol.type = 'button';
       kontrol.disabled = true;
@@ -6232,7 +6232,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         c.style.touchAction = 'none';
         c.style.cursor = 'grab';
         c.style.userSelect = 'none';
-        c.style.minHeight = '36px'; c.style.padding = '4px 12px';
+        c.style.minHeight = '30px'; c.style.padding = '2px 12px';
         cardEls[i] = c;
       }
 
@@ -6244,7 +6244,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var s = el('button', 'kopru-yuva');
         s.type = 'button';
         s.setAttribute('data-yuva', String(i));
-        s.style.cssText = 'flex:1;min-height:40px;text-align:left;padding:2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
+        s.style.cssText = 'flex:1;min-height:34px;text-align:left;padding:2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
         s.setAttribute('aria-label', 'Yuva ' + (i + 1) + ', boş');
         li.appendChild(no);
         li.appendChild(s);
@@ -7375,12 +7375,12 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       { id: "s02-o01", tip: "hikaye", baslik: "Zaman kapısı", kavram: null, agirlik: 1,
         yer: "Cambridge", yil: 1839, rivayet: false,
         satirlar: [
-          { kim: "selin", metin: "Ingot (külçe) hazır. Şimdi wafer (dilim) kesilecek, ama hangi plane (düzlem) boyunca?" },
-          { kim: "selin", metin: "Cevap 1839'da, Cambridge'de. Zaman kapısına!" },
+          { kim: "selin", metin: "1848'de Bravais: atoms (atomlar) yalnızca 14 lattice (kafes) türünde dizilir. 1913'te Bragg'lar X-ray (X-ışını) ile gördü." },
+          { kim: "selin", metin: "Kübik hücre: sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
-        gorev: "fcc unit cell (birim hücre) içinde kaç atom (atom) olduğunu determine (belirle).",
+        gorev: "fcc unit cell (birim hücre) atom (atom) sayısını determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
         ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },
       o03,
@@ -8040,7 +8040,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             tip: 'secmeli', kavram: 'schrodinger_cokme',
             soru: 'Time-dependent Schrödinger equation (zamana bağlı Schrödinger denklemi) ψ\'yi nasıl değiştirir?',
             secenekler: [
-              sec('Smooth and deterministic (düzgün ve belirlenimci) biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postulate (postülat) ından gelir.'),
+              sec('Smooth and deterministic (düzgün ve belirlenimci) biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postulate (postülat) ile gelir.'),
               sec('Measurement (ölçüm) yapınca collapse (çökme) olur', false, 'Hayır. Collapse (çökme) ayrı bir postulate (postülat), denklemin işi değil.'),
               sec('Randomly (rastgele) değiştirir', false, 'Hayır. Denklem random (rastgele) değil, deterministic (belirlenimci) yapıdadır.')
             ],
