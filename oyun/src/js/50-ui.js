@@ -118,6 +118,7 @@
         }
         document.addEventListener('keydown', onkey, true);
         wrap.appendChild(row); host.appendChild(wrap);
+        try { wrap.scrollIntoView({ block: 'nearest' }); } catch (e) {}  /* dock taşarsa eminlik düğmeleri görünür kalsın */
       });
     }
   };
