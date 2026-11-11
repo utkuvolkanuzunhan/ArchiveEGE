@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>A5b sanat testi</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0e0724;--panel:#1a0f3d;--ink:#fff;--ink-dark:#0b0620;--muted:#c4b9ec;--line:#f4f0ff;--yellow:#ffd23f;--cyan:#00e5ff;--magenta:#ff3df0;--lime:#39ff88;--red:#ff4d6d;--blue:#3a5bff;
+--ground:#00e5ff;--grid:rgba(255,61,240,.22);--font-d:'Lilita One','Impact','Arial Black',sans-serif;--font-b:'Nunito','Trebuchet MS',system-ui,sans-serif;color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px var(--font-b);padding:12px 16px}
+h1,h2{font-family:var(--font-d);margin:8px 0}
+h2{font-size:20px;color:var(--yellow)}
+canvas{display:block;border:3px solid var(--line);border-radius:10px;background:var(--bg);margin-bottom:8px;max-width:100%}
+</style></head><body>
+<h1>A5b · Koşucu, engel, dünya</h1>
+<h2>Koşucu: 7 durum (üstte canlı, altta kareler)</h2>
+<canvas id="cv-runner" width="1400" height="560"></canvas>
+<h2>Engeller: 8 sprite (aktif, çözüldü, özel durumlar)</h2>
+<canvas id="cv-obs" width="1400" height="1060"></canvas>
+<h2>Dünya: 4 katman (kamera kayar)</h2>
+<canvas id="cv-world" width="1280" height="720"></canvas>
+<script src="../src/js/00-q.js"></script>
+<script src="../src/js/41-art-runner.js"></script>
+<script src="../src/js/42-art-world.js"></script>
+<script>
+(function(){
+  'use strict';
+  var A = Q.art;
+  var Rg = document.getElementById('cv-runner').getContext('2d');
+  var Og = document.getElementById('cv-obs').getContext('2d');
+  var Wg = document.getElementById('cv-world').getContext('2d');
+
+  function note(g, txt, x, y){
+    g.save(); g.font = '800 15px Nunito, sans-serif'; g.fillStyle = '#c4b9ec'; g.textAlign = 'center'; g.fillText(txt, x, y); g.restore();
+  }
+  function ground(g, y, x0, w){
+    g.save(); g.strokeStyle = '#00e5ff'; g.lineWidth = 3; g.beginPath(); g.moveTo(x0, y); g.lineTo(x0 + w, y); g.stroke(); g.restore();
+  }
+
+  var states = [['kos', 6], ['dur', 2], ['atla', 3], ['saldir', 4], ['sendele', 3], ['dus', 3], ['zafer', 2]];
+  function drawRunners(t){
+    Rg.clearRect(0, 0, 1400, 560);
+    states.forEach(function(s, i){
+      var cx = 110 + i * 190;
+      ground(Rg, 230, cx - 85, 170);
+      A.drawRunner(Rg, cx, 230, s[0], t);
+      note(Rg, s[0] + ' (canlı)', cx, 262);
+    });
+    var cell = 1360 / 23, idx = 0;
+    states.forEach(function(s){
+      var n = s[1], k;
+      for (k = 0; k < n; k++) {
+        var cx = 20 + (idx + k + 0.5) * cell;
+        ground(Rg, 500, cx - cell / 2, cell);
+        A.drawRunner(Rg, cx, 500, s[0], 0, { p: (k + 0.5) / n });
+      }
+      note(Rg, s[0], 20 + (idx + n / 2) * cell, 540);
+      idx += n;
+    });
+  }
+
+  var row = [['hikaye'], ['kavram'], ['dusman', 'vakans'], ['dusman', 'tane_siniri'], ['dusman', 'safsizlik'], ['dusman', 'dislokasyon'], ['tahmin'], ['tuzak']];
+  var xs = [120, 360, 520, 660, 800, 940, 1130, 1310];
+  function drawObs(t){
+    Og.clearRect(0, 0, 1400, 1060);
+    [['aktif', 340, null], ['cozuldu', 700, 0.75]].forEach(function(r){
+      row.forEach(function(o, i){
+        ground(Og, r[1], xs[i] - 100, 200);
+        A.drawObstacle(Og, o[0], xs[i], r[1], r[0], t, { skin: o[1], p: r[2] });
+        note(Og, o[0] + (o[1] ? ':' + o[1] : '') + ' ' + r[0], xs[i], r[1] + 26);
+      });
+    });
+    var y = 960;
+    ground(Og, y, 20, 1360);
+    A.drawObstacle(Og, 'kopru', 230, y, 'cozuldu', t, { p: 0.6 }); note(Og, 'kopru cozuldu (p=.6)', 230, y + 26);
+    A.drawObstacle(Og, 'patron', 700, y, 'aktif', t); note(Og, 'patron aktif', 700, y + 26);
+    A.drawObstacle(Og, 'sandik', 1000, y, 'cozuldu', t, { p: 1 }); note(Og, 'sandik cozuldu', 1000, y + 26);
+    A.drawObstacle(Og, 'tahmin', 1240, y, 'basarisiz', t); note(Og, 'tahmin basarisiz', 1240, y + 26);
+  }
+
+  function loop(ts){
+    var t = ts / 1000;
+    if ((window.__frames & 3) === 0) { drawRunners(t); drawObs(t); }   // levhalar 15 fps, dünya her karede
+    A.drawWorld(Wg, t * 260, t, { renk: '#00e5ff', n: 3 });
+    A.drawObstacle(Wg, 'dusman', 800, 600, 'aktif', t, { skin: 'vakans' });
+    A.drawObstacle(Wg, 'tuzak', 1050, 600, 'aktif', t);
+    A.drawRunner(Wg, 1280 * 0.26, 600, 'kos', t);
+    window.__frames = (window.__frames || 0) + 1;
+    requestAnimationFrame(loop);
+  }
+  window.__frames = 0;
+  requestAnimationFrame(loop);
+})();
+</script></body></html>

@@ -1,0 +1,85 @@
+<div class="app">
+  <header class="hud">
+    <div>
+      <span class="eyebrow">İstasyon 3/9 · Işık-test odası</span>
+      <h1>Foton Canavarı çıktı!</h1>
+    </div>
+    <div class="meters" aria-label="Voltaj çubukları">
+      <div class="meter you"><span>Voltajın</span><div class="track"><i id="pbar"></i></div><b id="pv">100</b></div>
+      <div class="meter foe"><span>Canavar</span><div class="track"><i id="mbar"></i></div><b id="mv">100</b></div>
+    </div>
+  </header>
+
+  <div class="stage">
+    <div class="left">
+      <section class="panel runway" id="runway">
+        <canvas id="run" width="640" height="170" aria-label="Koşu alanı: karakter sağa koşar, canavara değince karşılaşma başlar"></canvas>
+        <div class="row"><span class="hint">Koşucu canavara değince karşılaşma yavaşça başlar.</span><button class="replay" id="replay" type="button">Karşılaşmayı yeniden oynat</button></div>
+      </section>
+      <section class="panel answer">
+        <h2>Cevabın</h2>
+        <div class="opts" id="opts"></div>
+        <div class="confwrap"><span class="label">Ne kadar eminsin?</span><div class="conf" id="conf"></div></div>
+        <p class="rule" id="rule"></p>
+        <div class="row"><button class="go" id="go" type="button" disabled>Saldır</button><p class="result" id="result" role="status"></p></div>
+      </section>
+    </div>
+    <aside class="panel foe-panel" id="foe">
+      <div class="dmg" id="dmg" aria-hidden="true"></div>
+      <div class="bubble"><p class="q">Frekansı eşiğin altında bir ışığı 10 kat parlattın. Kaç elektron koparırsın?</p></div>
+      <div class="monwrap" id="monwrap"></div>
+      <div class="plate"><b>Foton Canavarı</b><span>Albert Einstein · 1905 · fotoelektrik olay</span></div>
+    </aside>
+  </div>
+
+  <section class="panel" aria-labelledby="gh">
+    <div class="sec-head"><h2 id="gh">Zaman makinesi: canavar galerisi</h2><span class="hint">Her bölümün canavarı, o konuyu bulan bilim insanının karikatürüdür. Önizlemede hepsi açık.</span></div>
+    <div class="gal">
+      <div class="gbig">
+        <div class="gart" id="gart"></div>
+        <div class="ginfo">
+          <span class="label" id="gtopic"></span>
+          <h3 id="gname"></h3>
+          <p class="muted" id="gwho"></p>
+          <div class="bubble sm"><p class="q" id="gq"></p></div>
+          <p class="weak"><b>Zayıf noktası:</b> <span id="gweak"></span></p>
+        </div>
+      </div>
+      <div class="gthumbs" id="gthumbs"></div>
+    </div>
+  </section>
+
+  <div class="duo">
+    <section class="panel" aria-labelledby="lh">
+      <h2 id="lh">Keşfet, tahmin et, doğrula</h2>
+      <p class="muted">Önce tahmin et, sonra simülasyon karar versin.</p>
+      <canvas id="well" width="560" height="200" aria-label="Sonsuz kuyuda dalga fonksiyonu"></canvas>
+      <div class="sliders">
+        <label for="wl">Kuyu genişliği L: <b id="wlv"></b></label><input id="wl" type="range" min="1" max="10" step="0.5" value="4">
+        <label for="wn">Seviye n: <b id="wnv"></b></label><input id="wn" type="range" min="1" max="4" step="1" value="1">
+      </div>
+      <p class="read" id="wread"></p>
+      <div class="predict">
+        <span class="label">Tahmin: L yarıya inerse E₁ ne olur?</span>
+        <div class="conf" id="pred"></div>
+        <div class="row"><button class="go" id="verify" type="button">Doğrula</button><p class="result" id="pres" role="status"></p></div>
+      </div>
+    </section>
+    <section class="panel" aria-labelledby="bh">
+      <h2 id="bh">Kanıt panosu</h2>
+      <p class="muted">Bir kanıta, sonra onu açıklayan fikre dokun.</p>
+      <div class="board">
+        <div class="bcol" id="bev"></div>
+        <div class="bcol" id="bth"></div>
+      </div>
+      <p class="result" id="bmsg" role="status">0 / 4 eşleşti.</p>
+    </section>
+  </div>
+
+  <section class="panel" aria-labelledby="fh">
+    <div class="sec-head"><h2 id="fh">Fabrikan büyüyor</h2><b class="prod" id="prod"></b></div>
+    <div class="fact" id="fact"></div>
+  </section>
+
+  <p class="foot hint">Önizleme: aynı içerik üç farklı stilde. Metinler ve sayılar örnektir.</p>
+</div>

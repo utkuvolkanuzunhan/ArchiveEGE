@@ -1,0 +1,47 @@
+/* 00-tokens.css (A4) CSS değişkenleri (05 §1.1 aynen) ve temel sayfa ayarları.
+ * Tek koyu tema. Başka dosyalar renkleri yalnızca bu değişkenlerden alır. */
+:root{
+  /* zemin ve yüzeyler */
+  --bg:#0e0724;           --bg2:#1a0f3d;
+  --panel:#1a0f3d;        --panel2:#25164f;
+  --ink:#ffffff;          --ink-dark:#0b0620;       /* metin ve mürekkep */
+  --muted:#c4b9ec;                                   /* ikincil metin (kontrast >= 4.5:1 panel üstünde) */
+  --line:#f4f0ff;                                    /* panel çerçevesi (açık) */
+  /* vurgu renkleri (CMYK esinli) */
+  --yellow:#ffd23f; --cyan:#00e5ff; --magenta:#ff3df0; --lime:#39ff88; --red:#ff4d6d; --blue:#3a5bff;
+  --accent:var(--yellow);        --accent2:var(--cyan);     --accent-ink:#0b0620;
+  --good:var(--lime);            --bad:var(--red);
+  /* durum */
+  --sel:#0a3a52;  --sel-ink:#ffffff;
+  --track:#0b0620;
+  /* balon */
+  --bubble:#ffffff; --bubble-ink:#0b0620; --bubble-line:#0b0620; --bubble-shadow:#00e5ff;
+  /* biçim */
+  --bw:3px; --r:10px; --rs:8px;
+  --shadow:6px 6px 0 var(--magenta);         /* sert ofset gölge */
+  --shadow-sm:4px 4px 0 var(--ink-dark);
+  --glow-cyan:0 0 14px rgba(0,229,255,.65);
+  --glow-magenta:0 0 14px rgba(255,61,240,.6);
+  --glow-lime:0 0 12px rgba(57,255,136,.6);
+  /* yazı */
+  --font-d:'Lilita One','Impact','Arial Black',sans-serif;
+  --font-b:'Nunito','Trebuchet MS',system-ui,sans-serif;
+  --fs-body:17px; --fs-small:14px;           /* 14px altına inme */
+  /* canvas/sim */
+  --sky:#120a30; --ground:#00e5ff; --grid:rgba(255,61,240,.22); --runner:#ffd23f; --foe:#ff3df0;
+  /* canavar çizimi */
+  --m-line:#0b0620; --m-line2:#0b0620; --m-lw:5; --m-lw2:3; --m-lws:3.5;
+  --m-aura:rgba(0,229,255,.10); --m-auraline:#00e5ff; --m-dash:5 7;
+  --m-ray:#ffd23f; --m-rayl:#0b0620; --m-body:#3a5bff; --m-collar:#ffffff;
+  --m-hair:#f4f4f4; --m-skin:#ffc99b; --m-eye:#ffffff; --m-pupil:#0b0620;
+  --m-mous:#9aa0ad; --m-mouth:#b3122a; --m-acc:#00e5ff; --m-label:#ffffff;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--bg);color:var(--ink);font-family:var(--font-b);font-size:var(--fs-body);line-height:1.4;
+  background-image:radial-gradient(rgba(0,229,255,.16) 22%,transparent 24%),radial-gradient(rgba(255,61,240,.12) 22%,transparent 24%);
+  background-size:14px 14px,22px 22px;background-position:0 0,7px 7px}
+button{font:inherit;color:var(--ink);cursor:pointer}
+button:focus-visible,textarea:focus-visible,input:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+h1,h2,h3{font-family:var(--font-d);margin:0;line-height:1.12;font-weight:400}
+p{margin:0}

@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>sim-miller test</title>
+<style>
+:root{--bg:#0e0724;--bg2:#1a0f3d;--panel:#1a0f3d;--panel2:#25164f;--ink:#ffffff;--ink-dark:#0b0620;--muted:#c4b9ec;--line:#f4f0ff;--yellow:#ffd23f;--cyan:#00e5ff;--magenta:#ff3df0;--lime:#39ff88;--red:#ff4d6d;--blue:#3a5bff;--sel:#0a3a52;--r:10px;--rs:8px;--font-d:'Lilita One','Impact',sans-serif;--font-b:'Nunito','Trebuchet MS',system-ui,sans-serif;--fs-small:14px;--sky:#120a30;color-scheme:dark}
+body{margin:0;padding:12px;background:var(--bg);color:var(--ink);font-family:var(--font-b);max-width:480px}
+#log{font-size:14px;color:var(--lime)}
+.tb{min-height:40px;margin:6px 6px 0 0}
+</style></head><body>
+<div id="host"></div>
+<p id="hint"></p><p id="log"></p>
+<button class="tb" id="bas">Başarıyı tetikle</button>
+<button class="tb" id="yon">Yön moduna geç</button>
+<script>
+window.Q = { sim: {} };
+(function(){ var m = {};
+  Q.sim.register = function(n, i){ m[n] = i; };
+  Q.sim.mount = function(n, h, p, a){ return m[n].mount(h, p, a); };
+})();
+</script>
+<script src="../src/js/70-sim-miller.js"></script>
+<script>
+var host = document.getElementById('host'), inst;
+var api = { done: function(r){ document.getElementById('log').textContent = 'DONE ' + JSON.stringify(r); window.__done = (window.__done||0)+1; },
+            hint: function(t){ document.getElementById('hint').textContent = t; } };
+function start(p){ if (inst) { inst.destroy(); } inst = Q.sim.mount('miller', host, p, api); window.inst = inst; }
+start({ c:[1,1,1], basari:{ hedef:'(110)' } });
+document.getElementById('bas').onclick = function(){ inst.set({ c:[1,1,'inf'] }); };
+document.getElementById('yon').onclick = function(){ start({ mod:'yon', basari:{ hedefYon:'[111]' } }); };
+</script></body></html>

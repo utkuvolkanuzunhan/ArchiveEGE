@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>obs-sandik test</title>
+<style>:root{--bg:#0e0724;--panel2:#25164f;--ink:#fff;--ink-dark:#0b0620;--line:#f4f0ff;--accent:#ffd23f;--accent-ink:#0b0620;--accent2:#00e5ff;--magenta:#ff3df0;--good:#39ff88;--bw:3px;--r:10px;--rs:8px;--shadow-sm:4px 4px 0 #0b0620;--glow-lime:0 0 12px rgba(57,255,136,.6);--font-d:'Impact',sans-serif;--font-b:system-ui,sans-serif;--fs-body:17px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-b)}#host{min-height:240px}</style></head>
+<body><div id="host"></div>
+<script src="../src/js/00-q.js"></script>
+<script>
+var Q = window.Q, log = [];
+Q.state = {kartlar:[],fabrika:{kurulu:[]},ayarlar:{}};
+Q.save.write = function(){ log.push('save'); };
+Q.art.cameo = function(id){ return '<svg viewBox="0 0 100 100" width="96" height="96"><circle cx="50" cy="50" r="40" fill="#00e5ff" stroke="#0b0620" stroke-width="5"/><text x="50" y="58" text-anchor="middle" font-size="16">'+id+'</text></svg>'; };
+window.ctx = { stationId:'s03', index:0, istasyon:{id:'s03',renk:'#ffd23f',makine:'Işık-test odası'}, host:document.getElementById('host'),
+  state:Q.state,
+  runway:{ anim:function(n){log.push('anim:'+n);return Promise.resolve();}, say:function(){return Promise.resolve();} } };
+window.ob = { id:'s03-o09', tip:'sandik', baslik:'Sandık', kavram:null, agirlik:1, kart:{id:'einstein',yil:1905,tekCumle:'Işığın paketlerden oluştuğunu gösterdi.'}, ozet:['Işık foton denen paketlerdir.','Eşik altında elektron kopmaz.','Şiddet foton sayısını artırır.'], kontrolNoktasi:true };
+window.log = log;
+</script>
+<script src="../src/js/80-obs-sandik.js"></script>
+<script>
+window.run = function(){ return Q.obs.handlers.sandik.enter(window.ob, window.ctx); };
+window.run().then(function(s){ window.result = s; });
+</script></body></html>

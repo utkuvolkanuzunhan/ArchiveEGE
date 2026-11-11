@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>obs-kavram test</title>
+<style>
+body{background:#0e0724;color:#fff;font:17px Nunito,sans-serif;margin:16px}
+#dock{width:900px;min-height:260px;border:3px solid #f4f0ff;border-radius:10px;padding:12px;background:#1a0f3d}
+.btn{min-height:40px;padding:6px 16px;margin:4px;border:3px solid #f4f0ff;border-radius:8px;background:#25164f;color:#fff;font:inherit;cursor:pointer}
+.btn.primary{background:#ffd23f;color:#0b0620}
+.kavram-sim{height:120px;background:#120a30;border-radius:8px;display:flex;align-items:center;justify-content:center}
+</style></head><body>
+<div id="dock"></div>
+<pre id="log"></pre>
+<script src="../src/js/00-q.js"></script>
+<script src="../src/js/80-obs-kavram.js"></script>
+<script>
+/* sahte sim: ?otomatik=1 ise 300 ms sonra done çağırır; hint verir */
+var loglar = [], simApi = null, destroyed = 0;
+Q.ui.toast = function(m){ loglar.push('toast:' + m); };
+Q.sim.register('sahte', { mount: function(host, params, api){
+  simApi = api; host.textContent = 'SAHTE SIM ' + JSON.stringify(params);
+  api.hint('Sürgüyü sağa çek.');
+  return { destroy: function(){ destroyed++; }, getState: function(){ return {}; } };
+}});
+var runway = { anim: function(n){ loglar.push('anim:' + n); return Promise.resolve(); } };
+var ob = { id:'s03-o02', tip:'kavram', baslik:'Kavram kapısı', kavram:'fotoelektrik_siddet', agirlik:1,
+  gorev:'Frekansı eşiğin üstüne çıkar.', sim:{ modul:'sahte', params:{ f:1 } },
+  ogrenilen:'Elektron kopması frekansa bağlıdır, parlaklığa değil.' };
+var q = new URLSearchParams(location.search);
+window.__loglar = loglar;
+window.__destroyed = function(){ return destroyed; };
+window.__done = function(){ simApi.done({ basari:true }); };
+window.__basla = function(sureler){
+  var host = document.getElementById('dock');
+  window.__sonuc = null;
+  Q.obs.handlers.kavram.enter(ob, { stationId:'s03', host:host, runway:runway, sureler:sureler, ui:Q.ui })
+    .then(function(r){ window.__sonuc = r; document.getElementById('log').textContent = JSON.stringify(r); });
+};
+if (q.get('sureler')) window.__basla({ ipucu: +q.get('ipucu') || 500, gec: +q.get('gec') || 1200 });
+</script></body></html>

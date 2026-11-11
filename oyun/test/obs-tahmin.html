@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>obs-tahmin test</title>
+<style>
+body{background:#0e0724;color:#fff;font:17px Nunito,sans-serif;margin:16px}
+#dock{width:900px;min-height:260px;border:3px solid #f4f0ff;border-radius:10px;padding:12px;background:#1a0f3d}
+.btn,.opt,.cbtn{min-height:40px;padding:6px 16px;margin:4px;border:3px solid #f4f0ff;border-radius:8px;background:#25164f;color:#fff;font:inherit;cursor:pointer}
+.btn.primary{background:#ffd23f;color:#0b0620}
+.tahmin-sim{height:120px;background:#120a30;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.dogru{color:#39ff88}.yanlis{color:#ff4d6d}
+</style></head><body>
+<div id="dock"></div>
+<pre id="log"></pre>
+<script src="../src/js/00-q.js"></script>
+<script src="../src/js/80-obs-tahmin.js"></script>
+<script>
+/* sahte ui: options (karıştırmadan), confidence; sahte sim set() çağrılarını kaydeder */
+var loglar = [], setler = [];
+Q.ui.toast = function(m){ loglar.push('toast:' + m); };
+Q.ui.options = {}; Q.ui.confidence = {}; Q.battle = Q.battle || {};
+Q.ui.options.ask = function(o){
+  return new Promise(function(res){
+    o.secenekler.forEach(function(s, i){
+      var b = document.createElement('button'); b.className = 'opt'; b.type = 'button';
+      b.textContent = (i + 1) + ' ' + s.t; b.addEventListener('click', function(){ res(i); });
+      o.host.appendChild(b);
+    });
+  });
+};
+Q.ui.confidence.ask = function(o){
+  return new Promise(function(res){
+    ['Bilmiyorum', 'Emin değilim', 'Eminim'].forEach(function(t, i){
+      var b = document.createElement('button'); b.className = 'cbtn'; b.type = 'button';
+      b.textContent = t; b.addEventListener('click', function(){ res(i); });
+      o.host.appendChild(b);
+    });
+  });
+};
+Q.battle.tamirModu = function(){ return !!window.__tamir; };
+Q.sim.register('sahte', { mount: function(host, params){
+  host.textContent = 'SAHTE SIM ' + JSON.stringify(params);
+  return { destroy: function(){ window.__destroyed = (window.__destroyed || 0) + 1; }, getState: function(){ return {}; },
+    set: function(p){ setler.push(JSON.stringify(p)); host.textContent = 'SAHTE SIM ' + JSON.stringify(p); } };
+}});
+var runway = { anim: function(n){ loglar.push('anim:' + n); return Promise.resolve(); } };
+var ob = { id:'s03-o05', tip:'tahmin', baslik:'Tahmin çukuru', kavram:'fotoelektrik_siddet', agirlik:1.5,
+  soru:'Işığı parlaklaştırırsan eşik altı frekansta elektron kopar mı?',
+  secenekler:[ {t:'Evet, kopar', dogru:false, neden:'Şiddet enerjiyi artırmaz.'},
+               {t:'Hayır, kopmaz', dogru:true, neden:'Tek foton eşiği aşmalı.'},
+               {t:'Bazen kopar', dogru:false, neden:'Eşik altında kopma yok.'} ],
+  sim:{ modul:'sahte', onceki:{ f:4, siddet:1 }, sonraki:{ f:4, siddet:5 } },
+  acik:'Şiddet foton sayısını artırır, enerjisini değil.' };
+window.__loglar = loglar; window.__setler = setler;
+window.__basla = function(sureler){
+  window.__sonuc = null;
+  Q.obs.handlers.tahmin.enter(ob, { stationId:'s03', host:document.getElementById('dock'), runway:runway, sureler:sureler, ui:Q.ui })
+    .then(function(r){ window.__sonuc = r; document.getElementById('log').textContent = JSON.stringify(r); });
+};
+if (new URLSearchParams(location.search).get('otomatik')) window.__basla({ tahminBekle: 200 });
+</script></body></html>

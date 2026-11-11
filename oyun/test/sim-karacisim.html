@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>sim karacisim</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{
+  --bg:#0e0724; --bg2:#1a0f3d; --panel:#1a0f3d; --panel2:#25164f;
+  --ink:#ffffff; --ink-dark:#0b0620; --muted:#c4b9ec; --line:#f4f0ff;
+  --yellow:#ffd23f; --cyan:#00e5ff; --magenta:#ff3df0; --lime:#39ff88; --red:#ff4d6d; --blue:#3a5bff;
+  --accent:var(--yellow); --accent-ink:#0b0620; --sel:#0a3a52; --track:#0b0620;
+  --bw:3px; --r:10px; --rs:8px; --fs-body:17px; --fs-small:14px;
+  --sky:#120a30; --ground:#00e5ff; --grid:rgba(255,61,240,.22);
+  --font-d:'Lilita One','Impact',sans-serif; --font-b:'Nunito','Trebuchet MS',system-ui,sans-serif;
+  color-scheme:dark;
+}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-b)}
+#host{max-width:640px;margin:16px;padding:12px;background:var(--panel);border:var(--bw) solid var(--line);border-radius:var(--r)}
+button.t{min-height:40px;margin:0 8px 8px 0}
+</style></head><body>
+<div id="host"></div>
+<div style="margin:16px"><button class="t" id="basari" type="button">Başarı tetikle</button>
+<button class="t" id="yok" type="button">destroy</button> <span id="log"></span></div>
+<script>
+/* Sahte Q.sim: yalnızca test sayfası için (00-q.js beklenmez). */
+window.Q = { sim: { _m:{}, register:function(n,i){ this._m[n]=i; },
+  mount:function(n,h,p,a){ return this._m[n].mount(h,p,a); } } };
+</script>
+<script src="../src/js/70-sim-karacisim.js"></script>
+<script>
+var q=new URLSearchParams(location.search);
+var params={ T:+(q.get('T')||4000), basari:{T:[4900,5100],klasikGoster:true} };
+if(q.get('klasik')==='1') params.baslangic={T:params.T,klasikGoster:true};
+window.__done=0;
+var api={ done:function(o){ window.__done++; document.getElementById('log').textContent='done '+JSON.stringify(o); },
+  hint:function(t){ window.__hint=t; } };
+var inst=Q.sim.mount('karacisim',document.getElementById('host'),params,api);
+window.__inst=inst;
+document.getElementById('basari').onclick=function(){ inst.set({T:5000,klasikGoster:true}); };
+document.getElementById('yok').onclick=function(){ inst.destroy(); };
+</script></body></html>

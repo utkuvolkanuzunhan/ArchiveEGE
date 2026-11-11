@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>obs-kopru test</title>
+<style>
+:root{--bg:#0e0724;--panel:#1a0f3d;--panel2:#25164f;--ink:#fff;--ink-dark:#0b0620;--muted:#c4b9ec;--line:#f4f0ff;--yellow:#ffd23f;--cyan:#00e5ff;--magenta:#ff3df0;--lime:#39ff88;--red:#ff4d6d;--good:var(--lime);--bad:var(--red);--r:10px;--rs:8px;--fs-small:14px;--fs-body:17px;--font-d:'Impact','Arial Black',sans-serif;--font-b:'Trebuchet MS',system-ui,sans-serif;--shadow-sm:4px 4px 0 var(--ink-dark)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px var(--font-b)}
+#runway{height:200px;border:3px solid var(--line);margin:8px}
+#dock{margin:8px;height:420px;overflow:auto;border:3px solid var(--line);padding:10px;background:var(--panel)}
+.btn,.opt{background:var(--panel2);color:var(--ink);border:3px solid var(--line);border-radius:var(--rs);padding:8px 12px;font:inherit;cursor:pointer}
+.btn.primary{background:var(--yellow);color:var(--ink-dark)}
+.btn:disabled{opacity:.5}
+.opt{text-align:left}
+</style></head>
+<body>
+<div id="runway"></div>
+<div id="dock"></div>
+<script src="../src/js/00-q.js"></script>
+<script src="../src/js/80-obs-kopru.js"></script>
+<script>
+(function(){
+  'use strict';
+  var Q = window.Q;
+  var OB = { id:'s02-o09', tip:'kopru', baslik:'Kırık köprü', kavram:'miller_zincir', agirlik:1,
+    soru:'Zinciri sıraya diz',
+    bloklar:['Kristal periyodiktir','Birim hücre tekrarlanır','Düzlemler kesişimle tanımlanır','Miller indisleri çıkar'],
+    sonuc:'Periyodiklik birim hücreyi, düzlemleri ve Miller indislerini doğurur.' };
+  window.__anims = [];
+  window.__tamir = false;
+  Q.battle = { tamirModu: function(){ return window.__tamir; } };
+  window.runTest = function(){
+    var host = document.getElementById('dock');
+    host.textContent = '';
+    window.__anims = [];
+    var ctx = { stationId:'s02', host:host, runway:{ anim:function(n){ window.__anims.push(n); return Promise.resolve(); } } };
+    window.__result = null;
+    Q.obs.handlers.kopru.enter(OB, ctx).then(function(r){ window.__result = r; });
+  };
+  window.runTest();
+})();
+</script>
+</body></html>
