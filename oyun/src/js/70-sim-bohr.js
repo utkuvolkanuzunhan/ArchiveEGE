@@ -58,13 +58,13 @@
         s.addEventListener('change', function(){ fn(parseInt(s.value, 10)); });
         l.appendChild(s); bar.appendChild(l); return s;
       }
-      var selN = mkSel('Başlangıç n', n, function(v){ n = v; if (!anim) level = n; sonGecis = null; yenile(); });
-      var selM = mkSel('Bitiş m', m, function(v){
+      var selN = mkSel('Initial n (başlangıç n)', n, function(v){ n = v; if (!anim) level = n; sonGecis = null; yenile(); });
+      var selM = mkSel('Final m (bitiş m)', m, function(v){
         if (v < 1) { altinaDene(); selM.value = String(m); return; }
         m = v; sonGecis = null; yenile();
       }, true);
       var btn = document.createElement('button');
-      btn.type = 'button'; btn.textContent = 'Foton'; btn.style.cssText = ctlStyle;
+      btn.type = 'button'; btn.textContent = 'Photon (foton)'; btn.style.cssText = ctlStyle;
       btn.style.background = 'var(--accent,#ffd23f)'; btn.style.color = 'var(--accent-ink,#0b0620)';
       btn.addEventListener('click', function(){ gec(); });
       bar.appendChild(btn);
@@ -120,7 +120,7 @@
         if (destroyed) return;
         enAltDenendi = true;
         toast('n=1: en alt');
-        info.textContent = 'n=1: en alt. Altında seviye yok.';
+        info.textContent = 'n=1: ground state (temel hal). Altında level yok.';
         if (!anim) {
           level = 1; bounce = 1;
           anim = { from: 1, to: 1, t: 0, dur: reduced ? 1 : 1100, kind: 'alt' };
@@ -249,7 +249,7 @@
         }
         c.textAlign = 'center'; c.font = '700 15px ' + fb;
         c.fillStyle = tam ? cyan : muted;
-        c.fillText(tam ? 'n = ' + Math.round(level) + ' tam dalga' : 'dalga sığmıyor', cx, H - 8);
+        c.fillText(tam ? 'n = ' + Math.round(level) + ' full wave (tam dalga)' : 'wave (dalga) sığmıyor', cx, H - 8);
         c.textAlign = 'left'; void dark;
       }
 

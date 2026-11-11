@@ -25,6 +25,6 @@ document.getElementById('basari').onclick=function(){
   var s=host.querySelectorAll('select');
   s[0].value='3';s[0].dispatchEvent(new Event('change'));
   s[1].value='2';s[1].dispatchEvent(new Event('change'));
-  [].slice.call(host.querySelectorAll('button')).filter(function(b){return b.textContent==='Foton'})[0].click();
+  [].slice.call(host.querySelectorAll('button')).filter(function(b){return b.textContent.indexOf('Photon')===0})[0].click();
 };
 </script></body></html>
