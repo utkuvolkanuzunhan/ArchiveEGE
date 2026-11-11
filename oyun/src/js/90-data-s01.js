@@ -11,30 +11,30 @@
 
   var o03 = {
     id: "s01-o03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kati_turleri", agirlik: 1,
-    soru: "Amorf katıda atomlar uzun menzilde düzenli dizilir mi?",
+    soru: "Amorf (amorphous) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
     secenekler: [
-      sec("Evet, kristal gibi", false, "Hayır. Uzun menzilli düzen yalnızca kristalde vardır."),
-      sec("Hayır, düzen yalnızca yakın komşuluktadır", true, "Doğru. Amorfta yalnızca yakın komşular düzenlidir."),
-      sec("Yalnızca soğuyunca düzenlenir", false, "Yanlış. Amorf kalan katıda uzun menzilli düzen hiç oluşmaz.")
+      sec("Evet, kristal gibi", false, "Hayır. Long-range order yalnızca kristalde vardır."),
+      sec("Hayır, düzen yalnızca yakın komşuluktadır", true, "Doğru. Amorfta yalnızca short-range order (kısa menzilli düzen) vardır."),
+      sec("Yalnızca soğuyunca düzenlenir", false, "Yanlış. Amorf kalan katıda long-range order hiç oluşmaz.")
     ],
     kusurSkin: "vakans"
   };
 
   var o04 = {
     id: "s01-o04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "tane_siniri", agirlik: 1,
-    soru: "Çok kristalli malzemede 'tane sınırı' nedir?",
+    soru: "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı) nedir?",
     secenekler: [
-      sec("İki kristal tanesi arasındaki düzensiz ara bölge", true, "Doğru. Kristal yönünün değiştiği ara yüzdür."),
-      sec("Kristalin dış yüzeyi", false, "Hayır. Tane sınırı malzemenin içinde, tanelerin buluştuğu yerdir."),
-      sec("Katkı atomlarının toplandığı yer", false, "Hayır. Tane sınırı, kristal yönünün değiştiği ara yüzdür.")
+      sec("İki grain (tane) arasındaki düzensiz ara bölge", true, "Doğru. Kristal yönünün değiştiği interface (ara yüz) bölgesidir."),
+      sec("Kristalin dış yüzeyi", false, "Hayır. Grain boundary malzemenin içinde, tanelerin buluştuğu yerdir."),
+      sec("Katkı atomlarının toplandığı yer", false, "Hayır. Grain boundary, kristal yönünün değiştiği ara yüzdür.")
     ],
     kusurSkin: "tane_siniri"
   };
 
   var o05secenekler = [
-    sec("Artar", false, "Yanlış. Tane sınırları elektronu saçar, serbest yol kısalır."),
-    sec("Azalır", true, "Doğru. Her tane sınırı bir engeldir."),
-    sec("Değişmez", false, "Yanlış. Tane sınırı ek saçılma getirir.")
+    sec("Artar", false, "Yanlış. Grain boundary elektronu saçar (scattering), mean free path (serbest yol) kısalır."),
+    sec("Azalır", true, "Doğru. Her grain boundary bir engeldir."),
+    sec("Değişmez", false, "Yanlış. Grain boundary ek scattering (saçılma) getirir.")
   ];
 
   Q.data.stations.s01 = {
@@ -43,7 +43,7 @@
     ad: "Kristal fırını",
     makine: "Kristal fırını",
     renk: "#ff9f1c",
-    konu: "Katı türleri, neden kristal, CZ ile tek kristal",
+    konu: "Katı türleri, neden crystal (kristal), CZ ile single crystal (tek kristal)",
     sinavSorulari: ["S1", "S2"],
     sureHedefDk: 22,
     patronId: "czoch",
@@ -60,50 +60,50 @@
       },
       {
         id: "s01-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "kati_turleri", agirlik: 1,
-        gorev: "Elektronu üç malzemeden de geçir.",
+        gorev: "Elektronu üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
         sim: { modul: "kristal_tur", params: { mod: "tur" }, basari: { hepsiniDene: true } },
-        ogrenilen: "Düzen bozuldukça elektron daha çok saçılır; tek kristalde yolu en açıktır."
+        ogrenilen: "Düzen bozuldukça elektron daha çok saçılır (scattering); single crystal (tek kristal) içinde yolu en açıktır."
       },
       o03,
       o04,
       {
         id: "s01-o05", tip: "tahmin", baslik: "Tahmin çukuru", kavram: "tane_siniri", agirlik: 1.5,
-        soru: "Tek kristal yerine çok kristalli malzeme kullanırsan elektronun serbest yolu ne olur?",
+        soru: "Single crystal (tek kristal) yerine polycrystalline (çok kristalli) malzeme kullanırsan mean free path (serbest yol) ne olur?",
         secenekler: o05secenekler,
         sim: { modul: "kristal_tur", onceki: { mod: "serbest_yol" }, sonraki: { mod: "serbest_yol", gonder: true } },
-        acik: "Tane sınırında elektron sekiyor; tek kristalde yol açık, serbest yol uzun."
+        acik: "Grain boundary elektronu saçıyor; single crystal içinde yol açık, mean free path uzun."
       },
       {
         id: "s01-o06", tip: "tuzak", baslik: "Yanılgı tuzağı", kavram: "kristal_pahali", agirlik: 1,
-        iddia: "Kristal pahalı olduğu için yarıiletken endüstrisinde tercih edilir.",
-        parcalar: ["Kristal pahalı olduğu için", "yarıiletken endüstrisinde", "tercih edilir."],
+        iddia: "Kristal pahalı olduğu için semiconductor (yarıiletken) endüstrisinde tercih edilir.",
+        parcalar: ["Kristal pahalı olduğu için", "semiconductor (yarıiletken) endüstrisinde", "tercih edilir."],
         yanlisParca: 0,
-        duzeltme: "Kristal periyodik olduğu için bantları öngörülebilir ve özellikleri kontrol edilebilir."
+        duzeltme: "Crystal (kristal) periyodik olduğu için energy band (enerji bandı) yapısı öngörülebilir, özellikler kontrol edilebilir."
       },
       {
         id: "s01-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "kristal_neden", agirlik: 1,
         soru: "Zinciri sıraya diz",
-        bloklar: ["Kafes periyodik tekrar eder", "Elektron periyodik potansiyel görür", "Enerji bantları net oluşur", "Özellikler öngörülebilir ve tekrarlanabilir"],
-        sonuc: "Periyodik kafes, periyodik potansiyel, net bantlar, öngörülebilir aygıt."
+        bloklar: ["Lattice (kafes) periyodik tekrar eder", "Elektron periodic potential (periyodik potansiyel) görür", "Energy bands (enerji bantları) net oluşur", "Özellikler öngörülebilir ve tekrarlanabilir"],
+        sonuc: "Periodic lattice, periodic potential, net bantlar, öngörülebilir aygıt."
       },
       {
         id: "s01-o08", tip: "patron", baslik: "Tane Sınırı Canavarı", kavram: null, agirlik: 1,
         canavar: "czoch", canavarAd: "Tane Sınırı Canavarı",
-        giris: "Ben tane sınırıyım! Elektronlarını sektiririm. Beni nasıl yenersin?",
+        giris: "Ben grain boundary (tane sınırı) canavarıyım! Elektronlarını saçarım. Beni nasıl yenersin?",
         fazlar: [
           {
             tip: "secmeli", kavram: "cz_tohum",
-            soru: "CZ yönteminde tohum kristalin görevi nedir?",
+            soru: "CZ (Czochralski) yönteminde seed crystal (tohum kristal) görevi nedir?",
             secenekler: [
-              sec("Eriyiği ısıtır", false, "Hayır. Isıtmayı fırın yapar."),
-              sec("Katılaşan atomlara kristal düzenini tarif eder", true, "Doğru. Atomlar tohumun düzenini sürdürür."),
+              sec("Eriyiği ısıtır", false, "Hayır. Isıtmayı fırın yapar, seed değil."),
+              sec("Katılaşan atomlara kristal düzenini aktarır", true, "Doğru. Atomlar seed crystal düzenini sürdürür."),
               sec("Eriyiği karıştırır", false, "Hayır. Karıştırma tohumun işi değil.")
             ],
             alt: {
-              soru: "CZ'de külçe neden yavaşça döndürülerek çekilir?",
+              soru: "CZ'de ingot (külçe) neden yavaşça döndürülerek çekilir?",
               secenekler: [
-                sec("Tohumun düzeni homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme tek kristali korur."),
-                sec("Daha hızlı soğusun diye", false, "Hayır. Hızlı soğuma kusur yapar."),
+                sec("Tohumun düzeni homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme single crystal yapısını korur."),
+                sec("Daha hızlı soğusun diye", false, "Hayır. Hızlı soğuma defect (kusur) yapar."),
                 sec("Eriyik atılsın diye", false, "Hayır. Amaç eriyik atmak değil.")
               ]
             }
@@ -111,65 +111,65 @@
           {
             tip: "acik", kavram: "kristal_neden",
             pdfSoru: "Why are crystalline solids used in the semiconductor industry?",
-            soru: "Kristal katılar yarıiletken endüstrisinde neden kullanılır?",
+            soru: "Crystalline solids (kristal katılar) semiconductor (yarıiletken) endüstrisinde neden kullanılır? Explain (açıkla).",
             anahtarFikirler: [
-              "Kristalde atomlar periyodik dizilir, potansiyel periyodiktir.",
-              "Periyodiklik iyi tanımlı enerji bantları ve bant aralığı verir.",
-              "Özellikler öngörülebilir ve tekrarlanabilir, katkıyla kontrol edilir.",
-              "Çok kristalli veya amorfta taşıyıcılar tane sınırlarında saçılır."
+              "Kristalde atomlar periyodik dizilir, periodic potential (periyodik potansiyel) oluşur.",
+              "Periyodiklik iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) verir.",
+              "Özellikler öngörülebilir ve tekrarlanabilir, doping (katkılama) ile kontrol edilir.",
+              "Çok kristalli veya amorfta carriers (taşıyıcılar) grain boundary üzerinde saçılır."
             ],
             yanlisKavramlar: ["Kristal pahalı olduğu için tercih edilir", "Kristal sadece daha parlak olduğu için kullanılır"],
             yanlisKavramIds: ["kristal_pahali", "kristal_pahali"],
-            idealCevap: "Kristalde atomlar periyodik dizilir. Bu periyodik potansiyel iyi tanımlı enerji bantları ve bant aralığı doğurur. Böylece iletkenlik öngörülebilir, katkılamayla kontrol edilir ve her aygıtta tekrarlanır. Çok kristalli veya amorf malzemede tane sınırları taşıyıcıları saçar.",
+            idealCevap: "Kristalde atomlar periyodik dizilir. Bu periodic potential (periyodik potansiyel) iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) doğurur. Böylece iletkenlik öngörülebilir, doping (katkılama) ile kontrol edilir ve her aygıtta tekrarlanır. Çok kristalli veya amorf malzemede grain boundary taşıyıcıları (carriers) saçar.",
             yedekSecmeli: {
-              soru: "Kristal neden yarıiletkende tercih edilir?",
+              soru: "Kristal neden semiconductor (yarıiletken) aygıtta tercih edilir?",
               secenekler: [
-                sec("Periyodik yapı öngörülebilir enerji bantları verir", true, "Doğru. Periyodik potansiyel net bantlar ve tekrarlanabilirlik sağlar."),
+                sec("Periyodik yapı öngörülebilir energy bands verir", true, "Doğru. Periodic potential net bantlar ve tekrarlanabilirlik sağlar."),
                 sec("Kristal en ucuz malzemedir", false, "Yanlış. Maliyet sebep değil, tam tersine kristal büyütmek pahalıdır."),
                 sec("Kristal ışığı daha çok yansıtır", false, "Yanlış. Yansıma elektriksel özelliklerle ilgisizdir."),
-                sec("Kristalde elektron hiç saçılmaz", false, "Yanlış. Titreşim ve kusurlarda saçılır, ama çok daha az.")
+                sec("Kristalde elektron hiç saçılmaz", false, "Yanlış. Phonon (fonon) ve defect (kusur) saçılması vardır, ama çok daha az.")
               ]
             },
-            alt: { soru: "Amorf silisyum yerine tek kristal silisyum neden tercih edilir?" }
+            alt: { soru: "Amorf silisyum yerine single crystal silicon (tek kristal silisyum) neden tercih edilir?" }
           },
           {
             tip: "acik", kavram: "tane_siniri",
             pdfSoru: "Explain the main reason for single-crystal growth in the CZ method",
-            soru: "CZ yönteminde tek kristal büyütmenin ana nedeni nedir?",
+            soru: "Explain (açıkla): CZ yönteminde single crystal (tek kristal) büyütmenin ana nedeni nedir?",
             anahtarFikirler: [
-              "Tek kristalde tane sınırı yoktur.",
-              "Tane sınırları taşıyıcıları saçar ve tuzaklar.",
-              "Hareketlilik ve taşıyıcı ömrü böylece yüksek kalır.",
+              "Single crystal içinde grain boundary yoktur.",
+              "Grain boundary carriers (taşıyıcıları) saçar ve tuzaklar.",
+              "Mobility (hareketlilik) ve carrier lifetime (taşıyıcı ömrü) yüksek kalır.",
               "Tüm wafer boyunca aynı özellik, tekrarlanabilir aygıt."
             ],
             yanlisKavramlar: ["Tek kristal sadece daha güzel görünür", "Tane sınırı elektriği daha iyi iletir"],
             yanlisKavramIds: ["kristal_pahali", "tane_siniri"],
-            idealCevap: "Tek kristalde tane sınırı yoktur. Tane sınırları taşıyıcıları saçar ve tuzaklar, hareketliliği ve ömrü düşürür. Tek kristal, wafer boyunca aynı bant yapısını ve tekrarlanabilir aygıt özelliklerini sağlar.",
+            idealCevap: "Single crystal içinde grain boundary yoktur. Grain boundary carriers (taşıyıcıları) saçar ve tuzaklar, mobility (hareketlilik) ve lifetime (ömür) düşer. Single crystal, wafer boyunca aynı band structure (bant yapısı) ve tekrarlanabilir aygıt özelliklerini sağlar.",
             yedekSecmeli: {
-              soru: "CZ'de tek kristal neden istenir?",
+              soru: "CZ'de single crystal (tek kristal) neden istenir?",
               secenekler: [
-                sec("Tane sınırı yok, taşıyıcılar saçılmaz", true, "Doğru. Hareketlilik ve ömür yüksek kalır."),
+                sec("Grain boundary yok, carriers saçılmaz", true, "Doğru. Mobility ve lifetime yüksek kalır."),
                 sec("Tek kristal daha hızlı büyür", false, "Yanlış. Tek kristal yavaş büyütülür."),
-                sec("Tane sınırı akımı artırır", false, "Yanlış. Tane sınırı taşıyıcıları saçar."),
+                sec("Tane sınırı akımı artırır", false, "Yanlış. Grain boundary carriers saçar."),
                 sec("Kristal rengi daha homojen olur", false, "Yanlış. Renk sebep değil.")
               ]
             },
-            alt: { soru: "Tane sınırı aygıt performansını nasıl bozar?" }
+            alt: { soru: "Grain boundary aygıt performansını nasıl bozar? Justify (gerekçelendir)." }
           }
         ]
       },
       {
         id: "s01-o09", tip: "sandik", baslik: "Sandık", kavram: null, agirlik: 1,
-        kart: { id: "czoch", yil: 1916, tekCumle: "Eriyikten tohumla tek kristal çekmenin yolunu buldu." },
-        ozet: ["Kristal: tekrar eden periyodik düzen", "Tane sınırı elektronu saçar", "CZ: tohumu eriyikten yavaşça çek"],
+        kart: { id: "czoch", yil: 1916, tekCumle: "Melt (eriyik) içinden seed (tohum) ile single crystal (tek kristal) çekmenin yolunu buldu." },
+        ozet: ["Crystal (kristal): periyodik düzen", "Grain boundary elektronu saçar", "CZ: seed crystal melt içinden yavaşça çekilir"],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: "Kristal nedir?", metin: "Atomlar uzun menzilde tekrar eden düzenle dizilir." },
-        { baslik: "Neden saçılma?", metin: "Düzen bozuldukça elektron daha sık sekiyor." },
-        { baslik: "CZ nedir?", metin: "Tohum kristal eriyikten yavaşça çekilir, düzen sürer." }
+        { baslik: "Crystal (kristal) nedir?", metin: "Atomlar long-range order (uzun menzilli düzen) ile dizilir." },
+        { baslik: "Neden scattering?", metin: "Düzen bozuldukça elektron daha sık saçılır (scattering)." },
+        { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt içinden yavaşça çekilir, düzen sürer." }
       ],
       sim: { modul: "kristal_tur", params: { mod: "tur" } }
     },
@@ -184,26 +184,26 @@
       },
       {
         id: "s01-t03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "tane_siniri", agirlik: 1,
-        soru: "Tek kristal yerine çok kristalli malzeme kullanırsan elektronun serbest yolu ne olur?",
+        soru: "Single crystal (tek kristal) yerine polycrystalline (çok kristalli) malzeme kullanırsan mean free path (serbest yol) ne olur?",
         secenekler: kopya(o05secenekler), kusurSkin: "tane_siniri"
       },
       {
         id: "s01-t04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "cz_tohum", agirlik: 1,
-        soru: "CZ'de tohum kristal ne işe yarar?",
+        soru: "CZ'de seed crystal (tohum kristal) ne işe yarar?",
         secenekler: [
-          sec("Düzeni atomlara aktarır", true, "Doğru. Katılaşan atomlar tohumun düzenini sürdürür."),
-          sec("Eriyiği soğutur", false, "Hayır. Soğutma tohumun işi değil."),
+          sec("Düzeni atomlara aktarır", true, "Doğru. Katılaşan atomlar seed crystal düzenini sürdürür."),
+          sec("Eriyiği soğutur", false, "Hayır. Cooling (soğutma) seed işi değil."),
           sec("Eriyiği temizler", false, "Hayır. Temizlik başka süreç.")
         ],
         kusurSkin: "dislokasyon"
       },
       {
         id: "s01-t05", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kristal_neden", agirlik: 1,
-        soru: "Çip için neden tek kristal silisyum kullanılır?",
+        soru: "Çip için neden single crystal silicon (tek kristal silisyum) kullanılır?",
         secenekler: [
-          sec("Elektron akışı düzenli dizilimde öngörülebilir olur", true, "Doğru. Düzenli kafes elektronu rastgele saçmaz."),
+          sec("Elektron akışı düzenli dizilimde öngörülebilir olur", true, "Doğru. Düzenli lattice (kafes) elektronu rastgele saçmaz."),
           sec("Daha parlak göründüğü için", false, "Hayır. Parlaklık seçim nedeni değil."),
-          sec("Her zaman daha ucuz olduğu için", false, "Hayır. Tek kristal üretmek pahalıdır.")
+          sec("Her zaman daha ucuz olduğu için", false, "Hayır. Single crystal üretmek pahalıdır.")
         ],
         kusurSkin: "vakans"
       }

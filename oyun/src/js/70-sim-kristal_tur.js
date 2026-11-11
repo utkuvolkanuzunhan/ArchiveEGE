@@ -11,8 +11,8 @@
   var STEPS_PER_FRAME = 2;
   var MAX_STEPS = 2500;
   var TRAIL = 34;
-  var TUR_ADI = { tek: 'Tek kristal', cok: 'Çok kristalli', amorf: 'Amorf' };
-  var TUR_KISA = { tek: 'Tek', cok: 'Çok', amorf: 'Amorf' };
+  var TUR_ADI = { tek: 'Single crystal (tek kristal)', cok: 'Polycrystalline (çok kristalli)', amorf: 'Amorphous (amorf)' };
+  var TUR_KISA = { tek: 'Single crystal', cok: 'Polycrystal', amorf: 'Amorphous' };
   var SEEDS = [[0.2, 0.25], [0.72, 0.2], [0.48, 0.55], [0.16, 0.82], [0.84, 0.8]];
   var ACILAR = [0.35, 0.95, 0.1, 1.25, 0.62];
   var styleCount = 0;
@@ -300,7 +300,7 @@
         c.fillStyle = b.tur === 'tek' ? C.cyan : (b.tur === 'cok' ? C.lime : C.yellow);
         c.font = '800 14px ' + C.font;
         var v = fmtMfp(b.tur);
-        c.fillText(fitText(c, uzun ? ['Serbest yol: ' + v] : ['Yol: ' + v, v], b.w), b.x + b.w / 2, b.y + b.h + 14);
+        c.fillText(fitText(c, uzun ? ['Mean free path: ' + v] : ['Yol: ' + v, v], b.w), b.x + b.w / 2, b.y + b.h + 14);
         c.globalAlpha = 1;
         // bekleyen elektron (kutunun solunda)
         if (!electrons.some(function(e){ return e.bi === bi && e.alive; })) {

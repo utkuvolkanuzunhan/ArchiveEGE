@@ -115,8 +115,8 @@
         sayBtn.setAttribute('aria-pressed', sayModu ? 'true' : 'false');
         sayGrp.style.display = sayModu ? 'flex' : 'none';
         val.textContent = String(tahmin);
-        if (sayModu) info.textContent = sonuc || 'Hücre başına atom: ?';
-        else info.textContent = 'Hücre başına atom: ' + DOGRU[tur] + ' (' + kirilim(tur) + ') · Doluluk %' + DOLULUK[tur] +
+        if (sayModu) info.textContent = sonuc || 'Atoms per unit cell (hücre başına atom): ?';
+        else info.textContent = 'Atoms per unit cell (hücre başına atom): ' + DOGRU[tur] + ' (' + kirilim(tur) + ') · Doluluk %' + DOLULUK[tur] +
           (tur === 'elmas' ? ' · Her atomun 4 komşusu var' : '');
         cv.setAttribute('aria-label', 'Kafes: ' + tur + ', hücre başına ' + (sayModu ? 'bilinmeyen' : DOGRU[tur]) + ' atom');
         ciz();
@@ -198,7 +198,7 @@
         });
         var lx = W * 0.6, ly = H * 0.16, lh = Math.max(24, H * 0.12);
         c.font = '700 16px ' + col('--font-b','Nunito, sans-serif'); c.textBaseline = 'middle'; c.textAlign = 'left';
-        var rows = [['k', cyan, 'Köşe: 1/8', 0.125], ['y', mag, 'Yüz: 1/2', 0.5], ['g', yel, 'İç: 1', 1]];
+        var rows = [['k', cyan, 'Corner (köşe): 1/8', 0.125], ['y', mag, 'Face (yüz): 1/2', 0.5], ['g', yel, 'Body (iç): 1', 1]];
         var has = {}; atomlar(tur).forEach(function(a){ has[a.k] = true; });
         var n = 0;
         rows.forEach(function(r){

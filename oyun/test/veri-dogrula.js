@@ -16,7 +16,7 @@ var hatalar = [];
 var uyarilar = [];
 function hata(dosya, alan, sorun) { hatalar.push(dosya + ':' + alan + ': ' + sorun); }
 
-function kelime(s) { return String(s).trim().split(/\s+/).filter(Boolean).length; }
+function kelime(s) { return String(s).replace(/\([^)]*\)/g, ' ').trim().split(/\s+/).filter(Boolean).length; }
 function sinir(dosya, alan, metin, max) {
   if (typeof metin !== 'string' || !metin.trim()) { hata(dosya, alan, 'boş veya metin değil'); return; }
   var n = kelime(metin);
