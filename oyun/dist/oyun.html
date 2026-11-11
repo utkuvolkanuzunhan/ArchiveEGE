@@ -559,7 +559,7 @@ html,body{height:100%;margin:0;overflow:hidden}
   }
   function freeze(){
     pauseSay++;
-    if (pauseSay === 1 && !mapEl) { try { if (Q.runner.pause) Q.runner.pause(); } catch (e) { /* motor yok */ } }
+    if (pauseSay === 1 && !mapEl) { try { if (Q.runner.hold) Q.runner.hold(); } catch (e) { /* motor yok */ } }
   }
   function thaw(){
     if (pauseSay > 0) pauseSay--;
@@ -635,7 +635,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     det.appendChild(sm); det.appendChild(key); det.appendChild(rl); det.appendChild(kb);
     det.appendChild(el('p', '', 'Yayınlanmış sayfada çalışmaz. Yerel dosyada çalışır.'));
     p.appendChild(det);
-    p.appendChild(btn('Haritaya dön', 'primary', function(){ S.close(); S.openMap(); }));
+    p.appendChild(btn('Haritaya dön', 'primary', function(){ S.close(); try { if (Q.runner.abort) Q.runner.abort(); } catch (e) { /* motor yok */ } S.openMap(); }));
     /* Kopyala / yapıştır */
     var ta = el('textarea'); ta.rows = 3; ta.setAttribute('aria-label', 'İlerleme metni'); ta.style.cssText = 'width:100%;margin-top:12px';
     var tr = el('div'); tr.style.cssText = 'display:flex;gap:8px;margin-top:8px;flex-wrap:wrap';
@@ -740,7 +740,7 @@ html,body{height:100%;margin:0;overflow:hidden}
       panelEl.appendChild(el('h4', '', 'İstediğin engele atla'));
       var l = el('ol'); l.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0';
       s.engeller.forEach(function(ob, i){
-        var li = el('li'); li.appendChild(btn((i + 1) + '. ' + (ob.baslik || ob.tip), '', function(){ startStation(s, i); }));
+        var li = el('li'); li.appendChild(btn((i + 1) + '. ' + (ob.baslik || ob.tip), '', function(){ startStation(s, Q.runner.indexOf ? Q.runner.indexOf(s.id, ob.id) : i); }));
         l.appendChild(li);
       });
       panelEl.appendChild(l);
@@ -823,7 +823,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     var L = getLayer(), back = backdrop(true), box = el('div', 'panel modal');
     box.style.cssText = 'width:100%;overflow:auto;padding:16px;border-radius:0';
     back.appendChild(box); L.appendChild(back); mapEl = back;
-    if (pauseSay === 0) { try { if (Q.runner.pause) Q.runner.pause(); } catch (e) { /* motor yok */ } }
+    if (pauseSay === 0) { try { if (Q.runner.hold) Q.runner.hold(); } catch (e) { /* motor yok */ } }
     renderMap();
   };
   S.closeMap = function(){
@@ -9255,6 +9255,21 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       }, function(e){ console.error('runner', e); toast('Koşu durdu', 'kotu'); if (endRun) endRun('cikis'); });
     });
   };
+  R.indexOf = function(stationId, obId){
+    var st = Q.data.stations[stationId]; if (!st) return 0;
+    var list = buildList(st), src = st.engeller || [], k = -1;
+    src.forEach(function(o, j){ if (o.id === obId) k = j; });
+    for (var j = Math.max(k, 0); j < src.length; j++) {
+      for (var i = 0; i < list.length; i++) if (list[i].id && list[i].id === src[j].id) return i;
+    }
+    return 0;
+  };
+  R.hold = function(){
+    if (!run) return;
+    if (closeMenu) { closeMenu(); closeMenu = null; }
+    paused = true; last = null;
+  };
+  R.abort = function(){ if (run) abort('cikis'); };
   R.pause = function(){ if (run && !closeMenu) openPauseMenu(); };
   R.resume = function(){
     if (closeMenu) { closeMenu(); closeMenu = null; }

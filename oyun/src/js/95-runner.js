@@ -367,6 +367,21 @@
       }, function(e){ console.error('runner', e); toast('Koşu durdu', 'kotu'); if (endRun) endRun('cikis'); });
     });
   };
+  R.indexOf = function(stationId, obId){
+    var st = Q.data.stations[stationId]; if (!st) return 0;
+    var list = buildList(st), src = st.engeller || [], k = -1;
+    src.forEach(function(o, j){ if (o.id === obId) k = j; });
+    for (var j = Math.max(k, 0); j < src.length; j++) {
+      for (var i = 0; i < list.length; i++) if (list[i].id && list[i].id === src[j].id) return i;
+    }
+    return 0;
+  };
+  R.hold = function(){
+    if (!run) return;
+    if (closeMenu) { closeMenu(); closeMenu = null; }
+    paused = true; last = null;
+  };
+  R.abort = function(){ if (run) abort('cikis'); };
   R.pause = function(){ if (run && !closeMenu) openPauseMenu(); };
   R.resume = function(){
     if (closeMenu) { closeMenu(); closeMenu = null; }
