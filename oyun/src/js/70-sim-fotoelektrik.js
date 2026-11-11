@@ -37,7 +37,7 @@
       var cv = document.createElement('canvas');
       cv.style.cssText = 'width:100%;display:block;border-radius:8px';
       cv.setAttribute('role', 'img');
-      cv.setAttribute('aria-label', 'Fotoelektrik olay simülasyonu');
+      cv.setAttribute('aria-label', 'Photoelectric effect (fotoelektrik olay) simulation');
       var ctl = document.createElement('div');
       ctl.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;align-items:center';
       function mk(label, input){
@@ -58,7 +58,7 @@
         o.textContent = k + ' ' + METAL[k] + ' eV';
         mSel.appendChild(o);
       });
-      var fC = mk('Frekans', fIn), iC = mk('Şiddet', iIn), mC = mk('Metal', mSel);
+      var fC = mk('Frequency (frekans)', fIn), iC = mk('Intensity (şiddet)', iIn), mC = mk('Metal', mSel);
       ctl.appendChild(fC.l); ctl.appendChild(iC.l); ctl.appendChild(mC.l);
       wrap.appendChild(cv); wrap.appendChild(ctl); host.appendChild(wrap);
       var ctx = cv.getContext('2d');
@@ -66,8 +66,8 @@
 
       function syncUI(){
         fIn.value = st.f; iIn.value = st.I; mSel.value = st.metal;
-        fC.s.textContent = 'Frekans ' + st.f.toFixed(1) + '×10¹⁴ Hz';
-        iC.s.textContent = 'Şiddet ' + Math.round(st.I);
+        fC.s.textContent = 'Frequency ' + st.f.toFixed(1) + '×10¹⁴ Hz';
+        iC.s.textContent = 'Intensity ' + Math.round(st.I);
       }
 
       function resize(){
@@ -111,8 +111,8 @@
         ctx.fillStyle = mut; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText('hf = ' + c.e.toFixed(2) + ' eV  |  φ = ' + c.phi.toFixed(1) + ' eV', W * 0.5, Hh - 46);
         var gy = Hh - 40, gw = (W - 24) / 2;
-        box(8, gy, gw, 34, 'Elektron/sn', String(c.n), c.ok ? cy : mut);
-        box(16 + gw, gy, gw, 34, 'Kinetik enerji (eV)', c.K.toFixed(2), c.ok ? yel : mut);
+        box(8, gy, gw, 34, 'Electrons/s', String(c.n), c.ok ? cy : mut);
+        box(16 + gw, gy, gw, 34, 'Kinetic energy (eV)', c.K.toFixed(2), c.ok ? yel : mut);
         function box(x, y, w, h, lab, val, col){
           ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.strokeRect(x, y, w, h);
           ctx.fillStyle = mut; ctx.font = '12px sans-serif'; ctx.textAlign = 'left';

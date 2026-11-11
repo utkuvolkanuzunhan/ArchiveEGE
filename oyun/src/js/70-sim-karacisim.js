@@ -53,25 +53,25 @@
     var canvas = document.createElement('canvas');
     canvas.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);border-radius:var(--rs,8px);';
     canvas.setAttribute('role', 'img');
-    canvas.setAttribute('aria-label', 'Kara cisim ışıma eğrisi: Planck ve klasik');
+    canvas.setAttribute('aria-label', 'Blackbody (kara cisim) radiation curve: Planck and classical');
     var ctrls = document.createElement('div');
     ctrls.style.cssText = 'display:flex;flex-wrap:wrap;align-items:center;gap:12px;';
 
     var lab = document.createElement('label');
     lab.style.cssText = 'display:flex;align-items:center;gap:10px;flex:1 1 220px;min-height:40px;color:var(--ink,#fff);font-size:var(--fs-small,14px);';
     var labTxt = document.createElement('span');
-    labTxt.textContent = 'Sıcaklık';
+    labTxt.textContent = 'Temperature (sıcaklık)';
     var sl = document.createElement('input');
     sl.type = 'range'; sl.min = TMIN; sl.max = TMAX; sl.step = 100; sl.value = T;
     sl.style.cssText = 'flex:1;min-height:40px;accent-color:var(--cyan,#00e5ff);';
-    sl.setAttribute('aria-label', 'Sıcaklık (K)');
+    sl.setAttribute('aria-label', 'Temperature (sıcaklık) (K)');
     var val = document.createElement('span');
     val.style.cssText = 'min-width:56px;text-align:right;font-weight:700;';
     lab.appendChild(labTxt); lab.appendChild(sl); lab.appendChild(val);
 
     var tg = document.createElement('button');
     tg.type = 'button';
-    tg.textContent = 'Klasik eğri';
+    tg.textContent = 'Classical curve (klasik eğri)';
     tg.style.cssText = 'min-height:40px;padding:0 14px;border-radius:var(--rs,8px);border:var(--bw,3px) solid var(--line,#f4f0ff);background:var(--panel2,#25164f);color:var(--ink,#fff);font:inherit;font-size:var(--fs-small,14px);font-weight:700;cursor:pointer;';
 
     ctrls.appendChild(lab); ctrls.appendChild(tg);
@@ -124,9 +124,9 @@
       ctx.beginPath(); ctx.moveTo(L, Tp); ctx.lineTo(L, Tp+ph); ctx.lineTo(L+pw, Tp+ph); ctx.stroke();
       ctx.fillStyle = cMuted; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.font = '13px ' + fb;
-      ctx.fillText('Dalga boyu (nm)', L + pw/2, Hh-1);
+      ctx.fillText('Wavelength (nm)', L + pw/2, Hh-1);
       ctx.save(); ctx.translate(11, Tp+ph/2); ctx.rotate(-Math.PI/2);
-      ctx.textBaseline = 'top'; ctx.fillText('Yoğunluk', 0, -4); ctx.restore();
+      ctx.textBaseline = 'top'; ctx.fillText('Intensity', 0, -4); ctx.restore();
 
       var pk = planckPeak(T), n = Math.max(60, Math.round(pw/2));
       ctx.beginPath(); ctx.moveTo(X(LMIN), Y(0));
@@ -153,7 +153,7 @@
       ctx.fillStyle = cYellow; ctx.beginPath(); ctx.arc(X(lm), Y(1), 4.5, 0, 7); ctx.fill();
       ctx.font = '700 14px ' + fb; ctx.textBaseline = 'top'; ctx.textAlign = 'left';
       ctx.fillStyle = cCyan; ctx.fillText('— Planck', L+8, Tp+4);
-      if (klasik){ ctx.fillStyle = cRed; ctx.fillText('- - Klasik', L+8, Tp+22); }
+      if (klasik){ ctx.fillStyle = cRed; ctx.fillText('- - Classical', L+8, Tp+22); }
       ctx.fillStyle = cYellow;
       ctx.fillText('λmax = ' + Math.round(lm) + ' nm', Math.max(L+8, Math.min(X(lm)+10, L+pw-125)), Tp+ph*0.7);
       var sw = 34, sx = L+pw-sw-6, sy = Tp+6;
