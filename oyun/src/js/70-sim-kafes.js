@@ -89,7 +89,7 @@
       sayGrp.appendChild(eksi); sayGrp.appendChild(val); sayGrp.appendChild(arti); sayGrp.appendChild(kontrol);
       bar.appendChild(sayGrp);
       var info = document.createElement('div');
-      info.style.cssText = 'flex:1 1 220px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      info.style.cssText = 'flex:1 1 220px;min-width:0;overflow-wrap:anywhere;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
       info.setAttribute('aria-live','polite');
       bar.appendChild(info);
       var note = document.createElement('span');
