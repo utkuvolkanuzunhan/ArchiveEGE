@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>obs-hikaye test</title>
+<style>:root{--bg:#0e0724;--panel2:#25164f;--ink:#fff;--ink-dark:#0b0620;--line:#f4f0ff;--accent:#ffd23f;--accent-ink:#0b0620;--accent2:#00e5ff;--magenta:#ff3df0;--good:#39ff88;--bubble:#fff;--bubble-ink:#0b0620;--bubble-line:#0b0620;--bubble-shadow:#00e5ff;--bw:3px;--r:10px;--rs:8px;--shadow-sm:4px 4px 0 #0b0620;--glow-lime:0 0 12px rgba(57,255,136,.6);--font-d:'Impact',sans-serif;--font-b:system-ui,sans-serif;--fs-body:17px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--font-b)}#host{min-height:240px}</style></head>
+<body><div id="host"></div>
+<script src="../src/js/00-q.js"></script>
+<script>
+var Q = window.Q, log = [];
+Q.art.cameo = function(id){ return '<svg viewBox="0 0 100 100" width="100" height="100"><circle cx="50" cy="50" r="40" fill="#ff3df0" stroke="#0b0620" stroke-width="5"/><text x="50" y="58" text-anchor="middle" font-size="16">'+id+'</text></svg>'; };
+window.ctx = { stationId:'s03', index:0, istasyon:{id:'s03',renk:'#ffd23f',makine:'Işık-test odası'}, host:document.getElementById('host'),
+  state:{ayarlar:{hikayeAtla:false}},
+  runway:{ anim:function(n){log.push('anim:'+n);return Promise.resolve();}, say:function(k){log.push('say:'+k);return Promise.resolve();} } };
+window.ob = { id:'s03-o01', tip:'hikaye', baslik:'Zaman kapısı', kavram:null, agirlik:1, yer:'Berlin', yil:1900, rivayet:true,
+  satirlar:[{kim:'anlatici',metin:'Berlin, 1900. Fırınlar kızıl, bilim insanları şaşkın.'},{kim:'planck',metin:'Enerji paket paket gidiyor olabilir mi?'},{kim:'selin',metin:'Paket mi? Hadi bakalım.'}] };
+window.log = log;
+</script>
+<script src="../src/js/80-obs-hikaye.js"></script>
+<script>
+window.run = function(){ return Q.obs.handlers.hikaye.enter(window.ob, window.ctx); };
+if (!/noauto/.test(location.search)) window.run().then(function(s){ window.result = s; });
+</script></body></html>
