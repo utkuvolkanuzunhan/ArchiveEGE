@@ -8,7 +8,7 @@
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's07-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
+    id: 's07-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
     soru: 'Bir measurement (ölçüm) hangi değerleri verebilir?',
     secenekler: [
       sec('Yalnızca operator (operatör) eigenvalue (özdeğer) değerlerini', true, 'Doğru. Her measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini verir.'),
@@ -19,7 +19,7 @@
   };
 
   var o04 = {
-    id: 's07-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
+    id: 's07-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
     soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma probability (olasılık) değeri nedir?',
     secenekler: [
       sec('|c₁|²', true, 'Doğru. Probability (olasılık) coefficient (katsayı) karesidir.'),
@@ -98,8 +98,8 @@
         sonuc: 'Superposition (süperpozisyon), probabilistic (olasılıklı) result (sonuç), collapse (çökme), deterministic (belirlenimci) evolution (evrim).'
       },
       {
-        id: 's07-o08', tip: 'patron', baslik: 'Olasılık Canavarı', kavram: null, agirlik: 1,
-        canavar: 'born', canavarAd: 'Olasılık Canavarı',
+        id: 's07-o08', tip: 'patron', baslik: 'Probability (Olasılık) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'born', canavarAd: 'Probability (Olasılık) Canavarı',
         giris: 'Zar atıyorum! Ama kurallarım var. Probability (olasılık) |c|².',
         fazlar: [
           {
@@ -161,7 +161,7 @@
               'Collapse (çökme) Schrödinger equation (denklem) kaynaklıdır'
             ],
             yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
-            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder; hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
+            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder; hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
             yedekSecmeli: {
               soru: 'Eigenstate (özdurum) olmayan state (durumda) measurement (ölçüm) sonrası ne olur?',
               secenekler: [
@@ -194,13 +194,13 @@
       Object.assign({}, o03, { id: 's07-t01' }),
       Object.assign({}, o04, { id: 's07-t02' }),
       {
-        id: 's07-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olcum_cokme', agirlik: 1,
+        id: 's07-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'olcum_cokme', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's07-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
+        id: 's07-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
         soru: 'Measurement (ölçüm) arasında ψ nasıl evolve (evrilir)?',
         secenekler: [
           sec('Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde', true, 'Doğru. Randomness (rastgelelik) yalnızca measurement (ölçüm) sırasında ortaya çıkar.'),

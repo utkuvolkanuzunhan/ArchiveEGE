@@ -9,7 +9,7 @@
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's03-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'karacisim_felaket', agirlik: 1,
+    id: 's03-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'karacisim_felaket', agirlik: 1,
     soru: 'Ultraviolet catastrophe (mor ötesi felaketi), classical theory (klasik teori) neyi yanlış öngörmesidir?',
     secenekler: [
       sec('Kısa wavelength (dalga boyu) değerinde infinite energy (sonsuz enerji)', true, 'Doğru. Classical theory (klasik teori) yüksek frequency (frekans) değerinde energy (enerji) değerini sonsuz buluyordu.'),
@@ -20,7 +20,7 @@
   };
 
   var o04 = {
-    id: 's03-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'planck_paket', agirlik: 1,
+    id: 's03-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'planck_paket', agirlik: 1,
     soru: 'Planck\'a göre bir photon (foton) energy (enerji) değeri neye bağlıdır?',
     secenekler: [
       sec('Frequency (frekans) değerine (E = hf)', true, 'Doğru. Yüksek frequency (frekans), büyük paket.'),
@@ -99,8 +99,8 @@
         sonuc: 'Photon energy (foton enerjisi) frequency (frekans) ile belirlenir, threshold (eşik) aşılırsa electron (elektron) kopar, intensity (şiddet) sayıyı artırır.'
       },
       {
-        id: 's03-o08', tip: 'patron', baslik: 'Foton Canavarı', kavram: null, agirlik: 1,
-        canavar: 'einstein', canavarAd: 'Foton Canavarı',
+        id: 's03-o08', tip: 'patron', baslik: 'Photon (Foton) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'einstein', canavarAd: 'Photon (Foton) Canavarı',
         giris: 'Ben photon (foton) canavarıyım! Brightness (parlaklık) artırsam da seni threshold (eşik) değerinden geçirmem.',
         fazlar: [
           {
@@ -195,13 +195,13 @@
       Object.assign({}, o03, { id: 's03-t01' }),
       Object.assign({}, o04, { id: 's03-t02' }),
       {
-        id: 's03-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'fotoelektrik_siddet', agirlik: 1,
+        id: 's03-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'fotoelektrik_siddet', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's03-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantum_rastgele_sanisi', agirlik: 1,
+        id: 's03-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kuantum_rastgele_sanisi', agirlik: 1,
         soru: 'Quantum randomness (kuantum rastgeleliği) neden bilgi eksikliği değildir? Explain (açıkla).',
         secenekler: [
           sec('Doğanın fundamental (temel) yapısıdır, daha çok information (bilgi) ile ortadan kalkmaz', true, 'Doğru. Standart yorumda probability (olasılık) temeldir.'),

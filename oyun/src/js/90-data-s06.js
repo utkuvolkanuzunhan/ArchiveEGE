@@ -8,7 +8,7 @@
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's06-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'basamak_yansima', agirlik: 1,
+    id: 's06-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'basamak_yansima', agirlik: 1,
     soru: 'E > V₀ iken particle (parçacık) için step (basamak) potential (potansiyel) değerinden reflection (yansıma) olasılığı nedir?',
     secenekler: [
       sec('Zero (sıfır) değerinden büyük, wave (dalga) kısmen yansır', true, 'Doğru. k₁ ≠ k₂ olduğundan reflection (yansıma) vardır.'),
@@ -19,7 +19,7 @@
   };
 
   var o04 = {
-    id: 's06-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bariyer_sonumlenme', agirlik: 1,
+    id: 's06-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bariyer_sonumlenme', agirlik: 1,
     soru: 'E < V₀ iken wave function (dalga fonksiyonu) ψ, barrier (bariyer) içinde ne yapar?',
     secenekler: [
       sec('Exponentially decays (üstel olarak sönümlenir) ama sıfır olmaz', true, 'Doğru. Forbidden region (yasak bölge) içinde wave (dalga) oscillate (salınım) yapmaz, decays (sönümlenir).'),
@@ -98,8 +98,8 @@
         sonuc: 'Her region (bölge) için ψ, boundary condition (sınır koşulu) olarak süreklilik, coefficients (katsayılar), R ve T.'
       },
       {
-        id: 's06-o08', tip: 'patron', baslik: 'Dalga Canavarı', kavram: null, agirlik: 1,
-        canavar: 'broglie', canavarAd: 'Dalga Canavarı',
+        id: 's06-o08', tip: 'patron', baslik: 'Wave (Dalga) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'broglie', canavarAd: 'Wave (Dalga) Canavarı',
         giris: 'Ben wave (dalga)! Wall (duvar) üzerine çarparım, bazen içinden geçerim.',
         fazlar: [
           {
@@ -194,13 +194,13 @@
       Object.assign({}, o03, { id: 's06-t01' }),
       Object.assign({}, o04, { id: 's06-t02' }),
       {
-        id: 's06-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'tunelleme_kalinlik', agirlik: 1,
+        id: 's06-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'tunelleme_kalinlik', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's06-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'dalga_surekli', agirlik: 1,
+        id: 's06-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'dalga_surekli', agirlik: 1,
         soru: 'Boundary (sınır) noktasında neden ψ ve ψ\' continuous (sürekli) olmalıdır?',
         secenekler: [
           sec('Equation (denklem) second derivative (ikinci türev) içerir', true, 'Doğru. Discontinuity (süreksizlik) equation (denklem) tarafından sağlanmaz.'),

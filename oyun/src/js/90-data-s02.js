@@ -3,7 +3,7 @@
   function kopya(x){ return s(x.t, x.dogru, x.neden); }
 
   var o03 = {
-    id: "s02-o03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "atom_sayisi", agirlik: 1,
+    id: "s02-o03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "atom_sayisi", agirlik: 1,
     soru: "bcc unit cell (birim hücre) başına kaç atom (atom) düşer? Calculate (hesapla).",
     secenekler: [
       s("1", false, "Hayır. 1 atom per unit cell (hücre başına atom) simple cubic (basit kübik, sc) lattice (kafes) içindir."),
@@ -14,7 +14,7 @@
   };
 
   var o04 = {
-    id: "s02-o04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "birim_hucre", agirlik: 1,
+    id: "s02-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
     soru: "diamond structure (elmas yapı) içinde her atom (atom) için nearest neighbor (en yakın komşu) sayısı kaçtır?",
     secenekler: [
       s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 neighbors (komşu) ile."),
@@ -52,7 +52,7 @@
         yer: "Cambridge", yil: 1839, rivayet: false,
         satirlar: [
           { kim: "selin", metin: "1848'de Bravais: atoms (atomlar) yalnızca 14 lattice (kafes) türünde dizilir. 1913'te Bragg'lar X-ray (X-ışını) ile gördü." },
-          { kim: "selin", metin: "Kübik hücre: sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
+          { kim: "selin", metin: "Cubic unit cell (kübik birim hücre): sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
@@ -76,8 +76,8 @@
           "Parentheses (parantez) içine yaz: (hkl)"
         ],
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
-      { id: "s02-o08", tip: "patron", baslik: "Düzlem Canavarı", kavram: null, agirlik: 1,
-        canavar: "miller", canavarAd: "Düzlem Canavarı",
+      { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,
+        canavar: "miller", canavarAd: "Plane (Düzlem) Canavarı",
         giris: "Hangi düzlemdeyim? Bil bakalım, yoksa seni yanlış açıdan keserim!",
         fazlar: [
           { tip: "secmeli", kavram: "miller_duzlem",
@@ -158,13 +158,13 @@
       sim: { modul: "miller", params: { c: [1, 1, 1] } }
     },
     tekrarHavuzu: [
-      { id: "s02-t01", tip: "dusman", baslik: "Kusur düşmanı", kavram: "atom_sayisi", agirlik: 1,
+      { id: "s02-t01", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "atom_sayisi", agirlik: 1,
         soru: o03.soru, secenekler: o03.secenekler.map(kopya), kusurSkin: "vakans" },
-      { id: "s02-t02", tip: "dusman", baslik: "Kusur düşmanı", kavram: "birim_hucre", agirlik: 1,
+      { id: "s02-t02", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
         soru: o04.soru, secenekler: o04.secenekler.map(kopya), kusurSkin: "safsizlik" },
-      { id: "s02-t03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "miller_duzlem", agirlik: 1,
+      { id: "s02-t03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_duzlem", agirlik: 1,
         soru: o05.soru, secenekler: o05.secenekler.map(kopya), kusurSkin: "vakans" },
-      { id: "s02-t04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "miller_yon", agirlik: 1,
+      { id: "s02-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_yon", agirlik: 1,
         soru: "[100] direction (yön) hangi axis (eksen) için parallel (paralel) olur?",
         secenekler: [
           s("x axis (x ekseni)", true, "Doğru. [100] = (1,0,0) vector (vektör), x direction (yön)."),

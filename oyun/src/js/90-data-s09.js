@@ -8,7 +8,7 @@
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's09-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'pauli_dislama', agirlik: 1,
+    id: 's09-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'pauli_dislama', agirlik: 1,
     soru: 'Pauli exclusion principle (Pauli dışlama ilkesi): bir energy level (enerji seviyesi) en çok kaç electron (elektron) alır?',
     secenekler: [
       sec('İki electron (elektron), zıt spin (spin)', true, 'Doğru. Aynı quantum state (kuantum durumu) iki electron (elektron) paylaşamaz.'),
@@ -19,7 +19,7 @@
   };
 
   var o04 = {
-    id: 's09-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bant_aralik', agirlik: 1,
+    id: 's09-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bant_aralik', agirlik: 1,
     soru: 'Insulator (yalıtkan) neden akım taşımaz?',
     secenekler: [
       sec('Valence band (valans bandı) dolu, bandgap (yasak enerji aralığı) büyük', true, 'Doğru. Electron (elektron) boş seviyeye çıkamaz.'),
@@ -33,7 +33,7 @@
     id: 's09-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'bant_yarilma', agirlik: 1.5,
     soru: 'N atom (atom) yaklaşınca her atomic energy level (atomik enerji seviyesi) ne olur?',
     secenekler: [
-      sec('N yakın energy level (enerji seviyesine) yarılır', true, 'Doğru. N seviye, birleşip energy band (enerji bandı) olur.'),
+      sec('N yakın energy level (enerji seviyesine) yarılır', true, 'Doğru. N level (seviye), birleşip energy band (enerji bandı) olur.'),
       sec('Tek seviye olarak kalır', false, 'Yanlış. Atomlar etkileşince seviye yarılır.'),
       sec('Seviye sayısı N kat azalır', false, 'Yanlış. Seviye sayısı N kat artar.')
     ],
@@ -42,7 +42,7 @@
       onceki: { N: 1 },
       sonraki: { N: 32 }
     },
-    acik: 'N 1\'den 32\'ye çıkınca tek seviye 32 çizgiye yarıldı; çizgiler band (bant) oluşturdu.'
+    acik: 'N 1\'den 32\'ye çıkınca tek energy level (enerji seviyesi) 32 çizgiye yarıldı; çizgiler band (bant) oluşturdu.'
   };
 
   Q.data.stations.s09 = {
@@ -98,8 +98,8 @@
         sonuc: 'N atom (atom), N seviye, energy bands (enerji bantları), aralarında bandgap (yasak enerji aralığı).'
       },
       {
-        id: 's09-o08', tip: 'patron', baslik: 'Dışlama Canavarı', kavram: null, agirlik: 1,
-        canavar: 'pauli', canavarAd: 'Dışlama Canavarı',
+        id: 's09-o08', tip: 'patron', baslik: 'Exclusion (Dışlama) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'pauli', canavarAd: 'Exclusion (Dışlama) Canavarı',
         giris: 'Aynı yere iki kişi sığmaz! Elektronlar da öyle!',
         fazlar: [
           {
@@ -107,7 +107,7 @@
             soru: 'Metal (metal), insulator (yalıtkan) ve semiconductor (yarıiletken) arasındaki fark nedir?',
             secenekler: [
               sec('Band (bant) doluluğu ve bandgap (yasak enerji aralığı)', true, 'Doğru. Yarı dolu band (bant) metal (metal) verir.'),
-              sec('Probability (olasılık) farkı', false, 'Hayır. Fark olasılık değil, band (bant) yapısıdır.'),
+              sec('Probability (olasılık) farkı', false, 'Hayır. Fark probability (olasılık) değil, band (bant) yapısıdır.'),
               sec('Atom (atom) sayısı farkı', false, 'Hayır. Hepsi çok atomlu solid (katı) içindedir.')
             ],
             alt: {
@@ -126,7 +126,7 @@
             anahtarFikirler: [
               'N atom (atom) yaklaşınca her seviye N seviyeye yarılır, band (bant) olur.',
               'Pauli exclusion principle (Pauli dışlama ilkesi): seviye başına iki electron (elektron).',
-              'Periodic potential (periyodik potansiyel): Bloch teoremi izinli ve yasak enerji verir.',
+              'Periodic potential (periyodik potansiyel): Bloch teoremi allowed energy band (izinli enerji bandı) ve bandgap (yasak enerji aralığı) verir.',
               'Doluluk ve bandgap (yasak enerji aralığı) metal (metal), insulator (yalıtkan), semiconductor (yarıiletken) ayırır.'
             ],
             yanlisKavramlar: [
@@ -141,7 +141,7 @@
                 sec('Çok atomun energy level (enerji seviyesi) yarılması', true, 'Doğru. N atom (atom) N seviye verir.'),
                 sec('Tek atomun sınır koşulundan', false, 'Yanlış. Tek atomda discrete levels (kesikli seviyeler) vardır.'),
                 sec('Electron (elektron) sayısı azalınca', false, 'Yanlış. Neden atomların etkileşmesidir.'),
-                sec('Temperature (sıcaklık) artınca', false, 'Yanlış. Band (bant) yapısı kristal periodicity (periyodikliği) sonucudur.')
+                sec('Temperature (sıcaklık) artınca', false, 'Yanlış. Band (bant) yapısı crystal (kristal) periodicity (periyodikliği) sonucudur.')
               ]
             },
             alt: { soru: 'Periodic potential (periyodik potansiyel) neden energy bands (enerji bantları) verir? Explain (açıkla).' }
@@ -185,7 +185,7 @@
     temelTur: {
       kartlar: [
         { baslik: 'Level splitting (seviye yarılması)', metin: 'N atom (atom) her seviyeyi N çizgiye yarar.' },
-        { baslik: 'Pauli (Pauli)', metin: 'Her energy level (enerji seviyesi) iki electron (elektron) alır.' },
+        { baslik: 'Pauli exclusion (Pauli dışlama)', metin: 'Her energy level (enerji seviyesi) iki electron (elektron) alır.' },
         { baslik: 'Bandgap (yasak enerji aralığı)', metin: 'Doluluk ve aralık metal (metal), insulator (yalıtkan), semiconductor (yarıiletken) ayırır.' }
       ],
       sim: { modul: 'bant', params: { N: 8, malzeme: 'yariiletken' } }
@@ -194,23 +194,23 @@
       Object.assign({}, o03, { id: 's09-t01' }),
       Object.assign({}, o04, { id: 's09-t02' }),
       {
-        id: 's09-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bant_yarilma', agirlik: 1,
+        id: 's09-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bant_yarilma', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's09-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'iletken_olasilik', agirlik: 1,
+        id: 's09-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'iletken_olasilik', agirlik: 1,
         soru: 'Conductor (iletken) ve insulator (yalıtkan) farkı neden kaynaklanır?',
         secenekler: [
-          sec('Band (bant) doluluğu ve bandgap (yasak enerji aralığı)', true, 'Doğru. Olasılık farkı değil, band (bant) yapısı.'),
+          sec('Band (bant) doluluğu ve bandgap (yasak enerji aralığı)', true, 'Doğru. Probability (olasılık) farkı değil, band (bant) yapısı.'),
           sec('Probability (olasılık) farkı', false, 'Hayır. Fark band (bant) yapısındadır.'),
           sec('Atom (atom) rengi', false, 'Hayır. Renk belirleyici değildir.')
         ],
         kusurSkin: 'safsizlik'
       },
       {
-        id: 's09-t05', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kristal_pahali', agirlik: 1,
+        id: 's09-t05', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kristal_pahali', agirlik: 1,
         soru: 'Crystal (kristal) neden tercih edilir?',
         secenekler: [
           sec('Periodicity (periyodiklik) öngörülebilir energy bands (enerji bantları) verir', true, 'Doğru. Pahalı olduğu için değil.'),
@@ -220,7 +220,7 @@
         kusurSkin: 'dislokasyon'
       },
       {
-        id: 's09-t06', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bant_sonsuz_kuyu', agirlik: 1,
+        id: 's09-t06', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bant_sonsuz_kuyu', agirlik: 1,
         soru: 'Energy bands (enerji bantları) nerede oluşur?',
         secenekler: [
           sec('Çok atomlu solid (katı) içinde', true, 'Doğru. Tek kuyuda discrete levels (kesikli seviyeler) vardır.'),

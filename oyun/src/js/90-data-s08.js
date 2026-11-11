@@ -8,7 +8,7 @@
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's08-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
+    id: 's08-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
     soru: 'Δx küçülürse Δp (momentum) ne olur?',
     secenekler: [
       sec('Büyür (increases)', true, 'Doğru. ΔxΔp ≥ ħ/2 product (çarpım) en az sabit kalır.'),
@@ -19,7 +19,7 @@
   };
 
   var o04 = {
-    id: 's08-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_makro', agirlik: 1,
+    id: 's08-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_makro', agirlik: 1,
     soru: 'Bilardo topunda uncertainty (belirsizlik) neden fark edilmez?',
     secenekler: [
       sec('ħ çok küçük, ΔxΔp limit (sınır) ihmal edilebilir', true, 'Doğru. Uncertainty principle (belirsizlik ilkesi) her cisimde geçerli, etkisi görünmez.'),
@@ -98,8 +98,8 @@
         sonuc: 'Wave packet (dalga paketi), sharp position (keskin konum), broad momentum (geniş momentum), ΔxΔp ≥ ħ/2.'
       },
       {
-        id: 's08-o08', tip: 'patron', baslik: 'Belirsizlik Canavarı', kavram: null, agirlik: 1,
-        canavar: 'heis', canavarAd: 'Belirsizlik Canavarı',
+        id: 's08-o08', tip: 'patron', baslik: 'Uncertainty (Belirsizlik) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'heis', canavarAd: 'Uncertainty (Belirsizlik) Canavarı',
         giris: 'Neredeyim? Ne kadar hızlıyım? İkisini birden bilemezsin!',
         fazlar: [
           {
@@ -194,13 +194,13 @@
       Object.assign({}, o03, { id: 's08-t01' }),
       Object.assign({}, o04, { id: 's08-t02' }),
       {
-        id: 's08-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
+        id: 's08-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's08-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'eslenik_degisken', agirlik: 1,
+        id: 's08-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'eslenik_degisken', agirlik: 1,
         soru: 'Hangi operator (operatör) çifti commute etmez ve uncertainty (belirsizlik) verir?',
         secenekler: [
           sec('Position (konum) ve momentum', true, 'Doğru. [x,p] = iħ.'),
@@ -210,7 +210,7 @@
         kusurSkin: 'safsizlik'
       },
       {
-        id: 's08-t05', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_alet', agirlik: 1,
+        id: 's08-t05', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_alet', agirlik: 1,
         soru: 'Uncertainty principle (belirsizlik ilkesi) neden alet kusuru değildir?',
         secenekler: [
           sec('Ideal instrument (alet) için de geçerli, wave nature (dalga doğası) sonucudur', true, 'Doğru. Instrument (alet) kusuru değil, doğanın limit (sınırı).'),

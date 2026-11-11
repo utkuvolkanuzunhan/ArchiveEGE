@@ -9,7 +9,7 @@
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's05-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'psi_olasilik', agirlik: 1,
+    id: 's05-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'psi_olasilik', agirlik: 1,
     soru: 'Wave function (dalga fonksiyonu) ψ(x) fiziksel olarak neyi anlatır?',
     secenekler: [
       sec('|ψ(x)|² probability density (olasılık yoğunluğu) verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi probability (olasılık) yoğunluğudur.'),
@@ -20,7 +20,7 @@
   };
 
   var o04 = {
-    id: 's05-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'schrodinger_girdi_cikti', agirlik: 1,
+    id: 's05-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'schrodinger_girdi_cikti', agirlik: 1,
     soru: 'Schrödinger equation (Schrödinger denklemi) için ne verirsin, ne alırsın?',
     secenekler: [
       sec('V(x) ve boundary condition (sınır koşulu) ver; ψ ile izinli E al', true, 'Doğru. Girdi V(x) ve boundary condition, çıktı ψ ile E.'),
@@ -43,7 +43,7 @@
       onceki: { L: 2, n: 1 },
       sonraki: { L: 1, n: 1 }
     },
-    acik: 'E ∝ 1/L²: L yarıya inince enerji dört katına çıkar.'
+    acik: 'E ∝ 1/L²: L yarıya inince energy (enerji) dört katına çıkar.'
   };
 
   Q.data.stations.s05 = {
@@ -99,8 +99,8 @@
         sonuc: 'Boundary condition (sınır koşulu), sığan dalgalar, kısıtlı λ, quantized energy (kuantalı enerji).'
       },
       {
-        id: 's05-o08', tip: 'patron', baslik: 'Kuantum Kedisi', kavram: null, agirlik: 1,
-        canavar: 'schro', canavarAd: 'Kuantum Kedisi',
+        id: 's05-o08', tip: 'patron', baslik: 'Quantum (Kuantum) Kedisi', kavram: null, agirlik: 1,
+        canavar: 'schro', canavarAd: 'Quantum (Kuantum) Kedisi',
         giris: 'Miyav! Sıfır energy (enerji) ile kutuya sığacağımı mı sandın?',
         fazlar: [
           {
@@ -186,7 +186,7 @@
     temelTur: {
       kartlar: [
         { baslik: 'ψ nedir?', metin: '|ψ|² probability density (olasılık yoğunluğu) olur.' },
-        { baslik: 'Sınır koşulu', metin: 'Boundary condition (sınır koşulu): duvarda ψ = 0, yalnızca sığan dalgalar izinli.' },
+        { baslik: 'Boundary condition (sınır koşulu)', metin: 'Boundary condition (sınır koşulu): duvarda ψ = 0, yalnızca sığan dalgalar izinli.' },
         { baslik: 'E₁ > 0', metin: 'n = 0 dalga yok demek; lowest energy (en düşük enerji) sıfır değil.' }
       ],
       sim: { modul: 'kuyu', params: { L: 2, n: 1 } }
@@ -195,13 +195,13 @@
       Object.assign({}, o03, { id: 's05-t01' }),
       Object.assign({}, o04, { id: 's05-t02' }),
       {
-        id: 's05-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_sinir', agirlik: 1,
+        id: 's05-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kuantalasma_sinir', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's05-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
+        id: 's05-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
         soru: 'Energy quantization (enerji kuantalaşması) nereden gelir?',
         secenekler: [
           sec('Boundary conditions (sınır koşulları)', true, 'Doğru. Yalnızca sığan solutions (çözümler) izinli.'),

@@ -8,7 +8,7 @@
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's04-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ayrik_spektrum', agirlik: 1,
+    id: 's04-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'ayrik_spektrum', agirlik: 1,
     soru: 'Hydrogen atom (hidrojen atomu) neden yalnızca belirli renklerde ışır?',
     secenekler: [
       sec('Energy levels (enerji seviyeleri) ayrık, geçiş farkı kadar photon (foton) çıkar', true, 'Doğru. Her renk bir energy level (enerji seviyesi) farkına karşılık gelir.'),
@@ -19,7 +19,7 @@
   };
 
   var o04 = {
-    id: 's04-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'debroglie_dalga', agirlik: 1,
+    id: 's04-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'debroglie_dalga', agirlik: 1,
     soru: 'Bilardo topu neden wave (dalga) gibi davranmıyor?',
     secenekler: [
       sec('Wavelength (dalga boyu) (h/p) çok küçük kalıyor', true, 'Doğru. Büyük momentum (momentum), ihmal edilecek kadar küçük wavelength (dalga boyu).'),
@@ -98,8 +98,8 @@
         sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), alt sınır, stable atom (kararlı atom).'
       },
       {
-        id: 's04-o08', tip: 'patron', baslik: 'Yörünge Canavarı', kavram: null, agirlik: 1,
-        canavar: 'bohr', canavarAd: 'Yörünge Canavarı',
+        id: 's04-o08', tip: 'patron', baslik: 'Orbit (Yörünge) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'bohr', canavarAd: 'Orbit (Yörünge) Canavarı',
         giris: 'Electronunu (elektron) nucleus (çekirdek) içine düşüreceğim! Düşemez diyorsan justify (gerekçelendir).',
         fazlar: [
           {
@@ -194,13 +194,13 @@
       Object.assign({}, o03, { id: 's04-t01' }),
       Object.assign({}, o04, { id: 's04-t02' }),
       {
-        id: 's04-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'atom_kararlilik', agirlik: 1,
+        id: 's04-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'atom_kararlilik', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's04-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
+        id: 's04-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
         soru: 'Confined particle (hapsolmuş parçacık) için lowest energy (en düşük enerji) neden sıfır değildir?',
         secenekler: [
           sec('Boundary condition (sınır koşulu) dalganın sığmasını gerektirir', true, 'Doğru. Temperature (sıcaklık) değil, boundary condition (sınır koşulu) sebep.'),

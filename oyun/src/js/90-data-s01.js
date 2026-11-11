@@ -10,7 +10,7 @@
   function kopya(a){ return a.map(function(s){ return sec(s.t, s.dogru, s.neden); }); }
 
   var o03 = {
-    id: "s01-o03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kati_turleri", agirlik: 1,
+    id: "s01-o03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kati_turleri", agirlik: 1,
     soru: "Amorf (amorphous) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
     secenekler: [
       sec("Evet, crystal (kristal) gibi", false, "Hayır. Long-range order yalnızca crystal (kristal) içinde vardır."),
@@ -21,7 +21,7 @@
   };
 
   var o04 = {
-    id: "s01-o04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "tane_siniri", agirlik: 1,
+    id: "s01-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "tane_siniri", agirlik: 1,
     soru: "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı) nedir?",
     secenekler: [
       sec("İki grain (tane) arasındaki disordered (düzensiz) interface (ara yüz) bölgesi", true, "Doğru. Crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir."),
@@ -168,7 +168,7 @@
     temelTur: {
       kartlar: [
         { baslik: "Crystal (kristal) nedir?", metin: "Atom (atom) long-range order (uzun menzilli düzen) ile dizilir." },
-        { baslik: "Neden scattering?", metin: "Order (düzen) bozuldukça electron (elektron) daha sık saçılır (scattering)." },
+        { baslik: "Neden scattering (saçılma)?", metin: "Order (düzen) bozuldukça electron (elektron) daha sık saçılır (scattering)." },
         { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt içinden yavaşça çekilir, düzen sürer." }
       ],
       sim: { modul: "kristal_tur", params: { mod: "tur" } }
@@ -183,12 +183,12 @@
         soru: o04.soru, secenekler: kopya(o04.secenekler), kusurSkin: o04.kusurSkin
       },
       {
-        id: "s01-t03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "tane_siniri", agirlik: 1,
+        id: "s01-t03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "tane_siniri", agirlik: 1,
         soru: "Single crystal (tek kristal) yerine polycrystalline (çok kristalli) malzeme kullanırsan mean free path (serbest yol) ne olur?",
         secenekler: kopya(o05secenekler), kusurSkin: "tane_siniri"
       },
       {
-        id: "s01-t04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "cz_tohum", agirlik: 1,
+        id: "s01-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "cz_tohum", agirlik: 1,
         soru: "CZ'de seed crystal (tohum kristal) ne işe yarar?",
         secenekler: [
           sec("Order (düzen) atom üzerine aktarır", true, "Doğru. Solidifying (katılaşan) atom seed crystal (tohum kristal) düzenini sürdürür."),
@@ -198,7 +198,7 @@
         kusurSkin: "dislokasyon"
       },
       {
-        id: "s01-t05", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kristal_neden", agirlik: 1,
+        id: "s01-t05", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kristal_neden", agirlik: 1,
         soru: "Chip (çip) için neden single crystal silicon (tek kristal silisyum) kullanılır?",
         secenekler: [
           sec("electron (elektron) akışı ordered (düzenli) dizilimde öngörülebilir olur", true, "Doğru. Ordered lattice (düzenli kafes) electron (elektron) rastgele saçmaz."),
