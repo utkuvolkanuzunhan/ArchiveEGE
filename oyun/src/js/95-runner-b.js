@@ -124,7 +124,7 @@
   /* ---------- duraklatma menüsü ---------- */
   B.openMenu = function(runway, actions){
     var box = document.createElement('div'); box.className = 'runner-menu';
-    var items = [['Devam', actions.devam], ['Ayarlar', actions.ayarlar], ['Haritaya dön', actions.cik]];
+    var items = [['Devam', actions.devam], ['Ayarlar', actions.ayarlar], ['Haritaya dön / engele atla', actions.cik]];
     items.forEach(function(it){
       var b = document.createElement('button'); b.type = 'button'; b.className = 'btn'; b.textContent = it[0];
       b.style.cssText = 'display:block;margin:6px 0;';

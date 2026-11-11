@@ -272,8 +272,8 @@
     if (!acik) { panelEl.appendChild(el('p', '', 'Kilitli. Önceki istasyonu bitir.')); return; }
     var b = btn(p.enSon ? 'Devam et' : 'Başla', 'primary', function(){ startStation(s, p.enSon || 0); });
     panelEl.appendChild(b);
-    if (A().kilitleriAc && s.engeller && s.engeller.length) {
-      panelEl.appendChild(el('h4', '', 'Engele atla'));
+    if (s.engeller && s.engeller.length) {
+      panelEl.appendChild(el('h4', '', 'İstediğin engele atla'));
       var l = el('ol'); l.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0';
       s.engeller.forEach(function(ob, i){
         var li = el('li'); li.appendChild(btn((i + 1) + '. ' + (ob.baslik || ob.tip), '', function(){ startStation(s, i); }));

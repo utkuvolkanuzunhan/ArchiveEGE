@@ -196,6 +196,16 @@
           sec("Eriyiği temizler", false, "Hayır. Temizlik başka süreç.")
         ],
         kusurSkin: "dislokasyon"
+      },
+      {
+        id: "s01-t05", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kristal_neden", agirlik: 1,
+        soru: "Çip için neden tek kristal silisyum kullanılır?",
+        secenekler: [
+          sec("Elektron akışı düzenli dizilimde öngörülebilir olur", true, "Doğru. Düzenli kafes elektronu rastgele saçmaz."),
+          sec("Daha parlak göründüğü için", false, "Hayır. Parlaklık seçim nedeni değil."),
+          sec("Her zaman daha ucuz olduğu için", false, "Hayır. Tek kristal üretmek pahalıdır.")
+        ],
+        kusurSkin: "vakans"
       }
     ]
   };

@@ -49,7 +49,7 @@
     }
   }
   function valid(o){
-    return isObj(o) && o.v === 1 && isObj(o.ilerleme) && Array.isArray(o.hataDefteri) &&
+    return isObj(o) && typeof o.v === 'number' && o.v >= 1 && isObj(o.ilerleme) && Array.isArray(o.hataDefteri) &&
       Array.isArray(o.kartlar) && isObj(o.fabrika) && Array.isArray(o.fabrika.kurulu);
   }
   function store(){
