@@ -150,7 +150,7 @@
       if (destroyed) { return; }
       var dpr = window.devicePixelRatio || 1;
       W = Math.max(220, host.clientWidth || 300);
-      H = Math.max(180, Math.min(260, Math.round((window.innerHeight || 800) * 0.22)));
+      H = Math.max(150, Math.min(260, Math.round((window.innerHeight || 800) * 0.2)));
       canvas.style.height = H + 'px';
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
