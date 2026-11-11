@@ -19,7 +19,7 @@
 | A5a | Karakter çizimi | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | A5b | Koşucu/engel/dünya | medium | M1 | calisiyor | | dalga 1 başladı |
 | A6 | Claude istemcisi | medium | M1 | bitti | 7acd258 | 11 test geçti |
-| A8 | Ayarlar ve harita | medium | M1 | calisiyor | | dalga 1 başladı |
+| A8 | Ayarlar ve harita | medium | M1 | bitti | 71cd0a7 | 6 kabul testi geçti (stub Q.ui); A4 CSS: #modal-layer z-index > 20 gerekli; A9 açılışta Q.settings.openMap() çağırmalı |
 | A9 | Ana akış/derleme/test | medium | M1 | calisiyor | | erken başlatıldı (hız önceliği) |
 | H1 | hikaye + sandık | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | H2 | düşman + tuzak | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
