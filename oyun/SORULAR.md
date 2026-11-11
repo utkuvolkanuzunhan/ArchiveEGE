@@ -6,3 +6,4 @@
 [A8] oyun/src/js/20-settings.js: Q.ui.confirm #modal-layer'ı #a8-layer (z-index 20) üstünde göstermeli (A4 CSS z-index > 20)
 [H2] 80-obs-dusman.js: Q.ui.options.ask'in karıştırılmış seçeneklerde ÖZGÜN dizi indeksini döndürdüğü varsayıldı (01 §5.4 belirtmiyor)
 [A2] 95-runner.js: build.sh'e 95-runner-b.js eklenmeli (95-runner.js'ten sonra olabilir, yalnızca çalışma anında kullanılır).
+[H5] src/js/85-obs-patron.js: Q.ui.textbox.ask'a Dur sonrası metni korumak için 'deger' parametresi geçiliyor; A4 desteklemeli (ilk değer). Ayrıca Claude yokken açık fazın 'alt' denemesinde aynı yedekSecmeli tekrar sorulur (veri tek yedek veriyor).
