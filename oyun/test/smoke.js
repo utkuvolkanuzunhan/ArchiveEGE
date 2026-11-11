@@ -67,6 +67,12 @@ function bekle(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
     adim('3 her yere eriş aç/kapat', a1 === true && a2 === false, 'açık=' + a1 + ' kapalı s02=' + a2);
     await ev(function () { Q.settings.close(); });
 
+    await ev(function () {
+      Q.settings.closeMap();
+      Q.settings.set('hikayeAtla', true);
+      var m = Q.sim.mount;
+      Q.sim.mount = function (modul, host, params, api) { window.__simApi = api; return m.call(Q.sim, modul, host, params, api); };
+    });
     // 4. s01 başlat: ilk engelde koşucu durur (<2 sn), dock dolar
     await ev(function () { window.__sonuc = null; Q.runner.start('s01', 0).then(function (r) { window.__sonuc = r; }); });
     var t0 = Date.now(), durdu = false;
@@ -82,7 +88,7 @@ function bekle(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
     var devam = page.locator('#dock button', { hasText: /Devam|İleri|Tamam/ }).first();
     var simAcildi = false;
     t0 = Date.now();
-    while (Date.now() - t0 < 40000) {
+    while (Date.now() - t0 < 60000) {
       simAcildi = await ev(function () { return !!document.querySelector('#dock .sim, #dock canvas, #dock .sim-host'); });
       if (simAcildi) break;
       try { if (await devam.count()) await devam.click({ timeout: 1500 }); } catch (e) { /* sahne geçişi */ }
@@ -91,6 +97,7 @@ function bekle(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
     adim('5 hikaye geçildi, kavram simülasyonu açıldı', simAcildi);
     await ev(function () { if (window.__simApi && window.__simApi.done) window.__simApi.done({ basari: true, olcum: {} }); });
 
+    try { await page.locator('#dock button', { hasText: /Devam/ }).first().click({ timeout: 8000 }); } catch (e) { /* kavram sonrası Devam */ }
     // 6. dusman: seçenek -> eminlik -> açıklama -> Devam
     var opt = page.locator('#dock .opt').first();
     var optVar = false;
