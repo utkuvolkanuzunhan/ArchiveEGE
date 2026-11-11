@@ -14,13 +14,13 @@
 |---|---|---|---|---|---|---|
 | A1 | Çekirdek | low | M1 | bitti | ffdedc5 | 7 birim test geçti, 2026-11-11 |
 | A2 | Koşu motoru | medium | M1 | calisiyor | | dalga 1 başladı |
-| A3 | Savaş | low | M1 | calisiyor | | dalga 1 başladı |
+| A3 | Savaş | low | M1 | bitti | 079a355 | 7 test geçti; Q.ui entegrasyonu A9 tarayıcı testinde denenecek |
 | A4 | Arayüz | medium | M1 | calisiyor | | dalga 1 başladı |
 | A5a | Karakter çizimi | low | M1 | bekliyor | | |
 | A5b | Koşucu/engel/dünya | medium | M1 | calisiyor | | dalga 1 başladı |
 | A6 | Claude istemcisi | medium | M1 | calisiyor | | dalga 1 başladı |
 | A8 | Ayarlar ve harita | medium | M1 | calisiyor | | dalga 1 başladı |
-| A9 | Ana akış/derleme/test | medium | M1 | bekliyor | | |
+| A9 | Ana akış/derleme/test | medium | M1 | calisiyor | | erken başlatıldı (hız önceliği) |
 | H1 | hikaye + sandık | low | M1 | bekliyor | | |
 | H2 | düşman + tuzak | low | M1 | bekliyor | | |
 | H3 | kavram + tahmin | medium | M1 | bekliyor | | |
