@@ -113,7 +113,7 @@
           row.appendChild(lab);
           var bs = OPTS.map(function (o) {
             var b = mkBtn(o === INF ? '∞' : String(o));
-            b.setAttribute('aria-label', AX[ax] + ' axis intercept (ekseni kesişimi) ' + (o === INF ? 'sonsuz' : o));
+            b.setAttribute('aria-label', AX[ax] + ' axis intercept (ekseni kesişimi) ' + (o === INF ? 'infinite (sonsuz)' : o));
             on(b, 'click', function () { setC(ax, o); });
             row.appendChild(b); return b;
           });
@@ -167,7 +167,7 @@
         if (r) {
           var s2 = r[0] * r[0] + r[1] * r[1] + r[2] * r[2];
           dline.textContent = 'd = a / √(h²+k²+l²) = a / √' + s2 + ' = ' + (1 / Math.sqrt(s2)).toFixed(2) + ' a';
-        } else { dline.textContent = 'Üç eksen de ∞ olamaz'; }
+        } else { dline.textContent = 'All three axis (eksen) cannot be ∞'; }
       } else {
         var g = vec.reduce(function (a, t) { return gcd(a, t); }, 0);
         setStep(0, fmtNums(vec));
@@ -180,7 +180,7 @@
         } else { dline.textContent = 'Zero vector (sıfır vektör) yön belirtmez'; }
       }
       canvas.setAttribute('aria-label', mod === 'duzlem'
-        ? 'Düzlem ' + (r ? fmtCompact(r, '(', ')') : 'yok') : 'Yön ' + (r ? fmtCompact(r, '[', ']') : 'yok'));
+        ? 'Plane (düzlem) ' + (r ? fmtCompact(r, '(', ')') : 'yok') : 'Direction (yön) ' + (r ? fmtCompact(r, '[', ']') : 'yok'));
       animateTo();
       checkDone(r);
     }

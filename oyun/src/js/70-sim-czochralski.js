@@ -36,10 +36,10 @@
         l.appendChild(t); l.appendChild(r); bar.appendChild(l);
         return { l: l, t: t, r: r, etiket: etiket };
       }
-      var sV = slider('Çekme hızı', 0.2, 2.0, 0.05, v, function(x){ v = x; yeniden(); });
-      var sR = slider('Dönme', 0, 30, 1, rpm, function(x){ rpm = x; yeniden(); });
+      var sV = slider('Pulling rate (çekme hızı)', 0.2, 2.0, 0.05, v, function(x){ v = x; yeniden(); });
+      var sR = slider('Rotation (dönme)', 0, 30, 1, rpm, function(x){ rpm = x; yeniden(); });
       var btn = document.createElement('button');
-      btn.type = 'button'; btn.textContent = 'Çek';
+      btn.type = 'button'; btn.textContent = 'Pull (Çek)';
       btn.style.cssText = 'min-height:40px;padding:0 20px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--accent-ink,#0b0620);background:var(--accent,#ffd23f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
       btn.addEventListener('click', cek);
       bar.appendChild(btn);
@@ -63,9 +63,9 @@
         sV.r.value = v; sR.r.value = rpm;
         var q = Qn();
         var s = 'Kalite Q = ' + q.toFixed(2);
-        if (tamam) s += ' · ' + (sonQ >= 0.9 ? 'Tek kristal ✓' : 'Tane sınırı ✗');
-        else if (cekiyor) s += ' · çekiliyor…';
-        else s += q >= 0.9 ? ' · tek kristal bekleniyor' : ' · çok kristalli riski';
+        if (tamam) s += ' · ' + (sonQ >= 0.9 ? 'Single crystal (tek kristal) ✓' : 'Grain boundary (tane sınırı) ✗');
+        else if (cekiyor) s += ' · pulling (çekiliyor)…';
+        else s += q >= 0.9 ? ' · single crystal (tek kristal) expected' : ' · polycrystalline (çok kristalli) risk';
         info.textContent = s;
         btn.disabled = cekiyor;
         btn.style.opacity = cekiyor ? '0.6' : '1';
@@ -183,13 +183,13 @@
         if (tamam) {
           c.font = '400 ' + Math.round(Math.min(30, H * 0.12)) + 'px ' + col('--font-d','Impact, sans-serif');
           c.fillStyle = sonQ >= 0.9 ? lime : mag;
-          c.fillText(sonQ >= 0.9 ? 'Tek kristal ✓' : 'Tane sınırı ✗', lx, H * 0.42);
+          c.fillText(sonQ >= 0.9 ? 'Single crystal (tek kristal) ✓' : 'Grain boundary (tane sınırı) ✗', lx, H * 0.42);
         }
       }
 
       if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(boyutla); ro.observe(cv); }
       else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Yavaş çek, orta hızda döndür: Q en az 0,9 olsun.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Yavaş pull (çek), orta hızda rotate (döndür): quality (Q) en az 0,9 olsun.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {

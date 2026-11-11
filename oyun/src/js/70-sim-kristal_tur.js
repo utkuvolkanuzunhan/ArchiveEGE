@@ -79,7 +79,7 @@
     var wrap = document.createElement('div'); wrap.className = 'sim-kt';
     var cv = document.createElement('canvas');
     cv.setAttribute('role', 'img');
-    cv.setAttribute('aria-label', 'Katı türlerinde elektron saçılması');
+    cv.setAttribute('aria-label', 'Electron (elektron) scattering (saçılma) in solid types (katı türleri)');
     var bar = document.createElement('div'); bar.className = 'sim-kt-bar';
     wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
     var ctx = cv.getContext('2d');
@@ -374,11 +374,11 @@
         return b;
       }
       if (mod === 'tur') {
-        btn('Tek', function(){ send('tek'); }, 'Tek kristale elektron gönder');
-        btn('Çok', function(){ send('cok'); }, 'Çok kristalliye elektron gönder');
-        btn('Amorf', function(){ send('amorf'); }, 'Amorfa elektron gönder');
+        btn('Single (Tek)', function(){ send('tek'); }, 'Send electron (elektron) to single crystal (tek kristal)');
+        btn('Poly (Çok)', function(){ send('cok'); }, 'Send electron (elektron) to polycrystalline (çok kristalli)');
+        btn('Amorphous (Amorf)', function(){ send('amorf'); }, 'Send electron (elektron) to amorphous (amorf)');
       } else {
-        btn('Gönder', sendAll, '30 elektron gönder');
+        btn('Gönder', sendAll, 'Send 30 electron (elektron)');
       }
       var note = document.createElement('span');
       note.className = 'sim-kt-note'; note.textContent = 'oyun modeli';
@@ -395,7 +395,7 @@
     buildBar();
     layout();
     if (typeof api.hint === 'function') {
-      api.hint(mod === 'tur' ? 'Her türe bir elektron gönder, saçılmaları say.' : 'Gönder: tek mi çok kristalli mi daha uzağa gider?');
+      api.hint(mod === 'tur' ? 'Her türe bir electron (elektron) gönder, scattering (saçılma) say.' : 'Gönder: single crystal (tek kristal) mi polycrystalline (çok kristalli) mi daha uzağa gider?');
     }
     draw();
 
@@ -447,7 +447,7 @@
           fade = reduce() ? 1 : 0;
           buildBar(); layout();
           if (typeof api.hint === 'function') {
-            api.hint(mod === 'tur' ? 'Her türe bir elektron gönder, saçılmaları say.' : 'Gönder: tek mi çok kristalli mi daha uzağa gider?');
+            api.hint(mod === 'tur' ? 'Her türe bir electron (elektron) gönder, scattering (saçılma) say.' : 'Gönder: single crystal (tek kristal) mi polycrystalline (çok kristalli) mi daha uzağa gider?');
           }
           draw(); kick();
         }

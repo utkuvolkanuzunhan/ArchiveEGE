@@ -118,7 +118,7 @@
         if (sayModu) info.textContent = sonuc || 'Atoms per unit cell (hücre başına atom): ?';
         else info.textContent = 'Atoms per unit cell (hücre başına atom): ' + DOGRU[tur] + ' (' + kirilim(tur) + ') · Packing fraction (doluluk) %' + DOLULUK[tur] +
           (tur === 'elmas' ? ' · 4 nearest neighbors (en yakın komşu) per atom' : '');
-        cv.setAttribute('aria-label', 'Lattice (kafes): ' + tur + ', atoms per unit cell (hücre başına) ' + (sayModu ? 'bilinmeyen' : DOGRU[tur]) + ' atom');
+        cv.setAttribute('aria-label', 'Lattice (kafes): ' + tur + ', atoms per unit cell (hücre başına) ' + (sayModu ? 'unknown (bilinmeyen)' : DOGRU[tur]) + ' atom');
         ciz();
       }
 
@@ -134,7 +134,7 @@
             }
           }
         } else {
-          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (içerideki) atom tam sayılır.';
+          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (iç) 1 atom sayılır.';
         }
         guncelle();
       }
