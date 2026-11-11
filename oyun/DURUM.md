@@ -4,15 +4,15 @@
 > Durumlar: `bekliyor` · `calisiyor` · `bitti` · `yarim` · `engelli`.
 > Başka hesapla devam edilirse önce bu dosyayı ve `oyun/ilerleme/*.md` dosyalarını oku.
 
-**Çalışma dalı (DAL):** _(orkestratör doldurur)_
+**Çalışma dalı (DAL):** claude/chip-hatti-orchestration-2rxxtg
 **Aşama:** M1 (oynanabilir dilim)
-**Son güncelleme:** _(tarih)_
+**Son güncelleme:** 2026-11-11
 
 ## Paketler
 
 | ID | Ad | Efor | Aşama | Durum | Commit | Not |
 |---|---|---|---|---|---|---|
-| A1 | Çekirdek | low | M1 | bekliyor | | |
+| A1 | Çekirdek | low | M1 | calisiyor | | başladı 2026-11-11 |
 | A2 | Koşu motoru | medium | M1 | bekliyor | | |
 | A3 | Savaş | low | M1 | bekliyor | | |
 | A4 | Arayüz | medium | M1 | bekliyor | | |
