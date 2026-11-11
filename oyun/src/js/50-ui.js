@@ -59,7 +59,7 @@
             vakans: 'Vacancy (Boşluk) Kusuru', safsizlik: 'Impurity (Safsızlık) Kusuru', tane_siniri: 'Grain Boundary (Tane Sınırı) Kusuru',
             dislokasyon: 'Dislocation (Dislokasyon) Kusuru', dusman: 'Kusur Düşmanı' };
           var ch = Q.data && Q.data.chars && Q.data.chars[o.kim];
-          b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || o.kim));
+          b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || (/^[a-z0-9_]+$/.test(String(o.kim)) ? 'Kusur düşmanı' : o.kim)));
         }
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);

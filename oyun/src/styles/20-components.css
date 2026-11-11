@@ -89,7 +89,7 @@
 .path-node.simdi{border-color:var(--cyan);background:var(--sel);box-shadow:var(--glow-cyan);transform:scale(1.2)}
 
 /* F4: dock içeriği kaydırmasız sığsın (1366x768 / 1280x720) */
-#dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 96px);overflow:auto;display:flex;align-items:center;justify-content:center}
+#dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 56px);overflow:auto;display:flex;align-items:safe center;justify-content:center}
 #dock .kavram-sim canvas,#dock .kavram-sim svg{max-height:100%;max-width:100%;object-fit:contain}
 #dock .kavram-butonlar{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap}
 @media (max-height:800px){#dock{padding:8px 12px;gap:6px}}
