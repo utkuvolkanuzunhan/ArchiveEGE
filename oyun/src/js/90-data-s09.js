@@ -33,9 +33,9 @@
     id: 's09-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'bant_yarilma', agirlik: 1.5,
     soru: 'N atom (atom) yaklaşınca her atomic energy level (atomik enerji seviyesi) ne olur?',
     secenekler: [
-      sec('N yakın energy level (enerji seviyesine) yarılır', true, 'Doğru. N level (seviye), birleşip energy band (enerji bandı) olur.'),
-      sec('Tek seviye olarak kalır', false, 'Yanlış. Atomlar etkileşince seviye yarılır.'),
-      sec('Seviye sayısı N kat azalır', false, 'Yanlış. Seviye sayısı N kat artar.')
+      sec('N yakın energy level (enerji seviyesine) yarılır', true, 'Doğru. N energy level (enerji seviyesi), birleşip energy band (enerji bandı) olur.'),
+      sec('Tek energy level (enerji seviyesi) olarak kalır', false, 'Yanlış. Atomlar etkileşince energy level (enerji seviyesi) yarılır.'),
+      sec('Energy level (enerji seviyesi) sayısı N kat azalır', false, 'Yanlış. Energy level (enerji seviyesi) sayısı N kat artar.')
     ],
     sim: {
       modul: 'bant',
@@ -84,18 +84,18 @@
         iddia: 'Tek infinite well (sonsuz kuyu) içinde energy bands (enerji bantları) oluşur.',
         parcalar: ['Tek infinite well (sonsuz kuyu)', 'içinde energy bands (enerji bantları)', 'oluşur.'],
         yanlisParca: 0,
-        duzeltme: 'Bands (bantlar) çok atomlu solid (katı) içinde oluşur; tek kuyuda discrete levels (kesikli seviyeler) vardır.'
+        duzeltme: 'Bands (bantlar) çok atomlu solid (katı) içinde oluşur; tek infinite well (sonsuz kuyu) içinde discrete levels (kesikli seviyeler) vardır.'
       },
       {
         id: 's09-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'bant_yarilma', agirlik: 1,
         soru: 'Band (bant) oluşum zincirini sıraya diz',
         bloklar: [
           'N atom (atom) bir araya gelir',
-          'Her energy level (enerji seviyesi) N seviyeye yarılır',
-          'Seviyeler birleşip energy band (enerji bandı) olur',
-          'Bandgap (yasak enerji aralığı) bantları ayırır'
+          'Her energy level (enerji seviyesi) N yakın çizgiye yarılır',
+          'Energy level (enerji seviyesi) çizgileri birleşip energy band (enerji bandı) olur',
+          'Bandgap (yasak enerji aralığı) energy band (enerji bandı) gruplarını ayırır'
         ],
-        sonuc: 'N atom (atom), N seviye, energy bands (enerji bantları), aralarında bandgap (yasak enerji aralığı).'
+        sonuc: 'N atom (atom), N energy level (enerji seviyesi), energy bands (enerji bantları), aralarında bandgap (yasak enerji aralığı).'
       },
       {
         id: 's09-o08', tip: 'patron', baslik: 'Exclusion (Dışlama) Canavarı', kavram: null, agirlik: 1,
