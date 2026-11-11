@@ -62,7 +62,7 @@
         yer: 'Kopenhag', yil: 1927, rivayet: false,
         satirlar: [
           { kim: 'selin', metin: 'Calibration (kalibrasyon) odası: measurement (ölçüm) mükemmelleştirmek istiyoruz.' },
-          { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas measure (ölçülemez). Instrument (alet) yüzünden değil.' },
+          { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas ölçülemez. Sebep instrument (alet) değil.' },
           { kim: 'heis', metin: 'Doğa böyle: wave (dalga) isen keskin konum ve keskin momentum aynı anda olmaz.' }
         ]
       },
@@ -163,7 +163,7 @@
             yanlisKavramIds: ['eslenik_degisken', 'belirsizlik_makro'],
             idealCevap: 'Conjugate variables (eşlenik değişkenler), aynı anda keyfi hassas ölçülemeyen büyüklük çiftidir; örneğin position (konum) ve momentum. Operator (operatör) commute (değişme) etmediği için ortak eigenstate (özdurum) yoktur. Günlük cisimlerde ħ çok küçük olduğundan limit (sınır) ihmal edilir.',
             yedekSecmeli: {
-              soru: 'Hangisi bir conjugate pair (eşlenik çift) olur?',
+              soru: 'Hangisi bir conjugate pair (eşlenik çift) oluşturur?',
               secenekler: [
                 sec('Position (konum) ve momentum', true, 'Doğru. Operator (operatör) commute (değişme) etmez.'),
                 sec('Mass (kütle) ve volume (hacim)', false, 'Yanlış. Bu çift için principle (ilke) yok.'),
