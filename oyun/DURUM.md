@@ -26,7 +26,7 @@
 | H3 | kavram + tahmin | medium | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | H4 | köprü | medium | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | H5 | patron | medium | M1 | calisiyor | | dalga 1 başladı |
-| S1 | sim kristal_tur | medium | M1 | bitti | 6ba59b3 | Playwright geçti |
+| S1 | sim kristal_tur | medium | M1 | calisiyor | | dalga 1 başladı |
 | S3 | sim kafes | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | S4 | sim miller | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | S5 | sim karacisim | medium | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
