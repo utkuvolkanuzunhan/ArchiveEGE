@@ -2521,6 +2521,1214 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 })();
 
+/* 70-sim-bant.js (S12) Atomdan banda: N atom, her seviye N çizgiye yarılır; Pauli dolumu; iletken/yalıtkan/yarıiletken.
+ * Q.sim.register("bant", ...) dışında bir şey yapmaz. */
+(function(){
+  'use strict';
+  var NLER = [1,2,4,8,16,32,64];
+  var MALZ = ['iletken','yalitkan','yariiletken'];
+  var AD = { iletken:'İletken', yalitkan:'Yalıtkan', yariiletken:'Yarıiletken' };
+  var EG = { iletken:0, yalitkan:5, yariiletken:1.1 };
+  var W = 2;          /* bant genişliği (eV), N'den bağımsız */
+  var EMAX = 2 * W + 5 + 0.6;
+
+  /* alt bant (3s benzeri) [0,W], üst bant (3p benzeri) [W+Eg, 2W+Eg] */
+  function merkez(k, mal){ return k === 0 ? W / 2 : W + EG[mal] + W / 2; }
+  function seviyeler(k, N, mal){
+    var out = [], i;
+    for (i = 0; i < N; i++) out.push(merkez(k, mal) + (N === 1 ? 0 : W * (i / (N - 1) - 0.5)));
+    return out;
+  }
+  /* Elektron sayısı: iletkende atom başına 1 (alt bant yarı dolu), diğerlerinde 2 (alt bant tam dolu) */
+  function elektronSayisi(mal, N){ return (mal === 'iletken' ? 1 : 2) * N; }
+
+  var impl = {
+    mount: function(host, params, api){
+      params = params || {}; api = api || {};
+      var b0 = params.baslangic || {};
+      var N0 = params.N != null ? params.N : (b0.N != null ? b0.N : 8);
+      var nIdx = NLER.indexOf(N0); if (nIdx < 0) nIdx = 3;
+      var mal = MALZ.indexOf(params.malzeme) >= 0 ? params.malzeme : (MALZ.indexOf(b0.malzeme) >= 0 ? b0.malzeme : 'yariiletken');
+      var gezilen = {}; gezilen[mal] = true;
+      var dolu = 0, hedef = 0, raf = 0, bitti = false, destroyed = false, ro = null, onWin = null;
+
+      host.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
+      var cv = document.createElement('canvas');
+      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.setAttribute('role','img');
+      var bar = document.createElement('div');
+      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;';
+      wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
+
+      var btnStyle = 'min-height:40px;padding:0 14px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);background:var(--panel2,#25164f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
+      function mkBtn(text, fn){
+        var b = document.createElement('button');
+        b.type = 'button'; b.textContent = text; b.style.cssText = btnStyle;
+        b.addEventListener('click', fn); return b;
+      }
+      /* 1) Atom sayısı N */
+      var nBox = document.createElement('label');
+      nBox.style.cssText = 'display:flex;align-items:center;gap:8px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      var nTxt = document.createElement('span');
+      var sl = document.createElement('input');
+      sl.type = 'range'; sl.min = '0'; sl.max = String(NLER.length - 1); sl.step = '1'; sl.value = String(nIdx);
+      sl.setAttribute('aria-label', 'Atom sayısı N');
+      sl.style.cssText = 'min-height:40px;width:140px;accent-color:var(--cyan,#00e5ff);';
+      nBox.appendChild(nTxt); nBox.appendChild(sl); bar.appendChild(nBox);
+      sl.addEventListener('input', function(){
+        nIdx = parseInt(sl.value, 10) || 0; dolu = 0; hedef = 0; durdur(); guncelle();
+      });
+      /* 2) Elektron doldur */
+      var fillBtn = mkBtn('Elektron doldur', function(){ doldur(); });
+      fillBtn.style.background = 'var(--accent,#ffd23f)'; fillBtn.style.color = 'var(--accent-ink,#0b0620)';
+      bar.appendChild(fillBtn);
+      /* 3) Malzeme */
+      var grp = document.createElement('div');
+      grp.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
+      var mBtn = {};
+      MALZ.forEach(function(m){
+        mBtn[m] = mkBtn(AD[m], function(){ sec(m); });
+        grp.appendChild(mBtn[m]);
+      });
+      bar.appendChild(grp);
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1 1 220px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      info.setAttribute('aria-live','polite');
+      bar.appendChild(info);
+      var note = document.createElement('span');
+      note.textContent = 'oyun modeli';
+      note.style.cssText = 'font:600 16px var(--font-b,Nunito,sans-serif);color:var(--muted,#c4b9ec);';
+      bar.appendChild(note);
+
+      function col(n, fb){
+        try { var v = getComputedStyle(host).getPropertyValue(n).trim(); return v || fb; } catch (e) { return fb; }
+      }
+      function durdur(){ if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+      function sec(m){ mal = m; gezilen[m] = true; dolu = 0; hedef = 0; durdur(); guncelle(); }
+
+      function doldur(){
+        var N = NLER[nIdx];
+        hedef = elektronSayisi(mal, N); dolu = 0; durdur();
+        var t0 = null, dur = 900;
+        function adim(t){
+          if (destroyed) return;
+          if (t0 == null) t0 = t;
+          var f = Math.min(1, (t - t0) / dur);
+          dolu = Math.round(hedef * f);
+          ciz();
+          if (f < 1) raf = requestAnimationFrame(adim);
+          else { raf = 0; dolu = hedef; guncelle(); }
+        }
+        raf = requestAnimationFrame(adim);
+      }
+
+      function kontrolBasari(){
+        if (bitti || !params.basari) return;
+        var h = params.basari, say = 0;
+        MALZ.forEach(function(m){ if (gezilen[m]) say++; });
+        if (NLER[nIdx] >= (h.N || 0) && say >= (h.malzemeler || 0)) {
+          bitti = true;
+          try { if (api.done) api.done({ basari:true, olcum:{ N:NLER[nIdx], malzemeler:say } }); } catch (e) {}
+        }
+      }
+
+      function durumMetni(){
+        var N = NLER[nIdx], eg = EG[mal];
+        var s = 'N=' + N + ' · Eg=' + String(eg).replace('.', ',') + ' eV';
+        if (dolu > 0 && dolu >= hedef && hedef > 0) {
+          s += mal === 'iletken' ? ' · Bant yarı dolu: elektron akar'
+             : (mal === 'yalitkan' ? ' · Alt bant dolu, aralık büyük: akmaz' : ' · Alt bant dolu, aralık küçük: ısıyla geçer');
+        } else s += ' · ' + (N === 1 ? 'Tek atom: tek seviye' : N + ' çizgi, bir bant gibi');
+        return s;
+      }
+
+      function guncelle(){
+        if (destroyed) return;
+        var N = NLER[nIdx];
+        nTxt.textContent = 'N = ' + N;
+        sl.value = String(nIdx);
+        MALZ.forEach(function(m){
+          var on = m === mal;
+          mBtn[m].style.background = on ? 'var(--sel,#0a3a52)' : 'var(--panel2,#25164f)';
+          mBtn[m].style.borderColor = on ? 'var(--cyan,#00e5ff)' : 'var(--line,#f4f0ff)';
+          mBtn[m].setAttribute('aria-pressed', on ? 'true' : 'false');
+        });
+        info.textContent = durumMetni();
+        cv.setAttribute('aria-label', 'Enerji bandı: ' + N + ' atom, ' + AD[mal] + ', aralık ' + EG[mal] + ' eV');
+        ciz();
+        kontrolBasari();
+      }
+
+      var CW = 0, CH = 0, dpr = 1;
+      function boyutla(){
+        if (destroyed) return;
+        var r = cv.getBoundingClientRect();
+        dpr = window.devicePixelRatio || 1;
+        CW = Math.max(1, Math.round(r.width)); CH = Math.max(1, Math.round(r.height));
+        cv.width = Math.round(CW * dpr); cv.height = Math.round(CH * dpr);
+        ciz();
+      }
+      function ciz(){
+        if (destroyed || !CW) return;
+        var c = cv.getContext('2d');
+        c.setTransform(dpr, 0, 0, dpr, 0, 0);
+        c.clearRect(0, 0, CW, CH);
+        var cyan = col('--cyan','#00e5ff'), mag = col('--magenta','#ff3df0'), yel = col('--yellow','#ffd23f'),
+            lime = col('--lime','#39ff88'), ink = col('--ink','#ffffff'), muted = col('--muted','#c4b9ec');
+        var N = NLER[nIdx], eg = EG[mal];
+        var top = 14, bot = CH - 22, ph = bot - top;
+        function Y(e){ return bot - (e / EMAX) * ph; }
+        var xA0 = CW * 0.06, xA1 = CW * 0.2;       /* tek atom */
+        var xB0 = CW * 0.42, xB1 = CW * 0.74;      /* N atomlu bant */
+        var font = col('--font-b','Nunito, sans-serif');
+        c.font = '700 14px ' + font; c.textBaseline = 'middle';
+        c.strokeStyle = muted; c.lineWidth = 1.5; c.globalAlpha = 0.7;
+        c.beginPath(); c.moveTo(4, bot); c.lineTo(4, top); c.stroke(); c.globalAlpha = 1;
+        c.fillStyle = muted; c.textAlign = 'left'; c.fillText('E', 8, top + 4);
+        var renk = [cyan, mag];
+        var k, i;
+        var alfa = Math.min(0.35, 0.04 + 0.05 * Math.log(N) / Math.LN2);
+        for (k = 0; k < 2; k++) {
+          var lo = k === 0 ? 0 : W + eg, hi = lo + W;
+          c.globalAlpha = alfa; c.fillStyle = renk[k];
+          c.fillRect(xB0, Y(hi), xB1 - xB0, Y(lo) - Y(hi)); c.globalAlpha = 1;
+        }
+        for (k = 0; k < 2; k++) {
+          var e0 = merkez(k, mal), ls = seviyeler(k, N, mal);
+          c.strokeStyle = renk[k]; c.lineWidth = 1; c.globalAlpha = 0.35;
+          for (i = 0; i < ls.length; i++) {
+            c.beginPath(); c.moveTo(xA1, Y(e0)); c.lineTo(xB0, Y(ls[i])); c.stroke();
+          }
+          c.globalAlpha = 1;
+          c.strokeStyle = renk[k]; c.lineWidth = 3;
+          c.beginPath(); c.moveTo(xA0, Y(e0)); c.lineTo(xA1, Y(e0)); c.stroke();
+          c.fillStyle = ink; c.textAlign = 'center';
+          c.fillText(k === 0 ? '3s' : '3p', (xA0 + xA1) / 2, Y(e0) - 12);
+          c.lineWidth = N >= 32 ? 1.5 : 2.5;
+          for (i = 0; i < ls.length; i++) {
+            c.beginPath(); c.moveTo(xB0, Y(ls[i])); c.lineTo(xB1, Y(ls[i])); c.stroke();
+          }
+        }
+        /* elektronlar: enerji sırasıyla, çizgi başına en çok 2 (Pauli) */
+        var tum = seviyeler(0, N, mal).concat(seviyeler(1, N, mal));
+        var kalan = dolu, r = Math.max(2, Math.min(4.5, ph / (N * 5 + 8)));
+        c.fillStyle = yel;
+        for (i = 0; i < tum.length && kalan > 0; i++) {
+          var n2 = Math.min(2, kalan), ny = Y(tum[i]);
+          /* dolu seviye: sarı çizgi; az çizgide iki elektron noktası */
+          c.globalAlpha = 0.8; c.strokeStyle = yel; c.lineWidth = N >= 32 ? 1.5 : 2.5;
+          c.beginPath(); c.moveTo(xB0, ny); c.lineTo(xB1, ny); c.stroke(); c.globalAlpha = 1;
+          if (N <= 16) {
+            c.beginPath(); c.arc(xB1 - 4 * r - 2, ny, r, 0, Math.PI * 2); c.fill();
+            if (n2 > 1) { c.beginPath(); c.arc(xB1 - 2 * r, ny, r, 0, Math.PI * 2); c.fill(); }
+          }
+          kalan -= n2;
+        }
+        var gx = xB1 + 22;
+        c.textAlign = 'left';
+        if (eg > 0) {
+          c.strokeStyle = lime; c.fillStyle = lime; c.lineWidth = 2.5;
+          c.beginPath(); c.moveTo(gx, Y(W)); c.lineTo(gx, Y(W + eg)); c.stroke();
+          c.beginPath(); c.moveTo(gx - 5, Y(W) - 6); c.lineTo(gx, Y(W)); c.lineTo(gx + 5, Y(W) - 6); c.stroke();
+          c.beginPath(); c.moveTo(gx - 5, Y(W + eg) + 6); c.lineTo(gx, Y(W + eg)); c.lineTo(gx + 5, Y(W + eg) + 6); c.stroke();
+          c.fillText('Eg = ' + String(eg).replace('.', ',') + ' eV', gx + 10, (Y(W) + Y(W + eg)) / 2);
+        } else {
+          c.fillStyle = lime; c.fillText('Eg = 0', gx + 4, Y(W));
+        }
+        c.fillStyle = muted; c.textAlign = 'center';
+        c.fillText('1 atom', (xA0 + xA1) / 2, CH - 8);
+        c.fillText(N + ' atom', (xB0 + xB1) / 2, CH - 8);
+      }
+
+      if (typeof ResizeObserver !== 'undefined') {
+        ro = new ResizeObserver(boyutla);
+        ro.observe(cv);
+      } else {
+        onWin = boyutla;
+        window.addEventListener('resize', onWin);
+      }
+      if (api.hint) { try { api.hint('N büyüdükçe çizgiler banda döner; Eg iletkenliği belirler.'); } catch (e) {} }
+      boyutla(); guncelle();
+
+      return {
+        destroy: function(){
+          destroyed = true; durdur();
+          if (ro) { try { ro.disconnect(); } catch (e) {} ro = null; }
+          if (onWin) { window.removeEventListener('resize', onWin); onWin = null; }
+          host.innerHTML = '';
+        },
+        getState: function(){ return { N: NLER[nIdx], malzeme: mal, Eg: EG[mal], dolu: dolu, malzemeler: Object.keys(gezilen).length }; },
+        set: function(p){
+          if (!p) return;
+          if (p.N != null && NLER.indexOf(p.N) >= 0) { nIdx = NLER.indexOf(p.N); dolu = 0; }
+          if (MALZ.indexOf(p.malzeme) >= 0) { mal = p.malzeme; gezilen[mal] = true; dolu = 0; }
+          durdur(); guncelle();
+        }
+      };
+    }
+  };
+  if (typeof Q !== 'undefined' && Q.sim && Q.sim.register) Q.sim.register('bant', impl);
+})();
+
+/* 70-sim-basamak.js (S9) Basamak potansiyeli ve bariyerden tünelleme.
+ * Q.sim.register("basamak", ...) dışında bir şey yapmaz.
+ * Birim: elektron, enerji eV, uzunluk nm; ħ²/2m = 0.0381 eV·nm². */
+(function(){
+  'use strict';
+  var C0 = 0.0381;
+  var SUP = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+  function kOf(e){ return Math.sqrt(Math.max(0, e) / C0); }
+  /* karmaşık sayı yardımcıları: [re, im] */
+  function cA(a,b){ return [a[0]+b[0], a[1]+b[1]]; }
+  function cM(a,b){ return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]]; }
+  function cD(a,b){ var d = b[0]*b[0]+b[1]*b[1]; return [(a[0]*b[0]+a[1]*b[1])/d, (a[1]*b[0]-a[0]*b[1])/d]; }
+  function cE(th){ return [Math.cos(th), Math.sin(th)]; }
+  function cS(a,s){ return [a[0]*s, a[1]*s]; }
+  function cAbs2(a){ return a[0]*a[0]+a[1]*a[1]; }
+
+  function dengele(E, V0){ return Math.abs(E - V0) < 0.005 ? V0 + 0.005 : E; }
+
+  /* Basamak: R, T ve ψ(x) */
+  function basamak(E, V0){
+    E = dengele(E, V0);
+    var k1 = kOf(E), r, t, k2 = 0, kap = 0, R;
+    if (E > V0) {
+      k2 = kOf(E - V0);
+      r = [(k1 - k2)/(k1 + k2), 0]; t = [2*k1/(k1 + k2), 0];
+      R = r[0]*r[0];
+    } else {
+      kap = kOf(V0 - E);
+      var den = [k1, kap];
+      r = cD([k1, -kap], den); t = cD([2*k1, 0], den);
+      R = 1;
+    }
+    return { R: R, T: 1 - R, k1: k1, k2: k2, kap: kap, psi: function(x){
+      if (x < 0) return cA(cE(k1*x), cM(r, cE(-k1*x)));
+      if (E > V0) return cM(t, cE(k2*x));
+      return cS(t, Math.exp(-kap*x));
+    }};
+  }
+
+  /* Bariyer [0,a]: sınır koşullarıyla tam çözüm */
+  function bariyer(E, V0, a){
+    E = dengele(E, V0);
+    var k1 = kOf(E), q = E > V0 ? [kOf(E - V0), 0] : [0, kOf(V0 - E)];
+    var ka = [k1, 0];
+    var oran = cD(ka, q);
+    var Bk = cS(cA([1,0], oran), 0.5), Ck = cS(cA([1,0], cS(oran,-1)), 0.5);
+    function eiq(x){ /* e^{i q x}, q karmaşık olabilir */
+      return cS(cE(q[0]*x), Math.exp(-q[1]*x));
+    }
+    /* t' = t·e^{i k1 a};  B = t'·Bk·e^{-iqa},  C = t'·Ck·e^{iqa} */
+    var Bf = cM(Bk, eiq(-a)), Cf = cM(Ck, eiq(a));
+    var P = cA(Bf, Cf), Qp = cM(q, cA(Bf, cS(Cf,-1)));
+    var tp = cD([2,0], cA(P, cD(Qp, ka)));
+    var B = cM(tp, Bf), C = cM(tp, Cf);
+    var r = cA(cM(tp, P), [-1,0]);
+    var T = cAbs2(tp);
+    return { T: T, R: Math.max(0, 1 - T), k1: k1, q: q, psi: function(x){
+      if (x < 0) return cA(cE(k1*x), cM(r, cE(-k1*x)));
+      if (x <= a) return cA(cM(B, eiq(x)), cM(C, eiq(-x)));
+      return cM(tp, cE(k1*(x - a)));
+    }};
+  }
+  /* yaklaşık formül (κa ≫ 1) */
+  function yaklasik(E, V0, a){
+    if (E >= V0) return 1;
+    return Math.min(1, 16*(E/V0)*(1 - E/V0)*Math.exp(-2*kOf(V0 - E)*a));
+  }
+
+  function fmt(x){
+    if (x >= 0.1) return x.toFixed(2);
+    if (x >= 0.001) return x.toFixed(3);
+    if (x <= 0) return '0';
+    var s = x.toExponential(1), p = s.split('e'), ex = p[1].replace('-', '');
+    return p[0] + '×10⁻' + ex.replace(/^0+/, '').split('').map(function(c){ return SUP[+c]; }).join('');
+  }
+
+  var impl = {
+    mount: function(host, params, api){
+      params = params || {}; api = api || {};
+      var b0 = params.baslangic || {};
+      function pick(n, d){ var v = params[n] != null ? params[n] : b0[n]; return typeof v === 'number' && isFinite(v) ? v : d; }
+      var mod = (params.mod || b0.mod) === 'bariyer' ? 'bariyer' : 'basamak';
+      var E = pick('E', mod === 'bariyer' ? 0.5 : 1.5);
+      var V0 = pick('V0', 1);
+      var a = pick('a', 0.6);
+      var bitti = false, destroyed = false, aMax = a, kalin = false, raf = 0, ro = null, onWin = null;
+      var reduce = false;
+      try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+
+      host.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
+      var cv = document.createElement('canvas');
+      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.setAttribute('role','img');
+      var bar = document.createElement('div');
+      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px 16px;align-items:center;';
+      wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
+
+      var lblStyle = 'display:flex;align-items:center;gap:8px;flex:1 1 200px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      function mkSlider(ad, min, max, step, get, set){
+        var l = document.createElement('label'); l.style.cssText = lblStyle;
+        var s = document.createElement('span'); s.textContent = ad;
+        var inp = document.createElement('input');
+        inp.type = 'range'; inp.min = min; inp.max = max; inp.step = step;
+        inp.style.cssText = 'flex:1;min-height:40px;min-width:80px;accent-color:var(--accent,#ffd23f);';
+        var v = document.createElement('span'); v.style.cssText = 'min-width:70px;color:var(--yellow,#ffd23f);';
+        inp.addEventListener('input', function(){ set(parseFloat(inp.value)); kullanici(); });
+        l.appendChild(s); l.appendChild(inp); l.appendChild(v); bar.appendChild(l);
+        return { l: l, s: s, inp: inp, v: v, get: get };
+      }
+      var sE = mkSlider('Enerji E', 0.1, 3, 0.05, function(){ return E; }, function(x){ E = x; });
+      var sV = mkSlider('Basamak V₀', 0.2, 3, 0.05, function(){ return V0; }, function(x){ V0 = x; });
+      var sA = mkSlider('Kalınlık a', 0.1, 2, 0.05, function(){ return a; }, function(x){ a = x; });
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1 1 100%;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      info.setAttribute('aria-live','polite');
+      bar.appendChild(info);
+      var note = document.createElement('span');
+      note.textContent = 'oyun modeli';
+      note.style.cssText = 'font:600 16px var(--font-b,Nunito,sans-serif);color:var(--muted,#c4b9ec);';
+      bar.appendChild(note);
+
+      function col(n, fb){
+        try { var v = getComputedStyle(host).getPropertyValue(n).trim(); return v || fb; } catch (e) { return fb; }
+      }
+      function hesap(){ return mod === 'bariyer' ? bariyer(E, V0, a) : basamak(E, V0); }
+      function bilgi(h){
+        return mod === 'bariyer'
+          ? 'T = ' + fmt(h.T) + ' · R = ' + fmt(h.R) + (E < V0 ? ' · tünelleme' : ' · E > V₀')
+          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ sönümlenir' : ' · E > V₀ ama yansıma var');
+      }
+
+      var W = 0, H = 0, dpr = 1;
+      function boyutla(){
+        if (destroyed) return;
+        var r = cv.getBoundingClientRect();
+        dpr = window.devicePixelRatio || 1;
+        W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+        cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+        ciz();
+      }
+      function ciz(){
+        if (destroyed || !W) return;
+        var h = hesap();
+        info.textContent = bilgi(h);
+        cv.setAttribute('aria-label', (mod === 'bariyer' ? 'Bariyer' : 'Basamak') + ': E=' + E.toFixed(2) + ' eV, V0=' + V0.toFixed(2) + ' eV, T=' + fmt(h.T) + ', R=' + fmt(h.R));
+        var c = cv.getContext('2d');
+        c.setTransform(dpr, 0, 0, dpr, 0, 0);
+        c.clearRect(0, 0, W, H);
+        var cyan = col('--cyan','#00e5ff'), mag = col('--magenta','#ff3df0'), yel = col('--yellow','#ffd23f'),
+            lime = col('--lime','#39ff88'), ink = col('--ink','#ffffff'), muted = col('--muted','#c4b9ec');
+        var x0 = -2.5, x1 = (mod === 'bariyer' ? a : 0) + 2.5;
+        var padL = 10, padR = 10, pw = W - padL - padR;
+        function X(x){ return padL + (x - x0) / (x1 - x0) * pw; }
+        var vmax = 3.2;
+        var topY0 = 8, topY1 = H * 0.44, botY0 = H * 0.5, botY1 = H - 8;
+        function YV(e){ return topY1 - (e / vmax) * (topY1 - topY0); }
+        var xe = mod === 'bariyer' ? a : x1;
+        /* dolgu */
+        c.beginPath(); c.moveTo(X(0), YV(0)); c.lineTo(X(0), YV(V0)); c.lineTo(X(xe), YV(V0)); c.lineTo(X(xe), YV(0)); c.closePath();
+        c.globalAlpha = 0.2; c.fillStyle = mag; c.fill(); c.globalAlpha = 1;
+        /* potansiyel profili */
+        c.beginPath(); c.moveTo(X(x0), YV(0)); c.lineTo(X(0), YV(0)); c.lineTo(X(0), YV(V0)); c.lineTo(X(xe), YV(V0));
+        if (mod === 'bariyer') { c.lineTo(X(xe), YV(0)); c.lineTo(X(x1), YV(0)); }
+        c.strokeStyle = mag; c.lineWidth = 3; c.stroke();
+        /* E çizgisi */
+        c.setLineDash([6,4]); c.strokeStyle = yel; c.lineWidth = 2;
+        c.beginPath(); c.moveTo(X(x0), YV(E)); c.lineTo(X(x1), YV(E)); c.stroke(); c.setLineDash([]);
+        var fb = col('--font-b','Nunito, sans-serif');
+        c.font = '700 14px ' + fb; c.textBaseline = 'bottom'; c.textAlign = 'left';
+        c.fillStyle = yel; c.fillText('E', X(x0) + 2, YV(E) - 2);
+        c.fillStyle = mag; c.fillText('V₀', X(0) + 4, YV(V0) - 2);
+        /* dalga fonksiyonu */
+        var N = Math.max(120, Math.round(pw)), ys = [], re = [], mx = 0.5, i, x, p;
+        for (i = 0; i <= N; i++) {
+          x = x0 + (x1 - x0) * i / N; p = h.psi(x);
+          ys.push(cAbs2(p)); re.push(p[0]); if (ys[i] > mx) mx = ys[i];
+        }
+        var yb = botY1, hgt = (botY1 - botY0) * 0.92;
+        function YP(v){ return yb - (v / mx) * hgt; }
+        c.beginPath(); c.moveTo(X(x0), yb);
+        for (i = 0; i <= N; i++) c.lineTo(padL + pw * i / N, YP(ys[i]));
+        c.lineTo(X(x1), yb); c.closePath();
+        c.globalAlpha = 0.28; c.fillStyle = cyan; c.fill(); c.globalAlpha = 1;
+        c.beginPath();
+        for (i = 0; i <= N; i++) { var px = padL + pw * i / N; if (i) c.lineTo(px, YP(ys[i])); else c.moveTo(px, YP(ys[i])); }
+        c.strokeStyle = cyan; c.lineWidth = 2; c.stroke();
+        var ym = yb - hgt * 0.5, amp = hgt * 0.25 / Math.sqrt(mx);
+        c.beginPath();
+        for (i = 0; i <= N; i++) { var qx = padL + pw * i / N; if (i) c.lineTo(qx, ym - re[i]*amp); else c.moveTo(qx, ym - re[i]*amp); }
+        c.globalAlpha = 0.7; c.strokeStyle = lime; c.lineWidth = 1.5; c.stroke(); c.globalAlpha = 1;
+        c.strokeStyle = muted; c.lineWidth = 1; c.globalAlpha = 0.5;
+        c.beginPath(); c.moveTo(X(0), botY0 - 4); c.lineTo(X(0), botY1);
+        if (mod === 'bariyer') { c.moveTo(X(a), botY0 - 4); c.lineTo(X(a), botY1); }
+        c.stroke(); c.globalAlpha = 1;
+        c.fillStyle = cyan; c.textBaseline = 'top'; c.fillText('|ψ|²', padL + 2, botY0 - 2);
+        c.fillStyle = lime; c.fillText('Re ψ', padL + 50, botY0 - 2);
+        /* T (log) veya R çubuğu */
+        var bw = Math.min(110, pw * 0.25), bx = W - padR - bw, by = topY0 + 4;
+        c.textAlign = 'right'; c.textBaseline = 'top'; c.fillStyle = ink; c.font = '700 14px ' + fb;
+        c.strokeStyle = ink; c.lineWidth = 2;
+        if (mod === 'bariyer') {
+          c.fillText('log T', bx - 6, by - 2);
+          var fr = Math.max(0, Math.min(1, (Math.log(Math.max(h.T, 1e-6)) / Math.LN10 + 6) / 6));
+          c.strokeRect(bx, by, bw, 10);
+          c.fillStyle = lime; c.fillRect(bx + 1, by + 1, (bw - 2) * fr, 8);
+        } else {
+          c.fillText('R', bx - 6, by - 2);
+          c.strokeRect(bx, by, bw, 10);
+          c.fillStyle = mag; c.fillRect(bx + 1, by + 1, (bw - 2) * h.R, 8);
+        }
+      }
+
+      function guncelleKontrol(){
+        sA.l.style.display = mod === 'bariyer' ? 'flex' : 'none';
+        sV.s.textContent = mod === 'bariyer' ? 'Bariyer V₀' : 'Basamak V₀';
+        [sE, sV, sA].forEach(function(s){
+          s.inp.value = s.get(); s.v.textContent = s.get().toFixed(2) + (s === sA ? ' nm' : ' eV');
+        });
+        sE.inp.setAttribute('aria-label', 'Enerji E, eV'); sV.inp.setAttribute('aria-label', 'V0, eV'); sA.inp.setAttribute('aria-label', 'Kalınlık a, nm');
+      }
+      function guncelle(){ if (destroyed) return; guncelleKontrol(); ciz(); }
+
+      function kullanici(){
+        if (a > aMax + 0.3 && E < V0) kalin = true;
+        if (a > aMax) aMax = a;
+        guncelle();
+        basariKontrol();
+      }
+      function basariKontrol(){
+        var b = params.basari;
+        if (!b || bitti) return;
+        var h = hesap(), ok = false;
+        function aralik(v, ar){ return ar && v >= ar[0] && v <= ar[1]; }
+        if (b.R) ok = aralik(h.R, b.R);
+        else if (b.tunel) ok = mod === 'bariyer' && E < V0 && (!b.T || aralik(h.T, b.T));
+        else if (b.kalinlasti) ok = kalin;
+        if (ok) {
+          bitti = true;
+          try { if (api.done) api.done({ basari:true, olcum:{ mod:mod, E:E, V0:V0, a:a, T:h.T, R:h.R } }); } catch (e) {}
+        }
+      }
+
+      function animasyon(p){
+        if (raf) { cancelAnimationFrame(raf); raf = 0; }
+        var hedef = { E: p.E != null ? p.E : E, V0: p.V0 != null ? p.V0 : V0, a: p.a != null ? p.a : a };
+        if (reduce || typeof requestAnimationFrame !== 'function') { E = hedef.E; V0 = hedef.V0; a = hedef.a; guncelle(); return; }
+        var s = { E: E, V0: V0, a: a }, t0 = null;
+        function adim(ts){
+          if (destroyed) return;
+          if (t0 == null) t0 = ts;
+          var u = Math.min(1, (ts - t0) / 1000), e = u < 0.5 ? 2*u*u : 1 - Math.pow(-2*u + 2, 2)/2;
+          E = s.E + (hedef.E - s.E) * e; V0 = s.V0 + (hedef.V0 - s.V0) * e; a = s.a + (hedef.a - s.a) * e;
+          guncelle();
+          raf = u < 1 ? requestAnimationFrame(adim) : 0;
+        }
+        raf = requestAnimationFrame(adim);
+      }
+
+      if (typeof ResizeObserver !== 'undefined') {
+        ro = new ResizeObserver(boyutla); ro.observe(cv);
+      } else {
+        onWin = boyutla; window.addEventListener('resize', onWin);
+      }
+      if (api.hint) { try { api.hint(mod === 'bariyer' ? 'Bariyeri kalınlaştır; geçen kısmın nasıl azaldığına bak.' : 'E > V₀ iken bile dalganın yansıdığına bak.'); } catch (e) {} }
+      boyutla(); guncelle();
+
+      return {
+        destroy: function(){
+          destroyed = true;
+          if (raf) { cancelAnimationFrame(raf); raf = 0; }
+          if (ro) { try { ro.disconnect(); } catch (e) {} ro = null; }
+          if (onWin) { window.removeEventListener('resize', onWin); onWin = null; }
+          host.innerHTML = '';
+        },
+        getState: function(){
+          var h = hesap();
+          return { mod: mod, E: E, V0: V0, a: a, T: h.T, R: h.R, yaklasikT: mod === 'bariyer' ? yaklasik(E, V0, a) : null, kalinlasti: kalin };
+        },
+        set: function(p){
+          if (!p) return;
+          if (p.mod === 'basamak' || p.mod === 'bariyer') mod = p.mod;
+          animasyon(p);
+        }
+      };
+    }
+  };
+  if (typeof Q !== 'undefined' && Q.sim && Q.sim.register) Q.sim.register('basamak', impl);
+})();
+
+/* 70-sim-belirsizlik.js (S11) Dalga paketi ve belirsizlik. Yalnızca Q.sim.register çağırır. */
+(function(){
+  'use strict';
+  var HBAR = 1.0546e-34; // J·s
+
+  Q.sim.register('belirsizlik', {
+    mount: function(host, params, api){
+      params = params || {};
+      api = api || {};
+      var base = params.baslangic || {};
+      function num(v, d){ v = Number(v); return isFinite(v) ? v : d; }
+      function clampS(v){ return Math.min(5, Math.max(0.5, v)); }
+      var st = { sx: clampS(num(params.sx != null ? params.sx : base.sx, 3)), eslenik: true };
+      var doneCalled = false, destroyed = false, tweenRaf = 0, sawNarrow = false;
+      var reduce = false;
+      try { reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches; } catch (e) {}
+
+      function css(n, d){
+        var v = ''; try { v = getComputedStyle(host).getPropertyValue(n).trim(); } catch (e) {}
+        return v || d;
+      }
+      // sigma_p = hbar/(2 sigma_x); birim: 1e-26 kg·m/s
+      function calc(){
+        var sp = HBAR / (2 * st.sx * 1e-9) / 1e-26;
+        return { sx: st.sx, sp: sp };
+      }
+
+      host.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%';
+      var cv = document.createElement('canvas');
+      cv.style.cssText = 'width:100%;display:block;border-radius:8px';
+      cv.setAttribute('role', 'img');
+      cv.setAttribute('aria-label', 'Gauss dalga paketi ve momentum dağılımı');
+      var ctl = document.createElement('div');
+      ctl.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;align-items:center';
+      var lab = document.createElement('label');
+      lab.style.cssText = 'display:flex;flex-direction:column;gap:2px;flex:2 1 200px;font-size:14px;color:' + css('--muted', '#c4b9ec');
+      var labS = document.createElement('span');
+      var sIn = document.createElement('input');
+      sIn.type = 'range'; sIn.min = '0.5'; sIn.max = '5'; sIn.step = '0.1'; sIn.style.minHeight = '40px';
+      lab.appendChild(labS); lab.appendChild(sIn);
+      var tg = document.createElement('button');
+      tg.type = 'button'; tg.setAttribute('aria-pressed', 'true');
+      tg.style.cssText = 'min-height:40px;flex:1 1 120px;font-size:15px;cursor:pointer';
+      ctl.appendChild(lab); ctl.appendChild(tg);
+      wrap.appendChild(cv); wrap.appendChild(ctl); host.appendChild(wrap);
+      var ctx = cv.getContext('2d');
+      var W = 300, Hh = 200, dpr = 1;
+
+      function syncUI(){
+        sIn.value = st.sx;
+        labS.textContent = 'Konum genişliği σx = ' + st.sx.toFixed(1) + ' nm';
+        tg.textContent = 'Eşlenik: ' + (st.eslenik ? 'açık' : 'kapalı');
+        tg.setAttribute('aria-pressed', st.eslenik ? 'true' : 'false');
+      }
+      function resize(){
+        var w = Math.max(240, host.clientWidth || 320);
+        var h = Math.max(180, Math.min(260, (window.innerHeight || 800) * 0.22));
+        dpr = window.devicePixelRatio || 1;
+        W = w; Hh = h;
+        cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+        cv.style.height = h + 'px';
+        draw();
+      }
+
+      // Gauss: dağılım exp(-x²/(2σ²)); σ standart sapma
+      function panel(x0, y0, w, h, sigma, xmax, col, name, unit, sigTxt){
+        var ink = css('--ink', '#fff'), mut = css('--muted', '#c4b9ec');
+        var base = y0 + h - 14, amp = h - 34, cx = x0 + w / 2, px = w / (2 * xmax), i, x, X, y;
+        ctx.strokeStyle = mut; ctx.lineWidth = 1;
+        ctx.beginPath(); ctx.moveTo(x0, base); ctx.lineTo(x0 + w, base); ctx.stroke();
+        ctx.beginPath();
+        for (i = 0; i <= 120; i++) {
+          x = -xmax + (2 * xmax) * i / 120;
+          y = base - amp * Math.exp(-(x * x) / (2 * sigma * sigma));
+          X = cx + x * px;
+          if (i === 0) ctx.moveTo(X, y); else ctx.lineTo(X, y);
+        }
+        ctx.strokeStyle = col; ctx.lineWidth = 3; ctx.stroke();
+        ctx.lineTo(x0 + w, base); ctx.lineTo(x0, base); ctx.closePath();
+        ctx.globalAlpha = 0.25; ctx.fillStyle = col; ctx.fill(); ctx.globalAlpha = 1;
+        var by = base + 7;
+        ctx.strokeStyle = ink; ctx.lineWidth = 3;
+        ctx.beginPath(); ctx.moveTo(cx - sigma * px, by); ctx.lineTo(cx + sigma * px, by);
+        ctx.moveTo(cx - sigma * px, by - 4); ctx.lineTo(cx - sigma * px, by + 4);
+        ctx.moveTo(cx + sigma * px, by - 4); ctx.lineTo(cx + sigma * px, by + 4);
+        ctx.stroke();
+        ctx.fillStyle = ink; ctx.font = '700 12px sans-serif'; ctx.textAlign = 'left';
+        ctx.fillText(name, x0 + 4, y0 + 12);
+        ctx.textAlign = 'right'; ctx.fillStyle = col;
+        ctx.fillText(sigTxt, x0 + w - 4, y0 + 12);
+        ctx.fillStyle = mut; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
+        ctx.fillText(unit, x0 + 4, y0 + h - 1);
+      }
+
+      function draw(){
+        var c = calc();
+        var sky = css('--sky', '#120a30'), cy = css('--cyan', '#00e5ff'), mg = css('--magenta', '#ff3df0'),
+            yel = css('--yellow', '#ffd23f'), ink = css('--ink', '#fff'), mut = css('--muted', '#c4b9ec');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.clearRect(0, 0, W, Hh);
+        ctx.fillStyle = sky; ctx.fillRect(0, 0, W, Hh);
+        var pw = W - 16, strip = 22;
+        var avail = Hh - strip - 4;
+        var ph = st.eslenik ? avail / 2 : avail;
+        panel(8, 2, pw, ph, c.sx, 8, cy, '|ψ(x)|²  konum', 'x (nm)', 'σx = ' + c.sx.toFixed(1) + ' nm');
+        if (st.eslenik) panel(8, 2 + ph, pw, ph, c.sp, 12, mg, '|φ(p)|²  momentum', 'p (10⁻²⁶ kg·m/s)', 'σp = ' + c.sp.toFixed(1) + ' ×10⁻²⁶');
+        var gy = Hh - strip;
+        ctx.strokeStyle = yel; ctx.lineWidth = 2; ctx.strokeRect(8, gy, pw, strip - 3);
+        ctx.fillStyle = ink; ctx.font = '700 13px sans-serif'; ctx.textAlign = 'left';
+        ctx.fillText('σx·σp = ħ/2', 14, gy + 14);
+        ctx.fillStyle = mut; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
+        ctx.fillText('Alet kusuru değil', 8 + pw - 6, gy + 14);
+      }
+
+      function check(){
+        if (st.sx <= 1.0 && st.eslenik) sawNarrow = true;
+        if (!params.basari || doneCalled) return;
+        if (params.basari.dar && st.sx <= 1.0 && st.eslenik) {
+          doneCalled = true;
+          var c = calc();
+          if (api.done) api.done({ basari: true, olcum: { sx: st.sx, sp: c.sp } });
+        }
+      }
+
+      function update(){ syncUI(); draw(); check(); }
+      function onS(){ st.sx = clampS(num(sIn.value, st.sx)); update(); }
+      function onT(){ st.eslenik = !st.eslenik; update(); }
+      sIn.addEventListener('input', onS);
+      tg.addEventListener('click', onT);
+
+      var ro = null;
+      if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(resize); ro.observe(host); }
+      else window.addEventListener('resize', resize);
+
+      if (api.hint) api.hint('Konumu daralt: momentum yayılır. Çarpım hep ħ/2.');
+      syncUI(); resize(); check();
+
+      return {
+        destroy: function(){
+          destroyed = true;
+          if (tweenRaf) cancelAnimationFrame(tweenRaf);
+          if (ro) ro.disconnect(); else window.removeEventListener('resize', resize);
+          sIn.removeEventListener('input', onS);
+          tg.removeEventListener('click', onT);
+          host.innerHTML = '';
+        },
+        getState: function(){ var c = calc(); return { sx: st.sx, sp: c.sp, eslenik: st.eslenik, dar: sawNarrow }; },
+        set: function(p){
+          p = p || {};
+          if (p.sx == null) return;
+          var s0 = st.sx, s1 = clampS(num(p.sx, st.sx));
+          if (tweenRaf) cancelAnimationFrame(tweenRaf);
+          var t0 = 0;
+          function tw(ts){
+            if (destroyed) return;
+            if (!t0) t0 = ts;
+            var t = reduce ? 1 : Math.min(1, (ts - t0) / 1000);
+            st.sx = s0 + (s1 - s0) * t;
+            syncUI(); draw();
+            if (t < 1) tweenRaf = requestAnimationFrame(tw); else { tweenRaf = 0; check(); }
+          }
+          tweenRaf = requestAnimationFrame(tw);
+        }
+      };
+    }
+  });
+})();
+
+/* 70-sim-bohr.js (S7) Hidrojen seviyeleri ve madde dalgası.
+ * Q.sim.register("bohr", ...) dışında bir şey yapmaz. */
+(function(){
+  'use strict';
+  function seviye(n){ return -13.6 / (n * n); }
+  function dEnerji(n, m){ return 13.6 * Math.abs(1 / (m * m) - 1 / (n * n)); }
+  function dalgaboyu(n, m){ var d = dEnerji(n, m); return d > 0 ? 1240 / d : Infinity; }
+  /* nm -> renk (görünür 380-750); dışı null */
+  function renk(nm){
+    var r = 0, g = 0, b = 0, f;
+    if (!(nm >= 380 && nm <= 750)) return null;
+    if (nm < 440) { r = (440 - nm) / 60; b = 1; }
+    else if (nm < 490) { g = (nm - 440) / 50; b = 1; }
+    else if (nm < 510) { g = 1; b = (510 - nm) / 20; }
+    else if (nm < 580) { r = (nm - 510) / 70; g = 1; }
+    else if (nm < 645) { r = 1; g = (645 - nm) / 65; }
+    else { r = 1; }
+    f = nm < 420 ? 0.4 + 0.6 * (nm - 380) / 40 : (nm > 700 ? 0.4 + 0.6 * (750 - nm) / 50 : 1);
+    return 'rgb(' + Math.round(255 * r * f) + ',' + Math.round(255 * g * f) + ',' + Math.round(255 * b * f) + ')';
+  }
+  function bolge(nm){ return nm < 380 ? 'mor ötesi' : (nm > 750 ? 'kızıl ötesi' : 'görünür'); }
+
+  var impl = {
+    mount: function(host, params, api){
+      params = params || {}; api = api || {};
+      var b0 = params.baslangic || {};
+      function sinir(v, d){ v = Math.round(Number(v)); return v >= 1 && v <= 6 ? v : d; }
+      var n = sinir(params.n != null ? params.n : b0.n, 3);
+      var m = sinir(params.m != null ? params.m : b0.m, 2);
+      var level = n;
+      var anim = null, foton = null, raf = 0, timers = [], bitti = false, destroyed = false;
+      var enAltDenendi = false, sonGecis = null, bounce = 0;
+      var ro = null, onWin = null, t0 = 0;
+      var reduced = false;
+      try { reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) {}
+
+      host.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
+      var cv = document.createElement('canvas');
+      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.setAttribute('role','img');
+      var bar = document.createElement('div');
+      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;';
+      wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
+
+      var ctlStyle = 'min-height:40px;padding:0 12px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);background:var(--panel2,#25164f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
+      function mkSel(etiket, dgr, fn, sifir){
+        var l = document.createElement('label');
+        l.style.cssText = 'display:flex;gap:6px;align-items:center;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+        l.appendChild(document.createTextNode(etiket));
+        var s = document.createElement('select'); s.style.cssText = ctlStyle;
+        s.setAttribute('aria-label', etiket);
+        for (var i = sifir ? 0 : 1; i <= 6; i++) {
+          var o = document.createElement('option'); o.value = String(i); o.textContent = String(i); s.appendChild(o);
+        }
+        s.value = String(dgr);
+        s.addEventListener('change', function(){ fn(parseInt(s.value, 10)); });
+        l.appendChild(s); bar.appendChild(l); return s;
+      }
+      var selN = mkSel('Başlangıç n', n, function(v){ n = v; if (!anim) level = n; sonGecis = null; yenile(); });
+      var selM = mkSel('Bitiş m', m, function(v){
+        if (v < 1) { altinaDene(); selM.value = String(m); return; }
+        m = v; sonGecis = null; yenile();
+      }, true);
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.textContent = 'Foton'; btn.style.cssText = ctlStyle;
+      btn.style.background = 'var(--accent,#ffd23f)'; btn.style.color = 'var(--accent-ink,#0b0620)';
+      btn.addEventListener('click', function(){ gec(); });
+      bar.appendChild(btn);
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1 1 100%;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      info.setAttribute('aria-live','polite');
+      bar.appendChild(info);
+
+      function col(k, fb){
+        try { var v = getComputedStyle(host).getPropertyValue(k).trim(); return v || fb; } catch (e) { return fb; }
+      }
+      function tm(fn, ms){ var id = setTimeout(function(){ timers = timers.filter(function(x){ return x !== id; }); fn(); }, ms); timers.push(id); return id; }
+      function toast(t){
+        try { if (typeof Q !== 'undefined' && Q.ui && Q.ui.toast) { Q.ui.toast(t); return true; } } catch (e) {}
+        return false;
+      }
+
+      function metin(){
+        if (n === m) return 'n = m: geçiş yok, foton yok.';
+        var d = dEnerji(n, m), l = dalgaboyu(n, m), tur = n > m ? 'Yayılır' : 'Soğurulur';
+        return tur + ': ΔE = ' + d.toFixed(2) + ' eV · λ = ' + Math.round(l) + ' nm (' + bolge(l) + ')';
+      }
+      function yenile(){
+        if (destroyed) return;
+        selN.value = String(n); selM.value = String(m);
+        info.textContent = metin();
+        cv.setAttribute('aria-label', 'Hidrojen: n=' + n + ' ile m=' + m + ' arası geçiş, ' + metin());
+        ciz();
+      }
+
+      function basariKontrol(){
+        if (bitti || !params.basari) return;
+        var b = params.basari, ok = false;
+        if (b.gecis && sonGecis && sonGecis[0] === b.gecis[0] && sonGecis[1] === b.gecis[1]) ok = true;
+        if (b.enAlt && enAltDenendi) ok = true;
+        if (ok) {
+          bitti = true;
+          try { if (api.done) api.done({ basari:true, olcum:{ n:n, m:m, dE:n === m ? 0 : dEnerji(n, m), lambda:n === m ? null : dalgaboyu(n, m), enAlt:enAltDenendi } }); } catch (e) {}
+        }
+      }
+
+      function gec(){
+        if (destroyed) return;
+        if (n === m) { info.textContent = 'n = m: geçiş yok, foton yok.'; return; }
+        if (anim) return;
+        sonGecis = [n, m];
+        anim = { from: n, to: m, t: 0, dur: reduced ? 1 : 1400, kind: 'gec' };
+        foton = { yay: n > m, t: 0 };
+        level = n; info.textContent = metin();
+        basla();
+      }
+      function altinaDene(){
+        if (destroyed) return;
+        enAltDenendi = true;
+        toast('n=1: en alt');
+        info.textContent = 'n=1: en alt. Altında seviye yok.';
+        if (!anim) {
+          level = 1; bounce = 1;
+          anim = { from: 1, to: 1, t: 0, dur: reduced ? 1 : 1100, kind: 'alt' };
+          basla();
+        }
+        basariKontrol();
+      }
+
+      function basla(){
+        if (raf) return;
+        t0 = 0;
+        raf = requestAnimationFrame(adim);
+      }
+      function adim(ts){
+        raf = 0;
+        if (destroyed) return;
+        if (!t0) t0 = ts;
+        var dt = ts - t0; t0 = ts;
+        if (anim) {
+          anim.t += dt;
+          var u = Math.min(1, anim.t / anim.dur), e = u * u * (3 - 2 * u);
+          if (anim.kind === 'gec') {
+            level = anim.from + (anim.to - anim.from) * e;
+            if (foton) foton.t = u;
+          } else {
+            bounce = Math.sin(u * Math.PI);
+          }
+          if (u >= 1) {
+            var k = anim.kind, h = anim.to;
+            anim = null; foton = null; bounce = 0;
+            if (k === 'gec') { level = h; info.textContent = metin(); basariKontrol(); }
+            else level = n;
+          }
+        }
+        ciz();
+        if (anim) raf = requestAnimationFrame(adim);
+      }
+
+      var W = 0, H = 0, dpr = 1;
+      function boyutla(){
+        if (destroyed) return;
+        var r = cv.getBoundingClientRect();
+        dpr = window.devicePixelRatio || 1;
+        W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+        cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+        ciz();
+      }
+      function ciz(){
+        if (destroyed || !W) return;
+        var c = cv.getContext('2d');
+        c.setTransform(dpr, 0, 0, dpr, 0, 0);
+        c.clearRect(0, 0, W, H);
+        var cyan = col('--cyan','#00e5ff'), mag = col('--magenta','#ff3df0'), yel = col('--yellow','#ffd23f'),
+            lime = col('--lime','#39ff88'), ink = col('--ink','#ffffff'), muted = col('--muted','#c4b9ec'),
+            dark = col('--ink-dark','#0b0620');
+        var fb = col('--font-b','Nunito, sans-serif');
+        var fr = (n === m) ? null : renk(dalgaboyu(n, m));
+        var fcol = fr || muted;
+        var i, k;
+
+        /* sol yarı: enerji merdiveni (En = -13.6/n²) */
+        var lw = W * 0.46, top = 22, bot = H - 14, ex0 = 40, ex1 = lw - 8;
+        function yN(q){ return top + (bot - top) * (1 - 1 / (q * q)); }
+        c.font = '700 14px ' + fb; c.textBaseline = 'middle';
+        for (k = 1; k <= 6; k++) {
+          var y = yN(k), sel = (k === n || k === m);
+          c.strokeStyle = k === n ? yel : (k === m ? cyan : muted);
+          c.globalAlpha = sel ? 1 : 0.6; c.lineWidth = sel ? 4 : 2;
+          c.beginPath(); c.moveTo(ex0, y); c.lineTo(ex1, y); c.stroke();
+          c.globalAlpha = 1; c.fillStyle = sel ? ink : muted;
+          c.textAlign = 'right'; c.fillText('n=' + k, ex0 - 4, y);
+          c.textAlign = 'left'; c.fillText(seviye(k).toFixed(2), ex1 - 42, y - 9);
+        }
+        c.fillStyle = muted; c.textAlign = 'left'; c.fillText('eV', ex0, 9);
+        if (n !== m) {
+          var xa = (ex0 + ex1) / 2 + 6, ya = yN(n), yb = yN(m), dir = yb > ya ? 1 : -1;
+          c.strokeStyle = fcol; c.fillStyle = fcol; c.lineWidth = 4;
+          c.beginPath(); c.moveTo(xa, ya); c.lineTo(xa, yb); c.stroke();
+          c.beginPath(); c.moveTo(xa, yb); c.lineTo(xa - 7, yb - 10 * dir); c.lineTo(xa + 7, yb - 10 * dir); c.closePath(); c.fill();
+        }
+        var ly = yN(level);
+        c.beginPath(); c.arc(ex0 + 14, ly, 6, 0, Math.PI * 2); c.fillStyle = lime; c.fill();
+
+        /* sağ yarı: yörünge + madde dalgası */
+        var cx = lw + (W - lw) * 0.5, cy = H * 0.5 - 4;
+        var rMax = Math.min((W - lw) * 0.46, H * 0.4);
+        function R(L){ return rMax * (0.18 + 0.82 * (L * L) / 36); }
+        for (var j = 1; j <= 6; j++) {
+          c.beginPath(); c.arc(cx, cy, R(j), 0, Math.PI * 2);
+          c.strokeStyle = muted; c.globalAlpha = 0.18; c.lineWidth = 1; c.stroke(); c.globalAlpha = 1;
+        }
+        c.beginPath(); c.arc(cx, cy, 7, 0, Math.PI * 2); c.fillStyle = mag; c.fill();
+        var rr = R(level), tam = Math.abs(level - Math.round(level)) < 0.04;
+        var gen = Math.min(rr * 0.16, 14) * (1 + 0.5 * bounce);
+        var N = 240, th, rad;
+        c.beginPath();
+        for (i = 0; i <= N; i++) {
+          th = i / N * Math.PI * 2;
+          rad = rr + gen * Math.sin(level * th);
+          if (i === 0) c.moveTo(cx + rad * Math.cos(th), cy + rad * Math.sin(th));
+          else c.lineTo(cx + rad * Math.cos(th), cy + rad * Math.sin(th));
+        }
+        c.lineWidth = tam ? 4 : 2.5; c.strokeStyle = tam ? cyan : mag;
+        c.globalAlpha = tam ? 1 : 0.7;
+        c.setLineDash(tam ? [] : [5, 6]);
+        if (tam) { c.shadowColor = cyan; c.shadowBlur = 10; }
+        c.stroke(); c.shadowBlur = 0; c.setLineDash([]); c.globalAlpha = 1;
+        c.beginPath(); c.arc(cx, cy - rr, 5, 0, Math.PI * 2); c.fillStyle = lime; c.fill();
+        /* foton: yayılırsa dışarı, soğurulursa içeri doğru dalgalı çizgi */
+        if (foton) {
+          var xs = foton.yay ? cx + rr + foton.t * (W - cx - rr - 6) : W - 6 - foton.t * (W - cx - rr - 6);
+          c.strokeStyle = fcol; c.lineWidth = 3; c.beginPath();
+          for (i = 0; i < 26; i++) {
+            var qx = xs - i * 3 * (foton.yay ? 1 : -1), qy = cy + 6 * Math.sin(i * 0.9 + foton.t * 20);
+            if (i === 0) c.moveTo(qx, qy); else c.lineTo(qx, qy);
+          }
+          c.stroke();
+        }
+        c.textAlign = 'center'; c.font = '700 15px ' + fb;
+        c.fillStyle = tam ? cyan : muted;
+        c.fillText(tam ? 'n = ' + Math.round(level) + ' tam dalga' : 'dalga sığmıyor', cx, H - 8);
+        c.textAlign = 'left'; void dark;
+      }
+
+      if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(boyutla); ro.observe(cv); }
+      else { onWin = boyutla; window.addEventListener('resize', onWin); }
+      if (api.hint) { try { api.hint('Dalga yörüngeye tam sığarsa seviye vardır.'); } catch (e) {} }
+      boyutla(); yenile();
+      if (params.altinaDene) tm(function(){ altinaDene(); }, 400);
+
+      return {
+        destroy: function(){
+          destroyed = true;
+          if (raf) { cancelAnimationFrame(raf); raf = 0; }
+          timers.forEach(clearTimeout); timers = [];
+          if (ro) { try { ro.disconnect(); } catch (e) {} ro = null; }
+          if (onWin) { window.removeEventListener('resize', onWin); onWin = null; }
+          host.innerHTML = '';
+        },
+        getState: function(){
+          return { n:n, m:m, dE:n === m ? 0 : dEnerji(n, m), lambda:n === m ? null : dalgaboyu(n, m), enAlt:enAltDenendi, gecis:sonGecis };
+        },
+        set: function(p){
+          if (!p || destroyed) return;
+          if (p.n != null) n = sinir(p.n, n);
+          if (p.m != null) m = sinir(p.m, m);
+          if (!anim) level = n;
+          sonGecis = null; yenile();
+          if (p.altinaDene) altinaDene();
+          else if (p.n != null || p.m != null) gec();
+        }
+      };
+    }
+  };
+  if (typeof Q !== 'undefined' && Q.sim && Q.sim.register) Q.sim.register('bohr', impl);
+})();
+
+/* 70-sim-czochralski.js (S2) Czochralski kristal çekme.
+ * Q.sim.register("czochralski", ...) dışında bir şey yapmaz. */
+(function(){
+  'use strict';
+  function kalite(v, rpm){ return 1 - 0.6 * Math.max(0, v - 1.0) - 0.3 * Math.abs(rpm - 15) / 15; }
+  function kisit(x, a, b){ return Math.max(a, Math.min(b, x)); }
+
+  var impl = {
+    mount: function(host, params, api){
+      params = params || {}; api = api || {};
+      var b0 = params.baslangic || {};
+      var v = kisit(+(params.v != null ? params.v : (b0.v != null ? b0.v : 0.6)), 0.2, 2.0);
+      var rpm = kisit(+(params.rpm != null ? params.rpm : (b0.rpm != null ? b0.rpm : 15)), 0, 30);
+      var ilerle = 0.4, cekiyor = false, tamam = false, sonQ = null, bitti = false, destroyed = false;
+      var raf = 0, ro = null, onWin = null, ang = 0, tPrev = 0, gecis = null;
+
+      host.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
+      var cv = document.createElement('canvas');
+      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.setAttribute('role','img');
+      var bar = document.createElement('div');
+      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;';
+      wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
+
+      var fb = 'font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      function slider(etiket, min, max, step, val, fn){
+        var l = document.createElement('label');
+        l.style.cssText = 'display:flex;flex-direction:column;gap:2px;flex:1 1 150px;' + fb;
+        var t = document.createElement('span');
+        var r = document.createElement('input');
+        r.type = 'range'; r.min = min; r.max = max; r.step = step; r.value = val;
+        r.style.cssText = 'width:100%;min-height:40px;accent-color:var(--cyan,#00e5ff);';
+        r.addEventListener('input', function(){ gecis = null; fn(+r.value); guncelle(); });
+        l.appendChild(t); l.appendChild(r); bar.appendChild(l);
+        return { l: l, t: t, r: r, etiket: etiket };
+      }
+      var sV = slider('Çekme hızı', 0.2, 2.0, 0.05, v, function(x){ v = x; yeniden(); });
+      var sR = slider('Dönme', 0, 30, 1, rpm, function(x){ rpm = x; yeniden(); });
+      var btn = document.createElement('button');
+      btn.type = 'button'; btn.textContent = 'Çek';
+      btn.style.cssText = 'min-height:40px;padding:0 20px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--accent-ink,#0b0620);background:var(--accent,#ffd23f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
+      btn.addEventListener('click', cek);
+      bar.appendChild(btn);
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1 1 100%;' + fb;
+      info.setAttribute('aria-live','polite');
+      bar.appendChild(info);
+      var note = document.createElement('span');
+      note.textContent = 'oyun modeli';
+      note.style.cssText = 'font:600 16px var(--font-b,Nunito,sans-serif);color:var(--muted,#c4b9ec);';
+      bar.appendChild(note);
+
+      function col(n, f){ try { var x = getComputedStyle(host).getPropertyValue(n).trim(); return x || f; } catch (e) { return f; } }
+      function yeniden(){ if (!cekiyor) { tamam = false; sonQ = null; ilerle = 0.4; } }
+      function Qn(){ return kalite(v, rpm); }
+
+      function guncelle(){
+        if (destroyed) return;
+        sV.t.textContent = sV.etiket + ': ' + v.toFixed(2) + ' mm/dk';
+        sR.t.textContent = sR.etiket + ': ' + Math.round(rpm) + ' devir/dk';
+        sV.r.value = v; sR.r.value = rpm;
+        var q = Qn();
+        var s = 'Kalite Q = ' + q.toFixed(2);
+        if (tamam) s += ' · ' + (sonQ >= 0.9 ? 'Tek kristal ✓' : 'Tane sınırı ✗');
+        else if (cekiyor) s += ' · çekiliyor…';
+        else s += q >= 0.9 ? ' · tek kristal bekleniyor' : ' · çok kristalli riski';
+        info.textContent = s;
+        btn.disabled = cekiyor;
+        btn.style.opacity = cekiyor ? '0.6' : '1';
+        cv.setAttribute('aria-label', 'Czochralski: çekme hızı ' + v.toFixed(2) + ' mm/dk, dönme ' + Math.round(rpm) + ' devir/dk, kalite ' + q.toFixed(2));
+        ciz();
+      }
+
+      function cek(){
+        if (destroyed || cekiyor) return;
+        ilerle = 0; tamam = false; sonQ = null; cekiyor = true; tPrev = 0;
+        guncelle(); dongu();
+      }
+      function bitir(){
+        cekiyor = false; tamam = true; ilerle = 1; sonQ = Qn();
+        if (sonQ >= 0.9 && params.basari && params.basari.tekKristal && !bitti) {
+          bitti = true;
+          try { if (api.done) api.done({ basari: true, olcum: { v: v, rpm: rpm, Q: sonQ } }); } catch (e) {}
+        }
+        guncelle();
+      }
+      function dongu(){
+        if (destroyed || raf) return;
+        raf = requestAnimationFrame(function(t){
+          raf = 0;
+          if (destroyed) return;
+          var dt = tPrev ? Math.min(0.05, (t - tPrev) / 1000) : 0.016; tPrev = t;
+          ang += rpm * dt * 0.7;
+          if (cekiyor) {
+            ilerle += dt / (6.2 - 1.9 * v);
+            if (ilerle >= 1) bitir();
+          }
+          if (gecis) {
+            var k = Math.min(1, (t - gecis.t0) / 1000), e = k * k * (3 - 2 * k);
+            v = gecis.v0 + (gecis.v1 - gecis.v0) * e; rpm = gecis.r0 + (gecis.r1 - gecis.r0) * e;
+            if (k >= 1) gecis = null;
+            guncelle();
+          } else ciz();
+          if (cekiyor || gecis) dongu();
+        });
+      }
+
+      var W = 0, H = 0, dpr = 1;
+      function boyutla(){
+        if (destroyed) return;
+        var r = cv.getBoundingClientRect();
+        dpr = window.devicePixelRatio || 1;
+        W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+        cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+        ciz();
+      }
+
+      function ciz(){
+        if (destroyed || !W) return;
+        var c = cv.getContext('2d');
+        c.setTransform(dpr, 0, 0, dpr, 0, 0);
+        c.clearRect(0, 0, W, H);
+        var ink = col('--ink','#fff'), mut = col('--muted','#c4b9ec'), cy = col('--cyan','#00e5ff'),
+            yel = col('--yellow','#ffd23f'), mag = col('--magenta','#ff3df0'), lime = col('--lime','#39ff88');
+        var cx = W * 0.4, yMelt = H * 0.78;
+        var cw = Math.min(W * 0.46, 200), ch = H * 0.2;
+        c.fillStyle = '#ff8a3d';
+        c.fillRect(cx - cw / 2 + 4, yMelt, cw - 8, ch * 0.75);
+        c.strokeStyle = mut; c.lineWidth = 4; c.lineJoin = 'round';
+        c.beginPath();
+        c.moveTo(cx - cw / 2, yMelt - 4); c.lineTo(cx - cw / 2, yMelt + ch * 0.7);
+        c.quadraticCurveTo(cx - cw / 2, yMelt + ch, cx - cw / 2 + 24, yMelt + ch);
+        c.lineTo(cx + cw / 2 - 24, yMelt + ch);
+        c.quadraticCurveTo(cx + cw / 2, yMelt + ch, cx + cw / 2, yMelt + ch * 0.7);
+        c.lineTo(cx + cw / 2, yMelt - 4); c.stroke();
+        c.fillStyle = '#ffd08a'; c.fillRect(cx - cw / 2 + 4, yMelt, cw - 8, 3);
+        var iw = Math.min(cw * 0.34, 54), seedW = iw * 0.28;
+        var maxH = yMelt - 34;
+        var ih = 14 + (maxH - 14) * ilerle;
+        var q = tamam ? sonQ : Qn();
+        var tek = q >= 0.9;
+        var yBot = yMelt + 2, yTop = yBot - ih;
+        c.strokeStyle = mut; c.lineWidth = 2;
+        c.beginPath(); c.moveTo(cx, 0); c.lineTo(cx, yTop - 12); c.stroke();
+        c.fillStyle = '#8fd3ff'; c.fillRect(cx - seedW / 2, yTop - 12, seedW, 12);
+        var grd = c.createLinearGradient(cx - iw / 2, 0, cx + iw / 2, 0);
+        grd.addColorStop(0, tek ? '#6fb8e8' : '#7d8fb0'); grd.addColorStop(0.5, tek ? '#bfe6ff' : '#b4c0d8'); grd.addColorStop(1, tek ? '#6fb8e8' : '#7d8fb0');
+        c.fillStyle = grd; c.fillRect(cx - iw / 2, yTop, iw, ih);
+        c.save(); c.beginPath(); c.rect(cx - iw / 2, yTop, iw, ih); c.clip();
+        if (!tek) {
+          c.strokeStyle = mag; c.lineWidth = 2;
+          var n = Math.max(3, Math.round(ih / 14)), i;
+          for (i = 0; i < n; i++) {
+            var y0 = yTop + (i + 0.5) * ih / n, sg = (i % 2) ? 1 : -1;
+            c.beginPath(); c.moveTo(cx - iw / 2, y0 + sg * 8); c.lineTo(cx - iw * 0.1, y0 - sg * 4); c.lineTo(cx + iw / 2, y0 + sg * 10); c.stroke();
+          }
+          c.strokeStyle = '#0b0620'; c.lineWidth = 1.5;
+          for (i = 0; i < 3; i++) {
+            var yy = yTop + (i + 0.7) * ih / 3.4, xx = cx + (i - 1) * iw * 0.28;
+            c.beginPath(); c.moveTo(xx, yy); c.lineTo(xx + 5, yy + 8); c.lineTo(xx - 3, yy + 15); c.stroke();
+          }
+        } else {
+          c.fillStyle = 'rgba(255,255,255,0.45)';
+          for (var gy = yTop + 6; gy < yBot; gy += 12) for (var gx = cx - iw / 2 + 6; gx < cx + iw / 2; gx += 12) { c.beginPath(); c.arc(gx, gy, 1.8, 0, 6.283); c.fill(); }
+        }
+        c.restore();
+        c.strokeStyle = ink; c.lineWidth = 2; c.strokeRect(cx - iw / 2, yTop, iw, ih);
+        if (rpm > 0.5) {
+          c.strokeStyle = cy; c.lineWidth = 3;
+          var ey = Math.max(16, yTop - 24);
+          c.beginPath(); c.ellipse(cx, ey, iw * 0.9, 6, 0, ang, ang + 4.2); c.stroke();
+        }
+        var lx = cx + cw / 2 + 18, bw = Math.max(40, W - lx - 14), by = Math.round(H * 0.16);
+        c.textBaseline = 'middle'; c.textAlign = 'left';
+        c.font = '700 16px ' + col('--font-b','Nunito, sans-serif');
+        c.fillStyle = mut; c.fillText('Q', lx, by);
+        c.strokeStyle = ink; c.lineWidth = 2; c.strokeRect(lx + 20, by - 8, bw - 20, 16);
+        c.fillStyle = tek ? lime : mag;
+        c.fillRect(lx + 20, by - 8, (bw - 20) * kisit(q, 0, 1), 16);
+        c.fillStyle = yel; c.fillRect(lx + 20 + (bw - 20) * 0.9 - 1, by - 12, 3, 24);
+        if (tamam) {
+          c.font = '400 ' + Math.round(Math.min(30, H * 0.12)) + 'px ' + col('--font-d','Impact, sans-serif');
+          c.fillStyle = sonQ >= 0.9 ? lime : mag;
+          c.fillText(sonQ >= 0.9 ? 'Tek kristal ✓' : 'Tane sınırı ✗', lx, H * 0.42);
+        }
+      }
+
+      if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(boyutla); ro.observe(cv); }
+      else { onWin = boyutla; window.addEventListener('resize', onWin); }
+      if (api.hint) { try { api.hint('Yavaş çek, orta hızda döndür: Q en az 0,9 olsun.'); } catch (e) {} }
+      boyutla(); guncelle();
+
+      return {
+        destroy: function(){
+          destroyed = true;
+          if (raf) { try { cancelAnimationFrame(raf); } catch (e) {} raf = 0; }
+          if (ro) { try { ro.disconnect(); } catch (e) {} ro = null; }
+          if (onWin) { window.removeEventListener('resize', onWin); onWin = null; }
+          host.innerHTML = '';
+        },
+        getState: function(){ return { v: v, rpm: rpm, Q: Qn(), cekiyor: cekiyor, tamam: tamam, ilerle: ilerle }; },
+        set: function(p){
+          if (!p || destroyed) return;
+          var v1 = p.v != null ? kisit(+p.v, 0.2, 2.0) : v, r1 = p.rpm != null ? kisit(+p.rpm, 0, 30) : rpm;
+          yeniden();
+          gecis = { t0: performance.now(), v0: v, v1: v1, r0: rpm, r1: r1 };
+          dongu();
+        }
+      };
+    }
+  };
+  if (typeof Q !== 'undefined' && Q.sim && Q.sim.register) Q.sim.register('czochralski', impl);
+})();
+
 /* 70-sim-fotoelektrik.js (S6) Fotoelektrik olay simülasyonu. Yalnızca Q.sim.register çağırır. */
 (function(){
   'use strict';
@@ -3678,6 +4886,291 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   Q.sim.register('kristal_tur', { mount: mount });
 })();
 
+/* 70-sim-kuyu.js (S8) Sonsuz potansiyel kuyusu / gitar teli.
+ * Yalnızca Q.sim.register("kuyu", ...) çağırır. Bağımlılık: 00-q.js (Q.sim). */
+(function () {
+  'use strict';
+
+  var SUB = ['₀', '₁', '₂', '₃', '₄'];
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)); }
+  function energy(n, L) { return 0.376 * n * n / (L * L); } /* eV, L nm */
+  function fmtE(e) { return e >= 1 ? e.toFixed(2) + ' eV' : (e * 1000).toFixed(1) + ' meV'; }
+
+  function mount(host, params, api) {
+    params = params || {};
+    var base = params.baslangic || {};
+    var L = clamp(+(base.L != null ? base.L : (params.L != null ? params.L : 2)) || 2, 1, 10);
+    var n = clamp(Math.round(+(base.n != null ? base.n : (params.n != null ? params.n : 1)) || 1), 1, 4);
+    var mod = (base.mod || params.mod) === 'tel' ? 'tel' : 'kuyu';
+    var basari = params.basari || null;
+    var doneFired = false, destroyed = false, flat = false, maxL = L;
+    var shownL = L, shownN = n, amp = 1; /* amp: 1 = dalga, 0 = düz çizgi (n=0 denemesi) */
+    var raf = 0, timers = [], listeners = [];
+    var reduce = false;
+    try { reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { reduce = false; }
+
+    function on(el, ev, fn) { el.addEventListener(ev, fn); listeners.push([el, ev, fn]); }
+
+    host.innerHTML = '';
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;color:var(--ink);font-family:var(--font-b);';
+    var canvas = document.createElement('canvas');
+    canvas.style.cssText = 'display:block;width:100%;border-radius:var(--rs);background:var(--sky);';
+    canvas.setAttribute('role', 'img');
+    var ctrl = document.createElement('div');
+    ctrl.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
+    wrap.appendChild(canvas); wrap.appendChild(ctrl);
+    host.appendChild(wrap);
+
+    function row() {
+      var r = document.createElement('div');
+      r.style.cssText = 'display:flex;gap:6px;align-items:center;';
+      ctrl.appendChild(r); return r;
+    }
+    function lab(txt, r) {
+      var s = document.createElement('span');
+      s.textContent = txt; s.style.cssText = 'font-family:var(--font-d);font-size:15px;min-width:92px;';
+      r.appendChild(s); return s;
+    }
+    function mkBtn(txt, flex) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.textContent = txt;
+      b.style.cssText = 'min-height:40px;min-width:40px;flex:' + (flex || 1) + ';border:2px solid var(--line);border-radius:var(--rs);background:var(--panel2);color:var(--ink);font-family:var(--font-d);font-size:16px;cursor:pointer;';
+      return b;
+    }
+    function styleBtn(b, act) {
+      b.style.background = act ? 'var(--sel)' : 'var(--panel2)';
+      b.style.borderColor = act ? 'var(--cyan)' : 'var(--line)';
+      b.setAttribute('aria-pressed', act ? 'true' : 'false');
+    }
+
+    /* 1) L kaydırıcısı */
+    var r1 = row();
+    lab('Kuyu genişliği L', r1);
+    var slider = document.createElement('input');
+    slider.type = 'range'; slider.min = '1'; slider.max = '10'; slider.step = '0.5'; slider.value = String(L);
+    slider.style.cssText = 'flex:1;min-height:40px;accent-color:var(--cyan);';
+    slider.setAttribute('aria-label', 'Kuyu genişliği L (nm)');
+    r1.appendChild(slider);
+    var lVal = document.createElement('span');
+    lVal.style.cssText = 'font-family:var(--font-d);min-width:56px;text-align:right;';
+    r1.appendChild(lVal);
+
+    /* 2) n düğmeleri + n=0 dene */
+    var r2 = row();
+    lab('Seviye n', r2);
+    var nBtns = [1, 2, 3, 4].map(function (k) {
+      var b = mkBtn(String(k), 1);
+      b.setAttribute('aria-label', 'Seviye n = ' + k);
+      on(b, 'click', function () { n = k; shownN = k; flat = false; amp = 1; refresh(); });
+      r2.appendChild(b); return b;
+    });
+    var zeroBtn = mkBtn('n = 0 dene', 2);
+    on(zeroBtn, 'click', tryZero);
+    r2.appendChild(zeroBtn);
+
+    /* 3) Tel <-> Kuyu */
+    var r3 = row();
+    var modBtn = mkBtn('', 1);
+    on(modBtn, 'click', function () { mod = mod === 'kuyu' ? 'tel' : 'kuyu'; refresh(); });
+    r3.appendChild(modBtn);
+
+    on(slider, 'input', function () { L = clamp(+slider.value, 1, 10); shownL = L; flat = false; amp = 1; refresh(); });
+
+    function tryZero() {
+      if (destroyed) { return; }
+      flat = true;
+      animAmp(0);
+      refresh();
+      finishCheck({ n0Dene: true });
+    }
+
+    function animAmp(target) {
+      cancelAnimationFrame(raf);
+      if (reduce) { amp = target; draw(); return; }
+      var from = amp, t0 = null;
+      function step(ts) {
+        if (destroyed) { return; }
+        if (t0 === null) { t0 = ts; }
+        var p = Math.min(1, (ts - t0) / 500);
+        amp = from + (target - from) * p;
+        draw();
+        if (p < 1) { raf = requestAnimationFrame(step); }
+      }
+      raf = requestAnimationFrame(step);
+    }
+
+    /* olay: { n0Dene:true } veya {} (durum kontrolü) */
+    function finishCheck(ev) {
+      if (doneFired || !basari || destroyed) { return; }
+      maxL = Math.max(maxL, L);
+      var ok = false;
+      if (basari.L != null && basari.n != null && !flat && L === +basari.L && n === +basari.n) { ok = true; }
+      if (basari.n0Dene && ev && ev.n0Dene) { ok = true; }
+      if (basari.yariya && !flat && maxL >= 2 && L <= 1) { ok = true; }
+      if (ok) {
+        doneFired = true;
+        api.done({ basari: true, olcum: { L: L, n: n, E1: +energy(1, L).toFixed(4), n0Dene: !!(ev && ev.n0Dene), yariya: maxL >= 2 && L <= 1 } });
+      }
+    }
+
+    function refresh() {
+      if (destroyed) { return; }
+      slider.value = String(L);
+      lVal.textContent = (Math.round(L * 10) / 10) + ' nm';
+      nBtns.forEach(function (b, k) { styleBtn(b, !flat && n === k + 1); });
+      zeroBtn.style.borderColor = flat ? 'var(--yellow)' : 'var(--line)';
+      modBtn.textContent = mod === 'tel' ? 'Tel ⇄ Kuyu: Tel' : 'Tel ⇄ Kuyu: Kuyu';
+      styleBtn(modBtn, false);
+      canvas.setAttribute('aria-label', flat ? 'Dalga yok, parçacık yok'
+        : (mod === 'tel' ? 'İki ucu sabit tel' : 'Sonsuz kuyu') + ', n = ' + n + ', L = ' + L + ' nm, E' + SUB[n] + ' = ' + fmtE(energy(n, L)));
+      if (!flat) { amp = 1; }
+      draw();
+      finishCheck(null);
+    }
+
+    function cssVar(nm, fb) {
+      var v = ''; try { v = getComputedStyle(host).getPropertyValue(nm).trim(); } catch (e) { v = ''; }
+      return v || fb;
+    }
+    var W = 300, H = 200;
+    function resize() {
+      if (destroyed) { return; }
+      var dpr = window.devicePixelRatio || 1;
+      W = Math.max(220, host.clientWidth || 300);
+      H = Math.max(180, Math.min(260, Math.round((window.innerHeight || 800) * 0.22)));
+      canvas.style.height = H + 'px';
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw();
+    }
+
+    function draw() {
+      if (destroyed) { return; }
+      var ctx = canvas.getContext('2d');
+      var ink = cssVar('--ink', '#fff'), muted = cssVar('--muted', '#c4b9ec');
+      var cy = cssVar('--cyan', '#00e5ff'), mg = cssVar('--magenta', '#ff3df0'), yel = cssVar('--yellow', '#ffd23f');
+      var fd = cssVar('--font-d', 'sans-serif');
+      ctx.clearRect(0, 0, W, H);
+      ctx.fillStyle = cssVar('--sky', '#120a30'); ctx.fillRect(0, 0, W, H);
+
+      var ladderW = Math.min(86, W * 0.24);
+      var area0 = 12, area1 = W - ladderW - 12;
+      var cx = (area0 + area1) / 2;
+      var half = (area1 - area0 - 16) / 2 * (0.25 + 0.75 * (shownL - 1) / 9); /* L kaydıkça görsel genişlik değişir */
+      var x0 = cx - half, x1 = cx + half;
+      var top = 26, y0 = H - 42, hw = (y0 - top) * 0.62;
+      var i, N = 120, x, s;
+
+      ctx.strokeStyle = muted; ctx.lineWidth = 1; ctx.setLineDash([4, 4]);
+      ctx.beginPath(); ctx.moveTo(area0, y0); ctx.lineTo(area1, y0); ctx.stroke(); ctx.setLineDash([]);
+
+      if (mod === 'kuyu') {
+        ctx.strokeStyle = ink; ctx.lineWidth = 5; ctx.lineCap = 'round';
+        ctx.beginPath(); ctx.moveTo(x0, top - 8); ctx.lineTo(x0, y0 + 16); ctx.moveTo(x1, top - 8); ctx.lineTo(x1, y0 + 16); ctx.stroke();
+        ctx.globalAlpha = 0.3 * amp; ctx.fillStyle = mg;
+        ctx.beginPath(); ctx.moveTo(x0, y0);
+        for (i = 0; i <= N; i++) { x = x0 + (x1 - x0) * i / N; s = Math.sin(shownN * Math.PI * i / N); ctx.lineTo(x, y0 - s * s * hw * 1.2); }
+        ctx.lineTo(x1, y0); ctx.closePath(); ctx.fill(); ctx.globalAlpha = 1;
+        ctx.strokeStyle = mg; ctx.lineWidth = 1.5; ctx.beginPath();
+        for (i = 0; i <= N; i++) { x = x0 + (x1 - x0) * i / N; s = Math.sin(shownN * Math.PI * i / N); if (i) { ctx.lineTo(x, y0 - s * s * hw * 1.2 * amp); } else { ctx.moveTo(x, y0); } }
+        ctx.stroke();
+      } else {
+        ctx.fillStyle = ink;
+        ctx.fillRect(x0 - 5, y0 - 16, 8, 32); ctx.fillRect(x1 - 3, y0 - 16, 8, 32);
+      }
+      ctx.strokeStyle = cy; ctx.lineWidth = mod === 'tel' ? 2.5 : 3; ctx.lineJoin = 'round';
+      ctx.beginPath();
+      for (i = 0; i <= N; i++) {
+        x = x0 + (x1 - x0) * i / N;
+        s = Math.sin(shownN * Math.PI * i / N) * amp;
+        if (i) { ctx.lineTo(x, y0 - s * hw * 0.7); } else { ctx.moveTo(x, y0 - s * hw * 0.7); }
+      }
+      ctx.stroke();
+      if (mod === 'tel') {
+        ctx.globalAlpha = 0.35; ctx.beginPath();
+        for (i = 0; i <= N; i++) { x = x0 + (x1 - x0) * i / N; s = Math.sin(shownN * Math.PI * i / N) * amp; if (i) { ctx.lineTo(x, y0 + s * hw * 0.7); } else { ctx.moveTo(x, y0 + s * hw * 0.7); } }
+        ctx.stroke(); ctx.globalAlpha = 1;
+      }
+
+      ctx.fillStyle = ink; ctx.font = '700 13px ' + fd; ctx.textAlign = 'center'; ctx.textBaseline = 'alphabetic';
+      ctx.fillText('L = ' + (Math.round(shownL * 10) / 10) + ' nm', cx, H - 8);
+      ctx.textAlign = 'left'; ctx.fillStyle = cy; ctx.fillText('ψ', area0 + 4, 16);
+      if (mod === 'kuyu') { ctx.fillStyle = mg; ctx.fillText('|ψ|²', area0 + 24, 16); }
+      if (flat) {
+        ctx.fillStyle = yel; ctx.font = '700 15px ' + fd; ctx.textAlign = 'center';
+        ctx.fillText('Dalga yok → parçacık yok', cx, top + 10);
+      }
+
+      /* enerji merdiveni (sağ şerit) */
+      var lx0 = W - ladderW, lx1 = W - 8, ly0 = H - 24, ly1 = 24, emax = energy(4, 1);
+      ctx.strokeStyle = muted; ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(lx0 - 4, ly1 - 6); ctx.lineTo(lx0 - 4, ly0 + 2); ctx.stroke();
+      ctx.textBaseline = 'middle';
+      for (var k = 1; k <= 4; k++) {
+        var e = energy(k, shownL), yy = ly0 - (ly0 - ly1) * Math.min(1, e / emax);
+        var act = k === n && !flat;
+        ctx.strokeStyle = act ? yel : muted; ctx.lineWidth = act ? 4 : 2; ctx.globalAlpha = act ? 1 : 0.55;
+        ctx.beginPath(); ctx.moveTo(lx0, yy); ctx.lineTo(lx1 - 14, yy); ctx.stroke();
+        ctx.fillStyle = act ? yel : muted; ctx.font = (act ? '700 13px ' : '12px ') + fd; ctx.textAlign = 'left';
+        ctx.fillText(String(k), lx1 - 11, yy);
+        ctx.globalAlpha = 1;
+      }
+      ctx.textBaseline = 'top'; ctx.textAlign = 'right'; ctx.fillStyle = yel; ctx.font = '700 16px ' + fd;
+      ctx.fillText(flat ? 'E = ?' : 'E' + SUB[n] + ' = ' + fmtE(energy(n, shownL)), W - 8, 4);
+    }
+
+    var ro = null;
+    if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(function () { resize(); }); ro.observe(host); }
+    else { on(window, 'resize', resize); }
+
+    if (api && api.hint) { api.hint('Kuyuyu daralt, seviyeyi değiştir; enerjiye bak.'); }
+    resize();
+    refresh();
+
+    return {
+      destroy: function () {
+        destroyed = true;
+        cancelAnimationFrame(raf);
+        timers.forEach(clearTimeout); timers = [];
+        listeners.forEach(function (l) { l[0].removeEventListener(l[1], l[2]); });
+        listeners = [];
+        if (ro) { ro.disconnect(); ro = null; }
+        host.innerHTML = '';
+      },
+      getState: function () {
+        return { L: L, n: n, mod: mod, E: flat ? null : energy(n, L), dalgaYok: flat };
+      },
+      set: function (p) {
+        if (!p || destroyed) { return; }
+        if (p.mod) { mod = p.mod === 'tel' ? 'tel' : 'kuyu'; }
+        if (p.basari) { basari = p.basari; }
+        var tL = p.L != null ? clamp(+p.L, 1, 10) : L;
+        var tN = p.n != null ? clamp(Math.round(+p.n), 1, 4) : n;
+        flat = false; amp = 1;
+        cancelAnimationFrame(raf);
+        var fL = shownL, fN = shownN, t0 = null;
+        function end() { L = tL; n = tN; shownL = L; shownN = n; refresh(); }
+        if (reduce) { end(); return; }
+        n = tN;
+        function step(ts) {
+          if (destroyed) { return; }
+          if (t0 === null) { t0 = ts; }
+          var q = Math.min(1, (ts - t0) / 1000), e = q * (2 - q);
+          shownL = fL + (tL - fL) * e; shownN = fN + (tN - fN) * e;
+          slider.value = String(shownL);
+          lVal.textContent = (Math.round(shownL * 10) / 10) + ' nm';
+          draw();
+          if (q < 1) { raf = requestAnimationFrame(step); } else { end(); }
+        }
+        raf = requestAnimationFrame(step);
+      }
+    };
+  }
+
+  Q.sim.register('kuyu', { mount: mount });
+})();
+
 /* 70-sim-miller.js (S4) Miller indisleri: düzlem (hkl) ve yön [uvw].
  * Yalnızca Q.sim.register("miller", ...) çağırır. Bağımlılık: 00-q.js (Q.sim). */
 (function () {
@@ -4046,6 +5539,226 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   }
 
   Q.sim.register('miller', { mount: mount });
+})();
+
+/* 70-sim-olcum.js (S10) Süperpozisyon, ölçüm, çökme.
+ * Q.sim.register("olcum", ...) dışında bir şey yapmaz. */
+(function(){
+  'use strict';
+  function clamp(v, a, b){ return Math.max(a, Math.min(b, v)); }
+
+  var impl = {
+    mount: function(host, params, api){
+      params = params || {}; api = api || {};
+      var b0 = params.baslangic || {};
+      var c1sq = clamp(+(params.c1sq != null ? params.c1sq : (b0.c1sq != null ? b0.c1sq : 0.5)), 0, 1);
+      var collapsed = 0;            /* 0: süperpozisyon, 1 veya 2: çökmüş */
+      var gecmis = [];              /* son ölçüm sonuçları (en çok 20) */
+      var sayac = [0, 0];           /* yığılma */
+      var tekrarYapti = false, yuzYapti = false, bitti = false, destroyed = false;
+      var sonMetin = '';
+      var raf = 0, t0 = 0, ro = null, onWin = null, tmo = 0;
+      var anim = 1;
+      var cubuk = [c1sq, 1 - c1sq]; /* gösterilen çubuk yükseklikleri */
+
+      host.innerHTML = '';
+      var wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
+      var cv = document.createElement('canvas');
+      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.setAttribute('role', 'img');
+      var bar = document.createElement('div');
+      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;';
+      wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
+
+      var btnStyle = 'min-height:40px;padding:0 14px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);background:var(--panel2,#25164f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
+      function mkBtn(text, fn){
+        var b = document.createElement('button');
+        b.type = 'button'; b.textContent = text; b.style.cssText = btnStyle;
+        b.addEventListener('click', fn); return b;
+      }
+      var lab = document.createElement('label');
+      lab.style.cssText = 'display:flex;align-items:center;gap:8px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);flex:1 1 180px;';
+      var labT = document.createElement('span'); labT.textContent = 'c₁²';
+      var sl = document.createElement('input');
+      sl.type = 'range'; sl.min = '0'; sl.max = '1'; sl.step = '0.01'; sl.value = String(c1sq);
+      sl.setAttribute('aria-label', 'c₁ kare');
+      sl.style.cssText = 'flex:1;min-height:40px;accent-color:var(--cyan,#00e5ff);';
+      var slV = document.createElement('span'); slV.style.cssText = 'min-width:40px;color:var(--yellow,#ffd23f);';
+      lab.appendChild(labT); lab.appendChild(sl); lab.appendChild(slV);
+      bar.appendChild(lab);
+      var bOlc = mkBtn('Ölç', function(){ hazirla(); olc(true); });
+      var bTek = mkBtn('Tekrar ölç', tekrarOlc);
+      var bYuz = mkBtn('100 kez', yuzKez);
+      bOlc.style.background = 'var(--accent,#ffd23f)'; bOlc.style.color = 'var(--accent-ink,#0b0620)';
+      bar.appendChild(bOlc); bar.appendChild(bTek); bar.appendChild(bYuz);
+      var info = document.createElement('div');
+      info.style.cssText = 'flex:1 1 100%;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);min-height:22px;';
+      info.setAttribute('aria-live', 'polite');
+      bar.appendChild(info);
+
+      function col(n, fb){
+        try { var v = getComputedStyle(host).getPropertyValue(n).trim(); return v || fb; } catch (e) { return fb; }
+      }
+      function bildir(){
+        if (bitti || !params.basari) return;
+        var h = params.basari;
+        if ((h.tekrarAyni && tekrarYapti) || (h.yuz && yuzYapti)) {
+          bitti = true;
+          try { if (api.done) api.done({ basari: true, olcum: { c1sq: c1sq, sonuc: collapsed, n: sayac[0] + sayac[1], tekrarAyni: tekrarYapti } }); } catch (e) {}
+        }
+      }
+      function hazirla(){          /* ψ'yi başlangıç süperpozisyonuna döndür */
+        collapsed = 0; cubuk = [c1sq, 1 - c1sq]; anim = 1;
+      }
+      function kaydet(s){
+        gecmis.push(s); if (gecmis.length > 20) gecmis.shift();
+        sayac[s - 1]++;
+      }
+      function olc(){
+        var s = Math.random() < c1sq ? 1 : 2;
+        collapsed = s; anim = 0;
+        kaydet(s);
+        sonMetin = 'ÇÖKTÜ: sonuç ' + s;
+        guncelle();
+      }
+      function tekrarOlc(){
+        if (!collapsed) { sonMetin = 'Önce bir kez ölç.'; guncelle(); return; }
+        kaydet(collapsed);
+        tekrarYapti = true;
+        sonMetin = 'Tekrar: yine ' + collapsed + '. Çökmüş durum değişmez.';
+        guncelle(); bildir();
+      }
+      function yuzKez(){
+        var i;
+        for (i = 0; i < 100; i++) kaydet(Math.random() < c1sq ? 1 : 2);
+        hazirla();
+        yuzYapti = true;
+        sonMetin = '100 taze hazırlık: toplam ' + sayac[0] + ' kez 1, ' + sayac[1] + ' kez 2.';
+        guncelle(); bildir();
+      }
+      sl.addEventListener('input', function(){
+        c1sq = clamp(parseFloat(sl.value), 0, 1);
+        hazirla(); sonMetin = ''; guncelle();
+      });
+
+      function guncelle(){
+        if (destroyed) return;
+        slV.textContent = c1sq.toFixed(2);
+        bTek.disabled = !collapsed; bTek.style.opacity = collapsed ? '1' : '0.5';
+        info.textContent = sonMetin || ('|c₁|² = ' + c1sq.toFixed(2) + ', |c₂|² = ' + (1 - c1sq).toFixed(2));
+        cv.setAttribute('aria-label', collapsed ? 'Durum ' + collapsed + '. özdurumda çöktü' : 'Süperpozisyon: ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
+      }
+
+      var W = 0, H = 0, dpr = 1;
+      function boyutla(){
+        if (destroyed) return;
+        var r = cv.getBoundingClientRect();
+        dpr = window.devicePixelRatio || 1;
+        W = Math.max(1, Math.round(r.width)); H = Math.max(1, Math.round(r.height));
+        cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+        ciz(performance.now());
+      }
+      function ok(c, cx, cy, r, ang, renk){
+        var x = cx + r * Math.cos(ang), y = cy - r * Math.sin(ang);
+        c.strokeStyle = renk; c.fillStyle = renk; c.lineWidth = 3;
+        c.beginPath(); c.moveTo(cx, cy); c.lineTo(x, y); c.stroke();
+        c.beginPath(); c.arc(x, y, 4, 0, Math.PI * 2); c.fill();
+      }
+      function ciz(now){
+        if (destroyed || !W) return;
+        var tt = (now - t0) / 1000;
+        var hedef = collapsed ? [collapsed === 1 ? 1 : 0, collapsed === 2 ? 1 : 0] : [c1sq, 1 - c1sq];
+        anim = Math.min(1, anim + 0.08);
+        var k = Math.min(1, anim * 0.5 + 0.2);
+        cubuk = [cubuk[0] + (hedef[0] - cubuk[0]) * k, cubuk[1] + (hedef[1] - cubuk[1]) * k];
+        var c = cv.getContext('2d');
+        c.setTransform(dpr, 0, 0, dpr, 0, 0);
+        c.clearRect(0, 0, W, H);
+        var cyan = col('--cyan', '#00e5ff'), mag = col('--magenta', '#ff3df0'), yel = col('--yellow', '#ffd23f'),
+            ink = col('--ink', '#ffffff'), muted = col('--muted', '#c4b9ec');
+        var renk = [cyan, mag];
+        var fb = col('--font-b', 'Nunito, sans-serif');
+        var ust = H * 0.62, taban = ust - 6, maxH = ust - 34;
+        c.font = '700 16px ' + fb; c.textBaseline = 'middle'; c.textAlign = 'center';
+        var i, bw = Math.min(70, W * 0.12);
+        for (i = 0; i < 2; i++) {
+          var cx = W * (0.14 + i * 0.3), h = Math.max(2, cubuk[i] * maxH);
+          c.fillStyle = renk[i]; c.globalAlpha = 0.85;
+          c.fillRect(cx - bw / 2, taban - h, bw, h);
+          c.globalAlpha = 1; c.strokeStyle = ink; c.lineWidth = 2; c.strokeRect(cx - bw / 2, taban - h, bw, h);
+          c.fillStyle = ink;
+          c.fillText('|c' + (i + 1) + '|² = ' + (cubuk[i] < 0.005 ? '0' : cubuk[i] > 0.995 ? '1' : cubuk[i].toFixed(2)), cx, Math.max(12, taban - h - 12));
+          c.fillText('E' + (i + 1), cx, taban + 12);
+          /* faz oku: e^(-iEt/ħ), E2 > E1 */
+          var rr = Math.min(22, W * 0.05), ax = cx + bw / 2 + rr + 8, ay = taban - rr - 4;
+          c.strokeStyle = muted; c.lineWidth = 1.5;
+          c.beginPath(); c.arc(ax, ay, rr, 0, Math.PI * 2); c.stroke();
+          ok(c, ax, ay, rr, -(1 + 1.7 * i) * tt, renk[i]);
+        }
+        c.textAlign = 'left';
+        if (collapsed) {
+          c.fillStyle = yel; c.font = '400 ' + Math.round(Math.min(34, H * 0.14)) + 'px ' + col('--font-d', 'Impact, sans-serif');
+          c.fillText('ÇÖKTÜ', W * 0.64, H * 0.12);
+        } else {
+          c.fillStyle = muted; c.font = '700 16px ' + fb; c.fillText('süperpozisyon', W * 0.64, H * 0.12);
+        }
+        /* histogram (sağ) */
+        var tot = sayac[0] + sayac[1], hx = W * 0.64, hw = W * 0.3, hb = ust - 6;
+        c.font = '700 16px ' + fb; c.textAlign = 'center';
+        for (i = 0; i < 2; i++) {
+          var f = tot ? sayac[i] / tot : 0, hh = f * (maxH * 0.6), bx = hx + i * hw * 0.5 + 6;
+          c.fillStyle = renk[i]; c.globalAlpha = 0.9;
+          c.fillRect(bx, hb - hh, hw * 0.4, Math.max(1, hh));
+          c.globalAlpha = 1; c.fillStyle = ink;
+          c.fillText(String(sayac[i]), bx + hw * 0.2, hb - hh - 10);
+        }
+        /* sonuç şeridi: son 20 */
+        var sw = Math.min(26, (W - 24) / 20), sy = H - sw - 8, sx = 12, off = 20 - gecmis.length;
+        c.strokeStyle = muted; c.lineWidth = 1;
+        for (i = 0; i < 20; i++) {
+          if (i >= off) { c.fillStyle = renk[gecmis[i - off] - 1]; c.fillRect(sx + i * sw, sy, sw - 3, sw); }
+          else c.strokeRect(sx + i * sw + 0.5, sy + 0.5, sw - 4, sw - 1);
+        }
+        c.fillStyle = muted; c.textAlign = 'left'; c.font = '600 16px ' + fb;
+        c.fillText('son 20 ölçüm', sx, sy - 12);
+      }
+      function dongu(now){
+        raf = 0;
+        if (destroyed) return;
+        ciz(now);
+        raf = requestAnimationFrame(dongu);
+      }
+
+      if (typeof ResizeObserver !== 'undefined') {
+        ro = new ResizeObserver(boyutla); ro.observe(cv);
+      } else { onWin = boyutla; window.addEventListener('resize', onWin); }
+      if (api.hint) { try { api.hint('Ölç, sonra tekrar ölç: çökmüş durum değişmez.'); } catch (e) {} }
+      t0 = performance.now();
+      guncelle(); boyutla();
+      if (params.olcTekrar) { olc(); tmo = setTimeout(function(){ tmo = 0; if (!destroyed) tekrarOlc(); }, 600); }
+      raf = requestAnimationFrame(dongu);
+
+      return {
+        destroy: function(){
+          destroyed = true;
+          if (raf) { cancelAnimationFrame(raf); raf = 0; }
+          if (tmo) { clearTimeout(tmo); tmo = 0; }
+          if (ro) { try { ro.disconnect(); } catch (e) {} ro = null; }
+          if (onWin) { window.removeEventListener('resize', onWin); onWin = null; }
+          host.innerHTML = '';
+        },
+        getState: function(){ return { c1sq: c1sq, cokmus: collapsed, sayac: sayac.slice(), gecmis: gecmis.slice(), tekrarAyni: tekrarYapti, yuz: yuzYapti }; },
+        set: function(p){
+          if (p && p.c1sq != null) {
+            c1sq = clamp(+p.c1sq, 0, 1); sl.value = String(c1sq); hazirla(); sonMetin = ''; guncelle();
+          }
+          if (p && p.olcTekrar) { olc(); tekrarOlc(); }
+        }
+      };
+    }
+  };
+  if (typeof Q !== 'undefined' && Q.sim && Q.sim.register) Q.sim.register('olcum', impl);
 })();
 
 /* 80-obs-dusman.js (H2) `dusman` engel işleyicisi: 1 cümlelik kavram sorusu,
@@ -5923,6 +7636,1092 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           sec('Yalnızca sıcaklıkla oluşur', false, 'Hayır. Sıcaklıktan bağımsızdır.')
         ],
         kusurSkin: 'safsizlik'
+      }
+    ]
+  };
+})();
+
+/* 90-data-s04.js · İstasyon 04 "Atom mikroskobu" verisi (E4)
+ * Q.data.stations.s04 alanını doldurur. Metinler oyun/istasyonlar/04-atom-mikroskobu.md'den aynen alınır.
+ * Şema: oyun/01-veri-semalari.md §3.
+ */
+(function(){
+  'use strict';
+
+  function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
+
+  var o03 = {
+    id: 's04-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ayrik_spektrum', agirlik: 1,
+    soru: 'Hidrojen atomu neden yalnızca belirli renklerde ışır?',
+    secenekler: [
+      sec('Enerji seviyeleri ayrık, geçiş farkı kadar foton çıkar', true, 'Doğru. Her renk bir seviye farkına karşılık gelir.'),
+      sec('Atom sıcaklığa göre renk seçer', false, 'Hayır. Renkler seviye farklarından gelir, sıcaklıktan değil.'),
+      sec('Elektron her enerjide dolaşabilir', false, 'Hayır. Yalnızca belirli seviyeler izinlidir.')
+    ],
+    kusurSkin: 'vakans'
+  };
+
+  var o04 = {
+    id: 's04-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'debroglie_dalga', agirlik: 1,
+    soru: 'Bilardo topu neden dalga gibi davranmıyor?',
+    secenekler: [
+      sec('Dalga boyu (h/p) çok küçük kalıyor', true, 'Doğru. Büyük momentum, ihmal edilecek kadar küçük dalga boyu.'),
+      sec('Top atomlardan oluşmadığı için', false, 'Hayır. Top da atomdan oluşur; dalga boyu ölçülemeyecek kadar küçük.'),
+      sec('Dalga özelliği yalnızca ışıkta var', false, 'Hayır. Elektron kırınımı maddenin de dalga olduğunu gösterir.')
+    ],
+    kusurSkin: 'safsizlik'
+  };
+
+  var o05 = {
+    id: 's04-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'atom_kararlilik', agirlik: 1.5,
+    soru: 'Hidrojende elektron, n=1 seviyesinin (−13,6 eV) altına inebilir mi?',
+    secenekler: [
+      sec('Hayır, n=1 en alt seviye', true, 'Doğru. Altında izinli seviye yok, atom kararlı.'),
+      sec('Evet, ışıma yaparak çekirdeğe düşer', false, 'Yanlış. Klasik tahmin buydu; kuantumda alt seviye var.'),
+      sec('Evet, sıcaklık düşerse', false, 'Yanlış. Sebep sıcaklık değil, dalga doğasıdır.')
+    ],
+    sim: {
+      modul: 'bohr',
+      onceki: { n: 2, m: 1 },
+      sonraki: { n: 1, m: 1, altinaDene: true }
+    },
+    acik: 'n=1\'in altında izinli seviye yok; elektron daha aşağı inemez.'
+  };
+
+  Q.data.stations.s04 = {
+    id: 's04',
+    sira: 4,
+    ad: 'Atom mikroskobu',
+    makine: 'Atom mikroskobu',
+    renk: '#7cf5a0',
+    konu: 'H atomu kararlılığı, ayrık seviyeler, madde dalgası',
+    sinavSorulari: ['S4'],
+    sureHedefDk: 22,
+    patronId: 'bohr',
+    kavramlar: ['atom_kararlilik', 'ayrik_spektrum', 'debroglie_dalga', 'bohr_seviye', 'sifir_noktasi_sicaklik'],
+    engeller: [
+      {
+        id: 's04-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
+        yer: 'Kopenhag', yil: 1913, rivayet: false,
+        satirlar: [
+          { kim: 'selin', metin: 'Atom mikroskobu bir elektron arıyor. O neden çekirdeğe düşmüyor?' },
+          { kim: 'bohr', metin: 'Elektron yalnızca belirli seviyelerde durabilir. Seviyeler arası atlarken ışık yayar.' },
+          { kim: 'anlatici', metin: 'On bir yıl sonra de Broglie ekledi: elektron da dalga, yörüngeye tam sayı dalga sığar.' }
+        ]
+      },
+      {
+        id: 's04-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bohr_seviye', agirlik: 1,
+        gorev: 'n=3\'ten n=2\'ye geçişin rengini bul.',
+        sim: {
+          modul: 'bohr',
+          params: { n: 3, m: 2 },
+          basari: { gecis: [3, 2] }
+        },
+        ogrenilen: 'Seviyeler ayrık; geçişte seviye farkı kadar enerjili foton çıkar.'
+      },
+      o03,
+      o04,
+      o05,
+      {
+        id: 's04-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'atom_kararlilik', agirlik: 1,
+        iddia: 'Klasik fiziğe göre elektron çekirdek çevresinde sonsuza kadar kararlı döner.',
+        parcalar: ['Klasik fiziğe göre', 'elektron çekirdek çevresinde', 'sonsuza kadar kararlı döner.'],
+        yanlisParca: 2,
+        duzeltme: 'Klasikte ivmeli elektron ışıma yapar, enerji kaybeder ve çekirdeğe düşer; kuantum bunu önler.'
+      },
+      {
+        id: 's04-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'atom_kararlilik', agirlik: 1,
+        soru: 'Kararlılık zincirini sıraya diz',
+        bloklar: [
+          'Elektron hapsolmuş bir dalgadır',
+          'Yalnızca belirli dalga boyları sığar',
+          'En alt seviyenin enerjisi sıfır değildir',
+          'Elektron daha aşağı düşemez, atom kararlıdır'
+        ],
+        sonuc: 'Hapsolmuş dalga, ayrık seviyeler, alt sınır, kararlı atom.'
+      },
+      {
+        id: 's04-o08', tip: 'patron', baslik: 'Yörünge Canavarı', kavram: null, agirlik: 1,
+        canavar: 'bohr', canavarAd: 'Yörünge Canavarı',
+        giris: 'Elektronunu çekirdeğime düşüreceğim! Düşemez diyorsan kanıtla.',
+        fazlar: [
+          {
+            tip: 'secmeli', kavram: 'atom_kararlilik',
+            soru: 'Atomun en düşük enerji seviyesi neden vardır?',
+            secenekler: [
+              sec('Elektron dalgası çekirdek çevresinde sınırlı sığar, alt sınır oluşur', true, 'Doğru. Hapsolmuş dalganın enerjisi sıfır olamaz.'),
+              sec('Çekirdek elektronu iter', false, 'Hayır. Çekirdek elektronu çeker.'),
+              sec('Sıcaklık sıfıra inemez', false, 'Hayır. Sebep sıcaklık değil, dalga doğasıdır.')
+            ],
+            alt: {
+              soru: 'Elektronu çekirdeğe daha çok sıkıştırırsan kinetik enerjisi ne olur?',
+              secenekler: [
+                sec('Artar', true, 'Doğru. Konum daralır, momentum ve kinetik enerji büyür.'),
+                sec('Azalır', false, 'Hayır. Dar alanda dalga boyu kısalır, enerji artar.'),
+                sec('Değişmez', false, 'Hayır. Belirsizlik ilkesi sıkıştırmayı sınırlar.')
+              ]
+            }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: 'Briefly explain the stability of the Hydrogen atom using quantum mechanical theory.',
+            soru: 'Hidrojen atomunun kararlılığını kuantum teorisiyle kısaca açıkla.',
+            anahtarFikirler: [
+              'Klasikte ışıma yapan elektron çekirdeğe düşmeliydi.',
+              'Kuantumda elektron hapsolmuş dalgadır, enerji seviyeleri ayrıktır.',
+              'En düşük seviyenin enerjisi sıfır değildir, altına inilemez.',
+              'Çekirdeğe sıkışmak kinetik enerjiyi artırır (belirsizlik), denge oluşur.'
+            ],
+            yanlisKavramlar: [
+              'Elektron çekirdekten itildiği için düşmez',
+              'Atom sıcaklık yüzünden kararlıdır'
+            ],
+            yanlisKavramIds: ['atom_kararlilik', 'sifir_noktasi_sicaklik'],
+            idealCevap: 'Klasik fizikte yörüngedeki elektron ışıma yapıp enerji kaybeder ve çekirdeğe düşerdi. Kuantumda elektron hapsolmuş bir dalgadır, enerjisi ayrık seviyelerdir ve en düşük seviyenin enerjisi sıfır değildir. Çekirdeğe daha çok sıkışmak kinetik enerjiyi artırdığından elektron bir denge durumunda kalır.',
+            yedekSecmeli: {
+              soru: 'H atomu neden kararlıdır?',
+              secenekler: [
+                sec('En alt seviyenin altı yok, elektron düşemez', true, 'Doğru. Hapsolmuş dalganın alt enerji sınırı var.'),
+                sec('Elektron çekirdekten itilir', false, 'Yanlış. Çekirdek elektronu çeker.'),
+                sec('Atom çok soğuk olduğu için', false, 'Yanlış. Sıcaklık sebep değil.'),
+                sec('Elektron aslında durur', false, 'Yanlış. Elektron durmaz, en düşük enerjili dalga durumundadır.')
+              ]
+            },
+            alt: { soru: 'Klasik atom modeli neden çöküyordu, kuantum bunu nasıl çözdü?' }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: null,
+            soru: 'Madde dalgası nedir? Günlük hayatta neden dalga davranışı görmeyiz?',
+            anahtarFikirler: [
+              'de Broglie: parçacığın dalga boyu λ = h/p.',
+              'Elektron kırınımı maddenin dalga davrandığını gösterir.',
+              'Büyük cisimde momentum büyük, λ ihmal edilebilir.',
+              'Atom ölçeğinde λ boyutla kıyaslanabilir, dalga etkisi görünür.'
+            ],
+            yanlisKavramlar: [
+              'Dalga yalnızca ışığa özgüdür',
+              'Büyük cisimler rastgele davranır'
+            ],
+            yanlisKavramIds: ['debroglie_dalga', 'kuantum_rastgele_sanisi'],
+            idealCevap: 'de Broglie\'ye göre momentumlu her parçacığın dalga boyu λ = h/p\'dir; elektron kırınımı bunu doğrular. Günlük cisimlerde momentum çok büyük olduğundan λ ihmal edilecek kadar küçüktür. Atom boyutunda λ boyutla kıyaslanabilir olduğundan dalga etkisi görünür.',
+            yedekSecmeli: {
+              soru: 'Madde dalga boyu neye bağlıdır?',
+              secenekler: [
+                sec('Momentuma, λ = h/p', true, 'Doğru. Momentum büyüdükçe λ küçülür.'),
+                sec('Rengine', false, 'Yanlış. Renk bu kavramla ilgisiz.'),
+                sec('Hacmine', false, 'Yanlış. Hacim λ\'yı belirlemez.'),
+                sec('Sıcaklığa yalnızca', false, 'Yanlış. Doğrudan momentuma bağlıdır.')
+              ]
+            },
+            alt: { soru: 'Elektron kırınımı deneyi neyi kanıtlar?' }
+          }
+        ]
+      },
+      {
+        id: 's04-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
+        kart: { id: 'bohr', yil: 1913, tekCumle: 'Atomda elektronun yalnızca belirli seviyelerde durabileceğini gösterdi.' },
+        ozet: ['Seviyeler ayrık, geçişte foton çıkar', 'n=1 en alt seviye, atom kararlı', 'λ = h/p: madde de dalga'],
+        kontrolNoktasi: true
+      }
+    ],
+    temelTur: {
+      kartlar: [
+        { baslik: 'Ayrık seviyeler', metin: 'Elektron yalnızca belirli enerjilerde durur.' },
+        { baslik: 'En alt seviye', metin: 'n=1\'in altı yok; elektron çekirdeğe düşmez.' },
+        { baslik: 'Madde dalgası', metin: 'Her parçacığın λ = h/p dalga boyu vardır.' }
+      ],
+      sim: { modul: 'bohr', params: { n: 3, m: 2 } }
+    },
+    tekrarHavuzu: [
+      Object.assign({}, o03, { id: 's04-t01' }),
+      Object.assign({}, o04, { id: 's04-t02' }),
+      {
+        id: 's04-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'atom_kararlilik', agirlik: 1,
+        soru: o05.soru,
+        secenekler: o05.secenekler,
+        kusurSkin: 'vakans'
+      },
+      {
+        id: 's04-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
+        soru: 'Hapsolmuş parçacığın en düşük enerjisi neden sıfır değildir?',
+        secenekler: [
+          sec('Sınır koşulu dalganın sığmasını gerektirir', true, 'Doğru. Sıcaklık değil, sınır koşulu sebep.'),
+          sec('Sıcaklık sıfıra inemez', false, 'Hayır. Mutlak sıfırda da E₁ > 0.'),
+          sec('Ölçüm enerjiyi ekler', false, 'Hayır. Ölçüm olmasa da alt enerji vardır.')
+        ],
+        kusurSkin: 'tane_siniri'
+      }
+    ]
+  };
+})();
+
+/* 90-data-s05.js · İstasyon 05 "Dalga odası" verisi (E5)
+ * Q.data.stations.s05 alanını doldurur. Metinler oyun/istasyonlar/05-dalga-odasi.md'den aynen alınır.
+ * Bağımlılık: 00-q.js (Q.data). Çalışma anında yalnızca veri okunur, fonksiyon çağrılmaz.
+ * Şema: oyun/01-veri-semalari.md §3.
+ */
+(function(){
+  'use strict';
+
+  function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
+
+  var o03 = {
+    id: 's05-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'psi_olasilik', agirlik: 1,
+    soru: 'Dalga fonksiyonu ψ(x) fiziksel olarak neyi anlatır?',
+    secenekler: [
+      sec('|ψ(x)|² bulunma olasılık yoğunluğunu verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi olasılıktır.'),
+      sec('Parçacığın gerçek konumunu', false, 'Hayır. ψ konum vermez, olasılık dağılımı verir.'),
+      sec('Parçacığın enerjisini', false, 'Hayır. Enerji denklemin özdeğeridir.')
+    ],
+    kusurSkin: 'vakans'
+  };
+
+  var o04 = {
+    id: 's05-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'schrodinger_girdi_cikti', agirlik: 1,
+    soru: 'Schrödinger denklemine ne verirsin, ne alırsın?',
+    secenekler: [
+      sec('Potansiyel V(x) ve sınır koşulu ver; ψ, izinli E\'leri al', true, 'Doğru. Girdi V(x) ve sınır koşulu, çıktı ψ ile E.'),
+      sec('ψ ver, potansiyeli al', false, 'Hayır. Potansiyel girdidir, ψ çıktıdır.'),
+      sec('Enerji ver, konumu al', false, 'Hayır. Enerjiler denklemin çıktısıdır.')
+    ],
+    kusurSkin: 'tane_siniri'
+  };
+
+  var o05 = {
+    id: 's05-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'kuantalasma_sinir', agirlik: 1.5,
+    soru: 'Kuyu genişliği L yarıya inerse E₁ ne olur?',
+    secenekler: [
+      sec('4 katına çıkar', true, 'Doğru. E ∝ 1/L².'),
+      sec('2 katına çıkar', false, 'Yanlış. Enerji L²\'ye ters orantılıdır: 4 kat.'),
+      sec('Değişmez', false, 'Yanlış. Dar kuyuda dalga boyu kısalır, enerji artar.')
+    ],
+    sim: {
+      modul: 'kuyu',
+      onceki: { L: 2, n: 1 },
+      sonraki: { L: 1, n: 1 }
+    },
+    acik: 'E ∝ 1/L²: L yarıya inince enerji dört katına çıkar.'
+  };
+
+  Q.data.stations.s05 = {
+    id: 's05',
+    sira: 5,
+    ad: 'Dalga odası',
+    makine: 'Dalga odası',
+    renk: '#00e5ff',
+    konu: 'Schrödinger denklemi, ψ, sonsuz kuyu, kuantalaşma',
+    sinavSorulari: ['S5'],
+    sureHedefDk: 24,
+    patronId: 'schro',
+    kavramlar: ['psi_olasilik', 'schrodinger_girdi_cikti', 'kuantalasma_sinir', 'sifir_noktasi_sicaklik', 'schrodinger_cokme', 'kuantalasma_olcum'],
+    engeller: [
+      {
+        id: 's05-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
+        yer: 'Zürih', yil: 1926, rivayet: false,
+        satirlar: [
+          { kim: 'selin', metin: 'Dalga odası: burada her şey tek bir denkleme bağlı.' },
+          { kim: 'schro', metin: 'Dalga fonksiyonu ψ için bir denklem yazdım. Atomun enerjileri denklemden çıktı.' },
+          { kim: 'schro', metin: 'Enerjileri ben eklemedim. Sınır koşullarından kendiliğinden ortaya çıktılar.' }
+        ]
+      },
+      {
+        id: 's05-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'kuantalasma_sinir', agirlik: 1,
+        gorev: 'Kuyu genişliğini 2\'den 1 nm\'ye indir.',
+        sim: {
+          modul: 'kuyu',
+          params: { L: 2, n: 1 },
+          basari: { yariya: true }
+        },
+        ogrenilen: 'Duvarda ψ = 0 olduğundan yalnızca belirli dalga boyları sığar; enerji kuantalanır.'
+      },
+      o03,
+      o04,
+      o05,
+      {
+        id: 's05-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
+        iddia: 'Sonsuz kuyudaki parçacığın enerjisi, sıcaklık sıfır olmadığı için sıfırdan büyüktür.',
+        parcalar: ['Sonsuz kuyudaki parçacığın enerjisi,', 'sıcaklık sıfır olmadığı için', 'sıfırdan büyüktür.'],
+        yanlisParca: 1,
+        duzeltme: 'Sebep sıcaklık değil: sınır koşulu dalganın sığmasını gerektirir. Mutlak sıfırda da E₁ > 0.'
+      },
+      {
+        id: 's05-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'kuantalasma_sinir', agirlik: 1,
+        soru: 'Kuantalaşma zincirini sıraya diz',
+        bloklar: [
+          'Duvarlarda ψ sıfır olmak zorundadır',
+          'Kuyuya yalnızca tam sayı yarım dalga sığar',
+          'Dalga boyu λ = 2L/n ile sınırlanır',
+          'Enerji E ∝ n²/L² belirli değerler alır'
+        ],
+        sonuc: 'Sınır koşulu, sığan dalgalar, kısıtlı λ, kuantalı enerji.'
+      },
+      {
+        id: 's05-o08', tip: 'patron', baslik: 'Kuantum Kedisi', kavram: null, agirlik: 1,
+        canavar: 'schro', canavarAd: 'Kuantum Kedisi',
+        giris: 'Miyav! Sıfır enerjiyle kutuya sığacağımı mı sandın?',
+        fazlar: [
+          {
+            tip: 'secmeli', kavram: 'schrodinger_cokme',
+            soru: 'Zamana bağlı Schrödinger denklemi ψ\'yi nasıl değiştirir?',
+            secenekler: [
+              sec('Düzgün ve belirlenimci biçimde evriltir', true, 'Doğru. Çökme denklemden değil, ölçümden gelir.'),
+              sec('Ölçüm yapınca çökertir', false, 'Hayır. Çökme ayrı bir postülattır, denklemin işi değil.'),
+              sec('Rastgele değiştirir', false, 'Hayır. Denklem rastgele değil, belirlenimcidir.')
+            ],
+            alt: {
+              soru: 'Ĥψ = Eψ matematiksel olarak nasıl bir problemdir?',
+              secenekler: [
+                sec('Özdeğer problemi', true, 'Doğru. İzinli E\'ler özdeğerlerdir.'),
+                sec('Başlangıç değer problemi', false, 'Hayır. Bu zamana bağlı denklem için geçerli.'),
+                sec('Olasılık hesabı', false, 'Hayır. Olasılık |ψ|²\'dir, denklem değil.')
+              ]
+            }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: 'For the given potential below, it is required to calculate the wave function and the allowed energies in electron-volts (eV).',
+            soru: 'Sonsuz kuyuda ψ ve izinli enerjiler nasıl bulunur? Mantığı anlat.',
+            anahtarFikirler: [
+              'Duvarlarda ψ = 0 sınır koşulu uygulanır.',
+              'Çözüm sinüs dalgasıdır: ψ = √(2/L) sin(nπx/L).',
+              'Yalnızca L = nλ/2 ile sığan dalgalar izinlidir.',
+              'Enerji E = n²π²ħ²/(2mL²), elektron için yaklaşık 0,376·n²/L² eV (L nm).'
+            ],
+            yanlisKavramlar: [
+              'Enerji sıcaklıktan gelir',
+              'Kuantalaşma ölçüm sonucudur'
+            ],
+            yanlisKavramIds: ['sifir_noktasi_sicaklik', 'kuantalasma_olcum'],
+            idealCevap: 'Duvarlarda ψ = 0 olmalıdır. Çözüm ψ = √(2/L) sin(nπx/L) sinüs dalgasıdır; yalnızca L = nλ/2 ile sığan dalgalar izinlidir. Bu yüzden enerji E = n²π²ħ²/(2mL²) değerleriyle kuantalanır. n = 0 dalga olmadığı için yoktur, en düşük enerji E₁ > 0\'dır.',
+            yedekSecmeli: {
+              soru: 'Sonsuz kuyuda enerji neden kuantalıdır?',
+              secenekler: [
+                sec('Duvarlarda ψ = 0 olduğundan yalnızca belirli dalga boyları sığar', true, 'Doğru. Sınır koşulu kuantalaşmayı doğurur.'),
+                sec('Ölçüm enerjiyi ayrıklaştırır', false, 'Yanlış. Kuantalaşma ölçümden önce de vardır.'),
+                sec('Sıcaklık seviyeleri ayırır', false, 'Yanlış. Sıcaklık sebep değil.'),
+                sec('Bantlar oluşur', false, 'Yanlış. Bantlar çok atomlu katıda oluşur.')
+              ]
+            },
+            alt: { soru: 'Sonsuz kuyuda n = 0 neden yoktur ve bu E₁\'e ne söyler?' }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: null,
+            soru: 'Schrödinger denklemi çöker mi? Çökme nedir?',
+            anahtarFikirler: [
+              'Zamana bağlı denklem ψ\'yi düzgün ve belirlenimci evriltir.',
+              'Çökme ayrı bir postülattır ve ölçümle olur.',
+              'Zamandan bağımsız denklem özdeğer problemidir (Ĥψ = Eψ).',
+              'Girdi V(x) ve sınır koşulu, çıktı ψ ve izinli E\'ler.'
+            ],
+            yanlisKavramlar: [
+              'Schrödinger denklemi çöker',
+              'Denklem yalnızca bir olasılık denklemidir'
+            ],
+            yanlisKavramIds: ['schrodinger_cokme', 'schrodinger_cokme'],
+            idealCevap: 'Schrödinger denklemi çökmez; ψ\'yi zamanla düzgün ve belirlenimci biçimde evriltir. Çökme ayrı bir postülattır ve yalnızca ölçümle olur. Denklemin girdisi potansiyel V(x) ve sınır koşullarıdır, çıktısı ψ ve izinli E değerleridir.',
+            yedekSecmeli: {
+              soru: 'Çökme ne zaman olur?',
+              secenekler: [
+                sec('Ölçüm sırasında', true, 'Doğru. Çökme ölçüm postülatıdır.'),
+                sec('Denklem çözülürken', false, 'Yanlış. Denklem çökme üretmez.'),
+                sec('Zaman geçtikçe', false, 'Yanlış. Zamanla evrim düzgündür.'),
+                sec('Sıcaklık artınca', false, 'Yanlış. Sıcaklıkla ilgisi yok.')
+              ]
+            },
+            alt: { soru: 'Zamana bağlı denklemle çökme arasındaki farkı anlat.' }
+          }
+        ]
+      },
+      {
+        id: 's05-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
+        kart: { id: 'schro', yil: 1926, tekCumle: 'Dalga fonksiyonunun denklemini yazdı; enerjiler kendiliğinden çıktı.' },
+        ozet: ['Girdi: V(x) ve sınır koşulu', 'Sınır koşulu enerjiyi kuantalar', 'En düşük enerji sıfır olamaz'],
+        kontrolNoktasi: true
+      }
+    ],
+    temelTur: {
+      kartlar: [
+        { baslik: 'ψ nedir?', metin: '|ψ|² bulunma olasılık yoğunluğudur.' },
+        { baslik: 'Sınır koşulu', metin: 'Duvarda ψ = 0: yalnızca sığan dalgalar izinli.' },
+        { baslik: 'E₁ > 0', metin: 'n = 0 dalga yok demek; en düşük enerji sıfır değil.' }
+      ],
+      sim: { modul: 'kuyu', params: { L: 2, n: 1 } }
+    },
+    tekrarHavuzu: [
+      Object.assign({}, o03, { id: 's05-t01' }),
+      Object.assign({}, o04, { id: 's05-t02' }),
+      {
+        id: 's05-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_sinir', agirlik: 1,
+        soru: o05.soru,
+        secenekler: o05.secenekler,
+        kusurSkin: 'vakans'
+      },
+      {
+        id: 's05-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
+        soru: 'Enerji kuantalaşması nereden gelir?',
+        secenekler: [
+          sec('Sınır koşullarından', true, 'Doğru. Yalnızca sığan çözümler izinli.'),
+          sec('Ölçüm sonucundan', false, 'Hayır. Ölçümden önce de enerjiler ayrıktır.'),
+          sec('Sıcaklıktan', false, 'Hayır. Sıcaklık sebep değil.')
+        ],
+        kusurSkin: 'safsizlik'
+      }
+    ]
+  };
+})();
+
+/* 90-data-s06.js · İstasyon 06 "Tünel istasyonu" verisi (E6)
+ * Q.data.stations.s06 alanını doldurur. Metinler oyun/istasyonlar/06-tunel-istasyonu.md'den aynen alınır.
+ * Bağımlılık: 00-q.js (Q.data). Şema: oyun/01-veri-semalari.md §3.
+ */
+(function(){
+  'use strict';
+
+  function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
+
+  var o03 = {
+    id: 's06-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'basamak_yansima', agirlik: 1,
+    soru: 'E > V₀ iken parçacığın basamaktan yansıma olasılığı nedir?',
+    secenekler: [
+      sec('Sıfırdan büyük, dalga kısmen yansır', true, 'Doğru. k₁ ≠ k₂ olduğundan yansıma vardır.'),
+      sec('Sıfır, klasik fizik gibi', false, 'Hayır. Klasikte sıfır, dalga mekaniğinde değil.'),
+      sec('Yüzde yüz', false, 'Hayır. E > V₀ ise bir kısmı geçer.')
+    ],
+    kusurSkin: 'vakans'
+  };
+
+  var o04 = {
+    id: 's06-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bariyer_sonumlenme', agirlik: 1,
+    soru: 'E < V₀ iken ψ bariyerin içinde ne yapar?',
+    secenekler: [
+      sec('Üstel olarak sönümlenir ama sıfır olmaz', true, 'Doğru. Yasak bölgede dalga salınmaz, sönümlenir.'),
+      sec('Aniden sıfır olur', false, 'Hayır. ψ ve türevi süreklidir, aniden sıfır olamaz.'),
+      sec('Salınmaya devam eder', false, 'Hayır. Yasak bölgede dalga salınmaz.')
+    ],
+    kusurSkin: 'tane_siniri'
+  };
+
+  var o05 = {
+    id: 's06-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'tunelleme_kalinlik', agirlik: 1.5,
+    soru: 'Bariyeri kalınlaştırırsan geçiş olasılığı ne olur?',
+    secenekler: [
+      sec('Üstel olarak azalır', true, 'Doğru. T ∝ e^(−2κa).'),
+      sec('Doğrusal azalır', false, 'Yanlış. Azalma üsteldir, çok hızlıdır.'),
+      sec('Değişmez', false, 'Yanlış. Kalınlık arttıkça sönümlenme büyür.')
+    ],
+    sim: {
+      modul: 'basamak',
+      onceki: { mod: 'bariyer', E: 2, V0: 4, a: 0.3 },
+      sonraki: { mod: 'bariyer', E: 2, V0: 4, a: 1.5 }
+    },
+    acik: 'Kalınlık 0,3\'ten 1,5 nm\'ye çıkınca geçiş olasılığı milyarlarca kat düşüyor.'
+  };
+
+  Q.data.stations.s06 = {
+    id: 's06',
+    sira: 6,
+    ad: 'Tünel istasyonu',
+    makine: 'Tünel istasyonu',
+    renk: '#7a5cff',
+    konu: 'Basamak potansiyeli, yansıma, bariyer, tünelleme',
+    sinavSorulari: ['S5', 'S6'],
+    sureHedefDk: 22,
+    patronId: 'broglie',
+    kavramlar: ['basamak_yansima', 'bariyer_sonumlenme', 'tunelleme_kalinlik', 'dalga_surekli'],
+    engeller: [
+      {
+        id: 's06-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
+        yer: 'Paris', yil: 1924, rivayet: false,
+        satirlar: [
+          { kim: 'selin', metin: 'Tünel istasyonunda elektron bir duvarla karşılaşıyor. Geçer mi?' },
+          { kim: 'broglie', metin: 'Madde dalgaysa ışık gibi davranır: engelde hem yansır hem geçebilir.' },
+          { kim: 'selin', metin: 'Önce basamak, sonra bariyer. Dalga davranışı hep aynı.' }
+        ]
+      },
+      {
+        id: 's06-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'basamak_yansima', agirlik: 1,
+        gorev: 'Enerjiyi basamaktan yüksek tut, R\'yi 0,1-0,2 yap.',
+        sim: {
+          modul: 'basamak',
+          params: { mod: 'basamak', V0: 1.0, E: 3.0 },
+          basari: { R: [0.1, 0.2] }
+        },
+        ogrenilen: 'E > V₀ iken bile dalga kısmen yansır; klasikte yansıma olmazdı.'
+      },
+      o03,
+      o04,
+      o05,
+      {
+        id: 's06-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'bariyer_sonumlenme', agirlik: 1,
+        iddia: 'Enerjisi bariyerden düşük parçacık, kuantumda da kesinlikle geçemez.',
+        parcalar: ['Enerjisi bariyerden düşük parçacık,', 'kuantumda da', 'kesinlikle geçemez.'],
+        yanlisParca: 1,
+        duzeltme: 'Kuantumda ψ bariyerde sönümlenir ama sıfır olmaz; ince bariyerden geçiş olasılığı vardır.'
+      },
+      {
+        id: 's06-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'dalga_surekli', agirlik: 1,
+        soru: 'Basamak çözümünü sıraya diz',
+        bloklar: [
+          'ψ iki bölgede de yazılır',
+          'x = 0\'da ψ ve ψ\' sürekli olmalı',
+          'Süreklilik katsayıları (r, t) belirler',
+          'R=|r|² ve T=1−R'
+        ],
+        sonuc: 'Her bölgede ψ, sınırda süreklilik, katsayılar, R ve T.'
+      },
+      {
+        id: 's06-o08', tip: 'patron', baslik: 'Dalga Canavarı', kavram: null, agirlik: 1,
+        canavar: 'broglie', canavarAd: 'Dalga Canavarı',
+        giris: 'Ben dalgayım! Duvarlara çarparım, bazen içinden geçerim.',
+        fazlar: [
+          {
+            tip: 'secmeli', kavram: 'basamak_yansima',
+            soru: 'E < V₀ olan basamakta yansıma katsayısı R kaçtır?',
+            secenekler: [
+              sec('R = 1', true, 'Doğru. Hepsi yansır; bölge 2\'de yalnızca sönümlü ψ var.'),
+              sec('R = 0', false, 'Hayır. R = 0 hiç yansıma olmaması demek; E < V₀ iken hepsi yansır.'),
+              sec('R = 0,5', false, 'Hayır. E < V₀ iken bölge 2\'ye akı gitmez, yani R = 1.')
+            ],
+            alt: {
+              soru: 'Tünelleme hangi dalga özelliğinin sonucudur?',
+              secenekler: [
+                sec('ψ\'nin bariyerde sönümlenip sıfır olmaması', true, 'Doğru. Öbür yanda ψ sıfırdan farklı kalır.'),
+                sec('Parçacığın bariyerden zıplaması', false, 'Hayır. Zıplama klasik bir fikir.'),
+                sec('Bariyerin erimesi', false, 'Hayır. Bariyer değişmez.')
+              ]
+            }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: 'Calculate the wave function and the reflection coefficient of the electron for the given potential.',
+            soru: 'Basamak potansiyelinde ψ ve yansıma katsayısı nasıl bulunur? Mantığı anlat.',
+            anahtarFikirler: [
+              'İki bölgede ψ yazılır: gelen, yansıyan ve geçen dalga.',
+              'x = 0\'da ψ ve ψ\' sürekli olmalı.',
+              'k₁=√(2mE)/ħ, k₂=√(2m(E−V₀))/ħ ile r=(k₁−k₂)/(k₁+k₂).',
+              'R = |r|², T = 1 − R; E < V₀ ise R = 1.'
+            ],
+            yanlisKavramlar: [
+              'E > V₀ ise hiç yansıma olmaz',
+              'ψ bariyerde aniden sıfır olur'
+            ],
+            yanlisKavramIds: ['basamak_yansima', 'bariyer_sonumlenme'],
+            idealCevap: 'Her iki bölgede ψ yazılır: solda gelen ve yansıyan, sağda geçen dalga. x = 0\'da ψ ve ψ\' sürekli olmalıdır. Buradan r = (k₁−k₂)/(k₁+k₂) çıkar, yansıma katsayısı R = |r|², geçiş T = 1 − R\'dir. E < V₀ ise bölge 2\'de ψ sönümlenir ve R = 1\'dir.',
+            yedekSecmeli: {
+              soru: 'R = |r|² nasıl bulunur?',
+              secenekler: [
+                sec('ψ ve ψ\' sürekliliğinden r bulunur', true, 'Doğru. Sınırda süreklilik katsayıları belirler.'),
+                sec('E\'yi V₀\'a bölerek', false, 'Yanlış. Bu doğrudan R vermez.'),
+                sec('Sıcaklıkla', false, 'Yanlış. Sıcaklık gerekmez.'),
+                sec('ψ\'nin karesini alarak', false, 'Yanlış. Önce r bulunur.')
+              ]
+            },
+            alt: { soru: 'Basamakta ψ sürekliliği neden gerekir ve neyi belirler?' }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: null,
+            soru: 'Tünelleme nedir? Geçiş olasılığı neden kalınlıkla azalır?',
+            anahtarFikirler: [
+              'E < V₀ iken klasik geçiş yok; kuantumda ψ bariyerde sönümlenir.',
+              'ψ sıfırdan farklı kaldığından öbür yanda bulunma olasılığı vardır.',
+              'Geçiş olasılığı T ∝ e^(−2κa), kalınlıkla üstel azalır.',
+              'Tünel diyodu ve flash bellek gibi aygıtlarda önemlidir.'
+            ],
+            yanlisKavramlar: [
+              'Parçacık bariyerin üstünden zıplar',
+              'Geçerken enerjisini kaybeder'
+            ],
+            yanlisKavramIds: ['tunelleme_kalinlik', 'tunelleme_kalinlik'],
+            idealCevap: 'E < V₀ iken klasik fizik geçişi yasaklar. Kuantumda ψ bariyerin içinde üstel olarak sönümlenir ama sıfır olmaz, bu yüzden öbür tarafta bulunma olasılığı vardır. Geçiş olasılığı T ∝ e^(−2κa) olduğundan bariyer kalınlaştıkça çok hızlı azalır. Tünel diyodu ve flash bellek gibi aygıtlarda kullanılır.',
+            yedekSecmeli: {
+              soru: 'Tünelleme neden olur?',
+              secenekler: [
+                sec('ψ bariyerde sönümlenir ama sıfır olmaz', true, 'Doğru. Öbür yanda ψ kalır.'),
+                sec('Parçacık enerji kazanır', false, 'Yanlış. Enerji aynı kalır.'),
+                sec('Bariyer ısınır', false, 'Yanlış. Isı sebep değil.'),
+                sec('Parçacık dalga değildir', false, 'Yanlış. Tünelleme dalga davranışıdır.')
+              ]
+            },
+            alt: { soru: 'Tünelleme olasılığı neden kalınlıkla üstel azalır?' }
+          }
+        ]
+      },
+      {
+        id: 's06-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
+        kart: { id: 'broglie', yil: 1924, tekCumle: 'Maddenin de dalga gibi davrandığını önerdi.' },
+        ozet: ['E > V₀ iken bile kısmi yansıma', 'E < V₀: ψ bariyerde sönümlenir', 'Tünelleme kalınlıkla üstel azalır'],
+        kontrolNoktasi: true
+      }
+    ],
+    temelTur: {
+      kartlar: [
+        { baslik: 'Basamak', metin: 'Dalga basamakta kısmen yansır, kısmen geçer.' },
+        { baslik: 'Yasak bölge', metin: 'E < V₀ iken ψ sönümlenir, sıfır olmaz.' },
+        { baslik: 'Tünelleme', metin: 'İnce bariyerde geçiş olasılığı var, kalınlıkla azalır.' }
+      ],
+      sim: { modul: 'basamak', params: { mod: 'bariyer', E: 2, V0: 4, a: 0.3 } }
+    },
+    tekrarHavuzu: [
+      Object.assign({}, o03, { id: 's06-t01' }),
+      Object.assign({}, o04, { id: 's06-t02' }),
+      {
+        id: 's06-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'tunelleme_kalinlik', agirlik: 1,
+        soru: o05.soru,
+        secenekler: o05.secenekler,
+        kusurSkin: 'vakans'
+      },
+      {
+        id: 's06-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'dalga_surekli', agirlik: 1,
+        soru: 'Sınırda neden ψ ve ψ\' sürekli olmalıdır?',
+        secenekler: [
+          sec('Denklemin ikinci türev içermesi bunu gerektirir', true, 'Doğru. Süreksizlik denklemi sağlamaz.'),
+          sec('Süreklilik şart değildir', false, 'Hayır. Süreklilik katsayıları belirler.'),
+          sec('Yalnızca E < V₀ için gerekir', false, 'Hayır. Her durumda gerekir.')
+        ],
+        kusurSkin: 'safsizlik'
+      }
+    ]
+  };
+})();
+
+/* 90-data-s07.js · İstasyon 07 "Ölçüm laboratuvarı" verisi (E7)
+ * Q.data.stations.s07 alanını doldurur. Metinler oyun/istasyonlar/07-olcum-laboratuvari.md'den aynen alınır.
+ * Bağımlılık: 00-q.js (Q.data). Şema: oyun/01-veri-semalari.md §3.
+ */
+(function(){
+  'use strict';
+
+  function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
+
+  var o03 = {
+    id: 's07-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
+    soru: 'Bir ölçüm hangi değerleri verebilir?',
+    secenekler: [
+      sec('Yalnızca operatörün özdeğerlerini', true, 'Doğru. Her ölçüm özdeğerlerden birini verir.'),
+      sec('Herhangi bir değeri', false, 'Hayır. Yalnızca özdeğerler çıkabilir.'),
+      sec('Özdeğerlerin ortalamasını', false, 'Hayır. Tek ölçümde ortalama değil, bir özdeğer çıkar.')
+    ],
+    kusurSkin: 'vakans'
+  };
+
+  var o04 = {
+    id: 's07-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
+    soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma olasılığı nedir?',
+    secenekler: [
+      sec('|c₁|²', true, 'Doğru. Olasılık katsayının karesidir.'),
+      sec('c₁', false, 'Hayır. Olasılık katsayının kendisi değil karesidir.'),
+      sec('c₁ + c₂', false, 'Hayır. Katsayılar toplanmaz; her sonucun olasılığı kendi karesidir.')
+    ],
+    kusurSkin: 'tane_siniri'
+  };
+
+  var o05 = {
+    id: 's07-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'olcum_cokme', agirlik: 1.5,
+    soru: 'Çöktükten sonra aynı büyüklüğü hemen tekrar ölçersen ne olur?',
+    secenekler: [
+      sec('Aynı sonuç çıkar', true, 'Doğru. ψ artık özdurumda, sonuç değişmez.'),
+      sec('Yeni rastgele sonuç', false, 'Yanlış. Çöken durum özdurumdur, sonuç aynı kalır.'),
+      sec('İki sonucun ortalaması', false, 'Yanlış. Tek ölçüm bir özdeğer verir.')
+    ],
+    sim: {
+      modul: 'olcum',
+      onceki: { c1sq: 0.3 },
+      sonraki: { c1sq: 0.3, olcTekrar: true }
+    },
+    acik: 'Çöktükten sonra ψ özdurumdur; tekrar ölçüm aynı sonucu verir.'
+  };
+
+  Q.data.stations.s07 = {
+    id: 's07',
+    sira: 7,
+    ad: 'Ölçüm laboratuvarı',
+    makine: 'Ölçüm lab.',
+    renk: '#ff3df0',
+    konu: 'Postülatlar, ölçüm, çökme',
+    sinavSorulari: ['S8', 'S9'],
+    sureHedefDk: 23,
+    patronId: 'born',
+    kavramlar: ['postulatlar', 'olcum_cokme', 'ozdeger_olcum', 'evrim_belirlenimci', 'olasilik_katsayi', 'schrodinger_cokme'],
+    engeller: [
+      {
+        id: 's07-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
+        yer: 'Göttingen', yil: 1926, rivayet: false,
+        satirlar: [
+          { kim: 'selin', metin: 'Ölçüm laboratuvarı: bakınca ne oluyor?' },
+          { kim: 'born', metin: 'ψ\'nin karesini olasılık olarak yorumladım. Ölçümde sonuç kesin değil, olasılıkla çıkar.' },
+          { kim: 'selin', metin: 'Kuantumun kuralları beş postülat. Ölçüm üçüncü ve dördüncüde.' }
+        ]
+      },
+      {
+        id: 's07-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'olcum_cokme', agirlik: 1,
+        gorev: 'Ölç, sonra tekrar ölç: sonuç ne?',
+        sim: {
+          modul: 'olcum',
+          params: { c1sq: 0.3 },
+          basari: { tekrarAyni: true }
+        },
+        ogrenilen: 'Ölçüm ψ\'yi sonuca çökertir; hemen tekrar ölçersen aynı sonucu alırsın.'
+      },
+      o03,
+      o04,
+      o05,
+      {
+        id: 's07-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'schrodinger_cokme', agirlik: 1,
+        iddia: 'Schrödinger denklemi ψ\'yi ölçüm anında çökertir.',
+        parcalar: ['Schrödinger denklemi', 'ψ\'yi ölçüm anında', 'çökertir.'],
+        yanlisParca: 0,
+        duzeltme: 'Denklem ψ\'yi düzgün evriltir. Çökme ayrı postülattır ve yalnızca ölçümle olur.'
+      },
+      {
+        id: 's07-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'evrim_belirlenimci', agirlik: 1,
+        soru: 'Ölçüm döngüsünü sıraya diz',
+        bloklar: [
+          'Sistem özdurumların süperpozisyonundadır',
+          'Ölçüm bir özdeğeri |c|² olasılıkla verir',
+          'ψ o özdurumuna çöker',
+          'Sonra denklem ψ\'yi yeniden evriltir'
+        ],
+        sonuc: 'Süperpozisyon, olasılıklı sonuç, çökme, belirlenimci evrim.'
+      },
+      {
+        id: 's07-o08', tip: 'patron', baslik: 'Olasılık Canavarı', kavram: null, agirlik: 1,
+        canavar: 'born', canavarAd: 'Olasılık Canavarı',
+        giris: 'Zar atıyorum! Ama kurallarım var. Olasılığım |c|².',
+        fazlar: [
+          {
+            tip: 'secmeli', kavram: 'olcum_cokme',
+            soru: 'Ölçümden önce sistem özdurumda değilse ne vardır?',
+            secenekler: [
+              sec('Özdurumların süperpozisyonu', true, 'Doğru. ψ = Σ cₙφₙ.'),
+              sec('Gizli ama belirli bir değer', false, 'Hayır. Standart yorumda ölçümden önce belirli değer yoktur.'),
+              sec('Sıfır enerji', false, 'Hayır. Enerji sıfır olmak zorunda değil.')
+            ],
+            alt: {
+              soru: 'Hangi büyüklük bir ölçüm sonucu olabilir?',
+              secenekler: [
+                sec('Operatörün özdeğeri', true, 'Doğru. Ölçüm özdeğer verir.'),
+                sec('Herhangi bir sayı', false, 'Hayır. Yalnızca özdeğerler.'),
+                sec('ψ\'nin kendisi', false, 'Hayır. ψ doğrudan ölçülmez.')
+              ]
+            }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: 'Explain the principles of quantum mechanics.',
+            soru: 'Kuantum mekaniğinin ilkelerini (postülatlarını) açıkla.',
+            anahtarFikirler: [
+              'Durum ψ ile tarif edilir, |ψ|² olasılık yoğunluğudur.',
+              'Her gözlenebilir bir operatöre karşılık gelir.',
+              'Ölçüm yalnızca özdeğer verir, durum özdurumuna çöker.',
+              'Zaman evrimi Schrödinger denklemiyle belirlenimcidir.'
+            ],
+            yanlisKavramlar: [
+              'Kuantum mekaniği her şeyi rastgele yapar',
+              'Ölçümde ψ hiç değişmez'
+            ],
+            yanlisKavramIds: ['evrim_belirlenimci', 'olcum_cokme'],
+            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² olasılık yoğunluğudur. Her gözlenebilir bir operatörle temsil edilir. Ölçüm yalnızca operatörün özdeğerlerinden birini verir ve durum o özdurumuna çöker. Ölçümler arasında ψ, Schrödinger denklemiyle belirlenimci biçimde evrilir.',
+            yedekSecmeli: {
+              soru: 'Hangisi kuantum postülatlarından biridir?',
+              secenekler: [
+                sec('Her gözlenebilir bir operatöre karşılık gelir', true, 'Doğru. Bu ikinci postülat.'),
+                sec('Ölçüm ψ\'yi değiştirmez', false, 'Yanlış. Ölçüm ψ\'yi özdurumuna çökertir.'),
+                sec('Enerji her değeri alır', false, 'Yanlış. Yalnızca özdeğerler.'),
+                sec('Denklem rastgele evrilir', false, 'Yanlış. Evrim belirlenimcidir.')
+              ]
+            },
+            alt: { soru: 'Postülatların ölçümle ilgili olanlarını anlat.' }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: 'The third postulate of quantum mechanics concerns measurement; explain how the system changes its state if its current state is not an eigenstate of the observable being measured.',
+            soru: '3. postülat: durum özdurum değilse ölçümde sistem nasıl değişir?',
+            anahtarFikirler: [
+              'Durum özdurumların süperpozisyonudur: ψ = Σ cₙφₙ.',
+              'Ölçüm özdeğerlerden birini |cₙ|² olasılıkla verir.',
+              'Ölçümden sonra ψ ölçülen özdurumuna çöker.',
+              'Hemen tekrar ölçüm aynı sonucu verir.'
+            ],
+            yanlisKavramlar: [
+              'Ölçüm özdeğerlerin ortalamasını verir',
+              'Çökme Schrödinger denkleminden gelir'
+            ],
+            yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
+            idealCevap: 'Durum özdurum değilse özdurumların süperpozisyonudur: ψ = Σ cₙφₙ. Ölçüm özdeğerlerden birini |cₙ|² olasılıkla verir. Ölçümden sonra durum ölçülen özdurumuna çöker; hemen tekrar ölçüm aynı sonucu verir.',
+            yedekSecmeli: {
+              soru: 'Özdurum olmayan durumda ölçümden sonra ne olur?',
+              secenekler: [
+                sec('Durum ölçülen özdurumuna çöker', true, 'Doğru. Sonuç olasılıkla belirlenir.'),
+                sec('Durum hiç değişmez', false, 'Yanlış. Ölçüm durumu değiştirir.'),
+                sec('Durum ortalama özdurumda olur', false, 'Yanlış. Ortalama özdurum diye bir şey yok.'),
+                sec('Sistem yok olur', false, 'Yanlış. Sistem özdurumda kalır.')
+              ]
+            },
+            alt: { soru: 'Ölçüm sonucu hangi olasılıkla çıkar ve ölçümden sonra ψ ne olur?' }
+          }
+        ]
+      },
+      {
+        id: 's07-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
+        kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin olasılık olduğunu söyledi.' },
+        ozet: ['Ölçüm özdeğer verir, |c|² olasılıkla', 'Ölçümde ψ özdurumuna çöker', 'Denklem belirlenimci, çökme ölçümle'],
+        kontrolNoktasi: true
+      }
+    ],
+    temelTur: {
+      kartlar: [
+        { baslik: 'Süperpozisyon', metin: 'Ölçümden önce durum özdurumların toplamı olabilir.' },
+        { baslik: 'Ölçüm', metin: 'Bir özdeğer çıkar, olasılığı |c|².' },
+        { baslik: 'Çökme', metin: 'Ölçümden sonra ψ o özdurumdadır.' }
+      ],
+      sim: { modul: 'olcum', params: { c1sq: 0.3 } }
+    },
+    tekrarHavuzu: [
+      Object.assign({}, o03, { id: 's07-t01' }),
+      Object.assign({}, o04, { id: 's07-t02' }),
+      {
+        id: 's07-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olcum_cokme', agirlik: 1,
+        soru: o05.soru,
+        secenekler: o05.secenekler,
+        kusurSkin: 'vakans'
+      },
+      {
+        id: 's07-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
+        soru: 'Ölçümler arasında ψ nasıl evrilir?',
+        secenekler: [
+          sec('Schrödinger denklemiyle belirlenimci biçimde', true, 'Doğru. Rastgelelik yalnızca ölçümde ortaya çıkar.'),
+          sec('Rastgele', false, 'Hayır. Evrim düzgündür.'),
+          sec('Hiç evrilmez', false, 'Hayır. Zamanla evrilir.')
+        ],
+        kusurSkin: 'safsizlik'
+      }
+    ]
+  };
+})();
+
+/* 90-data-s08.js · İstasyon 08 "Kalibrasyon odası" verisi (E8)
+ * Q.data.stations.s08 alanını doldurur. Metinler oyun/istasyonlar/08-kalibrasyon-odasi.md'den aynen alınır.
+ * Şema: oyun/01-veri-semalari.md §3.
+ */
+(function(){
+  'use strict';
+
+  function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
+
+  var o03 = {
+    id: 's08-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
+    soru: 'Δx küçülürse Δp ne olur?',
+    secenekler: [
+      sec('Büyür', true, 'Doğru. ΔxΔp ≥ ħ/2 çarpımı en az sabit kalır.'),
+      sec('Küçülür', false, 'Yanlış. Çarpım sınırlı olduğundan biri küçülünce öbürü büyür.'),
+      sec('Değişmez', false, 'Yanlış. ΔxΔp ≥ ħ/2 koşulu bunu zorunlu kılar.')
+    ],
+    kusurSkin: 'vakans'
+  };
+
+  var o04 = {
+    id: 's08-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_makro', agirlik: 1,
+    soru: 'Bilardo topunda belirsizlik neden fark edilmez?',
+    secenekler: [
+      sec('ħ çok küçük, ΔxΔp sınırı ihmal edilebilir', true, 'Doğru. İlke her cisimde geçerli, etkisi görünmez.'),
+      sec('Top belirsizliğe tabi değildir', false, 'Hayır. İlke her cisim için geçerlidir.'),
+      sec('Top bir dalga değildir', false, 'Hayır. Dalga boyu yalnızca ihmal edilecek kadar küçüktür.')
+    ],
+    kusurSkin: 'tane_siniri'
+  };
+
+  var o05 = {
+    id: 's08-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'belirsizlik_dalga', agirlik: 1.5,
+    soru: 'Dalga paketinin konum genişliğini yarıya indirirsen momentum yayılması ne olur?',
+    secenekler: [
+      sec('İki katına çıkar', true, 'Doğru. σp = ħ/(2σx).'),
+      sec('Yarıya iner', false, 'Yanlış. Konum daralınca momentum genişler.'),
+      sec('Aynı kalır', false, 'Yanlış. İkisi bağlıdır.')
+    ],
+    sim: {
+      modul: 'belirsizlik',
+      onceki: { sx: 2 },
+      sonraki: { sx: 1 }
+    },
+    acik: 'σx 2\'den 1\'e inince σp iki katına çıktı; çarpım ħ/2\'de kaldı.'
+  };
+
+  Q.data.stations.s08 = {
+    id: 's08',
+    sira: 8,
+    ad: 'Kalibrasyon odası',
+    makine: 'Kalibrasyon',
+    renk: '#39ff88',
+    konu: 'Belirsizlik ilkesi, eşlenik değişkenler',
+    sinavSorulari: ['S10'],
+    sureHedefDk: 22,
+    patronId: 'heis',
+    kavramlar: ['belirsizlik_dalga', 'belirsizlik_alet', 'eslenik_degisken', 'belirsizlik_makro'],
+    engeller: [
+      {
+        id: 's08-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
+        yer: 'Kopenhag', yil: 1927, rivayet: false,
+        satirlar: [
+          { kim: 'selin', metin: 'Kalibrasyon odası: ölçümü mükemmelleştirmek istiyoruz.' },
+          { kim: 'heis', metin: 'Konum ve momentumu aynı anda keyfi hassas ölçemezsin. Alet yüzünden değil.' },
+          { kim: 'heis', metin: 'Doğa böyle: dalgaysan, keskin konum ve keskin momentum aynı anda olmaz.' }
+        ]
+      },
+      {
+        id: 's08-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'belirsizlik_dalga', agirlik: 1,
+        gorev: 'Konum genişliğini daralt, momentuma bak.',
+        sim: {
+          modul: 'belirsizlik',
+          params: { sx: 3 },
+          basari: { dar: true }
+        },
+        ogrenilen: 'Konum daraldıkça momentum yayılır; çarpım hep en az ħ/2.'
+      },
+      o03,
+      o04,
+      o05,
+      {
+        id: 's08-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'belirsizlik_alet', agirlik: 1,
+        iddia: 'Belirsizlik, ölçüm aletimizin yeterince hassas olmamasından kaynaklanır.',
+        parcalar: ['Belirsizlik,', 'ölçüm aletimizin yeterince', 'hassas olmamasından kaynaklanır.'],
+        yanlisParca: 1,
+        duzeltme: 'Belirsizlik alet kusuru değil, dalga doğasının temel sonucudur.'
+      },
+      {
+        id: 's08-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'belirsizlik_dalga', agirlik: 1,
+        soru: 'Belirsizlik zincirini sıraya diz',
+        bloklar: [
+          'Parçacık bir dalga paketidir',
+          'Keskin konum çok dalga boyunun toplamıdır',
+          'Çok dalga boyu geniş momentum demektir',
+          'ΔxΔp ≥ ħ/2'
+        ],
+        sonuc: 'Dalga paketi, keskin konum, geniş momentum, ΔxΔp ≥ ħ/2.'
+      },
+      {
+        id: 's08-o08', tip: 'patron', baslik: 'Belirsizlik Canavarı', kavram: null, agirlik: 1,
+        canavar: 'heis', canavarAd: 'Belirsizlik Canavarı',
+        giris: 'Neredeyim? Ne kadar hızlıyım? İkisini birden bilemezsin!',
+        fazlar: [
+          {
+            tip: 'secmeli', kavram: 'eslenik_degisken',
+            soru: 'Konum ve momentum neden aynı anda keyfi hassas ölçülemez?',
+            secenekler: [
+              sec('Operatörleri değişmez, ortak özdurumları yoktur', true, 'Doğru. [x,p] = iħ ≠ 0.'),
+              sec('Aletlerimiz yetersizdir', false, 'Hayır. Alet kusuru değil, doğanın yapısı.'),
+              sec('Ölçüm parçacığı bozar, tek sebep bu', false, 'Hayır. Ölçüm olmasa da ilke geçerlidir.')
+            ],
+            alt: {
+              soru: '[x, p] = iħ ne anlama gelir?',
+              secenekler: [
+                sec('x ve p operatörleri değişmez', true, 'Doğru. Bu yüzden ortak özdurumları yok.'),
+                sec('x ve p eşittir', false, 'Hayır. Bu bir eşitlik değil, değişme bağıntısı.'),
+                sec('p sıfırdır', false, 'Hayır. p sıfır olmak zorunda değil.')
+              ]
+            }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: 'Explain the uncertainty principle and why it is impossible to simultaneously measure conjugate variables with unlimited precision.',
+            soru: 'Belirsizlik ilkesini açıkla. Eşlenik değişkenler neden aynı anda keyfi hassas ölçülemez?',
+            anahtarFikirler: [
+              'ΔxΔp ≥ ħ/2: biri keskinleşince öbürü yayılır.',
+              'Dalga paketi: keskin konum çok dalga boyu gerektirir.',
+              'Konum ve momentum operatörleri değişmez ([x,p] = iħ).',
+              'Alet kusuru değil, doğanın (dalga doğasının) temel sınırı.'
+            ],
+            yanlisKavramlar: [
+              'Belirsizlik ölçüm aletinin kusurudur',
+              'Ölçüm parçacığı bozduğu için olur, tek sebep bu'
+            ],
+            yanlisKavramIds: ['belirsizlik_alet', 'belirsizlik_alet'],
+            idealCevap: 'Belirsizlik ilkesi ΔxΔp ≥ ħ/2 der: biri keskinleşince öbürü yayılır. Sebep dalga doğasıdır; keskin bir konum çok sayıda dalga boyunun toplamını gerektirir, bu da geniş bir momentum dağılımıdır. Konum ve momentum operatörleri değişmediği için ortak özdurumları yoktur. Bu alet kusuru değil, doğanın temel sınırıdır.',
+            yedekSecmeli: {
+              soru: 'Belirsizlik ilkesi neden vardır?',
+              secenekler: [
+                sec('Parçacığın dalga doğasından', true, 'Doğru. Keskin konum geniş momentum demektir.'),
+                sec('Aletler yetersiz olduğundan', false, 'Yanlış. İdeal alette de geçerli.'),
+                sec('Sıcaklık yüzünden', false, 'Yanlış. Sıcaklıktan bağımsız.'),
+                sec('Sadece elektronda', false, 'Yanlış. Her cisimde geçerli, büyükte ihmal edilir.')
+              ]
+            },
+            alt: { soru: 'ΔxΔp ≥ ħ/2 neden dalga doğasından kaynaklanır?' }
+          },
+          {
+            tip: 'acik',
+            pdfSoru: null,
+            soru: 'Eşlenik değişken nedir? Örnek ver ve günlük hayatta neden görmediğimizi anlat.',
+            anahtarFikirler: [
+              'Eşlenik çift: aynı anda keyfi hassas ölçülemeyen iki büyüklük.',
+              'Örnek: konum x ve momentum p.',
+              'Operatörleri değişmediği için ortak özdurumları yoktur.',
+              'Günlük cisimde etki ihmal edilir, çünkü ħ çok küçüktür.'
+            ],
+            yanlisKavramlar: [
+              'Her büyüklük çifti belirsizlik gösterir',
+              'Yalnızca elektron gibi küçük parçacıklarda geçerlidir'
+            ],
+            yanlisKavramIds: ['eslenik_degisken', 'belirsizlik_makro'],
+            idealCevap: 'Eşlenik değişkenler, aynı anda keyfi hassas ölçülemeyen büyüklük çiftidir; örneğin konum ve momentum. Operatörleri değişmediği için ortak özdurumları yoktur. Günlük cisimlerde ħ çok küçük olduğundan sınır ihmal edilir.',
+            yedekSecmeli: {
+              soru: 'Hangisi bir eşlenik çifttir?',
+              secenekler: [
+                sec('Konum ve momentum', true, 'Doğru. Operatörleri değişmez.'),
+                sec('Kütle ve hacim', false, 'Yanlış. Bu çift için ilke yok.'),
+                sec('Sıcaklık ve renk', false, 'Yanlış. Eşlenik çift değil.'),
+                sec('Hız ve ivme', false, 'Yanlış. Bu eşlenik çift değil.')
+              ]
+            },
+            alt: { soru: 'Konum ve momentum neden eşlenik değişken sayılır?' }
+          }
+        ]
+      },
+      {
+        id: 's08-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
+        kart: { id: 'heis', yil: 1927, tekCumle: 'Konum ve momentumun aynı anda keskin olamayacağını gösterdi.' },
+        ozet: ['ΔxΔp ≥ ħ/2', 'Sebep dalga doğası, alet değil', 'Günlük cisimde etki ihmal edilir'],
+        kontrolNoktasi: true
+      }
+    ],
+    temelTur: {
+      kartlar: [
+        { baslik: 'Dalga paketi', metin: 'Parçacık, dalga paketi gibi davranır.' },
+        { baslik: 'Keskin konum', metin: 'Konum daralırsa momentum yayılır.' },
+        { baslik: 'Alet değil', metin: 'Belirsizlik ölçüm kusuru değil, doğanın sınırı.' }
+      ],
+      sim: { modul: 'belirsizlik', params: { sx: 3 } }
+    },
+    tekrarHavuzu: [
+      Object.assign({}, o03, { id: 's08-t01' }),
+      Object.assign({}, o04, { id: 's08-t02' }),
+      {
+        id: 's08-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
+        soru: o05.soru,
+        secenekler: o05.secenekler,
+        kusurSkin: 'vakans'
+      },
+      {
+        id: 's08-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'eslenik_degisken', agirlik: 1,
+        soru: 'Hangi operatör çifti değişmez ve belirsizlik verir?',
+        secenekler: [
+          sec('Konum ve momentum', true, 'Doğru. [x,p] = iħ.'),
+          sec('Konum ve konum', false, 'Hayır. Aynı operatör kendisiyle değişir.'),
+          sec('Kütle ve yük', false, 'Hayır. Bunlar sayıdır, operatör değil.')
+        ],
+        kusurSkin: 'safsizlik'
+      },
+      {
+        id: 's08-t05', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_alet', agirlik: 1,
+        soru: 'Belirsizlik ilkesi neden alet kusuru değildir?',
+        secenekler: [
+          sec('İdeal alette de geçerli, dalga doğasının sonucudur', true, 'Doğru. Alet kusuru değil, doğanın sınırı.'),
+          sec('Aletler hep mükemmeldir', false, 'Hayır. Mesele aletin kalitesi değil.'),
+          sec('Yalnızca sıcaklıkla ilgilidir', false, 'Hayır. Sıcaklıktan bağımsızdır.')
+        ],
+        kusurSkin: 'tane_siniri'
       }
     ]
   };
