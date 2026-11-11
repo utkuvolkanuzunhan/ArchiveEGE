@@ -2058,12 +2058,18 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var host = hostOf(o.host), list = o.secenekler || [];
       var order = U.shuffle(list.map(function(_, i){ return i; }));
       return new Promise(function(res){
-        var wrap = el('div', 'opts'), done = false, btns = [];
-        function finish(orig, b){
-          if (done) return; done = true;
+        var wrap = el('div', 'opts'), done = false, btns = [], picked = -1;
+        var ok = el('button', 'btn primary opt-onay'); ok.type = 'button'; ok.textContent = 'Onayla'; ok.disabled = true;
+        function pick(pos){
+          if (done) return; picked = pos;
+          btns.forEach(function(x, j){ x.setAttribute('aria-pressed', j === pos ? 'true' : 'false'); x.classList.toggle('sec', j === pos); });
+          ok.disabled = false;
+        }
+        function confirm(){
+          if (done || picked < 0) return; done = true;
           document.removeEventListener('keydown', onkey, true);
-          b.setAttribute('aria-pressed', 'true');
-          res(orig);
+          ok.disabled = true;
+          res(order[picked]);
         }
         order.forEach(function(orig, pos){
           var b = el('button', 'opt'); b.type = 'button';
@@ -2071,16 +2077,19 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           b.appendChild(el('span', 't', list[orig].t));
           b.setAttribute('aria-pressed', 'false');
           b.dataset.i = String(orig);
-          b.addEventListener('click', function(){ finish(orig, b); });
+          b.addEventListener('click', function(){ pick(pos); });
           wrap.appendChild(b); btns.push(b);
         });
+        ok.addEventListener('click', confirm);
         function onkey(ev){
           if (typing(ev) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+          if (ev.key === 'Enter') { ev.preventDefault(); confirm(); return; }
           var i = '123456789'.indexOf(ev.key);
           if (ev.key.length !== 1 || i < 0 || i >= btns.length) return;
-          ev.preventDefault(); finish(order[i], btns[i]);
+          ev.preventDefault(); pick(i);
         }
         document.addEventListener('keydown', onkey, true);
+        wrap.appendChild(ok);
         host.appendChild(wrap);
       });
     }
@@ -3295,12 +3304,12 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
       host.innerHTML = '';
       var wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:6px;width:100%;';
       var cv = document.createElement('canvas');
-      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.style.cssText = 'display:block;width:100%;height:clamp(112px,16vh,200px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
       cv.setAttribute('role','img');
       var bar = document.createElement('div');
-      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;';
+      bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;';
       wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
 
       var ctlStyle = 'min-height:40px;padding:0 12px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);background:var(--panel2,#25164f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
@@ -3328,7 +3337,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       btn.addEventListener('click', function(){ gec(); });
       bar.appendChild(btn);
       var info = document.createElement('div');
-      info.style.cssText = 'flex:1 1 100%;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
+      info.style.cssText = 'flex:1 1 260px;font:700 15px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
       info.setAttribute('aria-live','polite');
       bar.appendChild(info);
 
@@ -3442,18 +3451,26 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
         /* sol yarı: enerji merdiveni (En = -13.6/n²) */
         var lw = W * 0.46, top = 22, bot = H - 14, ex0 = 40, ex1 = lw - 8;
-        function yN(q){ return top + (bot - top) * (1 - 1 / (q * q)); }
-        c.font = '700 14px ' + fb; c.textBaseline = 'middle';
+        function yN(q){ return bot - (bot - top) * (1 - 1 / (q * q)); }
+        c.font = '700 12px ' + fb; c.textBaseline = 'middle';
+        var etY = [];
+        function etOk(yy){ for (var z = 0; z < etY.length; z++) if (Math.abs(etY[z] - yy) < 13) return false; return true; }
+        var sira = [n, m, 1, 2, 3, 4, 5, 6], goster = {};
+        for (i = 0; i < sira.length; i++) {
+          if (sira[i] >= 1 && !goster[sira[i]] && (i < 1 || etOk(yN(sira[i])))) { goster[sira[i]] = 1; etY.push(yN(sira[i])); }
+        }
         for (k = 1; k <= 6; k++) {
           var y = yN(k), sel = (k === n || k === m);
           c.strokeStyle = k === n ? yel : (k === m ? cyan : muted);
           c.globalAlpha = sel ? 1 : 0.6; c.lineWidth = sel ? 4 : 2;
           c.beginPath(); c.moveTo(ex0, y); c.lineTo(ex1, y); c.stroke();
           c.globalAlpha = 1; c.fillStyle = sel ? ink : muted;
+          if (!goster[k] && !sel) continue;
           c.textAlign = 'right'; c.fillText('n=' + k, ex0 - 4, y);
+          if (!goster[k]) continue;
           c.textAlign = 'left'; c.fillText(seviye(k).toFixed(2), ex1 - 42, y - 9);
         }
-        c.fillStyle = muted; c.textAlign = 'left'; c.fillText('eV', ex0, 9);
+        c.fillStyle = muted; c.textAlign = 'left'; c.fillText('eV', ex0 + 8, 9);
         if (n !== m) {
           var xa = (ex0 + ex1) / 2 + 6, ya = yN(n), yb = yN(m), dir = yb > ya ? 1 : -1;
           c.strokeStyle = fcol; c.fillStyle = fcol; c.lineWidth = 4;
@@ -5853,20 +5870,26 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
         if (runway.anim) safe(function(){ runway.anim(dogru ? 'saldir' : 'sendele'); });
 
-        var temizNeden = function(s){ return String(s || '').replace(/^(Doğru|Yanlış|Hayır)\.\s*/, ''); };
+        var temizNeden = function(s){ return String(s || '').replace(/^((Doğru|Yanlış|Hayır|Evet)\.\s*)+/, ''); };
         var dogruSec = null;
         for (var i = 0; i < secs.length; i++) if (secs[i].dogru) dogruSec = secs[i];
         var metin;
         if (dogru) {
           metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + temizNeden(sec.neden);
         } else {
-          metin = 'Yanlış. ' + (sec.neden ? temizNeden(sec.neden) + ' ' : '') + (dogruSec ? 'Doğrusu: ' + temizNeden(dogruSec.neden) : '');
+          metin = (em === 0 ? 'Bilmiyorum dedin, sorun değil. ' : 'Cevabın yanlış. ') +
+            (dogruSec ? 'Doğru seçenek: ' + dogruSec.t + '. ' + temizNeden(dogruSec.neden) : '') +
+            (sec.t ? ' Senin seçtiğin: ' + sec.t + (sec.neden ? ' (' + temizNeden(sec.neden) + ')' : '') : '');
         }
         var kutu = mk('div', 'aciklama ' + (dogru ? 'iyi' : 'kotu'), metin);
         kutu.setAttribute('role', 'status');
         host.appendChild(kutu);
         confHost.style.display = 'none';
         Array.prototype.forEach.call(confHost.querySelectorAll('button'), function(b){ b.disabled = true; });
+        safe(function(){ Array.prototype.forEach.call(optHost.querySelectorAll('.opt'), function(b){
+          var oi = +b.dataset.i; b.disabled = true;
+          if (secs[oi] && secs[oi].dogru) b.classList.add('dogru'); else if (oi === idx) b.classList.add('yanlis');
+        }); });
         await waitContinue(host);
         return { dogru: dogru, eminlik: em, kavram: ob.kavram || null,
                  agirlik: ob.agirlik || 1, notlar: sec.neden || '' };
@@ -6891,13 +6914,15 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     }
     async function secmeliAciklama(area, r){
       area.textContent = '';
-      var temiz = function(s){ return String(s || '').replace(/^(Doğru|Yanlış|Hayır)\.\s*/, ''); };
+      var temiz = function(s){ return String(s || '').replace(/^((Doğru|Yanlış|Hayır|Evet)\.\s*)+/, ''); };
       var neden = temiz(r.secilen && r.secilen.neden);
       if (r.dogru) {
         area.appendChild(box((r.eminlik === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + neden, 'iyi'));
       } else {
-        area.appendChild(box('Yanlış. ' + temiz(r.dogruSecenek && r.dogruSecenek.neden), 'kotu'));
-        if (neden) hint(area, 'Seçtiğin: ' + neden);
+        var ds = r.dogruSecenek || {}, ss = r.secilen || {};
+        area.appendChild(box((r.eminlik === 0 ? 'Bilmiyorum dedin, sorun değil. ' : 'Cevabın yanlış. ') +
+          (ds.t ? 'Doğru seçenek: ' + ds.t + '. ' : '') + temiz(ds.neden), 'kotu'));
+        if (ss.t) hint(area, 'Senin seçtiğin: ' + ss.t + (neden ? ' (' + neden + ')' : ''));
       }
       await waitContinue(area);
     }
