@@ -23,6 +23,11 @@ var by = {};
 S.mcq.forEach(function(x){ (by[x.station] = by[x.station] || [0, 0])[0]++; });
 S.klasik.forEach(function(x){ (by[x.station] = by[x.station] || [0, 0])[1]++; });
 Object.keys(by).forEach(function(s){ chk(by[s][0] >= 8 && by[s][1] >= 3, s + ' yetersiz: ' + by[s]); });
+var sm = S.mcq.filter(function(x){ return x.secki; }), sk = S.klasik.filter(function(x){ return x.secki; });
+chk(sm.length === 50, 'seçki MCQ 50 olmalı: ' + sm.length);
+chk(sk.length === 20, 'seçki klasik 20 olmalı: ' + sk.length);
+var hedef = { s01: 10, s02: 10, s03: 5, s04: 4, s05: 6, s06: 5, s07: 5, s08: 3, s09: 2 };
+Object.keys(hedef).forEach(function(s){ var c = sm.filter(function(x){ return x.station === s; }).length; chk(c === hedef[s], 'seçki MCQ ' + s + ' = ' + c + ', hedef ' + hedef[s]); });
 console.log('dosyalar:', files.join(', '), '| mcq', S.mcq.length, 'klasik', S.klasik.length, JSON.stringify(by));
 if (err.length) { console.log(err.join('\n')); process.exit(1); }
 console.log('sinav-dogrula: OK');

@@ -333,7 +333,7 @@
   }
 
   /* ---------- 5. Deneme sınavı (Mock exam) ---------- */
-  var denemeTok = 0, denemeTimer = null, denemeAyar = { sure: true, anlik: true };
+  var denemeTok = 0, denemeTimer = null, denemeAyar = { sure: true, anlik: true, kume: 'secki' };
   function denemeDurdur(){ if (denemeTimer) { clearInterval(denemeTimer); denemeTimer = null; } }
   function sinavVeri(){ var d = Q.data && Q.data.sinav || {}; return { mcq: d.mcq || [], klasik: d.klasik || [] }; }
   function trMi(t){ return /[çğıöşüÇĞİÖŞÜ]/.test(t) || /(^|\s)(ve|bir|için|çünkü|olur|ile|değil|olarak)(\s|[.,]|$)/i.test(t); }
@@ -341,10 +341,14 @@
 
   function denemeSekmesi(){
     var v = sinavVeri(), k = yukle();
-    var nm = Math.min(50, v.mcq.length), nk = Math.min(20, v.klasik.length);
+    var sm = v.mcq.filter(function(x){ return x.secki; }), sk = v.klasik.filter(function(x){ return x.secki; });
+    var kume = (denemeAyar.kume === 'tum' || !sm.length) ? 'tum' : 'secki';
+    var hm = kume === 'secki' ? sm : v.mcq, hk = kume === 'secki' ? sk : v.klasik;
+    var nm = Math.min(50, hm.length), nk = Math.min(20, hk.length);
     body.appendChild(el('div', 'tk-muted', 'Gerçek sınav gibi: tüm sorular İngilizce, istasyonlar karışık. Önce çoktan seçmeli (MCQ), sonra klasik (yazılı) sorular. Cevaplarını İngilizce yaz; terim bilmiyorsan sınav sonundaki terim listesine bak.'));
     var kutu = el('div', 'tk-kart'); kutu.appendChild(el('h4', '', 'Bu sınavda'));
     kutu.appendChild(el('p', '', nm + ' çoktan seçmeli + ' + nk + ' klasik soru' + ((nm < 50 || nk < 20) ? ' (havuzda şimdilik bu kadar var; hedef 50 + 20)' : '') + '.'));
+    if (kume === 'secki') kutu.appendChild(el('p', 'tk-muted', 'Seçki: çıkma olasılığı en yüksek olduğu tahmin edilen sorular (örnek sınav, öncelikli konular, zayıf noktalar). Bu bir tahmindir, gerçek soruları bilmiyoruz. Havuzda toplam ' + v.mcq.length + ' MCQ + ' + v.klasik.length + ' klasik var.'));
     if (k.sinav && k.sinav.son) { var o = k.sinav.son; kutu.appendChild(el('p', 'tk-muted', 'Son deneme: MCQ ' + o.mcq[0] + '/' + o.mcq[1] + ', klasik ' + o.klasik[0] + '/' + o.klasik[1] + ' puan' + (o.sure ? ', süre ' + mmss(o.sure) : '') + '.')); }
     body.appendChild(kutu);
     function secenek(ad, anahtar, a, b){
@@ -357,9 +361,19 @@
       });
       body.appendChild(r);
     }
+    if (sm.length) {
+      var rk = el('div', 'tk-row'); rk.appendChild(el('span', '', 'Soru kümesi:'));
+      var kb = [];
+      [['secki', 'Seçki (' + sm.length + ' + ' + sk.length + ')'], ['tum', 'Tüm havuz']].forEach(function(o){
+        var c = el('button', 'tk-chip', o[1]); c.type = 'button'; c.setAttribute('aria-pressed', kume === o[0] ? 'true' : 'false');
+        c.addEventListener('click', function(){ denemeAyar.kume = o[0]; git('deneme'); });
+        kb.push(c); rk.appendChild(c);
+      });
+      body.appendChild(rk);
+    }
     secenek('Süre sayacı:', 'sure', 'Açık', 'Kapalı');
     secenek('MCQ geri bildirimi:', 'anlik', 'Her sorudan sonra', 'Sınav sonunda toplu');
-    var go = btn('Sınavı başlat', 'primary', function(){ denemeBasla(mix(v.mcq).slice(0, 50), mix(v.klasik).slice(0, 20)); });
+    var go = btn('Sınavı başlat', 'primary', function(){ denemeBasla(mix(hm).slice(0, 50), mix(hk).slice(0, 20)); });
     if (!nm && !nk) { go.disabled = true; body.appendChild(el('div', 'tk-fb kotu', 'Sınav sorusu bulunamadı.')); }
     var r = el('div', 'tk-row'); r.appendChild(go); body.appendChild(r);
   }
