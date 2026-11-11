@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>obs-patron test</title>
+<style>
+:root{--bg:#0e0724;--panel:#1a0f3d;--panel2:#25164f;--ink:#fff;--ink-dark:#0b0620;--muted:#c4b9ec;--line:#f4f0ff;--yellow:#ffd23f;--cyan:#00e5ff;--magenta:#ff3df0;--lime:#39ff88;--red:#ff4d6d;--good:var(--lime);--bad:var(--red);--r:10px;--rs:8px;--fs-small:14px;--font-b:'Trebuchet MS',system-ui,sans-serif}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px var(--font-b)}
+#runway{position:relative;height:420px;border:3px solid var(--line);margin:8px}
+#boss-panel{position:absolute;right:1.5%;top:3%;width:34%;height:94%}
+#boss-panel svg{width:100%;height:80%}
+#boss-panel svg.vuruldu{opacity:.6}#boss-panel svg.guldu{filter:hue-rotate(90deg)}
+.bubble{position:absolute;left:40%;top:8px;background:#fff;color:#0b0620;padding:8px 12px;border-radius:12px;max-width:40%}
+#dock{margin:8px;height:300px;overflow:auto;border:3px solid var(--line);padding:10px;background:var(--panel)}
+.btn,.opt,.cbtn{background:var(--panel2);color:var(--ink);border:3px solid var(--line);border-radius:var(--rs);padding:8px 12px;font:inherit;cursor:pointer;margin:4px 4px 4px 0}
+.btn.primary{background:var(--yellow);color:var(--ink-dark)}
+.opt{display:block;text-align:left}
+.chip{border:2px solid var(--cyan);border-radius:20px;padding:2px 10px;font-size:var(--fs-small)}
+.iyi{color:var(--good)}.kotu{color:var(--bad)}
+textarea{width:98%;height:60px;font:inherit}
+.dmg{position:absolute;left:20%;top:40%;font-weight:bold}.dmg.alinan{color:var(--red)}.dmg.verilen{color:var(--lime)}.dmg.kritik{color:var(--yellow)}
+#hud{margin:8px}
+</style></head>
+<body>
+<div id="hud">Voltaj <b id="v">100</b> · Boss HP <b id="hp">-</b></div>
+<div id="runway"></div>
+<div id="dock"></div>
+<script src="../src/js/00-q.js"></script>
+<script src="../src/js/10-state.js"></script>
+<script src="../src/js/85-obs-patron.js"></script>
+<script>
+(function(){
+  'use strict';
+  var runwayEl = document.getElementById('runway'), dock = document.getElementById('dock');
+  var cfg = {}, log = [];
+  function L(s){ log.push(s); }
+  function after(fn){ setTimeout(fn, 5); }
+
+  /* ---- örnek veri ---- */
+  var OB = { id:'s05-o10', tip:'patron', baslik:'Foton patronu', kavram:null, agirlik:2, canavar:'einstein', canavarAd:'Foton Canavarı',
+    giris:'Fotonlar paket paket gelir, hazır mısın?',
+    fazlar:[
+      { tip:'secmeli', kavram:'foton_enerjisi', soru:'Eşik frekansının altında ışık şiddeti artarsa ne olur?',
+        secenekler:[ {t:'Elektron kopar', dogru:false, neden:'Şiddet, foton sayısını artırır, enerjisini değil.'},
+                     {t:'Elektron kopmaz', dogru:true, neden:'Tek foton eşiği geçemiyorsa kalabalık da kurtarmaz.'},
+                     {t:'Akım yavaşça başlar', dogru:false, neden:'Birikme yok, ya tek foton yeter ya hiç.'} ],
+        alt:{ soru:'Kırmızı lambayı ikiye katlarsan eşik aşılır mı?',
+              secenekler:[ {t:'Evet', dogru:false, neden:'Foton enerjisi frekansa bağlı.'}, {t:'Hayır', dogru:true, neden:'Frekans aynı, eşik aynı.'}, {t:'Bazen', dogru:false, neden:'Rastgele değil.'} ] } },
+      { tip:'acik', kavram:'foton_enerjisi', pdfSoru:'Explain why the photoelectric effect cannot be explained classically.',
+        soru:'Neden dalga modeli fotoelektrik olayı açıklayamaz?', anahtarFikirler:['eşik frekansı','anlık yanıt','foton enerjisi hf','şiddet akımı belirler'],
+        yanlisKavramlar:['Şiddet enerjiyi belirler'], yanlisKavramIds:['dalga_siddet'], idealCevap:'Eşik frekansı ve anlık yanıt dalga modeliyle çelişir.',
+        yedekSecmeli:{ soru:'Hangisi dalga modelinin çelişkisidir?', secenekler:[ {t:'Eşik frekansı',dogru:true,neden:'Dalga modeli eşik beklemez.'},{t:'Renk',dogru:false,neden:'Alakasız.'},{t:'Isı',dogru:false,neden:'Alakasız.'},{t:'Ses',dogru:false,neden:'Alakasız.'} ] },
+        alt:{ soru:'Işık yoğunluğu artınca neden elektron enerjisi artmıyor?' } },
+      { tip:'acik', kavram:'durdurma_potansiyeli', soru:'Durdurma potansiyeli neye bağlıdır?', anahtarFikirler:['frekans','metal'],
+        yanlisKavramlar:['Şiddet'], yanlisKavramIds:['dalga_siddet'], idealCevap:'Frekansa ve metale.',
+        yedekSecmeli:{ soru:'Durdurma potansiyeli?', secenekler:[ {t:'Şiddet',dogru:false,neden:'Hayır.'},{t:'Frekans',dogru:true,neden:'Evet.'},{t:'Süre',dogru:false,neden:'Hayır.'},{t:'Renk adı',dogru:false,neden:'Hayır.'} ] },
+        alt:{ soru:'Aynı metalde frekans artınca ne olur?' } }
+    ] };
+  window.OB = OB;
+
+  /* ---- sahte Q modülleri ---- */
+  function el(t, c, x){ var e = document.createElement(t); if (c) e.className = c; if (x != null) e.textContent = x; return e; }
+  function shift(q){ return cfg[q] && cfg[q].length ? cfg[q].shift() : undefined; }
+
+  Q.ui = {
+    options: { ask: function(o){ return new Promise(function(res){
+      o.secenekler.forEach(function(s, i){ var b = el('button', 'opt', (i+1) + ' ' + s.t); b.onclick = function(){ res(i); }; o.host.appendChild(b); });
+      var a = shift('opt'); if (a !== undefined) after(function(){ L('opt:' + a); res(a); });
+    }); } },
+    confidence: { ask: function(o){ return new Promise(function(res){
+      ['Bilmiyorum','Emin değilim','Eminim'].forEach(function(t, i){ var b = el('button', 'cbtn', t); b.onclick = function(){ res(i); }; o.host.appendChild(b); });
+      var a = shift('conf'); if (a !== undefined) after(function(){ L('conf:' + a); res(a); });
+    }); } },
+    textbox: { ask: function(o){ return new Promise(function(res){
+      var ta = el('textarea'); ta.value = o.deger || ''; o.host.appendChild(ta);
+      var g = el('button', 'btn primary', 'Gönder'), b = el('button', 'btn', 'Bilmiyorum');
+      g.onclick = function(){ res(ta.value); }; b.onclick = function(){ res(null); };
+      o.host.appendChild(g); o.host.appendChild(b);
+      var a = shift('text'); L('textbox deger=' + (o.deger || ''));
+      if (a !== undefined) after(function(){ res(a); });
+    }); } },
+    thinking: { show: function(host){ var d = el('div', 'thinking', '… Düşünüyor'); var s = el('button', 'btn', 'Dur'); s.onclick = function(){ Q.claude.cancel(); }; d.appendChild(s); host.appendChild(d); window.__th = d; },
+                hide: function(){ if (window.__th && window.__th.parentNode) window.__th.parentNode.removeChild(window.__th); } },
+    toast: function(m){ L('toast:' + m); }
+  };
+  var pend = null;
+  Q.claude = {
+    available: function(){ return Promise.resolve({ backend: cfg.backend || 'sample', model: 'x' }); },
+    cancel: function(){ if (pend) { var p = pend; pend = null; p({ code: 'iptal', mesaj: 'iptal' }); } },
+    grade: function(g){ return new Promise(function(res, rej){
+      L('grade:' + g.cevap);
+      var a = shift('grade');
+      if (a === 'hang') { pend = rej; return; }
+      after(function(){ if (a && a.err) rej({ code: a.err, mesaj: a.err }); else res(a || { dogruluk: 0, fikirler: [], yanlisKavram: null, geriBildirim: [] }); });
+    }); }
+  };
+  var TABLO = { true:[[12,0,0],[25,0,0],[50,0,8]], kismen:[[8,3,0],[15,10,0],[20,20,0]], false:[[0,6,0],[0,20,0],[0,40,0]] };
+  Q.battle = {
+    damageTable: function(d, e, a){ var r = TABLO[String(d)][e]; return { verilen: Math.round(r[0]*a), alinan: Math.round(r[1]*a), sarj: r[2], kritik: d === true && e === 2 }; },
+    apply: function(s){ var t = Q.battle.damageTable(s.dogru, s.eminlik, s.agirlik); Q.state.voltaj = Math.max(0, Math.min(100, Q.state.voltaj - t.alinan + t.sarj));
+      document.getElementById('v').textContent = Q.state.voltaj; L('apply:' + JSON.stringify(s)); },
+    bossStart: function(){ Q.state.aktif.bossHp = 120; document.getElementById('hp').textContent = 120; L('bossStart'); },
+    bossHit: function(n){ Q.state.aktif.bossHp = Math.max(0, Q.state.aktif.bossHp - n); document.getElementById('hp').textContent = Q.state.aktif.bossHp; L('bossHit:' + n); },
+    tamirModu: function(){ return !!cfg.tamir; }
+  };
+  var runway = {
+    showBoss: function(id, o){ var p = el('div'); p.id = 'boss-panel';
+      p.innerHTML = '<svg class="mon idle" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="#3a5bff" stroke="#0b0620" stroke-width="4"/><circle cx="38" cy="42" r="6" fill="#fff"/><circle cx="62" cy="42" r="6" fill="#fff"/></svg>';
+      p.appendChild(el('div', null, o.ad)); runwayEl.appendChild(p); L('showBoss:' + id); return Promise.resolve(); },
+    hideBoss: function(){ var p = document.getElementById('boss-panel'); if (p) p.parentNode.removeChild(p); L('hideBoss'); return Promise.resolve(); },
+    say: function(kim, m){ var b = document.querySelector('.bubble'); if (b) b.parentNode.removeChild(b); b = el('div', 'bubble', m); runwayEl.appendChild(b); L('say:' + m); return Promise.resolve(); },
+    anim: function(n){ L('anim:' + n); return Promise.resolve(); },
+    damageNumber: function(n, t){ var d = el('div', 'dmg ' + t, (t === 'alinan' ? '-' : '+') + n); runwayEl.appendChild(d); L('dmg:' + t + n); },
+    stop: function(){ return Promise.resolve(); }, resume: function(){ return Promise.resolve(); }
+  };
+
+  /* ---- Devam / düğme otomatiği ---- */
+  setInterval(function(){
+    if (!cfg.auto) return;
+    var bs = dock.querySelectorAll('button'), i, b;
+    for (i = 0; i < bs.length; i++) if (bs[i].classList.contains('devam')) { bs[i].click(); return; }
+    if (cfg.click && cfg.click.length) {
+      for (i = 0; i < bs.length; i++) if (bs[i].textContent === cfg.click[0]) { cfg.click.shift(); L('click'); bs[i].click(); return; }
+    }
+  }, 20);
+
+  /* cfg: {opt,conf,text,grade,click,backend,tamir,voltaj,auto} */
+  window.runCase = async function(c){
+    cfg = JSON.parse(JSON.stringify(c)); cfg.auto = c.auto !== false; log = []; window.__log = log;
+    Q.save.reset && Q.save.reset();
+    Q.state.voltaj = c.voltaj == null ? 100 : c.voltaj; Q.state.aktif.bossHp = 120;
+    document.getElementById('v').textContent = Q.state.voltaj;
+    runwayEl.textContent = ''; dock.textContent = '';
+    var host = el('div'); dock.appendChild(host);
+    var ctx = { stationId: 's05', index: 9, istasyon: { renk: '#00e5ff' }, host: host, runway: runway, ui: Q.ui, claude: Q.claude, battle: Q.battle, state: Q.state };
+    window.__done = false;
+    var p = Q.obs.handlers.patron.enter(window.OB, ctx).then(function(s){ window.__done = true; window.__sonuc = s; return s; });
+    if (c.manual) return null;
+    var sonuc = await p;
+    return { sonuc: sonuc, log: log, hp: Q.state.aktif.bossHp, voltaj: Q.state.voltaj };
+  };
+})();
+</script>
+</body></html>
