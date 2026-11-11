@@ -102,6 +102,7 @@ function bekle(ms) { return new Promise(function (r) { setTimeout(r, ms); }); }
     var opt = page.locator('#dock .opt').first();
     var optVar = false;
     try { await opt.waitFor({ timeout: 30000 }); optVar = true; await opt.click(); } catch (e) { /* yok */ }
+    try { await page.locator('#dock button', { hasText: /Onayla/ }).first().click({ timeout: 3000 }); } catch (e) { /* Onayla yoksa eski akış */ }
     var emin = page.locator('#dock .cbtn').first();
     try { await emin.waitFor({ timeout: 5000 }); await emin.click(); } catch (e) { optVar = false; }
     await bekle(600);
