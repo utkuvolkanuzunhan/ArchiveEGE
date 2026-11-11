@@ -57,7 +57,8 @@
         if (o.kim) {
           var AD = { anlatici: 'Anlatıcı', selin: 'Selin', runner: 'Koşucu', kosucu: 'Koşucu',
             vakans: 'Vacancy (Boşluk) Kusuru', safsizlik: 'Impurity (Safsızlık) Kusuru', tane_siniri: 'Grain Boundary (Tane Sınırı) Kusuru',
-            dislokasyon: 'Dislocation (Dislokasyon) Kusuru', dusman: 'Kusur Düşmanı' };
+            dislokasyon: 'Dislocation (Dislokasyon) Kusuru',
+            pauli_cift: 'Defect (kusur) Pauli Çifti', bant_bosluk: 'Defect (kusur) Bandgap Aralığı', dusman: 'Kusur Düşmanı' };
           var ch = Q.data && Q.data.chars && Q.data.chars[o.kim];
           b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || (/^[a-z0-9_]+$/.test(String(o.kim)) ? 'Kusur düşmanı' : o.kim)));
         }
@@ -70,6 +71,21 @@
         Array.prototype.slice.call(layer.querySelectorAll('.bubble.' + konum)).forEach(function(eski){
           if (eski !== b && eski.parentNode) eski.parentNode.removeChild(eski);
         });
+        /* Farklı konumdaki balonlar üst üste binmesin: çakışırsa yeni balon eskinin altına kayar (katman içinde kalır). */
+        (function ayir(){
+          var cp = b.offsetParent || layer, lr = cp.getBoundingClientRect(), br = b.getBoundingClientRect();
+          var digerleri = Array.prototype.slice.call(layer.querySelectorAll('.bubble')).filter(function(x){ return x !== b; });
+          var top = br.top - lr.top, h = br.height, kaydi = false;
+          digerleri.forEach(function(o){
+            var orr = o.getBoundingClientRect();
+            var ot = orr.top - lr.top;
+            if (br.left < orr.right && br.right > orr.left && top < ot + orr.height + 8 && top + h > ot - 8) { top = ot + orr.height + 16; kaydi = true; }
+          });
+          if (kaydi) {
+            var maks = Math.max(0, lr.height - h - 14);
+            b.style.top = Math.min(top, maks) + 'px';
+          }
+        })();
         var bitti = false;
         function bitir(){ if (bitti) return; bitti = true; res(); }
         b.style.pointerEvents = 'auto'; b.style.cursor = 'pointer'; b.title = 'Kapatmak için tıkla';

@@ -14,3 +14,9 @@ Kapsam: Playwright 1366x768 ile hikaye, kavram sim'i (gerçek tıklama), o03 yan
 - DÜŞÜK: "Atom (atom)", "spin (spin)", "metal (metal)" gibi aynı sözcüğün parantezle tekrarı biraz yapay (DIL-1 kuralına uygun ama gereksiz).
 - Gözlem: istasyon başlığı "Band (bant) testi"; engel yolu sabit hızla yürüyor (kavram kapısına ~25 sn), kullanıcıyı bekletiyor olabilir.
 - Doğrulanmadı (grup B/C): o05-o09, 1440x900 yerleşim yalnızca hikaye ekranında bakıldı (sorun yok).
+
+## Grup A ikinci tur: kalan 3 sorun DÜZELTİLDİ (Playwright 1366x768 doğrulandı)
+- Kavram kapısı: `basari.doldurma:true` (90-data-s09.js); 70-sim-bant.js'te bir malzeme yalnızca N>=32 iken "Fill electrons" animasyonu bitince "gezildi" sayılır. Doğrulama: N=32 + 3 malzemeye tıklayıp doldurmadan kapı AÇILMADI; her malzemede doldurunca açıldı. Görev metni buna göre güncellendi. `doldurma` yoksa eski davranış korunur.
+- Düşman adı: yeni skin'ler `pauli_cift` ("Defect (kusur) Pauli Çifti", o03) ve `bant_bosluk` ("Defect (kusur) Bandgap Aralığı", o04); 41-art-runner.js'te çizimleri, 50-ui.js'te balon adları. İç anahtar balonda görünmüyor (doğrulandı).
+- Balon çakışması: 50-ui.js `bubble.say` farklı konumlu balon çakışırsa yenisini eskinin altına kaydırıyor (üst kap içinde kalır, tıkla-kapat/ekranda-kal kuralı aynı). Selin+Pauli artık üst üste binmiyor (ekran görüntüsüyle doğrulandı).
+- veri-dogrula.js ve sinav-dogrula.js temiz.

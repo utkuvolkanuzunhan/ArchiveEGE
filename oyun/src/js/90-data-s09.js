@@ -15,7 +15,7 @@
       sec('Sınırsız electron (elektron)', false, 'Yanlış. Pauli exclusion principle (Pauli dışlama ilkesi) bunu yasaklar.'),
       sec('Yalnızca bir electron (elektron), spin (spin) fark etmez', false, 'Yanlış. Zıt spin (spin) ile iki electron (elektron) sığar.')
     ],
-    kusurSkin: 'vakans'
+    kusurSkin: 'pauli_cift'
   };
 
   var o04 = {
@@ -26,7 +26,7 @@
       sec('Atom (atom) hiç electron (elektron) içermez', false, 'Hayır. Electron (elektron) vardır, ama hareket edemez.'),
       sec('Conduction band (iletim bandı) yarı doludur', false, 'Hayır. Yarı dolu band (bant) metal (metal) özelliğidir.')
     ],
-    kusurSkin: 'tane_siniri'
+    kusurSkin: 'bant_bosluk'
   };
 
   var o05 = {
@@ -68,11 +68,11 @@
       },
       {
         id: 's09-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bant_yarilma', agirlik: 1,
-        gorev: 'N atom (atom) sayısını 32 yap, üç malzemeyi gez.',
+        gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {
           modul: 'bant',
           params: { N: 2, malzeme: 'yariiletken' },
-          basari: { N: 32, malzemeler: 3 }
+          basari: { N: 32, malzemeler: 3, doldurma: true }
         },
         ogrenilen: 'N atom (atom) N seviye verir; bandgap (yasak enerji aralığı) ve doluluk malzemeyi belirler.'
       },

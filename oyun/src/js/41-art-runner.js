@@ -285,6 +285,19 @@
       ctx.fillStyle = tok('--yellow'); circle(ctx, 20, -48, 7); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = tok('--ink-dark'); ctx.stroke();
       circle(ctx, 24, -86, 5); ctx.fill(); ctx.stroke();
     },
+    pauli_cift: function(ctx, t){      /* aynı çizgide iki electron */
+      rrect(ctx, -46, -112, 92, 88, 10); inkFill(ctx, '#3a5bff');
+      ctx.strokeStyle = tok('--yellow'); ctx.lineWidth = 5;
+      for (var q = 0; q < 3; q++) { ctx.beginPath(); ctx.moveTo(-34, -94 + q * 26); ctx.lineTo(34, -94 + q * 26); ctx.stroke(); }
+      ctx.fillStyle = '#ffffff';
+      [-12, 12].forEach(function(dx){ circle(ctx, dx, -68, 8); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = tok('--ink-dark'); ctx.stroke(); });
+    },
+    bant_bosluk: function(ctx, t){     /* iki band, arada bandgap */
+      rrect(ctx, -46, -112, 92, 30, 8); inkFill(ctx, '#ff3df0');
+      rrect(ctx, -46, -54, 92, 30, 8); inkFill(ctx, '#00b8d4');
+      ctx.setLineDash([5, 6]); ctx.lineWidth = 3; ctx.strokeStyle = '#39ff88';
+      ctx.beginPath(); ctx.moveTo(-46, -68); ctx.lineTo(46, -68); ctx.stroke(); ctx.setLineDash([]);
+    },
     dislokasyon: function(ctx, t){     /* eğri sıra */
       for (var r = 0; r < 4; r++) for (var c = 0; c < 4; c++) {
         var cx = -39 + c * 26, cy = -102 + r * 26;

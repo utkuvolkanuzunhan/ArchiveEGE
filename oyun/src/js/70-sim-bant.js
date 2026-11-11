@@ -26,7 +26,9 @@
       var N0 = params.N != null ? params.N : (b0.N != null ? b0.N : 8);
       var nIdx = NLER.indexOf(N0); if (nIdx < 0) nIdx = 3;
       var mal = MALZ.indexOf(params.malzeme) >= 0 ? params.malzeme : (MALZ.indexOf(b0.malzeme) >= 0 ? b0.malzeme : 'yariiletken');
-      var gezilen = {}; gezilen[mal] = true;
+      var gezilen = {}, doldurulan = {};
+      var doldurmaGerek = !!(params.basari && params.basari.doldurma);
+      if (!doldurmaGerek) gezilen[mal] = true;
       var dolu = 0, hedef = 0, raf = 0, bitti = false, destroyed = false, ro = null, onWin = null;
 
       host.innerHTML = '';
@@ -83,7 +85,7 @@
         try { var v = getComputedStyle(host).getPropertyValue(n).trim(); return v || fb; } catch (e) { return fb; }
       }
       function durdur(){ if (raf) { cancelAnimationFrame(raf); raf = 0; } }
-      function sec(m){ mal = m; gezilen[m] = true; dolu = 0; hedef = 0; durdur(); guncelle(); }
+      function sec(m){ mal = m; if (!doldurmaGerek) gezilen[m] = true; dolu = 0; hedef = 0; durdur(); guncelle(); }
 
       function doldur(){
         var N = NLER[nIdx];
@@ -96,7 +98,7 @@
           dolu = Math.round(hedef * f);
           ciz();
           if (f < 1) raf = requestAnimationFrame(adim);
-          else { raf = 0; dolu = hedef; guncelle(); }
+          else { raf = 0; dolu = hedef; doldurulan[mal] = true; if (NLER[nIdx] >= 32) gezilen[mal] = true; guncelle(); }
         }
         raf = requestAnimationFrame(adim);
       }
@@ -244,7 +246,7 @@
         set: function(p){
           if (!p) return;
           if (p.N != null && NLER.indexOf(p.N) >= 0) { nIdx = NLER.indexOf(p.N); dolu = 0; }
-          if (MALZ.indexOf(p.malzeme) >= 0) { mal = p.malzeme; gezilen[mal] = true; dolu = 0; }
+          if (MALZ.indexOf(p.malzeme) >= 0) { mal = p.malzeme; if (!doldurmaGerek) gezilen[mal] = true; dolu = 0; }
           durdur(); guncelle();
         }
       };
