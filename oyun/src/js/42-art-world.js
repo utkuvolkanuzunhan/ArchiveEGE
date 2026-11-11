@@ -92,7 +92,7 @@
       g.fillStyle = '#0b0620'; g.fillRect(bx + 20, 150, 5, 26); g.fillRect(bx + bw - 25, 150, 5, 26);
       g.fillStyle = '#1a0f3d'; g.fillRect(bx, by, bw, bh);
       g.strokeStyle = renk; g.lineWidth = 4; g.save(); g.shadowColor = renk; g.shadowBlur = 8; g.strokeRect(bx + 2, by + 2, bw - 4, bh - 4); g.restore();
-      if (i === 1) {
+      if (false) {
         g.font = '34px ' + tok('--font-d'); g.textAlign = 'center'; g.textBaseline = 'middle';
         g.fillStyle = '#fff'; g.fillText('İSTASYON' + (n ? ' ' + n : ''), bx + bw / 2, by + bh / 2 + 2);
       } else {
@@ -118,7 +118,7 @@
     var n = (tema && typeof tema === 'object') ? tema.n : 0;
     renk = renk || tok('--magenta');
     var tr = ctx.getTransform ? ctx.getTransform() : { a: 1 };
-    var s = Math.max(1, tr.a || 1);
+    var s = tr.a > 0 ? tr.a : 1;
     var cw = (ctx.canvas && ctx.canvas.width) || 1280;
     var W = cw / s; if (!(W > 0)) W = 1280;
     var key = renk + '|' + n + '|' + Math.round(s * 100) + '|' + Math.round(W);

@@ -65,15 +65,16 @@ html,body{height:100%;margin:0;overflow:hidden}
 #hud-voltaj b{font-variant-numeric:tabular-nums;text-align:right;font-size:17px}
 #hud-claude{flex:0 0 auto;font-size:var(--fs-small);font-weight:800;color:var(--muted);white-space:nowrap}
 #hud-timer{flex:0 0 auto;font-size:var(--fs-small);font-weight:800;color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
-#runway{flex:1 1 auto;min-height:56vh;position:relative;border:3px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;background:var(--sky)}
+#runway{flex:1 1 auto;min-height:48vh;position:relative;border:3px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;background:var(--sky)}
 #runway canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-#dock{flex:0 0 auto;height:clamp(240px,32vh,360px);overflow:auto;position:relative;
+#dock{flex:0 0 auto;height:clamp(280px,38vh,420px);overflow:auto;position:relative;
   background:var(--panel);border:var(--bw) solid var(--line);border-radius:var(--r);padding:12px 16px;display:flex;flex-direction:column;gap:10px}
 #modal-layer{position:fixed;inset:0;z-index:50;display:flex;align-items:center;justify-content:center;background:rgba(11,6,32,.78);padding:16px}
 #modal-layer[hidden]{display:none}
-#toast-layer{position:fixed;left:50%;bottom:calc(clamp(240px,32vh,360px) + 24px);transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+#toast-layer{position:fixed;left:50%;bottom:calc(clamp(280px,38vh,420px) + 24px);transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
 @media (max-width:1250px){#hud-voltaj{grid-template-columns:auto 100px 36px}#hud-claude{display:none}}
 @media (max-height:760px){#runway{min-height:0}}  /* 1100x700: 56vh+dock+şerit taşardı; yol kalan alanı alır */
+#dock:empty::before{content:"Engele yaklaşınca görev burada açılır.";margin:auto;color:var(--muted);font-weight:800;font-size:var(--fs-small)}
 
 /* 20-components.css (A4) Bileşenler: panel, düğme, seçenek, eminlik, balon, kart, toast, modal, voltaj, engel şeridi. */
 .panel{background:var(--panel);border:var(--bw) solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);min-width:0}
@@ -1842,7 +1843,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       g.fillStyle = '#0b0620'; g.fillRect(bx + 20, 150, 5, 26); g.fillRect(bx + bw - 25, 150, 5, 26);
       g.fillStyle = '#1a0f3d'; g.fillRect(bx, by, bw, bh);
       g.strokeStyle = renk; g.lineWidth = 4; g.save(); g.shadowColor = renk; g.shadowBlur = 8; g.strokeRect(bx + 2, by + 2, bw - 4, bh - 4); g.restore();
-      if (i === 1) {
+      if (false) {
         g.font = '34px ' + tok('--font-d'); g.textAlign = 'center'; g.textBaseline = 'middle';
         g.fillStyle = '#fff'; g.fillText('İSTASYON' + (n ? ' ' + n : ''), bx + bw / 2, by + bh / 2 + 2);
       } else {
@@ -1868,7 +1869,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     var n = (tema && typeof tema === 'object') ? tema.n : 0;
     renk = renk || tok('--magenta');
     var tr = ctx.getTransform ? ctx.getTransform() : { a: 1 };
-    var s = Math.max(1, tr.a || 1);
+    var s = tr.a > 0 ? tr.a : 1;
     var cw = (ctx.canvas && ctx.canvas.width) || 1280;
     var W = cw / s; if (!(W > 0)) W = 1280;
     var key = renk + '|' + n + '|' + Math.round(s * 100) + '|' + Math.round(W);
