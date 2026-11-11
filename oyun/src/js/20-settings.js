@@ -350,6 +350,7 @@
     hb.id = 'a8-hata'; hb.style.marginTop = '12px';
     box.appendChild(hb);
     var row = el('div'); row.style.cssText = 'display:flex;gap:8px;margin-top:12px';
+    var tb = btn('Tekrar Merkezi', 'primary', function(){ if (Q.tekrar && Q.tekrar.open) Q.tekrar.open(); }); tb.id = 'a10-tekrar'; row.appendChild(tb);
     row.appendChild(btn('Ayarlar', '', function(){ S.open(); }));
     box.appendChild(row);
   }
