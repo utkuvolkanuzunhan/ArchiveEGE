@@ -134,8 +134,8 @@
       zeroBtn.style.borderColor = flat ? 'var(--yellow)' : 'var(--line)';
       modBtn.textContent = mod === 'tel' ? 'Wire (Tel) ⇄ Well (Kuyu): Wire' : 'Wire (Tel) ⇄ Well (Kuyu): Well';
       styleBtn(modBtn, false);
-      canvas.setAttribute('aria-label', flat ? 'Dalga yok, parçacık yok'
-        : (mod === 'tel' ? 'İki ucu sabit tel' : 'Sonsuz kuyu') + ', n = ' + n + ', L = ' + L + ' nm, E' + SUB[n] + ' = ' + fmtE(energy(n, L)));
+      canvas.setAttribute('aria-label', flat ? 'No wave (dalga yok), no particle (parçacık yok)'
+        : (mod === 'tel' ? 'Wire (iki ucu sabit tel)' : 'Infinite well (sonsuz kuyu)') + ', n = ' + n + ', L = ' + L + ' nm, E' + SUB[n] + ' = ' + fmtE(energy(n, L)));
       if (!flat) { amp = 1; }
       draw();
       finishCheck(null);
@@ -211,7 +211,7 @@
       if (mod === 'kuyu') { ctx.fillStyle = mg; ctx.fillText('|ψ|²', area0 + 24, 16); }
       if (flat) {
         ctx.fillStyle = yel; ctx.font = '700 15px ' + fd; ctx.textAlign = 'center';
-        ctx.fillText('Dalga yok → parçacık yok', cx, top + 10);
+        ctx.fillText('No wave (dalga yok) → no particle (parçacık yok)', cx, top + 10);
       }
 
       /* enerji merdiveni (sağ şerit) */

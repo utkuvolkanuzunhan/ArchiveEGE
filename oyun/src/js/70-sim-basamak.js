@@ -117,7 +117,7 @@
       info.setAttribute('aria-live','polite');
       bar.appendChild(info);
       var note = document.createElement('span');
-      note.textContent = 'oyun modeli';
+      note.textContent = 'game model (oyun modeli)';
       note.style.cssText = 'font:600 16px var(--font-b,Nunito,sans-serif);color:var(--muted,#c4b9ec);';
       bar.appendChild(note);
 
@@ -128,7 +128,7 @@
       function bilgi(h){
         return mod === 'bariyer'
           ? 'T = ' + fmt(h.T) + ' · R = ' + fmt(h.R) + (E < V0 ? ' · tunneling (tünelleme)' : ' · E > V₀')
-          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ decays (sönümlenir)' : ' · E > V₀ ama yansıma var');
+          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ decays (sönümlenir)' : ' · E > V₀ ama reflection (yansıma) var');
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -144,7 +144,7 @@
         if (destroyed || !W) return;
         var h = hesap();
         info.textContent = bilgi(h);
-        cv.setAttribute('aria-label', (mod === 'bariyer' ? 'Bariyer' : 'Basamak') + ': E=' + E.toFixed(2) + ' eV, V0=' + V0.toFixed(2) + ' eV, T=' + fmt(h.T) + ', R=' + fmt(h.R));
+        cv.setAttribute('aria-label', (mod === 'bariyer' ? 'Barrier (bariyer)' : 'Step (basamak)') + ': E=' + E.toFixed(2) + ' eV, V0=' + V0.toFixed(2) + ' eV, T=' + fmt(h.T) + ', R=' + fmt(h.R));
         var c = cv.getContext('2d');
         c.setTransform(dpr, 0, 0, dpr, 0, 0);
         c.clearRect(0, 0, W, H);
@@ -218,7 +218,7 @@
         [sE, sV, sA].forEach(function(s){
           s.inp.value = s.get(); s.v.textContent = s.get().toFixed(2) + (s === sA ? ' nm' : ' eV');
         });
-        sE.inp.setAttribute('aria-label', 'Enerji E, eV'); sV.inp.setAttribute('aria-label', 'V0, eV'); sA.inp.setAttribute('aria-label', 'Kalınlık a, nm');
+        sE.inp.setAttribute('aria-label', 'Energy E (enerji), eV'); sV.inp.setAttribute('aria-label', 'V0, eV'); sA.inp.setAttribute('aria-label', 'Thickness a (kalınlık), nm');
       }
       function guncelle(){ if (destroyed) return; guncelleKontrol(); ciz(); }
 
