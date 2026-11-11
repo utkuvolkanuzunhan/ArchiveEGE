@@ -2926,7 +2926,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       info.setAttribute('aria-live','polite');
       bar.appendChild(info);
       var note = document.createElement('span');
-      note.textContent = 'oyun modeli';
+      note.textContent = 'game model (oyun modeli)';
       note.style.cssText = 'font:600 16px var(--font-b,Nunito,sans-serif);color:var(--muted,#c4b9ec);';
       bar.appendChild(note);
 
@@ -2937,7 +2937,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       function bilgi(h){
         return mod === 'bariyer'
           ? 'T = ' + fmt(h.T) + ' · R = ' + fmt(h.R) + (E < V0 ? ' · tunneling (tünelleme)' : ' · E > V₀')
-          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ decays (sönümlenir)' : ' · E > V₀ ama yansıma var');
+          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ decays (sönümlenir)' : ' · E > V₀ ama reflection (yansıma) var');
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -2953,7 +2953,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (destroyed || !W) return;
         var h = hesap();
         info.textContent = bilgi(h);
-        cv.setAttribute('aria-label', (mod === 'bariyer' ? 'Bariyer' : 'Basamak') + ': E=' + E.toFixed(2) + ' eV, V0=' + V0.toFixed(2) + ' eV, T=' + fmt(h.T) + ', R=' + fmt(h.R));
+        cv.setAttribute('aria-label', (mod === 'bariyer' ? 'Barrier (bariyer)' : 'Step (basamak)') + ': E=' + E.toFixed(2) + ' eV, V0=' + V0.toFixed(2) + ' eV, T=' + fmt(h.T) + ', R=' + fmt(h.R));
         var c = cv.getContext('2d');
         c.setTransform(dpr, 0, 0, dpr, 0, 0);
         c.clearRect(0, 0, W, H);
@@ -3027,7 +3027,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         [sE, sV, sA].forEach(function(s){
           s.inp.value = s.get(); s.v.textContent = s.get().toFixed(2) + (s === sA ? ' nm' : ' eV');
         });
-        sE.inp.setAttribute('aria-label', 'Enerji E, eV'); sV.inp.setAttribute('aria-label', 'V0, eV'); sA.inp.setAttribute('aria-label', 'Kalınlık a, nm');
+        sE.inp.setAttribute('aria-label', 'Energy E (enerji), eV'); sV.inp.setAttribute('aria-label', 'V0, eV'); sA.inp.setAttribute('aria-label', 'Thickness a (kalınlık), nm');
       }
       function guncelle(){ if (destroyed) return; guncelleKontrol(); ciz(); }
 
@@ -3131,7 +3131,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var cv = document.createElement('canvas');
       cv.style.cssText = 'width:100%;display:block;border-radius:8px';
       cv.setAttribute('role', 'img');
-      cv.setAttribute('aria-label', 'Gauss dalga paketi ve momentum dağılımı');
+      cv.setAttribute('aria-label', 'Gaussian wave packet (dalga paketi) and momentum distribution (dağılım)');
       var ctl = document.createElement('div');
       ctl.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;align-items:center';
       var lab = document.createElement('label');
@@ -3204,14 +3204,14 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var pw = W - 16, strip = 22;
         var avail = Hh - strip - 4;
         var ph = st.eslenik ? avail / 2 : avail;
-        panel(8, 2, pw, ph, c.sx, 8, cy, '|ψ(x)|²  konum', 'x (nm)', 'σx = ' + c.sx.toFixed(1) + ' nm');
-        if (st.eslenik) panel(8, 2 + ph, pw, ph, c.sp, 12, mg, '|φ(p)|²  momentum', 'p (10⁻²⁶ kg·m/s)', 'σp = ' + c.sp.toFixed(1) + ' ×10⁻²⁶');
+        panel(8, 2, pw, ph, c.sx, 8, cy, '|ψ(x)|²  position (konum)', 'x (nm)', 'σx = ' + c.sx.toFixed(1) + ' nm');
+        if (st.eslenik) panel(8, 2 + ph, pw, ph, c.sp, 12, mg, '|φ(p)|²  momentum (momentum)', 'p (10⁻²⁶ kg·m/s)', 'σp = ' + c.sp.toFixed(1) + ' ×10⁻²⁶');
         var gy = Hh - strip;
         ctx.strokeStyle = yel; ctx.lineWidth = 2; ctx.strokeRect(8, gy, pw, strip - 3);
         ctx.fillStyle = ink; ctx.font = '700 13px sans-serif'; ctx.textAlign = 'left';
         ctx.fillText('σx·σp = ħ/2', 14, gy + 14);
         ctx.fillStyle = mut; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
-        ctx.fillText('Alet kusuru değil', 8 + pw - 6, gy + 14);
+        ctx.fillText('Not instrument (alet) error', 8 + pw - 6, gy + 14);
       }
 
       function check(){
@@ -5065,8 +5065,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       zeroBtn.style.borderColor = flat ? 'var(--yellow)' : 'var(--line)';
       modBtn.textContent = mod === 'tel' ? 'Wire (Tel) ⇄ Well (Kuyu): Wire' : 'Wire (Tel) ⇄ Well (Kuyu): Well';
       styleBtn(modBtn, false);
-      canvas.setAttribute('aria-label', flat ? 'Dalga yok, parçacık yok'
-        : (mod === 'tel' ? 'İki ucu sabit tel' : 'Sonsuz kuyu') + ', n = ' + n + ', L = ' + L + ' nm, E' + SUB[n] + ' = ' + fmtE(energy(n, L)));
+      canvas.setAttribute('aria-label', flat ? 'No wave (dalga yok), no particle (parçacık yok)'
+        : (mod === 'tel' ? 'Wire (iki ucu sabit tel)' : 'Infinite well (sonsuz kuyu)') + ', n = ' + n + ', L = ' + L + ' nm, E' + SUB[n] + ' = ' + fmtE(energy(n, L)));
       if (!flat) { amp = 1; }
       draw();
       finishCheck(null);
@@ -5142,7 +5142,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       if (mod === 'kuyu') { ctx.fillStyle = mg; ctx.fillText('|ψ|²', area0 + 24, 16); }
       if (flat) {
         ctx.fillStyle = yel; ctx.font = '700 15px ' + fd; ctx.textAlign = 'center';
-        ctx.fillText('Dalga yok → parçacık yok', cx, top + 10);
+        ctx.fillText('No wave (dalga yok) → no particle (parçacık yok)', cx, top + 10);
       }
 
       /* enerji merdiveni (sağ şerit) */
@@ -5630,9 +5630,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var slV = document.createElement('span'); slV.style.cssText = 'min-width:40px;color:var(--yellow,#ffd23f);';
       lab.appendChild(labT); lab.appendChild(sl); lab.appendChild(slV);
       bar.appendChild(lab);
-      var bOlc = mkBtn('Ölç', function(){ hazirla(); olc(true); });
+      var bOlc = mkBtn('Measure (ölç)', function(){ hazirla(); olc(true); });
       var bTek = mkBtn('Tekrar measure (ölç)', tekrarOlc);
-      var bYuz = mkBtn('100 kez', yuzKez);
+      var bYuz = mkBtn('100 times (kez)', yuzKez);
       bOlc.style.background = 'var(--accent,#ffd23f)'; bOlc.style.color = 'var(--accent-ink,#0b0620)';
       bar.appendChild(bOlc); bar.appendChild(bTek); bar.appendChild(bYuz);
       var info = document.createElement('div');
@@ -5662,11 +5662,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var s = Math.random() < c1sq ? 1 : 2;
         collapsed = s; anim = 0;
         kaydet(s);
-        sonMetin = 'Collapse (çökme): sonuç ' + s;
+        sonMetin = 'Collapse (çökme): result (sonuç) ' + s;
         guncelle();
       }
       function tekrarOlc(){
-        if (!collapsed) { sonMetin = 'Önce bir kez ölç.'; guncelle(); return; }
+        if (!collapsed) { sonMetin = 'Önce bir kez measure (ölç).'; guncelle(); return; }
         kaydet(collapsed);
         tekrarYapti = true;
         sonMetin = 'Tekrar: yine ' + collapsed + '. Collapsed state (çökmüş durum) değişmez.';
@@ -5677,7 +5677,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         for (i = 0; i < 100; i++) kaydet(Math.random() < c1sq ? 1 : 2);
         hazirla();
         yuzYapti = true;
-        sonMetin = '100 taze hazırlık: toplam ' + sayac[0] + ' kez 1, ' + sayac[1] + ' kez 2.';
+        sonMetin = '100 fresh preparation (taze hazırlık): total (toplam) ' + sayac[0] + ' kez 1, ' + sayac[1] + ' kez 2.';
         guncelle(); bildir();
       }
       sl.addEventListener('input', function(){
@@ -5690,7 +5690,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         slV.textContent = c1sq.toFixed(2);
         bTek.disabled = !collapsed; bTek.style.opacity = collapsed ? '1' : '0.5';
         info.textContent = sonMetin || ('|c₁|² = ' + c1sq.toFixed(2) + ', |c₂|² = ' + (1 - c1sq).toFixed(2));
-        cv.setAttribute('aria-label', collapsed ? 'Durum ' + collapsed + '. özdurumda çöktü' : 'Superposition (süperpozisyon): ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
+        cv.setAttribute('aria-label', collapsed ? 'State (durum) ' + collapsed + '. eigenstate (özdurum) içinde collapsed (çöktü)' : 'Superposition (süperpozisyon): ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -5742,9 +5742,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         c.textAlign = 'left';
         if (collapsed) {
           c.fillStyle = yel; c.font = '400 ' + Math.round(Math.min(34, H * 0.14)) + 'px ' + col('--font-d', 'Impact, sans-serif');
-          c.fillText('ÇÖKTÜ', W * 0.64, H * 0.12);
+          c.fillText('COLLAPSED (ÇÖKTÜ)', W * 0.64, H * 0.12);
         } else {
-          c.fillStyle = muted; c.font = '700 16px ' + fb; c.fillText('süperpozisyon', W * 0.64, H * 0.12);
+          c.fillStyle = muted; c.font = '700 16px ' + fb; c.fillText('superposition (süperpozisyon)', W * 0.64, H * 0.12);
         }
         /* histogram (sağ) */
         var tot = sayac[0] + sayac[1], hx = W * 0.64, hw = W * 0.3, hb = ust - 6;
@@ -5764,7 +5764,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           else c.strokeRect(sx + i * sw + 0.5, sy + 0.5, sw - 4, sw - 1);
         }
         c.fillStyle = muted; c.textAlign = 'left'; c.font = '600 16px ' + fb;
-        c.fillText('son 20 ölçüm', sx, sy - 12);
+        c.fillText('last 20 measurement (ölçüm)', sx, sy - 12);
       }
       function dongu(now){
         raf = 0;
@@ -5776,7 +5776,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       if (typeof ResizeObserver !== 'undefined') {
         ro = new ResizeObserver(boyutla); ro.observe(cv);
       } else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Measure (ölç), sonra tekrar ölç: collapsed state (çökmüş durum) değişmez.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Measure (ölç), sonra tekrar measure (ölç): collapsed state (çökmüş durum) değişmez.'); } catch (e) {} }
       t0 = performance.now();
       guncelle(); boyutla();
       if (params.olcTekrar) { olc(); tmo = setTimeout(function(){ tmo = 0; if (!destroyed) tekrarOlc(); }, 600); }
@@ -7940,8 +7940,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     soru: 'Wave function (dalga fonksiyonu) ψ(x) fiziksel olarak neyi anlatır?',
     secenekler: [
       sec('|ψ(x)|² probability density (olasılık yoğunluğu) verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi probability (olasılık) yoğunluğudur.'),
-      sec('Parçacığın gerçek konumunu', false, 'Hayır. ψ konum vermez, probability distribution (olasılık dağılımı) verir.'),
-      sec('Parçacığın enerjisini', false, 'Hayır. Enerji denklemin eigenvalue (özdeğer) değeridir.')
+      sec('Parçacığın gerçek position (konum) değerini', false, 'Hayır. ψ position (konum) vermez, probability distribution (olasılık dağılımı) verir.'),
+      sec('Parçacığın energy (enerji) değerini', false, 'Hayır. Energy (enerji) denklemin eigenvalue (özdeğer) değeridir.')
     ],
     kusurSkin: 'vakans'
   };
@@ -7951,8 +7951,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     soru: 'Schrödinger equation (Schrödinger denklemi) için ne verirsin, ne alırsın?',
     secenekler: [
       sec('V(x) ve boundary condition (sınır koşulu) ver; ψ ile izinli E al', true, 'Doğru. Girdi V(x) ve boundary condition, çıktı ψ ile E.'),
-      sec('ψ ver, potansiyeli al', false, 'Hayır. Potential girdidir, ψ çıktıdır.'),
-      sec('Enerji ver, konumu al', false, 'Hayır. Enerjiler denklemin çıktısıdır.')
+      sec('ψ ver, potential (potansiyel) al', false, 'Hayır. Potential (potansiyel) girdidir, ψ çıktıdır.'),
+      sec('Energy (enerji) ver, position (konum) al', false, 'Hayır. Energies (enerjiler) denklemin çıktısıdır.')
     ],
     kusurSkin: 'tane_siniri'
   };
@@ -7963,7 +7963,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     secenekler: [
       sec('4 katına çıkar', true, 'Doğru. E ∝ 1/L².'),
       sec('2 katına çıkar', false, 'Yanlış. Energy (enerji) L²\'ye ters orantılıdır: 4 kat.'),
-      sec('Değişmez', false, 'Yanlış. Dar well\'de wavelength (dalga boyu) kısalır, enerji artar.')
+      sec('Değişmez', false, 'Yanlış. Dar well (kuyu) içinde wavelength (dalga boyu) kısalır, energy (enerji) artar.')
     ],
     sim: {
       modul: 'kuyu',
@@ -8002,17 +8002,17 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           params: { L: 2, n: 1 },
           basari: { yariya: true }
         },
-        ogrenilen: 'Duvarda ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar; energy quantization (enerji kuantalaşması) oluşur.'
+        ogrenilen: 'Wall (duvar) üzerinde ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar; energy quantization (enerji kuantalaşması) oluşur.'
       },
       o03,
       o04,
       o05,
       {
         id: 's05-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
-        iddia: 'Infinite well (sonsuz kuyu) içindeki parçacığın enerjisi, sıcaklık sıfır olmadığı için sıfırdan büyüktür.',
-        parcalar: ['Infinite well (sonsuz kuyu) içindeki parçacığın enerjisi,', 'sıcaklık sıfır olmadığı için', 'sıfırdan büyüktür.'],
+        iddia: 'Infinite well (sonsuz kuyu) içindeki particle (parçacık) energy (enerji) değeri, temperature (sıcaklık) sıfır olmadığı için sıfırdan büyüktür.',
+        parcalar: ['Infinite well (sonsuz kuyu) içindeki particle (parçacık) energy (enerji) değeri,', 'temperature (sıcaklık) sıfır olmadığı için', 'sıfırdan büyüktür.'],
         yanlisParca: 1,
-        duzeltme: 'Sebep sıcaklık değil: boundary condition (sınır koşulu) dalganın sığmasını gerektirir. Mutlak sıfırda da E₁ > 0 (zero-point energy, sıfır noktası enerjisi).'
+        duzeltme: 'Sebep temperature (sıcaklık) değil: boundary condition (sınır koşulu) dalganın sığmasını gerektirir. Absolute zero (mutlak sıfır) noktasında da E₁ > 0 (zero-point energy, sıfır noktası enerjisi).'
       },
       {
         id: 's05-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'kuantalasma_sinir', agirlik: 1,
@@ -8028,22 +8028,22 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's05-o08', tip: 'patron', baslik: 'Kuantum Kedisi', kavram: null, agirlik: 1,
         canavar: 'schro', canavarAd: 'Kuantum Kedisi',
-        giris: 'Miyav! Sıfır enerjiyle kutuya sığacağımı mı sandın?',
+        giris: 'Miyav! Sıfır energy (enerji) ile kutuya sığacağımı mı sandın?',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'schrodinger_cokme',
             soru: 'Time-dependent Schrödinger equation (zamana bağlı Schrödinger denklemi) ψ\'yi nasıl değiştirir?',
             secenekler: [
-              sec('Düzgün ve belirlenimci biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postülatından gelir.'),
-              sec('Ölçüm yapınca çökertir', false, 'Hayır. Collapse ayrı bir postülattır, denklemin işi değil.'),
-              sec('Rastgele değiştirir', false, 'Hayır. Denklem rastgele değil, deterministic (belirlenimci) yapıdadır.')
+              sec('Smooth and deterministic (düzgün ve belirlenimci) biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postulate (postülat) ından gelir.'),
+              sec('Measurement (ölçüm) yapınca collapse (çökme) olur', false, 'Hayır. Collapse (çökme) ayrı bir postulate (postülat), denklemin işi değil.'),
+              sec('Randomly (rastgele) değiştirir', false, 'Hayır. Denklem random (rastgele) değil, deterministic (belirlenimci) yapıdadır.')
             ],
             alt: {
               soru: 'Ĥψ = Eψ matematiksel olarak nasıl bir problemdir?',
               secenekler: [
                 sec('Eigenvalue problem (özdeğer problemi)', true, 'Doğru. İzinli E\'ler eigenvalues (özdeğerler) olur.'),
-                sec('Initial value problem (başlangıç değer problemi)', false, 'Hayır. Bu zamana bağlı denklem için geçerli.'),
-                sec('Olasılık hesabı', false, 'Hayır. Probability density |ψ|²\'dir, denklem değil.')
+                sec('Initial value problem (başlangıç değer problemi)', false, 'Hayır. Bu time-dependent equation (zamana bağlı denklem) için geçerli.'),
+                sec('Probability (olasılık) hesabı', false, 'Hayır. Probability density (olasılık yoğunluğu) |ψ|²\'dir, denklem değil.')
               ]
             }
           },
@@ -8053,23 +8053,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             soru: 'Infinite well (sonsuz kuyu) için ψ ve allowed energies (izinli enerjiler) nasıl bulunur? Mantığı explain (açıkla).',
             anahtarFikirler: [
               'Walls (duvarlar) üzerinde ψ = 0 boundary condition (sınır koşulu) uygulanır.',
-              'Çözüm sinüs dalgasıdır (standing wave, duran dalga): ψ = √(2/L) sin(nπx/L).',
+              'Çözüm sine wave (sinüs dalgası) olur (standing wave, duran dalga): ψ = √(2/L) sin(nπx/L).',
               'Yalnızca L = nλ/2 ile sığan waves (dalgalar) izinlidir.',
-              'Enerji E = n²π²ħ²/(2mL²), elektron için yaklaşık 0,376·n²/L² eV (L nm).'
+              'Energy (enerji) E = n²π²ħ²/(2mL²), electron (elektron) için yaklaşık 0,376·n²/L² eV (L nm).'
             ],
             yanlisKavramlar: [
-              'Energy (enerji) sıcaklıktan gelir',
-              'Quantization (kuantalaşma) ölçüm sonucudur'
+              'Energy (enerji) temperature (sıcaklık) değerinden gelir',
+              'Quantization (kuantalaşma) measurement (ölçüm) sonucudur'
             ],
             yanlisKavramIds: ['sifir_noktasi_sicaklik', 'kuantalasma_olcum'],
-            idealCevap: 'Duvarlarda ψ = 0 olmalıdır (boundary condition, sınır koşulu). Çözüm ψ = √(2/L) sin(nπx/L) sinüs dalgasıdır; yalnızca L = nλ/2 ile sığan dalgalar izinlidir. Bu yüzden energy (enerji) E = n²π²ħ²/(2mL²) değerleriyle quantized (kuantalı) olur. n = 0 dalga olmadığı için yoktur, en düşük enerji E₁ > 0\'dır (zero-point energy, sıfır noktası enerjisi).',
+            idealCevap: 'Walls (duvarlar) üzerinde ψ = 0 olmalıdır (boundary condition, sınır koşulu). Çözüm ψ = √(2/L) sin(nπx/L) sine wave (sinüs dalgası) olur; yalnızca L = nλ/2 ile sığan dalgalar izinlidir. Bu yüzden energy (enerji) E = n²π²ħ²/(2mL²) değerleriyle quantized (kuantalı) olur. n = 0 dalga olmadığı için yoktur, en düşük enerji E₁ > 0\'dır (zero-point energy, sıfır noktası enerjisi).',
             yedekSecmeli: {
               soru: 'Infinite well (sonsuz kuyu) içinde energy (enerji) neden quantized (kuantalı) olur?',
               secenekler: [
-                sec('Duvarlarda ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar', true, 'Doğru. Boundary condition (sınır koşulu) quantization (kuantalaşma) doğurur.'),
-                sec('Measurement (ölçüm) enerjiyi ayrıklaştırır', false, 'Yanlış. Quantization ölçümden önce de vardır.'),
-                sec('Sıcaklık seviyeleri ayırır', false, 'Yanlış. Sıcaklık sebep değil.'),
-                sec('Bands (bantlar) oluşur', false, 'Yanlış. Bantlar çok atomlu katıda oluşur.')
+                sec('Walls (duvarlar) üzerinde ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar', true, 'Doğru. Boundary condition (sınır koşulu) quantization (kuantalaşma) doğurur.'),
+                sec('Measurement (ölçüm) energy (enerji) değerini ayrıklaştırır', false, 'Yanlış. Quantization (kuantalaşma) measurement (ölçüm) öncesinde de vardır.'),
+                sec('Temperature (sıcaklık) levels (seviyeleri) ayırır', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
+                sec('Bands (bantlar) oluşur', false, 'Yanlış. Bands (bantlar) çok atomlu solid (katı) içinde oluşur.')
               ]
             },
             alt: { soru: 'Infinite well (sonsuz kuyu) içinde n = 0 neden yoktur ve bu E₁\'e ne söyler? Justify (gerekçelendir).' }
@@ -8082,21 +8082,21 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
               'Time-dependent equation (zamana bağlı denklem) ψ\'yi düzgün ve deterministic (belirlenimci) evriltir.',
               'Collapse (çökme) ayrı bir postülattır ve measurement (ölçüm) ile olur.',
               'Time-independent equation (zamandan bağımsız denklem) eigenvalue problem (özdeğer problemi) olur (Ĥψ = Eψ).',
-              'Girdi V(x) ve boundary condition, çıktı ψ ve allowed energies (izinli enerjiler).'
+              'Input (girdi) V(x) ve boundary condition, output (çıktı) ψ ve allowed energies (izinli enerjiler).'
             ],
             yanlisKavramlar: [
               'Schrödinger equation (Schrödinger denklemi) çöker',
-              'Denklem yalnızca bir probability (olasılık) denklemidir'
+              'Equation (denklem) yalnızca bir probability (olasılık) denklemidir'
             ],
             yanlisKavramIds: ['schrodinger_cokme', 'schrodinger_cokme'],
-            idealCevap: 'Schrödinger equation (Schrödinger denklemi) çökmez; ψ\'yi zamanla düzgün ve deterministic (belirlenimci) biçimde evriltir. Collapse (çökme) ayrı bir postülattır ve yalnızca measurement (ölçüm) ile olur. Denklemin girdisi potential (potansiyel) V(x) ve boundary conditions (sınır koşulları), çıktısı ψ ve allowed energies (izinli enerjiler) E olur.',
+            idealCevap: 'Schrödinger equation (Schrödinger denklemi) çökmez; ψ\'yi zamanla düzgün ve deterministic (belirlenimci) biçimde evriltir. Collapse (çökme) ayrı bir postulate (postülat) ve yalnızca measurement (ölçüm) ile olur. Denklemin girdisi potential (potansiyel) V(x) ve boundary conditions (sınır koşulları), çıktısı ψ ve allowed energies (izinli enerjiler) E olur.',
             yedekSecmeli: {
               soru: 'Collapse (çökme) ne zaman olur?',
               secenekler: [
                 sec('Measurement (ölçüm) sırasında', true, 'Doğru. Collapse ölçüm postülatıdır.'),
-                sec('Denklem çözülürken', false, 'Yanlış. Denklem collapse üretmez.'),
-                sec('Zaman geçtikçe', false, 'Yanlış. Time evolution (zamanla evrim) düzgündür.'),
-                sec('Sıcaklık artınca', false, 'Yanlış. Sıcaklıkla ilgisi yok.')
+                sec('Equation (denklem) çözülürken', false, 'Yanlış. Equation (denklem) collapse (çökme) üretmez.'),
+                sec('Time (zaman) geçtikçe', false, 'Yanlış. Time evolution (zamanla evrim) düzgündür.'),
+                sec('Temperature (sıcaklık) artınca', false, 'Yanlış. Temperature (sıcaklık) ile ilgisi yok.')
               ]
             },
             alt: { soru: 'Time-dependent equation (zamana bağlı denklem) ile collapse (çökme) arasındaki farkı compare (karşılaştır).' }
@@ -8106,7 +8106,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's05-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'schro', yil: 1926, tekCumle: 'Wave function (dalga fonksiyonu) denklemini yazdı; energy levels (enerji seviyeleri) kendiliğinden çıktı.' },
-        ozet: ['Girdi: V(x) ve boundary condition (sınır koşulu)', 'Boundary condition enerjiyi quantize (kuantalar) eder', 'Lowest energy (en düşük enerji) sıfır olamaz'],
+        ozet: ['Input (girdi): V(x) ve boundary condition (sınır koşulu)', 'Boundary condition enerjiyi quantize (kuantalar) eder', 'Lowest energy (en düşük enerji) sıfır olamaz'],
         kontrolNoktasi: true
       }
     ],
@@ -8131,9 +8131,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's05-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
         soru: 'Energy quantization (enerji kuantalaşması) nereden gelir?',
         secenekler: [
-          sec('Boundary conditions (sınır koşulları)', true, 'Doğru. Yalnızca sığan çözümler izinli.'),
-          sec('Measurement (ölçüm) sonucundan', false, 'Hayır. Ölçümden önce de enerjiler ayrıktır.'),
-          sec('Sıcaklıktan', false, 'Hayır. Sıcaklık sebep değil.')
+          sec('Boundary conditions (sınır koşulları)', true, 'Doğru. Yalnızca sığan solutions (çözümler) izinli.'),
+          sec('Measurement (ölçüm) sonucundan', false, 'Hayır. Measurement (ölçüm) öncesinde de energies (enerjiler) discrete (ayrık) değerdedir.'),
+          sec('Temperature (sıcaklık) değerinden', false, 'Hayır. Temperature (sıcaklık) sebep değil.')
         ],
         kusurSkin: 'safsizlik'
       }
@@ -8152,11 +8152,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: 's06-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'basamak_yansima', agirlik: 1,
-    soru: 'E > V₀ iken parçacığın step (basamak) potansiyelinden reflection (yansıma) olasılığı nedir?',
+    soru: 'E > V₀ iken particle (parçacık) için step (basamak) potential (potansiyel) değerinden reflection (yansıma) olasılığı nedir?',
     secenekler: [
-      sec('Sıfırdan büyük, wave (dalga) kısmen yansır', true, 'Doğru. k₁ ≠ k₂ olduğundan reflection (yansıma) vardır.'),
-      sec('Sıfır, klasik fizik gibi', false, 'Hayır. Klasikte sıfır, wave mechanics (dalga mekaniği) içinde değil.'),
-      sec('Yüzde yüz', false, 'Hayır. E > V₀ ise bir kısmı geçer.')
+      sec('Zero (sıfır) değerinden büyük, wave (dalga) kısmen yansır', true, 'Doğru. k₁ ≠ k₂ olduğundan reflection (yansıma) vardır.'),
+      sec('Zero (sıfır), classical physics (klasik fizik) gibi', false, 'Hayır. Classical (klasik) modelde sıfır, wave mechanics (dalga mekaniği) içinde değil.'),
+      sec('One hundred percent (yüzde yüz)', false, 'Hayır. E > V₀ ise bir kısmı transmitted (geçer).')
     ],
     kusurSkin: 'vakans'
   };
@@ -8165,9 +8165,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: 's06-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bariyer_sonumlenme', agirlik: 1,
     soru: 'E < V₀ iken wave function (dalga fonksiyonu) ψ, barrier (bariyer) içinde ne yapar?',
     secenekler: [
-      sec('Üstel olarak sönümlenir ama sıfır olmaz', true, 'Doğru. Forbidden region (yasak bölge) içinde dalga salınmaz, decays (sönümlenir).'),
-      sec('Aniden sıfır olur', false, 'Hayır. ψ ve türevi süreklidir, aniden sıfır olamaz.'),
-      sec('Salınmaya devam eder', false, 'Hayır. Yasak bölgede dalga salınmaz.')
+      sec('Exponentially decays (üstel olarak sönümlenir) ama sıfır olmaz', true, 'Doğru. Forbidden region (yasak bölge) içinde wave (dalga) oscillate (salınım) yapmaz, decays (sönümlenir).'),
+      sec('Suddenly (aniden) sıfır olur', false, 'Hayır. ψ ve derivative (türev) continuous (sürekli) olmalıdır, aniden sıfır olamaz.'),
+      sec('Oscillation (salınım) devam eder', false, 'Hayır. Forbidden region (yasak bölge) içinde wave (dalga) oscillate (salınım) yapmaz.')
     ],
     kusurSkin: 'tane_siniri'
   };
@@ -8176,9 +8176,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: 's06-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'tunelleme_kalinlik', agirlik: 1.5,
     soru: 'Barrier (bariyer) kalınlaşırsa transmission probability (geçiş olasılığı) ne olur?',
     secenekler: [
-      sec('Üstel olarak azalır', true, 'Doğru. Exponential decay (üstel azalma): T ∝ e^(−2κa).'),
-      sec('Doğrusal azalır', false, 'Yanlış. Azalma exponential (üstel), çok hızlıdır.'),
-      sec('Değişmez', false, 'Yanlış. Kalınlık arttıkça sönümlenme büyür.')
+      sec('Exponentially (üstel olarak) azalır', true, 'Doğru. Exponential decay (üstel azalma): T ∝ e^(−2κa).'),
+      sec('Linearly (doğrusal) azalır', false, 'Yanlış. Azalma exponential (üstel), çok hızlıdır.'),
+      sec('Değişmez', false, 'Yanlış. Thickness (kalınlık) arttıkça decay (sönümlenme) büyür.')
     ],
     sim: {
       modul: 'basamak',
@@ -8224,10 +8224,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       o05,
       {
         id: 's06-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'bariyer_sonumlenme', agirlik: 1,
-        iddia: 'Enerjisi barrier (bariyer) yüksekliğinden düşük parçacık, kuantumda da kesinlikle geçemez.',
-        parcalar: ['Enerjisi barrier (bariyer) yüksekliğinden düşük parçacık,', 'kuantumda da', 'kesinlikle geçemez.'],
+        iddia: 'Energy (enerji) değeri barrier (bariyer) height (yükseklik) değerinden düşük particle (parçacık), quantum (kuantum) fiziğinde de kesinlikle geçemez.',
+        parcalar: ['Energy (enerji) değeri barrier (bariyer) height (yükseklik) değerinden düşük particle (parçacık),', 'quantum (kuantum) fiziğinde de', 'kesinlikle geçemez.'],
         yanlisParca: 1,
-        duzeltme: 'Kuantumda ψ barrier (bariyer) içinde decays (sönümlenir) ama sıfır olmaz; ince bariyerde tunneling (tünelleme) olasılığı vardır.'
+        duzeltme: 'Quantum (kuantum) fiziğinde ψ barrier (bariyer) içinde decays (sönümlenir) ama sıfır olmaz; ince barrier (bariyer) içinde tunneling (tünelleme) olasılığı vardır.'
       },
       {
         id: 's06-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'dalga_surekli', agirlik: 1,
@@ -8235,30 +8235,30 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         bloklar: [
           'ψ iki region (bölge) için de yazılır',
           'x = 0\'da ψ ve ψ\' continuous (sürekli) olmalı',
-          'Continuity (süreklilik) katsayıları (r, t) belirler',
-          'R=|r|² ve T=1−R'
+          'Continuity (süreklilik) coefficients (katsayıları) (r, t) belirler',
+          'R=|r|² ve T=1−R (reflection, transmission)'
         ],
-        sonuc: 'Her region (bölge) için ψ, boundary condition (sınır koşulu) olarak süreklilik, katsayılar, R ve T.'
+        sonuc: 'Her region (bölge) için ψ, boundary condition (sınır koşulu) olarak süreklilik, coefficients (katsayılar), R ve T.'
       },
       {
         id: 's06-o08', tip: 'patron', baslik: 'Dalga Canavarı', kavram: null, agirlik: 1,
         canavar: 'broglie', canavarAd: 'Dalga Canavarı',
-        giris: 'Ben wave (dalga)! Duvarlara çarparım, bazen içinden geçerim.',
+        giris: 'Ben wave (dalga)! Wall (duvar) üzerine çarparım, bazen içinden geçerim.',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'basamak_yansima',
             soru: 'E < V₀ olan step (basamak) potansiyelinde reflection coefficient (yansıma katsayısı) R kaçtır?',
             secenekler: [
-              sec('R = 1', true, 'Doğru. Hepsi yansır; bölge 2\'de yalnızca decaying (sönümlü) ψ var.'),
-              sec('R = 0', false, 'Hayır. R = 0 hiç yansıma olmaması demek; E < V₀ iken hepsi yansır.'),
-              sec('R = 0,5', false, 'Hayır. E < V₀ iken bölge 2\'ye akı gitmez, yani R = 1.')
+              sec('R = 1', true, 'Doğru. Hepsi yansır; region 2 (bölge 2) içinde yalnızca decaying (sönümlü) ψ var.'),
+              sec('R = 0', false, 'Hayır. R = 0 hiç reflection (yansıma) olmaması demek; E < V₀ iken hepsi yansır.'),
+              sec('R = 0,5', false, 'Hayır. E < V₀ iken region 2 (bölge 2) içine flux (akı) gitmez, yani R = 1.')
             ],
             alt: {
               soru: 'Tunneling (tünelleme) hangi wave (dalga) özelliğinin sonucudur?',
               secenekler: [
-                sec('ψ\'nin bariyerde sönümlenip sıfır olmaması', true, 'Doğru. Öbür yanda ψ sıfırdan farklı kalır.'),
-                sec('Parçacığın bariyerden zıplaması', false, 'Hayır. Zıplama classical (klasik) bir fikir.'),
-                sec('Bariyerin erimesi', false, 'Hayır. Bariyer değişmez.')
+                sec('ψ\'nin barrier (bariyer) içinde decays (sönümlenip) sıfır olmaması', true, 'Doğru. Öbür yanda ψ sıfırdan farklı kalır.'),
+                sec('Particle (parçacık) barrier (bariyer) üzerinden zıplaması', false, 'Hayır. Zıplama classical (klasik) bir fikir.'),
+                sec('Barrier (bariyer) melting (erimesi)', false, 'Hayır. Barrier (bariyer) değişmez.')
               ]
             }
           },
@@ -8268,23 +8268,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             soru: 'Step potential (basamak potansiyeli) için wave function (dalga fonksiyonu) ve reflection coefficient (yansıma katsayısı) nasıl bulunur? Explain (açıkla): mantığı anlat.',
             anahtarFikirler: [
               'İki region (bölge) için ψ yazılır: incident (gelen), reflected (yansıyan) ve transmitted (geçen) wave (dalga).',
-              'x = 0\'da ψ ve ψ\' sürekli olmalı.',
+              'x = 0\'da ψ ve ψ\' continuous (sürekli) olmalı.',
               'k₁=√(2mE)/ħ, k₂=√(2m(E−V₀))/ħ ile r=(k₁−k₂)/(k₁+k₂).',
               'R = |r|², T = 1 − R; E < V₀ ise R = 1.'
             ],
             yanlisKavramlar: [
-              'E > V₀ ise hiç yansıma olmaz',
-              'ψ bariyerde aniden sıfır olur'
+              'E > V₀ ise hiç reflection (yansıma) olmaz',
+              'ψ barrier (bariyer) içinde aniden sıfır olur'
             ],
             yanlisKavramIds: ['basamak_yansima', 'bariyer_sonumlenme'],
-            idealCevap: 'Her iki bölgede ψ yazılır: solda gelen ve yansıyan, sağda geçen dalga. x = 0\'da ψ ve ψ\' sürekli olmalıdır. Buradan r = (k₁−k₂)/(k₁+k₂) çıkar, yansıma katsayısı R = |r|², geçiş T = 1 − R\'dir. E < V₀ ise bölge 2\'de ψ sönümlenir ve R = 1\'dir.',
+            idealCevap: 'Her iki region (bölge) içinde ψ yazılır: solda incident (gelen) ve reflected (yansıyan), sağda transmitted (geçen) wave (dalga). x = 0\'da ψ ve ψ\' continuous (sürekli) olmalıdır. Buradan r = (k₁−k₂)/(k₁+k₂) çıkar, reflection coefficient (yansıma katsayısı) R = |r|², transmission (geçiş) T = 1 − R\'dir. E < V₀ ise region 2 (bölge 2) içinde ψ decays (sönümlenir) ve R = 1\'dir.',
             yedekSecmeli: {
               soru: 'R = |r|² nasıl bulunur?',
               secenekler: [
-                sec('ψ ve ψ\' continuity (sürekliliği) ile r bulunur', true, 'Doğru. Boundary (sınır) noktasında continuity katsayıları belirler.'),
-                sec('E\'yi V₀\'a bölerek', false, 'Yanlış. Bu doğrudan R vermez.'),
-                sec('Sıcaklıkla', false, 'Yanlış. Sıcaklık gerekmez.'),
-                sec('ψ\'nin karesini alarak', false, 'Yanlış. Önce r bulunur.')
+                sec('ψ ve ψ\' continuity (süreklilik) ile r bulunur', true, 'Doğru. Boundary (sınır) noktasında continuity coefficients (katsayıları) belirler.'),
+                sec('E\'yi V₀\'a dividing (bölerek)', false, 'Yanlış. Bu doğrudan R vermez.'),
+                sec('Temperature (sıcaklık) ile', false, 'Yanlış. Temperature (sıcaklık) gerekmez.'),
+                sec('ψ\'nin square (karesini) alarak', false, 'Yanlış. Önce r bulunur.')
               ]
             },
             alt: { soru: 'Step (basamak) potansiyelinde ψ continuity (sürekliliği) neden gerekir ve neyi belirler? Justify (gerekçelendir).' }
@@ -8295,23 +8295,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             soru: 'Tunneling (tünelleme) nedir? Define (tanımla) ve transmission probability (geçiş olasılığı) neden thickness (kalınlık) ile azalır, explain (açıkla).',
             anahtarFikirler: [
               'E < V₀ iken klasik geçiş yok; kuantumda ψ barrier (bariyer) içinde decays (sönümlenir).',
-              'ψ sıfırdan farklı kaldığından öbür yanda bulunma olasılığı vardır.',
-              'Geçiş olasılığı T ∝ e^(−2κa), kalınlıkla üstel azalır.',
+              'ψ sıfırdan farklı kaldığından öbür yanda probability (olasılık) vardır.',
+              'Geçiş olasılığı T ∝ e^(−2κa), thickness (kalınlık) ile exponential decay (üstel azalma) olur.',
               'Tunnel diode (tünel diyodu) ve flash memory (flash bellek) gibi aygıtlarda önemlidir.'
             ],
             yanlisKavramlar: [
-              'Parçacık bariyerin üstünden zıplar',
-              'Geçerken enerjisini kaybeder'
+              'Particle (parçacık) barrier (bariyer) üzerinden zıplar',
+              'Geçerken energy (enerji) kaybeder'
             ],
             yanlisKavramIds: ['tunelleme_kalinlik', 'tunelleme_kalinlik'],
-            idealCevap: 'E < V₀ iken klasik fizik geçişi yasaklar. Kuantumda ψ bariyerin içinde üstel olarak sönümlenir ama sıfır olmaz, bu yüzden öbür tarafta bulunma olasılığı vardır. Geçiş olasılığı T ∝ e^(−2κa) olduğundan bariyer kalınlaştıkça çok hızlı azalır. Tünel diyodu ve flash bellek gibi aygıtlarda kullanılır.',
+            idealCevap: 'E < V₀ iken classical physics (klasik fizik) geçişi yasaklar. Quantum (kuantum) fiziğinde ψ barrier (bariyer) içinde exponentially (üstel olarak) decays (sönümlenir) ama sıfır olmaz, bu yüzden öbür tarafta probability (olasılık) vardır. Transmission probability (geçiş olasılığı) T ∝ e^(−2κa) olduğundan barrier (bariyer) thickness (kalınlık) arttıkça çok hızlı azalır. Tunnel diode (tünel diyodu) ve flash memory (flash bellek) gibi aygıtlarda kullanılır.',
             yedekSecmeli: {
               soru: 'Tunneling (tünelleme) neden olur?',
               secenekler: [
                 sec('ψ barrier (bariyer) içinde decays (sönümlenir) ama sıfır olmaz', true, 'Doğru. Öbür yanda ψ kalır.'),
-                sec('Parçacık enerji kazanır', false, 'Yanlış. Enerji aynı kalır.'),
-                sec('Bariyer ısınır', false, 'Yanlış. Isı sebep değil.'),
-                sec('Parçacık dalga değildir', false, 'Yanlış. Tunneling wave (dalga) davranışıdır.')
+                sec('Particle (parçacık) energy (enerji) kazanır', false, 'Yanlış. Energy (enerji) aynı kalır.'),
+                sec('Barrier (bariyer) heats up (ısınır)', false, 'Yanlış. Heat (ısı) sebep değil.'),
+                sec('Particle (parçacık) wave (dalga) değildir', false, 'Yanlış. Tunneling wave (dalga) davranışıdır.')
               ]
             },
             alt: { soru: 'Tunneling (tünelleme) olasılığı neden thickness (kalınlık) ile exponentially (üstel) azalır?' }
@@ -8327,7 +8327,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Step (basamak)', metin: 'Wave (dalga) step üzerinde kısmen yansır, kısmen geçer.' },
+        { baslik: 'Step (basamak)', metin: 'Wave (dalga) step (basamak) üzerinde kısmen reflected (yansır), kısmen transmitted (geçer).' },
         { baslik: 'Forbidden region (yasak bölge)', metin: 'E < V₀ iken ψ decays (sönümlenir), sıfır olmaz.' },
         { baslik: 'Tunneling (tünelleme)', metin: 'İnce barrier (bariyer) için transmission (geçiş) olasılığı var, kalınlıkla azalır.' }
       ],
@@ -8346,9 +8346,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's06-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'dalga_surekli', agirlik: 1,
         soru: 'Boundary (sınır) noktasında neden ψ ve ψ\' continuous (sürekli) olmalıdır?',
         secenekler: [
-          sec('Denklemin second derivative (ikinci türev) içermesi bunu gerektirir', true, 'Doğru. Discontinuity (süreksizlik) denklemi sağlamaz.'),
-          sec('Süreklilik şart değildir', false, 'Hayır. Continuity (süreklilik) katsayıları belirler.'),
-          sec('Yalnızca E < V₀ için gerekir', false, 'Hayır. Her durumda gerekir.')
+          sec('Equation (denklem) second derivative (ikinci türev) içerir', true, 'Doğru. Discontinuity (süreksizlik) equation (denklem) tarafından sağlanmaz.'),
+          sec('Continuity (süreklilik) şart değildir', false, 'Hayır. Continuity (süreklilik) coefficients (katsayıları) belirler.'),
+          sec('Yalnızca E < V₀ için gerekir', false, 'Hayır. Her case (durum) için gerekir.')
         ],
         kusurSkin: 'safsizlik'
       }
@@ -8369,9 +8369,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: 's07-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
     soru: 'Bir measurement (ölçüm) hangi değerleri verebilir?',
     secenekler: [
-      sec('Yalnızca operatörün eigenvalue (özdeğer) değerlerini', true, 'Doğru. Her ölçüm eigenvalue değerlerinden birini verir.'),
-      sec('Herhangi bir değeri', false, 'Hayır. Yalnızca eigenvalue (özdeğer) çıkabilir.'),
-      sec('Eigenvalue ortalamasını', false, 'Hayır. Tek ölçümde ortalama değil, bir eigenvalue çıkar.')
+      sec('Yalnızca operator (operatör) eigenvalue (özdeğer) değerlerini', true, 'Doğru. Her measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini verir.'),
+      sec('Herhangi bir değeri', false, 'Hayır. Yalnızca eigenvalue (özdeğer) çıkabilir; measurement (ölçüm) başka değer vermez.'),
+      sec('Eigenvalue (özdeğer) average (ortalama) değerini', false, 'Hayır. Tek measurement (ölçüm) average (ortalama) değil, bir eigenvalue (özdeğer) verir.')
     ],
     kusurSkin: 'vakans'
   };
@@ -8380,36 +8380,36 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: 's07-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
     soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma probability (olasılık) değeri nedir?',
     secenekler: [
-      sec('|c₁|²', true, 'Doğru. Probability (olasılık) katsayının karesidir.'),
-      sec('c₁', false, 'Hayır. Probability katsayının kendisi değil karesidir.'),
-      sec('c₁ + c₂', false, 'Hayır. Katsayılar toplanmaz; her sonucun olasılığı kendi karesidir.')
+      sec('|c₁|²', true, 'Doğru. Probability (olasılık) coefficient (katsayı) karesidir.'),
+      sec('c₁ (coefficient, katsayı)', false, 'Hayır. Probability (olasılık) coefficient (katsayı) kendisi değil karesidir.'),
+      sec('c₁ + c₂', false, 'Hayır. Coefficient (katsayı) toplanmaz; her sonucun probability (olasılık) değeri kendi karesidir.')
     ],
     kusurSkin: 'tane_siniri'
   };
 
   var o05 = {
     id: 's07-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'olcum_cokme', agirlik: 1.5,
-    soru: 'Collapse (çökme) sonrası aynı büyüklüğü hemen tekrar ölçersen ne olur?',
+    soru: 'Collapse (çökme) sonrası aynı büyüklüğü hemen tekrar measure (ölçersen) ne olur?',
     secenekler: [
-      sec('Aynı sonuç çıkar', true, 'Doğru. ψ artık eigenstate (özdurum) içinde, sonuç değişmez.'),
-      sec('Yeni rastgele sonuç', false, 'Yanlış. Çöken durum eigenstate olur, sonuç aynı kalır.'),
-      sec('İki sonucun ortalaması', false, 'Yanlış. Tek ölçüm bir eigenvalue verir.')
+      sec('Aynı result (sonuç) çıkar', true, 'Doğru. ψ artık eigenstate (özdurum) içinde, result (sonuç) değişmez.'),
+      sec('Yeni random (rastgele) result (sonuç)', false, 'Yanlış. Collapse (çökme) sonrası state (durum) eigenstate (özdurum) olur, result (sonuç) aynı kalır.'),
+      sec('İki result (sonuç) average (ortalama) değeri', false, 'Yanlış. Tek measurement (ölçüm) bir eigenvalue (özdeğer) verir.')
     ],
     sim: {
       modul: 'olcum',
       onceki: { c1sq: 0.3 },
       sonraki: { c1sq: 0.3, olcTekrar: true }
     },
-    acik: 'Collapse sonrası ψ eigenstate (özdurum) olur; tekrar ölçüm aynı sonucu verir.'
+    acik: 'Collapse (çökme) sonrası ψ eigenstate (özdurum) olur; tekrar measurement (ölçüm) aynı result (sonuç) verir.'
   };
 
   Q.data.stations.s07 = {
     id: 's07',
     sira: 7,
-    ad: 'Ölçüm laboratuvarı',
+    ad: 'Measurement (ölçüm) laboratuvarı',
     makine: 'Ölçüm lab.',
     renk: '#ff3df0',
-    konu: 'Postülatlar, ölçüm, çökme',
+    konu: 'Postulate (postülat), measurement (ölçüm), collapse (çökme)',
     sinavSorulari: ['S8', 'S9'],
     sureHedefDk: 23,
     patronId: 'born',
@@ -8419,61 +8419,61 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's07-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Göttingen', yil: 1926, rivayet: false,
         satirlar: [
-          { kim: 'selin', metin: 'Ölçüm laboratuvarı: bakınca ne oluyor?' },
-          { kim: 'born', metin: 'ψ\'nin karesini probability (olasılık) olarak yorumladım. Measurement (ölçüm) sonucu kesin değil, olasılıkla çıkar.' },
-          { kim: 'selin', metin: 'Kuantumun kuralları beş postulate (postülat). Ölçüm üçüncü ve dördüncüde.' }
+          { kim: 'selin', metin: 'Measurement (ölçüm) laboratuvarı: bakınca ne oluyor?' },
+          { kim: 'born', metin: 'ψ\'nin karesini probability (olasılık) olarak yorumladım. Measurement (ölçüm) result (sonuç) kesin değil, probability (olasılık) ile çıkar.' },
+          { kim: 'selin', metin: 'Kuantumun kuralları beş postulate (postülat). Measurement (ölçüm) üçüncü ve dördüncüde.' }
         ]
       },
       {
         id: 's07-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'olcum_cokme', agirlik: 1,
-        gorev: 'Measure (ölç), sonra tekrar ölç: sonuç ne?',
+        gorev: 'Measure (ölç), sonra tekrar measure (ölç): result (sonuç) ne?',
         sim: {
           modul: 'olcum',
           params: { c1sq: 0.3 },
           basari: { tekrarAyni: true }
         },
-        ogrenilen: 'Measurement (ölçüm) ψ\'yi sonuca collapse (çökertir) eder; hemen tekrar ölçersen aynı sonucu alırsın.'
+        ogrenilen: 'Measurement (ölçüm) ψ\'yi result (sonuç) durumuna collapse (çökertir) eder; hemen tekrar measure (ölçersen) aynı result (sonuç) alırsın.'
       },
       o03,
       o04,
       o05,
       {
         id: 's07-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'schrodinger_cokme', agirlik: 1,
-        iddia: 'Schrödinger denklemi ψ\'yi ölçüm anında collapse (çökme) ettirir.',
-        parcalar: ['Schrödinger denklemi', 'ψ\'yi ölçüm anında', 'collapse (çökme) ettirir.'],
+        iddia: 'Schrödinger equation (denklem) ψ\'yi measurement (ölçüm) anında collapse (çökme) ettirir.',
+        parcalar: ['Schrödinger equation (denklem)', 'ψ\'yi measurement (ölçüm) anında', 'collapse (çökme) ettirir.'],
         yanlisParca: 0,
-        duzeltme: 'Denklem ψ\'yi düzgün evriltir. Collapse (çökme) ayrı postulate (postülat) olup yalnızca ölçümle olur.'
+        duzeltme: 'Equation (denklem) ψ\'yi smooth (düzgün) evriltir. Collapse (çökme) ayrı postulate (postülat) olup yalnızca measurement (ölçüm) ile olur.'
       },
       {
         id: 's07-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'evrim_belirlenimci', agirlik: 1,
-        soru: 'Ölçüm döngüsünü sıraya diz',
+        soru: 'Measurement (ölçüm) döngüsünü sıraya diz',
         bloklar: [
-          'Sistem eigenstate (özdurum) superposition (süperpozisyon) içindedir',
-          'Ölçüm bir eigenvalue (özdeğer) değerini |c|² olasılıkla verir',
+          'System (sistem) eigenstate (özdurum) superposition (süperpozisyon) içindedir',
+          'Measurement (ölçüm) bir eigenvalue (özdeğer) değerini |c|² probability (olasılık) ile verir',
           'ψ o eigenstate durumuna collapse (çöker) eder',
-          'Sonra denklem ψ\'yi yeniden evriltir'
+          'Sonra equation (denklem) ψ\'yi yeniden evolve (evriltir)'
         ],
-        sonuc: 'Superposition (süperpozisyon), olasılıklı sonuç, collapse (çökme), deterministic (belirlenimci) evrim.'
+        sonuc: 'Superposition (süperpozisyon), probabilistic (olasılıklı) result (sonuç), collapse (çökme), deterministic (belirlenimci) evolution (evrim).'
       },
       {
         id: 's07-o08', tip: 'patron', baslik: 'Olasılık Canavarı', kavram: null, agirlik: 1,
         canavar: 'born', canavarAd: 'Olasılık Canavarı',
-        giris: 'Zar atıyorum! Ama kurallarım var. Olasılığım |c|².',
+        giris: 'Zar atıyorum! Ama kurallarım var. Probability (olasılık) |c|².',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'olcum_cokme',
-            soru: 'Ölçümden önce sistem eigenstate (özdurum) içinde değilse ne vardır?',
+            soru: 'Measurement (ölçüm) öncesi system (sistem) eigenstate (özdurum) içinde değilse ne vardır?',
             secenekler: [
-              sec('Eigenstate (özdurum) superposition (süperpozisyonu)', true, 'Doğru. ψ = Σ cₙφₙ.'),
-              sec('Gizli ama belirli bir değer', false, 'Hayır. Standart yorumda ölçümden önce belirli değer yoktur.'),
-              sec('Sıfır enerji', false, 'Hayır. Enerji sıfır olmak zorunda değil.')
+              sec('Eigenstate (özdurum) superposition (süperpozisyon) hâli', true, 'Doğru. ψ = Σ cₙφₙ.'),
+              sec('Hidden (gizli) ama belirli bir value (değer)', false, 'Hayır. Standart yorumda measurement (ölçüm) öncesi belirli value (değer) yoktur.'),
+              sec('Zero energy (sıfır enerji)', false, 'Hayır. Energy (enerji) sıfır olmak zorunda değil.')
             ],
             alt: {
-              soru: 'Hangi büyüklük bir ölçüm sonucu olabilir?',
+              soru: 'Hangi büyüklük bir measurement (ölçüm) result (sonuç) olabilir?',
               secenekler: [
-                sec('Operatörün eigenvalue (özdeğer) değeri', true, 'Doğru. Ölçüm eigenvalue verir.'),
-                sec('Herhangi bir sayı', false, 'Hayır. Yalnızca eigenvalue.'),
-                sec('ψ\'nin kendisi', false, 'Hayır. ψ doğrudan ölçülmez.')
+                sec('Operator (operatör) eigenvalue (özdeğer) değeri', true, 'Doğru. Measurement (ölçüm) eigenvalue (özdeğer) verir.'),
+                sec('Herhangi bir number (sayı)', false, 'Hayır. Yalnızca eigenvalue (özdeğer).'),
+                sec('ψ\'nin kendisi (wave function, dalga fonksiyonu)', false, 'Hayır. ψ doğrudan measure (ölçülmez).')
               ]
             }
           },
@@ -8484,22 +8484,22 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             anahtarFikirler: [
               'State (durum) ψ ile tarif edilir, |ψ|² probability density (olasılık yoğunluğu) olur.',
               'Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir.',
-              'Ölçüm yalnızca eigenvalue (özdeğer) verir, durum eigenstate (özdurum) durumuna collapse (çöker) eder.',
-              'Time evolution (zaman evrimi) Schrödinger denklemiyle deterministic (belirlenimci) olur.'
+              'Measurement (ölçüm) yalnızca eigenvalue (özdeğer) verir, state (durum) eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Time evolution (zaman evrimi) Schrödinger equation (denklem) ile deterministic (belirlenimci) olur.'
             ],
             yanlisKavramlar: [
-              'Kuantum mekaniği her şeyi rastgele yapar',
-              'Ölçümde ψ hiç değişmez'
+              'Quantum mechanics (kuantum mekaniği) her şeyi random (rastgele) yapar',
+              'Measurement (ölçüm) sırasında ψ hiç değişmez'
             ],
             yanlisKavramIds: ['evrim_belirlenimci', 'olcum_cokme'],
-            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker) eder. Ölçümler arasında ψ, Schrödinger denklemiyle deterministic (belirlenimci) biçimde evrilir.',
+            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker) eder. Measurement (ölçüm) arasında ψ, Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde evrilir.',
             yedekSecmeli: {
               soru: 'Hangisi kuantum postulate (postülat) ilkelerinden biridir?',
               secenekler: [
-                sec('Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir', true, 'Doğru. Bu ikinci postulate.'),
-                sec('Ölçüm ψ\'yi değiştirmez', false, 'Yanlış. Ölçüm ψ\'yi eigenstate durumuna collapse ettirir.'),
-                sec('Enerji her değeri alır', false, 'Yanlış. Yalnızca eigenvalue.'),
-                sec('Denklem rastgele evrilir', false, 'Yanlış. Evrim deterministic (belirlenimci) olur.')
+                sec('Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir', true, 'Doğru. Bu ikinci postulate (postülat).'),
+                sec('Measurement (ölçüm) ψ\'yi değiştirmez', false, 'Yanlış. Measurement (ölçüm) ψ\'yi eigenstate (özdurum) durumuna collapse (çökme) ettirir.'),
+                sec('Energy (enerji) her değeri alır', false, 'Yanlış. Yalnızca eigenvalue (özdeğer).'),
+                sec('Equation (denklem) random (rastgele) evolve (evrilir)', false, 'Yanlış. Evolution (evrim) deterministic (belirlenimci) olur.')
               ]
             },
             alt: { soru: 'Postulate (postülat) ilkelerinin measurement (ölçüm) ile ilgili olanlarını explain (açıkla).' }
@@ -8507,26 +8507,26 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           {
             tip: 'acik',
             pdfSoru: 'The third postulate of quantum mechanics concerns measurement; explain how the system changes its state if its current state is not an eigenstate of the observable being measured.',
-            soru: '3. postulate (postülat): durum eigenstate (özdurum) değilse ölçümde sistem nasıl değişir? Explain (açıkla).',
+            soru: '3. postulate (postülat): state (durum) eigenstate (özdurum) değilse measurement (ölçüm) sırasında system (sistem) nasıl değişir? Explain (açıkla).',
             anahtarFikirler: [
-              'State superposition (süperpozisyon) olarak eigenstate (özdurum) toplamıdır: ψ = Σ cₙφₙ.',
-              'Ölçüm eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir.',
-              'Ölçümden sonra ψ ölçülen eigenstate durumuna collapse (çöker) eder.',
-              'Hemen tekrar ölçüm aynı sonucu verir.'
+              'State (durum) superposition (süperpozisyon) olarak eigenstate (özdurum) toplamıdır: ψ = Σ cₙφₙ.',
+              'Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir.',
+              'Measurement (ölçüm) sonrası ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.'
             ],
             yanlisKavramlar: [
-              'Ölçüm eigenvalue ortalamasını verir',
-              'Collapse Schrödinger denkleminden gelir'
+              'Measurement (ölçüm) eigenvalue (özdeğer) average (ortalama) değerini verir',
+              'Collapse (çökme) Schrödinger equation (denklem) kaynaklıdır'
             ],
             yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
-            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir. Ölçümden sonra durum ölçülen eigenstate durumuna collapse (çöker) eder; hemen tekrar ölçüm aynı sonucu verir.',
+            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder; hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
             yedekSecmeli: {
-              soru: 'Eigenstate (özdurum) olmayan durumda ölçümden sonra ne olur?',
+              soru: 'Eigenstate (özdurum) olmayan state (durumda) measurement (ölçüm) sonrası ne olur?',
               secenekler: [
-                sec('Durum ölçülen eigenstate durumuna collapse (çöker) eder', true, 'Doğru. Sonuç olasılıkla belirlenir.'),
-                sec('Durum hiç değişmez', false, 'Yanlış. Ölçüm durumu değiştirir.'),
-                sec('Durum ortalama eigenstate içinde olur', false, 'Yanlış. Ortalama eigenstate diye bir şey yok.'),
-                sec('Sistem yok olur', false, 'Yanlış. Sistem eigenstate içinde kalır.')
+                sec('State (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder', true, 'Doğru. Result (sonuç) probability (olasılık) ile belirlenir.'),
+                sec('State (durum) hiç değişmez', false, 'Yanlış. Measurement (ölçüm) state (durum) değiştirir.'),
+                sec('State (durum) average (ortalama) eigenstate (özdurum) içinde olur', false, 'Yanlış. Average (ortalama) eigenstate (özdurum) diye bir şey yok.'),
+                sec('System (sistem) yok olur', false, 'Yanlış. System (sistem) eigenstate (özdurum) içinde kalır.')
               ]
             },
             alt: { soru: 'Measurement (ölçüm) sonucu hangi probability (olasılık) ile çıkar ve ölçümden sonra ψ ne olur? Explain (açıkla).' }
@@ -8535,16 +8535,16 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's07-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin olasılık olduğunu söyledi.' },
-        ozet: ['Ölçüm eigenvalue (özdeğer) verir, |c|² olasılıkla', 'Ölçümde ψ eigenstate (özdurum) durumuna collapse (çöker) eder', 'Denklem deterministic (belirlenimci), collapse ölçümle'],
+        kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin probability (olasılık) olduğunu söyledi.' },
+        ozet: ['Measurement (ölçüm) eigenvalue (özdeğer) verir, |c|² probability (olasılık) ile', 'Measurement (ölçüm) sırasında ψ eigenstate (özdurum) durumuna collapse (çöker) eder', 'Equation (denklem) deterministic (belirlenimci), collapse (çökme) measurement (ölçüm) ile'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Superposition (süperpozisyon)', metin: 'Ölçümden önce durum eigenstate (özdurum) toplamı olabilir.' },
-        { baslik: 'Measurement (ölçüm)', metin: 'Bir eigenvalue (özdeğer) çıkar, olasılığı |c|².' },
-        { baslik: 'Collapse (çökme)', metin: 'Ölçümden sonra ψ o eigenstate (özdurum) içindedir.' }
+        { baslik: 'Superposition (süperpozisyon)', metin: 'Measurement (ölçüm) öncesi state (durum) eigenstate (özdurum) toplamı olabilir.' },
+        { baslik: 'Measurement (ölçüm)', metin: 'Bir eigenvalue (özdeğer) çıkar, probability (olasılık) |c|².' },
+        { baslik: 'Collapse (çökme)', metin: 'Measurement (ölçüm) sonrası ψ o eigenstate (özdurum) içindedir.' }
       ],
       sim: { modul: 'olcum', params: { c1sq: 0.3 } }
     },
@@ -8559,11 +8559,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's07-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
-        soru: 'Ölçümler arasında ψ nasıl evolve (evrilir)?',
+        soru: 'Measurement (ölçüm) arasında ψ nasıl evolve (evrilir)?',
         secenekler: [
-          sec('Schrödinger denklemiyle deterministic (belirlenimci) biçimde', true, 'Doğru. Rastgelelik yalnızca ölçümde ortaya çıkar.'),
-          sec('Rastgele', false, 'Hayır. Evrim düzgündür.'),
-          sec('Hiç evrilmez', false, 'Hayır. Zamanla evrilir.')
+          sec('Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde', true, 'Doğru. Randomness (rastgelelik) yalnızca measurement (ölçüm) sırasında ortaya çıkar.'),
+          sec('Random (rastgele)', false, 'Hayır. Evolution (evrim) smooth (düzgün) ilerler.'),
+          sec('Hiç evolve (evrilmez)', false, 'Hayır. Zamanla evolve (evrilir).')
         ],
         kusurSkin: 'safsizlik'
       }
@@ -8584,9 +8584,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: 's08-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
     soru: 'Δx küçülürse Δp (momentum) ne olur?',
     secenekler: [
-      sec('Büyür', true, 'Doğru. ΔxΔp ≥ ħ/2 çarpımı en az sabit kalır.'),
-      sec('Küçülür', false, 'Yanlış. Product (çarpım) sınırlı olduğundan biri küçülünce öbürü büyür.'),
-      sec('Değişmez', false, 'Yanlış. ΔxΔp ≥ ħ/2 koşulu bunu zorunlu kılar.')
+      sec('Büyür (increases)', true, 'Doğru. ΔxΔp ≥ ħ/2 product (çarpım) en az sabit kalır.'),
+      sec('Küçülür (decreases)', false, 'Yanlış. Product (çarpım) sınırlı olduğundan biri küçülünce öbürü büyür.'),
+      sec('Değişmez (unchanged)', false, 'Yanlış. ΔxΔp ≥ ħ/2 condition (koşul) bunu zorunlu kılar.')
     ],
     kusurSkin: 'vakans'
   };
@@ -8595,9 +8595,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: 's08-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_makro', agirlik: 1,
     soru: 'Bilardo topunda uncertainty (belirsizlik) neden fark edilmez?',
     secenekler: [
-      sec('ħ çok küçük, ΔxΔp sınırı ihmal edilebilir', true, 'Doğru. Uncertainty principle (belirsizlik ilkesi) her cisimde geçerli, etkisi görünmez.'),
-      sec('Top uncertainty kapsamında değildir', false, 'Hayır. İlke her cisim için geçerlidir.'),
-      sec('Top bir dalga değildir', false, 'Hayır. Wavelength (dalga boyu) yalnızca ihmal edilecek kadar küçüktür.')
+      sec('ħ çok küçük, ΔxΔp limit (sınır) ihmal edilebilir', true, 'Doğru. Uncertainty principle (belirsizlik ilkesi) her cisimde geçerli, etkisi görünmez.'),
+      sec('Top uncertainty (belirsizlik) kapsamında değildir', false, 'Hayır. Principle (ilke) her cisim için geçerlidir.'),
+      sec('Top bir wave (dalga) değildir', false, 'Hayır. Wavelength (dalga boyu) yalnızca ihmal edilecek kadar küçüktür.')
     ],
     kusurSkin: 'tane_siniri'
   };
@@ -8606,9 +8606,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: 's08-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'belirsizlik_dalga', agirlik: 1.5,
     soru: 'Wave packet (dalga paketi) için position (konum) genişliğini yarıya indirirsen momentum spread (momentum yayılması) ne olur?',
     secenekler: [
-      sec('İki katına çıkar', true, 'Doğru. σp = ħ/(2σx).'),
-      sec('Yarıya iner', false, 'Yanlış. Position daralınca momentum genişler.'),
-      sec('Aynı kalır', false, 'Yanlış. İkisi bağlıdır.')
+      sec('İki katına çıkar (doubles)', true, 'Doğru. σp = ħ/(2σx).'),
+      sec('Yarıya iner (halves)', false, 'Yanlış. Position (konum) daralınca momentum genişler.'),
+      sec('Aynı kalır (unchanged)', false, 'Yanlış. Position (konum) ve momentum bağlıdır.')
     ],
     sim: {
       modul: 'belirsizlik',
@@ -8621,10 +8621,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   Q.data.stations.s08 = {
     id: 's08',
     sira: 8,
-    ad: 'Kalibrasyon odası',
+    ad: 'Calibration (kalibrasyon) odası',
     makine: 'Kalibrasyon',
     renk: '#39ff88',
-    konu: 'Belirsizlik ilkesi, eşlenik değişkenler',
+    konu: 'Uncertainty (belirsizlik) principle, conjugate variable (eşlenik değişken)',
     sinavSorulari: ['S10'],
     sureHedefDk: 22,
     patronId: 'heis',
@@ -8634,8 +8634,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's08-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Kopenhag', yil: 1927, rivayet: false,
         satirlar: [
-          { kim: 'selin', metin: 'Kalibrasyon odası: ölçümü mükemmelleştirmek istiyoruz.' },
-          { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas ölçülemez. Alet yüzünden değil.' },
+          { kim: 'selin', metin: 'Calibration (kalibrasyon) odası: measurement (ölçüm) mükemmelleştirmek istiyoruz.' },
+          { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas measure (ölçülemez). Instrument (alet) yüzünden değil.' },
           { kim: 'heis', metin: 'Doğa böyle: wave (dalga) isen keskin konum ve keskin momentum aynı anda olmaz.' }
         ]
       },
@@ -8647,28 +8647,28 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           params: { sx: 3 },
           basari: { dar: true }
         },
-        ogrenilen: 'Position daraldıkça momentum yayılır; product (çarpım) hep en az ħ/2.'
+        ogrenilen: 'Position (konum) daraldıkça momentum yayılır; product (çarpım) hep en az ħ/2.'
       },
       o03,
       o04,
       o05,
       {
         id: 's08-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'belirsizlik_alet', agirlik: 1,
-        iddia: 'Uncertainty (belirsizlik), ölçüm aletimizin yeterince hassas olmamasından kaynaklanır.',
-        parcalar: ['Uncertainty (belirsizlik),', 'ölçüm aletimizin yeterince', 'hassas olmamasından kaynaklanır.'],
+        iddia: 'Uncertainty (belirsizlik), measurement (ölçüm) instrument (aletimizin) yeterince hassas olmamasından kaynaklanır.',
+        parcalar: ['Uncertainty (belirsizlik),', 'measurement (ölçüm) instrument (aletimizin) yeterince', 'hassas olmamasından kaynaklanır.'],
         yanlisParca: 1,
-        duzeltme: 'Uncertainty (belirsizlik) alet kusuru değil, wave nature (dalga doğası) temel sonucudur.'
+        duzeltme: 'Uncertainty (belirsizlik) instrument (alet) kusuru değil, wave nature (dalga doğası) temel sonucudur.'
       },
       {
         id: 's08-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'belirsizlik_dalga', agirlik: 1,
         soru: 'Uncertainty (belirsizlik) zincirini sıraya diz',
         bloklar: [
           'Parçacık bir wave packet (dalga paketi) olur',
-          'Keskin konum çok wavelength (dalga boyu) toplamıdır',
-          'Çok wavelength geniş momentum demektir',
+          'Sharp position (keskin konum) çok wavelength (dalga boyu) toplamıdır',
+          'Çok wavelength (dalga boyu) geniş momentum demektir',
           'ΔxΔp ≥ ħ/2'
         ],
-        sonuc: 'Wave packet (dalga paketi), keskin konum, geniş momentum, ΔxΔp ≥ ħ/2.'
+        sonuc: 'Wave packet (dalga paketi), sharp position (keskin konum), broad momentum (geniş momentum), ΔxΔp ≥ ħ/2.'
       },
       {
         id: 's08-o08', tip: 'patron', baslik: 'Belirsizlik Canavarı', kavram: null, agirlik: 1,
@@ -8679,15 +8679,15 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             tip: 'secmeli', kavram: 'eslenik_degisken',
             soru: 'Position (konum) ve momentum neden aynı anda keyfi hassas ölçülemez?',
             secenekler: [
-              sec('Operatörleri commute (değişme) yapmaz, ortak eigenstate (özdurum) yoktur', true, 'Doğru. [x,p] = iħ ≠ 0.'),
-              sec('Aletlerimiz yetersizdir', false, 'Hayır. Alet kusuru değil, doğanın yapısı.'),
-              sec('Ölçüm parçacığı bozar, tek sebep bu', false, 'Hayır. Ölçüm olmasa da ilke geçerlidir.')
+              sec('Operator (operatör) commute (değişme) yapmaz, ortak eigenstate (özdurum) yoktur', true, 'Doğru. [x,p] = iħ ≠ 0.'),
+              sec('Instrument (alet) yetersizdir', false, 'Hayır. Instrument (alet) kusuru değil, doğanın yapısı.'),
+              sec('Measurement (ölçüm) particle (parçacığı) bozar, tek sebep bu', false, 'Hayır. Measurement (ölçüm) olmasa da principle (ilke) geçerlidir.')
             ],
             alt: {
               soru: '[x, p] = iħ commutator (komütatör) ne anlama gelir?',
               secenekler: [
-                sec('x ve p operatörleri commute etmez', true, 'Doğru. Bu yüzden ortak eigenstate yok.'),
-                sec('x ve p eşittir', false, 'Hayır. Bu bir eşitlik değil, commutation relation (değişme bağıntısı).'),
+                sec('x ve p operator (operatör) commute (değişme) etmez', true, 'Doğru. Bu yüzden ortak eigenstate (özdurum) yok.'),
+                sec('x ve p equal (eşittir)', false, 'Hayır. Bu bir equality (eşitlik) değil, commutation relation (değişme bağıntısı).'),
                 sec('p sıfırdır', false, 'Hayır. p sıfır olmak zorunda değil.')
               ]
             }
@@ -8699,22 +8699,22 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             anahtarFikirler: [
               'ΔxΔp ≥ ħ/2: biri keskinleşince öbürü yayılır.',
               'Wave packet (dalga paketi): keskin konum çok wavelength (dalga boyu) gerektirir.',
-              'Konum ve momentum operator (operatör) değişmez, yani commute etmez ([x,p] = iħ).',
-              'Alet kusuru değil, doğanın (wave nature, dalga doğası) temel sınırı.'
+              'Position (konum) ve momentum operator (operatör) değişmez, yani commute (değişme) etmez ([x,p] = iħ).',
+              'Instrument (alet) kusuru değil, doğanın (wave nature, dalga doğası) temel limit (sınırı).'
             ],
             yanlisKavramlar: [
-              'Uncertainty ölçüm aletinin kusurudur',
-              'Ölçüm parçacığı bozduğu için olur, tek sebep bu'
+              'Uncertainty (belirsizlik) measurement (ölçüm) instrument (aletinin) kusurudur',
+              'Measurement (ölçüm) particle (parçacığı) bozduğu için olur, tek sebep bu'
             ],
             yanlisKavramIds: ['belirsizlik_alet', 'belirsizlik_alet'],
-            idealCevap: 'Uncertainty principle (belirsizlik ilkesi) ΔxΔp ≥ ħ/2 der: biri keskinleşince öbürü yayılır. Sebep wave nature (dalga doğası) olup keskin bir konum çok sayıda wavelength (dalga boyu) toplamını gerektirir, bu da geniş bir momentum distribution (dağılımı) demektir. Position (konum) ve momentum operator (operatör) değişmediği için ortak eigenstate (özdurum) yoktur. Bu alet kusuru değil, doğanın temel sınırıdır.',
+            idealCevap: 'Uncertainty principle (belirsizlik ilkesi) ΔxΔp ≥ ħ/2 der: biri keskinleşince öbürü yayılır. Sebep wave nature (dalga doğası) olup keskin bir konum çok sayıda wavelength (dalga boyu) toplamını gerektirir, bu da geniş bir momentum distribution (dağılımı) demektir. Position (konum) ve momentum operator (operatör) değişmediği için ortak eigenstate (özdurum) yoktur. Bu instrument (alet) kusuru değil, doğanın temel limit (sınır) özelliğidir.',
             yedekSecmeli: {
               soru: 'Uncertainty principle (belirsizlik ilkesi) neden vardır?',
               secenekler: [
-                sec('Parçacığın wave nature (dalga doğası) özelliğinden', true, 'Doğru. Keskin konum geniş momentum demektir.'),
-                sec('Aletler yetersiz olduğundan', false, 'Yanlış. İdeal alette de geçerli.'),
-                sec('Sıcaklık yüzünden', false, 'Yanlış. Sıcaklıktan bağımsız.'),
-                sec('Sadece elektronda', false, 'Yanlış. Her cisimde geçerli, büyükte ihmal edilir.')
+                sec('Particle (parçacık) wave nature (dalga doğası) özelliğinden', true, 'Doğru. Keskin konum geniş momentum demektir.'),
+                sec('Instrument (alet) yetersiz olduğundan', false, 'Yanlış. Ideal instrument (alet) için de geçerli.'),
+                sec('Temperature (sıcaklık) yüzünden', false, 'Yanlış. Temperature (sıcaklık) etkisinden bağımsız.'),
+                sec('Sadece electron (elektron) için', false, 'Yanlış. Her cisimde geçerli, büyükte ihmal edilir.')
               ]
             },
             alt: { soru: 'ΔxΔp ≥ ħ/2 neden wave nature (dalga doğası) kaynaklıdır? Explain (açıkla).' }
@@ -8726,22 +8726,22 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             anahtarFikirler: [
               'Conjugate pair (eşlenik çift): aynı anda keyfi hassas ölçülemeyen iki büyüklük.',
               'Örnek: position (konum) x ve momentum p.',
-              'Operatörleri commute etmediği için ortak eigenstate (özdurum) yoktur.',
-              'Günlük cisimde etki ihmal edilir, çünkü ħ çok küçüktür.'
+              'Operator (operatör) commute (değişme) etmediği için ortak eigenstate (özdurum) yoktur.',
+              'Günlük cisimde effect (etki) ihmal edilir, çünkü ħ çok küçüktür.'
             ],
             yanlisKavramlar: [
-              'Her büyüklük çifti belirsizlik gösterir',
-              'Yalnızca elektron gibi küçük parçacıklarda geçerlidir'
+              'Her büyüklük çifti uncertainty (belirsizlik) gösterir',
+              'Yalnızca electron (elektron) gibi küçük particle (parçacık) için geçerlidir'
             ],
             yanlisKavramIds: ['eslenik_degisken', 'belirsizlik_makro'],
-            idealCevap: 'Conjugate variables (eşlenik değişkenler), aynı anda keyfi hassas ölçülemeyen büyüklük çiftidir; örneğin position (konum) ve momentum. Operatörleri commute etmediği için ortak eigenstate (özdurum) yoktur. Günlük cisimlerde ħ çok küçük olduğundan sınır ihmal edilir.',
+            idealCevap: 'Conjugate variables (eşlenik değişkenler), aynı anda keyfi hassas ölçülemeyen büyüklük çiftidir; örneğin position (konum) ve momentum. Operator (operatör) commute (değişme) etmediği için ortak eigenstate (özdurum) yoktur. Günlük cisimlerde ħ çok küçük olduğundan limit (sınır) ihmal edilir.',
             yedekSecmeli: {
               soru: 'Hangisi bir conjugate pair (eşlenik çift) olur?',
               secenekler: [
-                sec('Konum ve momentum', true, 'Doğru. Operatörleri commute etmez.'),
-                sec('Kütle ve hacim', false, 'Yanlış. Bu çift için ilke yok.'),
-                sec('Sıcaklık ve renk', false, 'Yanlış. Eşlenik çift değil.'),
-                sec('Hız ve ivme', false, 'Yanlış. Bu eşlenik çift değil.')
+                sec('Position (konum) ve momentum', true, 'Doğru. Operator (operatör) commute (değişme) etmez.'),
+                sec('Mass (kütle) ve volume (hacim)', false, 'Yanlış. Bu çift için principle (ilke) yok.'),
+                sec('Temperature (sıcaklık) ve color (renk)', false, 'Yanlış. Conjugate pair (eşlenik çift) değil.'),
+                sec('Velocity (hız) ve acceleration (ivme)', false, 'Yanlış. Bu conjugate pair (eşlenik çift) değil.')
               ]
             },
             alt: { soru: 'Position ve momentum neden conjugate variable sayılır? Justify (gerekçelendir).' }
@@ -8750,16 +8750,16 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's08-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'heis', yil: 1927, tekCumle: 'Position (konum) ve momentumun aynı anda keskin olamayacağını gösterdi.' },
-        ozet: ['ΔxΔp ≥ ħ/2', 'Sebep wave nature (dalga doğası), alet değil', 'Günlük cisimde etki ihmal edilir'],
+        kart: { id: 'heis', yil: 1927, tekCumle: 'Position (konum) ve momentumun aynı anda sharp (keskin) olamayacağını gösterdi.' },
+        ozet: ['ΔxΔp ≥ ħ/2', 'Sebep wave nature (dalga doğası), instrument (alet) değil', 'Günlük cisimde effect (etki) ihmal edilir'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
         { baslik: 'Wave packet (dalga paketi)', metin: 'Parçacık, wave packet gibi davranır.' },
-        { baslik: 'Keskin konum', metin: 'Position (konum) daralırsa momentum yayılır.' },
-        { baslik: 'Alet değil', metin: 'Uncertainty (belirsizlik) ölçüm kusuru değil, doğanın sınırı.' }
+        { baslik: 'Sharp position (keskin konum)', metin: 'Position (konum) daralırsa momentum yayılır.' },
+        { baslik: 'Not instrument (alet değil)', metin: 'Uncertainty (belirsizlik) measurement (ölçüm) kusuru değil, doğanın limit (sınırı).' }
       ],
       sim: { modul: 'belirsizlik', params: { sx: 3 } }
     },
@@ -8776,9 +8776,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's08-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'eslenik_degisken', agirlik: 1,
         soru: 'Hangi operator (operatör) çifti commute etmez ve uncertainty (belirsizlik) verir?',
         secenekler: [
-          sec('Konum ve momentum', true, 'Doğru. [x,p] = iħ.'),
-          sec('Konum ve konum', false, 'Hayır. Aynı operatör kendisiyle commute eder.'),
-          sec('Kütle ve yük', false, 'Hayır. Bunlar sayıdır, operatör değil.')
+          sec('Position (konum) ve momentum', true, 'Doğru. [x,p] = iħ.'),
+          sec('Position (konum) ve position (konum)', false, 'Hayır. Aynı operator (operatör) kendisiyle commute (değişme) eder.'),
+          sec('Mass (kütle) ve charge (yük)', false, 'Hayır. Bunlar number (sayı), operator (operatör) değil.')
         ],
         kusurSkin: 'safsizlik'
       },
@@ -8786,14 +8786,326 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's08-t05', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_alet', agirlik: 1,
         soru: 'Uncertainty principle (belirsizlik ilkesi) neden alet kusuru değildir?',
         secenekler: [
-          sec('İdeal alette de geçerli, wave nature (dalga doğası) sonucudur', true, 'Doğru. Alet kusuru değil, doğanın sınırı.'),
-          sec('Aletler hep mükemmeldir', false, 'Hayır. Mesele aletin kalitesi değil.'),
-          sec('Yalnızca sıcaklıkla ilgilidir', false, 'Hayır. Sıcaklıktan bağımsızdır.')
+          sec('Ideal instrument (alet) için de geçerli, wave nature (dalga doğası) sonucudur', true, 'Doğru. Instrument (alet) kusuru değil, doğanın limit (sınırı).'),
+          sec('Instrument (alet) hep mükemmeldir', false, 'Hayır. Mesele instrument (alet) kalitesi değil.'),
+          sec('Yalnızca temperature (sıcaklık) ile ilgilidir', false, 'Hayır. Temperature (sıcaklık) etkisinden bağımsızdır.')
         ],
         kusurSkin: 'tane_siniri'
       }
     ]
   };
+})();
+
+/* 91-data-sinav-1.js (A11) Deneme sınavı verisi, istasyon s01-s04. TAMAMEN İngilizce (sınav dili).
+ * Q.data.sinav.mcq: {id, station, q, options:[4], answer:0..3, explanation}
+ * Q.data.sinav.klasik: {id, station, question, modelAnswer, keyPoints:[], concept} */
+(function(){
+  'use strict';
+  Q.data.sinav = Q.data.sinav || { mcq: [], klasik: [] };
+  var n = 0;
+  /* c = doğru şık; w = 3 çeldirici; doğru şık konumu sırayla döner */
+  function M(id, st, q, c, w, ex){
+    var pos = n++ % 4, opts = w.slice(); opts.splice(pos, 0, c);
+    Q.data.sinav.mcq.push({ id: id, station: st, q: q, options: opts, answer: pos, explanation: ex });
+  }
+  function K(id, st, concept, question, modelAnswer, keyPoints){
+    Q.data.sinav.klasik.push({ id: id, station: st, question: question, modelAnswer: modelAnswer, keyPoints: keyPoints, concept: concept });
+  }
+
+  /* ---- s01 crystal structure ---- */
+  M('sv-s01-m1', 's01', 'The packing fraction of a simple cubic (SC) lattice of identical touching hard spheres is approximately:', '0.52', ['0.68', '0.74', '0.34'], 'Nearest atoms touch along the cube edge, so r = a/2. One atom per cell gives (4/3)π(a/2)^3 / a^3 = π/6 ≈ 0.52.');
+  M('sv-s01-m2', 's01', 'How many atoms does the conventional unit cell of a BCC lattice contain?', '2', ['1', '4', '8'], 'Eight corners contribute 8 × 1/8 = 1 atom, and the body centre contributes 1 more, so 2 atoms per cell.');
+  M('sv-s01-m3', 's01', 'How many lattice points belong to the conventional unit cell of an FCC lattice?', '4', ['2', '6', '14'], 'Corners give 8 × 1/8 = 1 and the six face centres give 6 × 1/2 = 3, so the total is 4.');
+  M('sv-s01-m4', 's01', 'An FCC metal has lattice constant a = 0.50 nm. Calculate the nearest-neighbour distance.', '0.35 nm', ['0.25 nm', '0.43 nm', '0.50 nm'], 'In FCC the nearest neighbours lie along the face diagonal, whose length is a√2, so d = a/√2 = 0.50/1.414 ≈ 0.35 nm.');
+  M('sv-s01-m5', 's01', 'What is the coordination number of an atom in the diamond structure?', '4', ['6', '8', '12'], 'Each atom is tetrahedrally bonded to 4 nearest neighbours (sp3 bonding), as in silicon.');
+  M('sv-s01-m6', 's01', 'Which statement correctly describes the diamond structure?', 'An FCC lattice with a two-atom basis', ['A simple cubic lattice with a one-atom basis', 'A BCC lattice with a two-atom basis', 'A hexagonal lattice with a one-atom basis'], 'Diamond is not a Bravais lattice itself: it is an FCC lattice with two identical atoms per lattice point, displaced by (a/4, a/4, a/4).');
+  M('sv-s01-m7', 's01', 'A BCC crystal has a = 0.40 nm. Determine the nearest-neighbour distance.', '0.35 nm', ['0.20 nm', '0.28 nm', '0.40 nm'], 'Nearest neighbours lie along the body diagonal (length a√3), and the centre atom touches a corner atom over half of it: d = a√3/2 = 0.40 × 0.866 ≈ 0.35 nm.');
+  M('sv-s01-m8', 's01', 'Which expression defines a crystal structure?', 'Crystal structure = lattice + basis', ['Crystal structure = lattice × Fermi level', 'Crystal structure = basis − unit cell', 'Crystal structure = lattice + bandgap'], 'The lattice is the set of translation points; the basis is the group of atoms attached to every lattice point. Together they give the crystal.');
+  K('sv-s01-k1', 's01', 'packing fraction', 'Derive the packing fraction of a simple cubic (SC) lattice, assuming identical hard spheres that touch their nearest neighbours.',
+    'In SC the atoms touch along the cube edge, so the sphere radius is r = a/2. There is one atom per unit cell (8 corners × 1/8). The sphere volume is (4/3)πr^3 = (4/3)π(a/2)^3 = πa^3/6. Dividing by the cell volume a^3 gives a packing fraction of π/6 ≈ 0.52, so about 48 % of the volume is empty.',
+    ['Touching along the edge: r = a/2', 'One atom per cell (8 × 1/8)', 'Sphere volume (4/3)πr^3', 'Result π/6 ≈ 0.52']);
+  K('sv-s01-k2', 's01', 'packing fraction', 'Calculate the packing fraction of a BCC lattice and compare it with that of an FCC lattice.',
+    'In BCC the atoms touch along the body diagonal of length a√3, which equals 4r, so r = a√3/4. There are 2 atoms per cell, so the filled volume is 2 × (4/3)π(a√3/4)^3 = πa^3√3/8, giving a packing fraction of √3π/8 ≈ 0.68. FCC atoms touch along the face diagonal (a√2 = 4r) with 4 atoms per cell, which gives π/(3√2) ≈ 0.74. FCC is therefore the more densely packed structure.',
+    ['Body diagonal a√3 = 4r', '2 atoms per BCC cell', 'BCC ≈ 0.68', 'FCC ≈ 0.74 (4 atoms, face diagonal a√2 = 4r)']);
+  K('sv-s01-k3', 's01', 'lattice and basis', 'Explain the difference between a lattice and a basis, and justify why the diamond structure is not a Bravais lattice.',
+    'A lattice is an infinite array of points generated by integer combinations of the primitive translation vectors, so every point has an identical environment. A basis is the group of atoms placed at each lattice point; lattice plus basis gives the crystal structure. In diamond, the two atoms of the basis sit at (0,0,0) and (a/4,a/4,a/4) of an FCC lattice. The environment of the two atoms differs by an inversion, so the points do not all look identical and diamond cannot be a Bravais lattice by itself.',
+    ['Lattice: points from integer translations', 'Basis: atoms per lattice point', 'Diamond = FCC + two-atom basis', 'Atoms are not all equivalent by translation']);
+
+  /* ---- s02 Miller indices ---- */
+  M('sv-s02-m1', 's02', 'A plane cuts the axes at x = a, y = 2a and z = ∞. Determine its Miller indices.', '(210)', ['(120)', '(121)', '(011)'], 'Intercepts in units of a are 1, 2, ∞. Reciprocals: 1, 1/2, 0. Multiply by 2 to get the smallest integers: (210).');
+  M('sv-s02-m2', 's02', 'A plane intercepts all three axes at 2a. State its Miller indices.', '(111)', ['(222)', '(200)', '(110)'], 'Reciprocals are 1/2, 1/2, 1/2; scaling to the smallest integers gives (111). Indices are never left with a common factor.');
+  M('sv-s02-m3', 's02', 'A plane is parallel to both the y and z axes and cuts the x axis at a. Its Miller indices are:', '(100)', ['(111)', '(010)', '(011)'], 'Intercepts 1, ∞, ∞ give reciprocals 1, 0, 0, so the plane is (100).');
+  M('sv-s02-m4', 's02', 'A plane has intercepts a/2, a/3 and a along x, y and z. Determine its Miller indices.', '(231)', ['(321)', '(132)', '(123)'], 'Intercepts in units of a: 1/2, 1/3, 1. Reciprocals: 2, 3, 1, which are already the smallest integers, so the plane is (231).');
+  M('sv-s02-m5', 's02', 'For a cubic crystal with a = 0.50 nm, calculate the spacing between neighbouring (110) planes.', '0.35 nm', ['0.25 nm', '0.50 nm', '0.71 nm'], 'For cubic crystals d = a/√(h^2 + k^2 + l^2) = 0.50/√2 ≈ 0.35 nm.');
+  M('sv-s02-m6', 's02', 'In a cubic crystal, the direction [111] is:', 'perpendicular to the (111) plane', ['parallel to the (111) plane', 'perpendicular to the (110) plane', 'at 45° to the (111) plane'], 'In cubic systems the direction [hkl] is normal to the plane (hkl). This is not true in general for non-cubic lattices.');
+  M('sv-s02-m7', 's02', 'Which statement best describes the Czochralski method?', 'A seed crystal is dipped into the melt and slowly pulled up while rotating to grow a single-crystal ingot', ['A gas is condensed on a cold substrate to grow a polycrystalline film', 'A melt is cooled rapidly so that grain boundaries form everywhere', 'A wafer is cut and then doped by ion implantation to grow a crystal'], 'The pulled and rotated seed fixes the crystal orientation, so the ingot is a single crystal. Wafers are sliced from it afterwards.');
+  M('sv-s02-m8', 's02', 'A bar over a Miller index, as in (1 1 1̄), means that the plane:', 'cuts the corresponding axis on the negative side of the origin', ['is parallel to that axis', 'has an intercept of 1/2', 'contains no atoms'], 'A negative intercept gives a negative index, written with a bar above the number.');
+  K('sv-s02-k1', 's02', 'Miller indices', 'Derive the Miller indices of a plane that intercepts the axes at 3a, 2a and 6a. Show each step and state why reciprocals are used.',
+    'Step 1: the intercepts in units of the lattice constant are 3, 2 and 6. Step 2: take reciprocals: 1/3, 1/2, 1/6. Step 3: multiply by the smallest common multiple (6) to obtain integers 2, 3, 1. The plane is (231). Reciprocals are used so that a plane parallel to an axis, whose intercept is infinite, receives a finite index of 0, and so that the indices describe the plane normal direction.',
+    ['Intercepts 3, 2, 6', 'Reciprocals 1/3, 1/2, 1/6', 'Clear fractions: (231)', 'Parallel to axis gives index 0']);
+  K('sv-s02-k2', 's02', 'surface atom density', 'Calculate and compare the areal atom density of the (100) and (110) planes of a simple cubic lattice of lattice constant a. Which plane is more densely packed?',
+    'For the (100) plane the repeating cell is a square of side a with 4 corner atoms × 1/4 = 1 atom, so the density is 1/a^2. For the (110) plane the repeating cell is a rectangle a × a√2 with 1 atom, so the density is 1/(√2 a^2) ≈ 0.71/a^2. The (100) plane is therefore more densely packed. Such differences affect oxidation rate and etching of silicon surfaces.',
+    ['(100): square cell, 1 atom, 1/a^2', '(110): rectangle a × a√2, 1/(√2 a^2)', '(100) denser', 'Plane-dependent surface properties']);
+  K('sv-s02-k3', 's02', 'Czochralski growth', 'Explain how a silicon single-crystal ingot is grown by the Czochralski method and justify why wafers are cut along a chosen crystal plane.',
+    'Polysilicon is melted in a crucible just above 1414 °C. A seed crystal with the desired orientation touches the melt and is pulled up slowly while rotating, so atoms freeze onto the seed in the same orientation and a single-crystal ingot forms. Wafers are sliced perpendicular to a chosen direction, usually giving (100) or (111) surfaces. The plane matters because atom density, dangling bonds and the interface quality with the oxide depend on orientation, which affects device performance.',
+    ['Melt, seed, slow pull with rotation', 'Seed fixes orientation (single crystal)', 'Wafer cut along a chosen plane, e.g. (100)', 'Orientation affects surface density and interface quality']);
+
+  /* ---- s03 quantum origins: blackbody and photoelectric ---- */
+  M('sv-s03-m1', 's03', 'Calculate the energy of a photon of wavelength 500 nm (hc ≈ 1240 eV·nm).', '2.48 eV', ['1.24 eV', '3.10 eV', '4.96 eV'], 'E = hc/λ = 1240 eV·nm / 500 nm = 2.48 eV.');
+  M('sv-s03-m2', 's03', 'Einstein\'s photoelectric equation for the maximum kinetic energy of an emitted electron is:', 'K_max = hf − φ', ['K_max = hf + φ', 'K_max = φ/hf', 'K_max = hf × φ'], 'Each photon gives all its energy hf to one electron; the work function φ is spent leaving the metal and the rest is kinetic energy.');
+  M('sv-s03-m3', 's03', 'Light of frequency below the threshold frequency shines on a metal with very high intensity. What happens?', 'No electrons are emitted', ['Electrons are emitted after a delay', 'Electrons are emitted with lower energy', 'Electrons are emitted with higher energy'], 'Emission depends on photon energy, not intensity. If hf < φ, no single photon can free an electron, however many arrive.');
+  M('sv-s03-m4', 's03', 'The maximum kinetic energy of photoelectrons is 1.5 eV. What stopping potential is needed to stop them?', '1.5 V', ['0.75 V', '3.0 V', '2.25 V'], 'eV_0 = K_max, so V_0 = 1.5 eV / e = 1.5 V.');
+  M('sv-s03-m5', 's03', 'What is the "ultraviolet catastrophe"?', 'The classical Rayleigh-Jeans law predicts that radiated energy diverges at short wavelengths', ['Metals emit no electrons under ultraviolet light', 'Atoms collapse because electrons radiate energy', 'Blackbody radiation has no peak at any temperature'], 'Classical equipartition assigns kT to each mode, and modes are infinite at high frequency, so the energy would be infinite. Planck\'s quantisation E = nhf solved this.');
+  M('sv-s03-m6', 's03', 'A metal has work function 2.0 eV. It is illuminated by photons of energy 3.0 eV. Calculate the maximum kinetic energy of the electrons.', '1.0 eV', ['0.5 eV', '2.0 eV', '5.0 eV'], 'K_max = hf − φ = 3.0 − 2.0 = 1.0 eV.');
+  M('sv-s03-m7', 's03', 'Above the threshold frequency, the light intensity is doubled at constant frequency. What changes?', 'The photocurrent doubles while K_max stays the same', ['K_max doubles while the photocurrent stays the same', 'Both K_max and the photocurrent double', 'Neither changes'], 'Intensity sets the number of photons per second, hence the number of electrons. Photon energy hf, and therefore K_max, is unchanged.');
+  M('sv-s03-m8', 's03', 'According to Wien\'s displacement law, when the temperature of a blackbody rises, the peak wavelength:', 'shifts to shorter wavelengths', ['shifts to longer wavelengths', 'stays the same', 'disappears'], 'λ_max T = constant (≈ 2.9 × 10^-3 m·K), so higher T means smaller λ_max; a hot object glows bluer.');
+  K('sv-s03-k1', 's03', 'photoelectric effect', 'Explain why the classical wave theory of light fails to explain the photoelectric effect, and how Einstein\'s photon picture resolves each failure.',
+    'Classical theory predicts that electron energy should grow with intensity, that any frequency should work given enough time, and that there should be a delay while energy accumulates. Experiments show instead that K_max depends only on frequency, that there is a threshold frequency below which nothing is emitted, and that emission is instantaneous. Einstein proposed that light comes in quanta of energy hf, each absorbed by one electron. Then K_max = hf − φ, a threshold exists at hf = φ, and intensity only controls the number of photons and hence the current.',
+    ['K_max independent of intensity', 'Threshold frequency', 'No time delay', 'Photons E = hf, K_max = hf − φ']);
+  K('sv-s03-k2', 's03', 'work function and threshold', 'Calculate the threshold wavelength of a metal with work function 2.3 eV, and determine the stopping potential when it is illuminated by 400 nm light (hc ≈ 1240 eV·nm).',
+    'At threshold hf_0 = φ, so λ_0 = hc/φ = 1240/2.3 ≈ 539 nm. For 400 nm light the photon energy is 1240/400 = 3.10 eV. Then K_max = 3.10 − 2.3 = 0.80 eV. The stopping potential satisfies eV_0 = K_max, so V_0 = 0.80 V. Light longer than 539 nm would eject no electrons.',
+    ['λ_0 = hc/φ ≈ 539 nm', 'E_photon = 3.10 eV at 400 nm', 'K_max = 0.80 eV', 'V_0 = 0.80 V']);
+  K('sv-s03-k3', 's03', 'blackbody radiation', 'State the ultraviolet catastrophe and explain how Planck\'s quantisation hypothesis removes it.',
+    'Classical physics (Rayleigh-Jeans) gives each mode of the cavity an average energy kT, and the number of modes grows as f^2, so the predicted spectral energy diverges at high frequency. This does not match the measured spectrum, which falls to zero. Planck assumed that the oscillators can only exchange energy in discrete steps E = nhf. High-frequency modes need a large quantum hf >> kT, so they are rarely excited and the spectrum is cut off, which reproduces the measured peak.',
+    ['Rayleigh-Jeans: kT per mode, divergence', 'Planck: E = nhf', 'High-frequency modes suppressed (hf >> kT)', 'Matches measured spectrum']);
+
+  /* ---- s04 Bohr model and de Broglie ---- */
+  M('sv-s04-m1', 's04', 'The de Broglie wavelength of a particle with momentum p is:', 'λ = h/p', ['λ = p/h', 'λ = hp', 'λ = h/p^2'], 'De Broglie assigned a wavelength λ = h/p to matter, confirmed by electron diffraction.');
+  M('sv-s04-m2', 's04', 'Using E_n = −13.6 eV / n^2, calculate the energy of the hydrogen n = 2 level.', '−3.4 eV', ['−6.8 eV', '−1.5 eV', '−13.6 eV'], 'E_2 = −13.6 / 4 = −3.4 eV.');
+  M('sv-s04-m3', 's04', 'Calculate the energy of the photon emitted in the hydrogen transition n = 3 → n = 2.', '1.89 eV', ['3.40 eV', '10.2 eV', '0.66 eV'], 'ΔE = 13.6 (1/4 − 1/9) = 13.6 × 5/36 ≈ 1.89 eV (red light, about 656 nm).');
+  M('sv-s04-m4', 's04', 'Bohr\'s quantisation condition states that the electron angular momentum is:', 'L = nħ', ['L = n/ħ', 'L = ħ/n', 'L = nħ^2'], 'Bohr allowed only orbits where L = m v r = nħ, n = 1, 2, 3...');
+  M('sv-s04-m5', 's04', 'Calculate the de Broglie wavelength of an electron accelerated through 100 V (use λ ≈ 1.226 nm / √V).', '0.123 nm', ['1.23 nm', '0.0123 nm', '0.50 nm'], 'λ = 1.226 / √100 = 0.1226 nm, comparable to atomic spacings, which is why electrons diffract from crystals.');
+  M('sv-s04-m6', 's04', 'Why do atoms emit discrete line spectra?', 'Electrons can only occupy discrete energy levels, so transitions release photons of fixed energy', ['Electrons orbit at any radius and radiate at fixed times', 'The nucleus emits photons at fixed frequencies', 'Photons are absorbed by the electron cloud as a continuum'], 'Each transition satisfies hf = E_i − E_f, and only certain energies exist, so only certain frequencies appear.');
+  M('sv-s04-m7', 's04', 'What is the ionisation energy of hydrogen in its ground state?', '13.6 eV', ['3.4 eV', '1.51 eV', '27.2 eV'], 'It is the energy needed to take the electron from n = 1 (E = −13.6 eV) to E = 0 at infinity.');
+  M('sv-s04-m8', 's04', 'The momentum of a particle is doubled. What happens to its de Broglie wavelength?', 'It is halved', ['It is doubled', 'It is unchanged', 'It is quartered'], 'λ = h/p, so λ is inversely proportional to p.');
+  K('sv-s04-k1', 's04', 'Bohr postulates', 'State the postulates of the Bohr model of hydrogen and justify why it was introduced despite classical physics predicting that an orbiting electron should radiate.',
+    'Bohr postulated that (1) the electron moves in circular orbits (stationary states) without radiating, (2) only orbits with angular momentum L = nħ are allowed, and (3) a photon of energy hf = E_i − E_f is emitted or absorbed when the electron jumps between states. Classically an accelerating charge radiates and would spiral into the nucleus in about 10^-11 s, so atoms would not be stable. The postulates enforce stability and reproduce the observed discrete spectrum and the Rydberg formula.',
+    ['Stationary non-radiating orbits', 'L = nħ', 'hf = E_i − E_f', 'Classical collapse problem, discrete spectrum']);
+  K('sv-s04-k2', 's04', 'hydrogen spectrum', 'Calculate the wavelength of the photon emitted in the n = 3 → 2 transition of hydrogen using E_n = −13.6/n^2 eV and hc ≈ 1240 eV·nm.',
+    'The energies are E_3 = −13.6/9 = −1.51 eV and E_2 = −13.6/4 = −3.40 eV. The photon energy is ΔE = 3.40 − 1.51 = 1.89 eV. The wavelength is λ = hc/ΔE = 1240/1.89 ≈ 656 nm, in the red part of the visible spectrum (the H-alpha line of the Balmer series).',
+    ['E_3 = −1.51 eV, E_2 = −3.40 eV', 'ΔE = 1.89 eV', 'λ = hc/ΔE ≈ 656 nm', 'Balmer series, red']);
+  K('sv-s04-k3', 's04', 'de Broglie waves', 'Derive Bohr\'s angular momentum condition from the de Broglie hypothesis by requiring a standing wave around the orbit, and explain the physical meaning.',
+    'For a stable orbit the electron wave must interfere constructively with itself, so the circumference must contain an integer number of wavelengths: 2πr = nλ. With de Broglie λ = h/p = h/(mv), this gives 2πr = nh/(mv), or mvr = nh/2π = nħ. Therefore L = nħ follows naturally. Otherwise the wave would cancel after repeated turns, so only discrete orbits and energies survive, which explains quantisation.',
+    ['Standing wave: 2πr = nλ', 'λ = h/(mv)', 'mvr = nħ', 'Destructive interference removes other orbits']);
+})();
+
+/* 92-data-sinav-2.js · Mock exam (Deneme sinavi) verisi, istasyon s05-s08 · tamamen Ingilizce.
+ * Q.data.sinav = {mcq:[], klasik:[]} (A11 91-data-sinav-1.js ile ortak). */
+Q.data = Q.data || {};
+Q.data.sinav = Q.data.sinav || {mcq:[], klasik:[]};
+Q.data.sinav.mcq = Q.data.sinav.mcq || [];
+Q.data.sinav.klasik = Q.data.sinav.klasik || [];
+(function(){
+  'use strict';
+  function M(id, st, q, options, answer, explanation){
+    return { id: id, station: st, q: q, options: options, answer: answer, explanation: explanation };
+  }
+  function K(id, st, concept, question, modelAnswer, keyPoints){
+    return { id: id, station: st, question: question, modelAnswer: modelAnswer, keyPoints: keyPoints, concept: concept };
+  }
+
+  var mcq = [
+  /* ---------- s05: Schrödinger equation, ψ, infinite well ---------- */
+  M('s05-m1','s05','What does |ψ(x)|² represent for a particle described by the wave function ψ(x)?',
+    ['The probability density of finding the particle at x','The classical position of the particle','The kinetic energy of the particle at x','The momentum of the particle at x'],0,
+    '|ψ(x)|² dx is the probability of finding the particle between x and x + dx. ψ itself is generally complex and not directly measurable.'),
+  M('s05-m2','s05','An electron is confined in an infinite square well of width L = 1.0 nm. Using E₁ = π²ħ²/(2mL²), the ground-state energy is approximately:',
+    ['1.50 eV','0.094 eV','3.01 eV','0.376 eV'],3,
+    'E₁ = h²/(8mL²) = 0.376 eV·nm² / L². For L = 1.0 nm, E₁ ≈ 0.376 eV.'),
+  M('s05-m3','s05','The width of an infinite well is doubled while the particle stays the same. The ground-state energy E₁:',
+    ['becomes four times smaller','becomes half as large','becomes twice as large','does not change'],0,
+    'Since E₁ ∝ 1/L², doubling L reduces E₁ by a factor of 4.'),
+  M('s05-m4','s05','In an infinite well with E₁ = 2.0 eV, what photon energy is emitted in the transition n = 3 → n = 1?',
+    ['4.0 eV','16 eV','18 eV','6.0 eV'],1,
+    'Eₙ = n²E₁, so E₃ − E₁ = (9 − 1)E₁ = 8E₁ = 16 eV.'),
+  M('s05-m5','s05','For ψₙ(x) = A sin(nπx/L) in a well 0 ≤ x ≤ L, normalization requires A =',
+    ['√(2/L)','1/L','√(L/2)','2/L'],0,
+    '∫₀ᴸ A² sin²(nπx/L) dx = A²L/2 = 1, so A = √(2/L).'),
+  M('s05-m6','s05','How many nodes (zeros of ψ strictly inside the well, excluding the walls) does the n-th state of the infinite well have?',
+    ['n + 1','n','n − 1','2n'],2,
+    'ψₙ ∝ sin(nπx/L) vanishes at x = kL/n for k = 1, …, n − 1 inside the well, giving n − 1 nodes.'),
+  M('s05-m7','s05','A particle is in the ground state of an infinite well of width L. The probability of finding it in 0 < x < L/4 is closest to:',
+    ['0.25','0.09','0.50','0.16'],1,
+    'P = (2/L)∫₀^{L/4} sin²(πx/L) dx = 1/4 − 1/(2π) ≈ 0.25 − 0.159 ≈ 0.09, smaller than the naive 0.25 because ψ is small near the wall.'),
+  M('s05-m8','s05','Why can the ground-state energy of a particle in an infinite well not be zero?',
+    ['Because the temperature is above absolute zero','Because ψ = 0 at the walls forces a nonzero curvature (wavelength ≤ 2L), so kinetic energy cannot vanish','Because the potential energy inside the well is positive','Because the particle is always moving classically'],1,
+    'Boundary conditions ψ(0) = ψ(L) = 0 forbid a constant ψ; the longest allowed wavelength is 2L, giving E₁ = h²/(8mL²) > 0 regardless of temperature (zero-point energy).'),
+  M('s05-m9','s05','A proton and an electron are in identical infinite wells. The ratio E₁(proton)/E₁(electron) is approximately (mₚ ≈ 1836 mₑ):',
+    ['1836','1/1836','1/√1836','1'],1,
+    'E₁ ∝ 1/m, so the heavier proton has a ground-state energy about 1836 times smaller.'),
+  M('s05-m10','s05','Which statement about the time-independent Schrödinger equation −(ħ²/2m)ψ″ + V(x)ψ = Eψ is correct?',
+    ['It takes ψ and E as input and outputs V(x)','It takes V(x) and boundary conditions as input and outputs allowed ψ and E','It gives E for any value without restrictions','It only applies to free particles'],1,
+    'Given V(x) and the boundary conditions, only specific E values yield acceptable (normalizable, continuous) ψ; this produces quantization.'),
+
+  /* ---------- s06: step, barrier, tunneling ---------- */
+  M('s06-m1','s06','A particle with E < V₀ meets a potential step of height V₀. According to quantum mechanics, in the region x > 0:',
+    ['ψ is exactly zero','ψ oscillates with constant amplitude','ψ decays exponentially but is nonzero','ψ grows exponentially'],2,
+    'In the forbidden region ψ ∝ e^(−κx) with κ = √(2m(V₀−E))/ħ: nonzero but decaying. Total reflection occurs for an infinitely wide step.'),
+  M('s06-m2','s06','A particle with E = 2V₀ hits a potential step of height V₀ from the left. Using R = ((k₁ − k₂)/(k₁ + k₂))², the reflection probability is approximately:',
+    ['0.50','0.17','0.029','0'],2,
+    'k₂/k₁ = √(1 − V₀/E) = √0.5 = 0.707. R = (0.293/1.707)² ≈ 0.029. Classically R would be 0.'),
+  M('s06-m3','s06','An electron faces a barrier with V₀ − E = 1.0 eV. Using κ = √(2m(V₀−E))/ħ ≈ 5.1 nm⁻¹ for this case, the penetration depth 1/κ is about:',
+    ['0.20 nm','5.1 nm','0.51 nm','0.020 nm'],0,
+    '1/κ = 1/5.1 nm⁻¹ ≈ 0.20 nm.'),
+  M('s06-m4','s06','For a thick barrier the transmission is T ≈ e^(−2κL). If T = 10⁻² for width L, what is T for width 2L (same κ)?',
+    ['2 × 10⁻²','10⁻³','5 × 10⁻³','10⁻⁴'],3,
+    'T(2L) = e^(−4κL) = (e^(−2κL))² = (10⁻²)² = 10⁻⁴.'),
+  M('s06-m5','s06','An electron has κ = 5.1 nm⁻¹ and the barrier width is L = 0.5 nm. The tunneling probability T ≈ e^(−2κL) is about:',
+    ['6 × 10⁻³','0.37','2 × 10⁻⁵','0.60'],0,
+    '2κL = 5.1, e^(−5.1) ≈ 6 × 10⁻³.'),
+  M('s06-m6','s06','A proton and an electron with the same energy meet the same barrier (E < V₀). Which tunnels with higher probability, and why?',
+    ['The proton, because it carries more momentum','The electron, because κ ∝ √m is smaller for it','Both equally, since the barrier is the same','The proton, because it is heavier and more stable'],1,
+    'κ = √(2m(V₀−E))/ħ grows with √m, so T ≈ e^(−2κL) is exponentially smaller for the heavier proton.'),
+  M('s06-m7','s06','In a scanning tunneling microscope the tunneling current varies as I ∝ e^(−2κd) with κ ≈ 10 nm⁻¹. When the tip–surface gap d increases by 0.1 nm, the current:',
+    ['drops by a factor of about 7','drops by about 10%','drops by a factor of about 100','stays the same'],0,
+    'ΔI/I = e^(−2·10·0.1) = e^(−2) ≈ 0.135, i.e. a drop by a factor ≈ 7. This exponential sensitivity gives atomic resolution.'),
+  M('s06-m8','s06','A particle tunnels through a rectangular barrier. Compared with its energy before the barrier, the transmitted particle has:',
+    ['lower energy, since it lost energy inside the barrier','the same energy but a smaller wave amplitude','higher energy','the same energy and the same amplitude'],1,
+    'Tunneling conserves energy E; only the amplitude (hence probability) is reduced, with R + T = 1.'),
+  M('s06-m9','s06','For a particle incident on a barrier, which relation is always true?',
+    ['R = T','T = 1 for E < V₀','R + T = 1','R = 0 for E > V₀'],2,
+    'Probability conservation requires R + T = 1. Reflection can occur even for E > V₀, and T < 1 for E < V₀ but not zero.'),
+  M('s06-m10','s06','Which change makes tunneling through a barrier MORE likely?',
+    ['Increase barrier width','Increase barrier height V₀','Decrease the particle mass','Decrease the particle energy E'],2,
+    'T ≈ e^(−2κL) with κ ∝ √(m(V₀−E)). A smaller mass reduces κ, so T increases. The other changes increase κL.'),
+
+  /* ---------- s07: postulates, measurement, collapse ---------- */
+  M('s07-m1','s07','According to the postulates of quantum mechanics, the only possible results of measuring an observable are:',
+    ['any real number','the expectation values of the state','the eigenvalues of the corresponding operator','the eigenfunctions of the operator'],2,
+    'Each observable is represented by a Hermitian operator; a measurement returns one of its eigenvalues.'),
+  M('s07-m2','s07','A particle in an infinite well is in the state ψ = (1/√3)φ₁ + √(2/3)φ₂, where Eₙ = n²E₁. The expectation value ⟨E⟩ is:',
+    ['5E₁/2','3E₁','2E₁','5E₁/3'],1,
+    '⟨E⟩ = (1/3)E₁ + (2/3)(4E₁) = (1 + 8)E₁/3 = 3E₁. The probabilities are 1/3 and 2/3.'),
+  M('s07-m3','s07','For ψ = A(φ₁ + 2φ₂) with orthonormal φ₁ and φ₂, the probability of measuring the energy E₂ is:',
+    ['1/2','4/5','2/3','1/5'],1,
+    'Normalization: A²(1 + 4) = 1, so A² = 1/5. P(E₂) = 4A² = 4/5.'),
+  M('s07-m4','s07','After a measurement of energy gives E₂, an immediate second measurement of energy will give:',
+    ['E₁ or E₂ with equal probability','a value distributed as before','E₂ with certainty','a random value'],2,
+    'The first measurement collapses the state to the eigenfunction φ₂; an immediate repeat therefore returns E₂ with probability 1.'),
+  M('s07-m5','s07','A particle is in the state (φ₁ + φ₂)/√2. Which statement about an energy measurement is correct?',
+    ['It always yields (E₁ + E₂)/2','It yields E₁ or E₂, each with probability 1/2','It yields E₁ with probability 1','It yields E₂ with probability 1'],1,
+    'Only eigenvalues can be obtained. The average (E₁+E₂)/2 is the expectation value, not a possible outcome.'),
+  M('s07-m6','s07','Which of the following is true for an operator representing a physical observable?',
+    ['It is anti-Hermitian, so its eigenvalues are imaginary','It must be a number','It is Hermitian, so its eigenvalues are real','It has complex eigenvalues in general'],2,
+    'Observables correspond to Hermitian operators, guaranteeing real measurement outcomes and orthogonal eigenfunctions.'),
+  M('s07-m7','s07','The commutator [x̂, p̂] equals:',
+    ['0','ħ','iħ','−ħ/2'],2,
+    '[x̂, p̂] = x̂p̂ − p̂x̂ = iħ. It is nonzero, so x and p cannot be simultaneously sharp.'),
+  M('s07-m8','s07','For a stationary state ψ(x,t) = φ(x)e^(−iEt/ħ), the probability density |ψ|²:',
+    ['oscillates at frequency E/h','decays exponentially','vanishes at large t','is independent of time'],3,
+    '|e^(−iEt/ħ)|² = 1, so |ψ|² = |φ(x)|² is constant in time.'),
+  M('s07-m9','s07','A superposition (φ₁ + φ₂)/√2 of the n = 1 and n = 2 well states has a probability density that oscillates in time with angular frequency (Eₙ = n²E₁):',
+    ['E₁/ħ','3E₁/ħ','5E₁/ħ','4E₁/ħ'],1,
+    'The cross term oscillates at (E₂ − E₁)/ħ = (4 − 1)E₁/ħ = 3E₁/ħ.'),
+  M('s07-m10','s07','What is the difference between a superposition (φ₁ + φ₂)/√2 and a classical mixture of 50% φ₁ and 50% φ₂?',
+    ['There is none; the predictions are identical','The mixture has a definite energy','The superposition contains no information about φ₁','The superposition has a definite relative phase and shows interference terms in |ψ|²'],3,
+    'A superposition is a single pure state with coherent amplitudes, so |ψ|² contains cross terms (interference); a mixture has none.'),
+
+  /* ---------- s08: uncertainty principle ---------- */
+  M('s08-m1','s08','Which expression is the Heisenberg position–momentum uncertainty relation?',
+    ['Δx Δp ≤ ħ/2','Δx + Δp ≥ ħ','Δx Δp ≥ ħ/2','Δx / Δp = ħ'],2,
+    'The standard deviations satisfy Δx Δp ≥ ħ/2: a lower bound, not an upper bound.'),
+  M('s08-m2','s08','An electron is localized to Δx = 0.10 nm. The minimum momentum uncertainty is approximately (ħ = 1.055 × 10⁻³⁴ J·s):',
+    ['5.3 × 10⁻³⁴ kg·m/s','5.3 × 10⁻²⁵ kg·m/s','1.1 × 10⁻²⁴ kg·m/s','5.3 × 10⁻²⁸ kg·m/s'],1,
+    'Δp ≥ ħ/(2Δx) = 1.055×10⁻³⁴ / (2×10⁻¹⁰) ≈ 5.3 × 10⁻²⁵ kg·m/s.'),
+  M('s08-m3','s08','Using the result Δp ≈ 5.3 × 10⁻²⁵ kg·m/s, the electron (m = 9.11 × 10⁻³¹ kg) has a velocity uncertainty of about:',
+    ['5.8 × 10² m/s','5.8 × 10⁸ m/s','5.8 × 10⁵ m/s','5.8 m/s'],2,
+    'Δv = Δp/m = 5.3×10⁻²⁵ / 9.11×10⁻³¹ ≈ 5.8 × 10⁵ m/s, a large fraction of typical atomic speeds.'),
+  M('s08-m4','s08','A 0.145 kg baseball has its position known to Δx = 1 mm. The minimum velocity uncertainty is about:',
+    ['3.6 × 10⁻³ m/s','3.6 × 10⁻³¹ m/s','3.6 × 10⁻³⁴ m/s','7.3 × 10⁻³⁴ m/s'],1,
+    'Δv ≥ ħ/(2mΔx) = 1.055×10⁻³⁴ / (2 × 0.145 × 10⁻³) ≈ 3.6 × 10⁻³¹ m/s, utterly negligible, so uncertainty is invisible in everyday life.'),
+  M('s08-m5','s08','An excited atomic state has lifetime Δt = 1.0 × 10⁻⁸ s. Using ΔE Δt ≥ ħ/2, the minimum energy width is about:',
+    ['3.3 × 10⁻² eV','5.3 × 10⁻²⁷ eV','3.3 × 10⁻⁸ eV','1.0 eV'],2,
+    'ΔE ≥ ħ/(2Δt) = 5.3×10⁻²⁷ J = 5.3×10⁻²⁷ / 1.602×10⁻¹⁹ eV ≈ 3.3 × 10⁻⁸ eV (natural linewidth).'),
+  M('s08-m6','s08','Which statement best describes the origin of the uncertainty principle?',
+    ['It is caused only by clumsy measuring instruments','It is a fundamental property of wave-like states: x and p are Fourier-conjugate quantities','It applies only to electrons','It means that particles have no definite properties at all'],1,
+    'A narrow wave packet in x necessarily contains a broad range of wavenumbers, so Δx Δk ≥ 1/2. This holds even for ideal measurements.'),
+  M('s08-m7','s08','Which pair of observables can in principle both be known exactly at the same time?',
+    ['x and pₓ','Lₓ and L_y','E and t','x and p_y'],3,
+    'x and p_y commute ([x, p_y] = 0), so there is no uncertainty relation between them. The other pairs have nonzero commutators or conjugate-variable relations.'),
+  M('s08-m8','s08','For a Gaussian wave packet the product Δx Δp equals:',
+    ['ħ','ħ/2, the minimum allowed value','h','0'],1,
+    'Gaussian packets are minimum-uncertainty states: Δx Δp = ħ/2.'),
+  M('s08-m9','s08','Estimating the zero-point energy: a particle confined to size L has Δp ≳ ħ/(2L). The corresponding kinetic energy scales as:',
+    ['ħ/(mL)','mL²/ħ²','ħ²/(8mL²), i.e. ∝ 1/L²','independent of L'],2,
+    'E ≈ (Δp)²/(2m) ≈ ħ²/(8mL²). Squeezing the particle (smaller L) raises its minimum energy as 1/L².'),
+  M('s08-m10','s08','A wave packet is localized to Δx = 1 μm. The minimum spread in wavenumber is (Δx Δk ≥ 1/2):',
+    ['2 × 10⁻⁶ m⁻¹','1 × 10⁶ m⁻¹ exactly','0','5 × 10⁵ m⁻¹'],3,
+    'Δk ≥ 1/(2Δx) = 1/(2×10⁻⁶ m) = 5 × 10⁵ m⁻¹.')
+  ];
+
+  var klasik = [
+  K('s05-k1','s05','kuantalasma_sinir',
+    'Derive the allowed energy levels Eₙ and normalized wave functions ψₙ(x) of a particle of mass m in an infinite square well of width L (V = 0 for 0 < x < L, V = ∞ outside).',
+    'Inside the well the Schrödinger equation reads −(ħ²/2m)ψ″ = Eψ, so ψ″ = −k²ψ with k = √(2mE)/ħ and general solution ψ = A sin kx + B cos kx. The infinite walls force ψ(0) = 0, hence B = 0, and ψ(L) = 0, hence sin kL = 0, so k = nπ/L with n = 1, 2, 3, … Therefore Eₙ = ħ²k²/2m = n²π²ħ²/(2mL²). Normalization ∫₀ᴸ A² sin²(nπx/L) dx = A²L/2 = 1 gives A = √(2/L), so ψₙ(x) = √(2/L) sin(nπx/L). n = 0 is excluded because it gives ψ ≡ 0.',
+    ['Solve ψ″ = −k²ψ inside the well with ψ(0) = ψ(L) = 0','Boundary conditions give kL = nπ, so energy is quantized','Eₙ = n²π²ħ²/(2mL²) ∝ n²/L²','Normalization gives A = √(2/L)','n = 0 is excluded (trivial solution)']),
+  K('s05-k2','s05','psi_olasilik',
+    'Explain the physical meaning of the wave function ψ(x) and the normalization condition. For the ground state of an infinite well of width L, state where the particle is most likely to be found and calculate the probability that it is in the left half of the well.',
+    'The wave function ψ(x) is a complex probability amplitude; the observable quantity is |ψ(x)|², the probability density, so that |ψ|²dx is the probability of finding the particle between x and x + dx. Normalization ∫|ψ|²dx = 1 expresses that the particle is certainly found somewhere. For the ground state ψ₁ = √(2/L) sin(πx/L), |ψ₁|² is largest at x = L/2, the centre of the well. By the symmetry of |ψ₁|² about L/2 the probability in the left half is exactly P = ∫₀^{L/2} (2/L) sin²(πx/L) dx = 1/2.',
+    ['ψ is an amplitude; |ψ|² is the probability density','Normalization means total probability equals 1','Ground state peaks at x = L/2','Symmetry gives P(left half) = 1/2','Show the integral of sin² explicitly']),
+  K('s05-k3','s05','sifir_noktasi_sicaklik',
+    'Explain why a particle confined in an infinite well cannot have zero energy, and calculate the ground-state energy of an electron confined to L = 0.50 nm (use E₁ = 0.376 eV·nm²/L²). Justify that this is not a thermal effect.',
+    'Because ψ must vanish at both walls, a constant (zero-energy) wave function is not allowed; the longest wavelength that fits is λ = 2L, so the particle necessarily has momentum p = h/λ = h/2L and kinetic energy at least E₁ = h²/(8mL²). This is the zero-point energy and it follows from the boundary condition (equivalently from Δx ≲ L implying Δp ≳ ħ/2L). For L = 0.50 nm, E₁ = 0.376 / (0.50)² = 1.50 eV. The result contains no temperature, so it persists at T = 0 K; it is a confinement effect, not a thermal one.',
+    ['ψ(0) = ψ(L) = 0 forbids constant ψ','Longest wavelength is 2L, giving E₁ = h²/8mL²','E₁ = 0.376/0.25 = 1.50 eV','No temperature appears in the formula (zero-point energy)']),
+  K('s05-k4','s05','schrodinger_girdi_cikti',
+    'State what must be specified to use the time-independent Schrödinger equation and what is obtained from it. Compare the resulting energy spectra of an infinite well for the cases where L is doubled and where the mass is doubled.',
+    'The inputs are the potential V(x), the mass m, and the boundary conditions (continuity of ψ and, for finite V, of ψ′; ψ → 0 where required). The outputs are the allowed energies Eₙ and the corresponding normalizable wave functions ψₙ; only special E values give acceptable solutions, which is the origin of quantization. For the infinite well Eₙ = n²π²ħ²/(2mL²). Doubling L divides every level by 4 because Eₙ ∝ 1/L². Doubling m divides every level by 2 because Eₙ ∝ 1/m. In both cases the spectrum keeps the n² pattern but becomes more closely spaced.',
+    ['Inputs: V(x), m, boundary conditions','Outputs: allowed Eₙ and ψₙ','Eₙ ∝ 1/L²: L doubled gives E/4','Eₙ ∝ 1/m: m doubled gives E/2']),
+
+  K('s06-k1','s06','tunelleme',
+    'Define quantum tunneling and derive the decay constant κ of the wave function inside a rectangular barrier of height V₀ for a particle of energy E < V₀. Estimate how the transmission probability depends on barrier width.',
+    'Tunneling is the penetration of a particle through a region where E < V₀, which is classically forbidden. In the barrier the Schrödinger equation is −(ħ²/2m)ψ″ + V₀ψ = Eψ, i.e. ψ″ = κ²ψ with κ = √(2m(V₀ − E))/ħ. The solutions are real exponentials e^(±κx), so inside the barrier ψ decays as e^(−κx) rather than oscillating. For a thick barrier of width L the transmitted amplitude is reduced by e^(−κL), hence the transmission probability is T ≈ e^(−2κL). T therefore falls exponentially with width and with √m, and rises when V₀ − E decreases.',
+    ['Tunneling: nonzero T although E < V₀','κ = √(2m(V₀−E))/ħ from ψ″ = κ²ψ','ψ ∝ e^(−κx) inside the barrier','T ≈ e^(−2κL): exponential in width and √m']),
+  K('s06-k2','s06','tunelleme',
+    'Calculate the approximate probability that an electron with V₀ − E = 1.0 eV tunnels through a barrier of width 0.80 nm. Take κ = 5.1 nm⁻¹ for this V₀ − E. Then state what happens to T if the width is reduced to 0.40 nm.',
+    'For a thick barrier T ≈ e^(−2κL). With κ = 5.1 nm⁻¹ and L = 0.80 nm, 2κL = 2 × 5.1 × 0.80 = 8.16, so T ≈ e^(−8.16) ≈ 2.9 × 10⁻⁴. For L = 0.40 nm, 2κL = 4.08 and T ≈ e^(−4.08) ≈ 1.7 × 10⁻². Halving the width therefore increases T by a factor of about e^(4.08) ≈ 59, which shows the extreme exponential sensitivity of tunneling to the barrier width.',
+    ['Use T ≈ e^(−2κL)','2κL = 8.16 gives T ≈ 3 × 10⁻⁴','Half width: T ≈ 1.7 × 10⁻²','Exponential sensitivity, factor about 60']),
+  K('s06-k3','s06','yansima_basamak',
+    'Compare the classical and quantum predictions for a particle of energy E > V₀ incident on a potential step of height V₀. Calculate R and T for E = 2V₀ and justify that R + T = 1.',
+    'Classically a particle with E > V₀ always passes the step (it only slows down), so R = 0. Quantum mechanically the wavenumber changes from k₁ = √(2mE)/ħ to k₂ = √(2m(E − V₀))/ħ, and the abrupt change reflects part of the wave. Matching ψ and ψ′ at x = 0 gives R = ((k₁ − k₂)/(k₁ + k₂))². For E = 2V₀, k₂/k₁ = √(1/2) = 0.707, hence R = (0.293/1.707)² ≈ 0.029 and T = 4k₁k₂/(k₁ + k₂)² ≈ 0.971. The sum R + T = 1 expresses conservation of probability (the incident flux is split between reflected and transmitted flux).',
+    ['Classical: R = 0 for E > V₀; quantum: R > 0','R = ((k₁−k₂)/(k₁+k₂))²','E = 2V₀: R ≈ 0.029, T ≈ 0.971','R + T = 1 is probability conservation']),
+  K('s06-k4','s06','tunelleme',
+    'Explain, with reference to the formula for T, why a scanning tunneling microscope (STM) can image individual atoms. Justify your answer using a numerical estimate for a gap change of 0.1 nm with κ = 10 nm⁻¹.',
+    'In an STM electrons tunnel across the vacuum gap d between a sharp tip and the surface, and the current is proportional to the transmission T ≈ e^(−2κd). Because of the exponent, the current is extremely sensitive to d. With κ = 10 nm⁻¹ a gap increase of 0.1 nm multiplies the current by e^(−2·10·0.1) = e^(−2) ≈ 0.135, a drop by a factor of about 7. A height difference smaller than an atomic diameter therefore produces an easily measurable current change, and most of the current flows through the single atom at the apex of the tip. Scanning the tip while keeping the current constant maps the surface atom by atom.',
+    ['Current ∝ T ≈ e^(−2κd)','Exponential sensitivity to gap d','0.1 nm change gives factor of about 7','Apex atom dominates the current, giving atomic resolution']),
+
+  K('s07-k1','s07','kuantalasma_olcum',
+    'State the postulate of measurement in quantum mechanics. A particle is in the state ψ = c₁φ₁ + c₂φ₂ with φ₁, φ₂ normalized energy eigenfunctions. State the possible results, their probabilities, and the state after the measurement.',
+    'A measurement of an observable can only give an eigenvalue of its Hermitian operator. For ψ = c₁φ₁ + c₂φ₂ the energy measurement yields E₁ with probability |c₁|² or E₂ with probability |c₂|², and |c₁|² + |c₂|² = 1 by normalization. Immediately after a measurement that gave Eᵢ the state collapses to the eigenfunction φᵢ. A repeated measurement then gives Eᵢ with certainty. The expectation value ⟨E⟩ = |c₁|²E₁ + |c₂|²E₂ is the average over many identically prepared systems and is not a value that a single measurement returns.',
+    ['Outcomes are eigenvalues of a Hermitian operator','Probability of Eᵢ is |cᵢ|²','Normalization: Σ|cᵢ|² = 1','State collapses to φᵢ after the measurement','⟨E⟩ is an average, not an outcome']),
+  K('s07-k2','s07','kuantalasma_olcum',
+    'A particle in an infinite well is in the normalized state ψ = (1/√3)φ₁ + √(2/3)φ₂ with Eₙ = n²E₁. Calculate the probabilities of the energy outcomes and ⟨E⟩.',
+    'The expansion coefficients are c₁ = 1/√3 and c₂ = √(2/3). Check normalization: |c₁|² + |c₂|² = 1/3 + 2/3 = 1. The probabilities are therefore P(E₁) = 1/3 and P(E₂ = 4E₁) = 2/3. The expectation value is ⟨E⟩ = (1/3)E₁ + (2/3)(4E₁) = (1 + 8)E₁/3 = 3E₁. No single measurement gives 3E₁, because only E₁ and 4E₁ are eigenvalues.',
+    ['P(E₁) = |c₁|² = 1/3','P(4E₁) = |c₂|² = 2/3','⟨E⟩ = 3E₁','3E₁ is not an eigenvalue, so never observed']),
+  K('s07-k3','s07','schrodinger_cokme',
+    'Explain what is meant by the collapse of the wave function. Distinguish a superposition (φ₁ + φ₂)/√2 from a classical mixture and describe how time evolution of the superposition differs from that of a stationary state.',
+    'Collapse means that on measurement the state changes discontinuously from a superposition to the single eigenfunction corresponding to the observed result. A superposition (φ₁ + φ₂)/√2 is one pure state with a definite relative phase, whereas a classical mixture is a statistical ensemble in which each system is in φ₁ or φ₂ with probability 1/2. Only the superposition shows interference: |ψ|² contains the cross term φ₁φ₂cos((E₂ − E₁)t/ħ). A stationary state φe^(−iEt/ħ) has |ψ|² independent of time. In the superposition the density oscillates with angular frequency (E₂ − E₁)/ħ.',
+    ['Collapse: superposition becomes a single eigenstate on measurement','Superposition is a pure state with a coherent phase','Mixture has no interference terms','Stationary state: |ψ|² constant; superposition oscillates at (E₂−E₁)/ħ']),
+  K('s07-k4','s07','kuantalasma_olcum',
+    'Define a Hermitian operator and show that its eigenvalues are real. Explain why this property is required for observables and state the commutator [x̂, p̂] with its physical implication.',
+    'An operator Â is Hermitian if ∫f*(Âg)dx = ∫(Âf)*g dx for all admissible f, g. If Âφ = aφ then ⟨φ|Â|φ⟩ = a⟨φ|φ⟩, and by Hermiticity the same quantity equals a*⟨φ|φ⟩, so a = a* and a is real. Measured values of physical quantities are real, therefore observables are represented by Hermitian operators. The commutator [x̂, p̂] = iħ is nonzero, so x and p have no common set of eigenfunctions and cannot both be sharp, which leads to the uncertainty relation Δx Δp ≥ ħ/2.',
+    ['Definition: ⟨f|Ag⟩ = ⟨Af|g⟩','Eigenvalue a = a*, so real','Observables must give real results','[x̂, p̂] = iħ implies uncertainty relation']),
+
+  K('s08-k1','s08','belirsizlik',
+    'State the Heisenberg uncertainty principle for position and momentum, and explain its physical origin using the wave nature of a particle. Why is it not just a limitation of measuring apparatus?',
+    'The principle states that Δx Δp ≥ ħ/2, where Δx and Δp are the standard deviations of position and momentum in the same state. A particle is described by a wave packet; to confine it to a narrow region the packet must be built by superposing many wavelengths, so Δk ≳ 1/(2Δx), and with p = ħk this gives Δp ≥ ħ/(2Δx). The relation is a property of the quantum state, because x and p are Fourier-conjugate and their operators do not commute ([x̂, p̂] = iħ). It holds even for ideal measurements and therefore is not a result of clumsy apparatus.',
+    ['Δx Δp ≥ ħ/2','Wave packet needs many wavelengths: Δk ≥ 1/(2Δx)','x and p are conjugate (non-commuting)','Property of the state, not of instruments']),
+  K('s08-k2','s08','belirsizlik',
+    'Calculate the minimum velocity uncertainty of (a) an electron confined to Δx = 0.10 nm and (b) a 0.145 kg baseball located to within 1.0 mm. Compare and explain why (b) is not observed in daily life.',
+    '(a) Δp ≥ ħ/(2Δx) = 1.055×10⁻³⁴/(2 × 1.0×10⁻¹⁰) = 5.3×10⁻²⁵ kg·m/s, so Δv = Δp/m = 5.3×10⁻²⁵/9.11×10⁻³¹ ≈ 5.8×10⁵ m/s. (b) Δv ≥ ħ/(2mΔx) = 1.055×10⁻³⁴/(2 × 0.145 × 1.0×10⁻³) ≈ 3.6×10⁻³¹ m/s. The electron value is a large fraction of atomic speeds (about 10⁶ m/s), so uncertainty is essential for atomic physics. The baseball value is about 10³¹ times smaller than anything measurable, because ħ is tiny compared with the product m·Δx of macroscopic bodies.',
+    ['Δp ≥ ħ/(2Δx) then Δv = Δp/m','Electron: Δv ≈ 5.8 × 10⁵ m/s','Baseball: Δv ≈ 3.6 × 10⁻³¹ m/s','ħ is tiny, so effects are negligible for large m']),
+  K('s08-k3','s08','belirsizlik',
+    'Use the uncertainty principle to estimate the minimum kinetic energy of a particle of mass m confined to a region of size L. Evaluate it for an electron with L = 0.10 nm and comment on the result.',
+    'Confinement to size L gives Δx ≈ L, hence Δp ≳ ħ/(2L). The kinetic energy is at least E ≈ (Δp)²/(2m) = ħ²/(8mL²). For an electron with L = 0.10 nm, ħ²/(8mL²) = (1.055×10⁻³⁴)² / (8 × 9.11×10⁻³¹ × 10⁻²⁰) ≈ 1.5×10⁻¹⁹ J ≈ 0.95 eV. This is of the order of atomic binding energies and shows how strongly confinement raises the energy: it grows as 1/L², so squeezing the electron to the size of a nucleus would cost enormous energy. The estimate has the same scaling as the exact infinite-well result.',
+    ['Δx ≈ L implies Δp ≳ ħ/(2L)','E ≈ ħ²/(8mL²) ∝ 1/L²','Numerical value ≈ 0.95 eV','Interpretation: zero-point energy grows as the particle is squeezed']),
+  K('s08-k4','s08','belirsizlik',
+    'State the energy–time uncertainty relation and use it to calculate the minimum energy width of a spectral line from an excited state with lifetime 1.0 × 10⁻⁸ s. Explain why a state of infinite lifetime has a sharp energy.',
+    'The relation is ΔE Δt ≥ ħ/2, where Δt is the characteristic time over which the state changes (its lifetime) and ΔE the energy spread. For Δt = 1.0×10⁻⁸ s, ΔE ≥ ħ/(2Δt) = 1.055×10⁻³⁴/(2.0×10⁻⁸) ≈ 5.3×10⁻²⁷ J ≈ 3.3×10⁻⁸ eV, which is the natural linewidth. A stationary state has Δt → ∞, so ΔE → 0 and its energy is perfectly sharp. A short-lived state necessarily has a broad energy distribution, which is why emission lines have a finite width.',
+    ['ΔE Δt ≥ ħ/2','ΔE ≥ 5.3 × 10⁻²⁷ J ≈ 3.3 × 10⁻⁸ eV','Δt → ∞ implies ΔE → 0 (stationary state)','Natural linewidth of spectral lines'])
+  ];
+
+  Array.prototype.push.apply(Q.data.sinav.mcq, mcq);
+  Array.prototype.push.apply(Q.data.sinav.klasik, klasik);
 })();
 
 /* 95-runner-b.js (A2) Koşu motoru yardımcıları: sahte çizim (Q.art yoksa), yol üstü DOM katmanları
@@ -9393,8 +9705,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   /* ---------- kayıt ---------- */
   function yukle(){
-    try { var r = JSON.parse(localStorage.getItem(KEY)); if (r && typeof r === 'object') return { son: r.son || null, yanlis: Array.isArray(r.yanlis) ? r.yanlis : [] }; } catch (e) { /* bozuk/yok */ }
-    return { son: null, yanlis: [] };
+    try { var r = JSON.parse(localStorage.getItem(KEY)); if (r && typeof r === 'object') return { son: r.son || null, yanlis: Array.isArray(r.yanlis) ? r.yanlis : [], sinav: r.sinav || null }; } catch (e) { /* bozuk/yok */ }
+    return { son: null, yanlis: [], sinav: null };
   }
   function yaz(k){ try { localStorage.setItem(KEY, JSON.stringify(k)); } catch (e) { /* kapalı */ } }
 
@@ -9526,7 +9838,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       '.tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}.tk-muted{color:var(--muted)}';
     document.head.appendChild(s);
   }
-  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı']];
+  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)']];
   function ac(){
     if (root) { git(aktifSekme); return; }
     css();
@@ -9544,14 +9856,15 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   }
   function kapat(){
     if (!root) return;
+    denemeTok++; denemeDurdur();
     document.removeEventListener('keydown', onEsc);
     if (root.parentNode) root.parentNode.removeChild(root);
     root = body = tabsEl = null;
   }
   function git(s){
-    if (!root) return; aktifSekme = s; body.textContent = '';
+    if (!root) return; aktifSekme = s; denemeTok++; denemeDurdur(); body.textContent = '';
     Array.prototype.forEach.call(tabsEl.children, function(b){ b.setAttribute('aria-selected', b.dataset.sekme === s ? 'true' : 'false'); });
-    if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else sinavSekmesi();
+    if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else if (s === 'deneme') denemeSekmesi(); else sinavSekmesi();
   }
 
   /* ---------- 1. terimler ---------- */
@@ -9713,6 +10026,153 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     yeni();
   }
 
+  /* ---------- 5. Deneme sınavı (Mock exam) ---------- */
+  var denemeTok = 0, denemeTimer = null, denemeAyar = { sure: true, anlik: true };
+  function denemeDurdur(){ if (denemeTimer) { clearInterval(denemeTimer); denemeTimer = null; } }
+  function sinavVeri(){ var d = Q.data && Q.data.sinav || {}; return { mcq: d.mcq || [], klasik: d.klasik || [] }; }
+  function trMi(t){ return /[çğıöşüÇĞİÖŞÜ]/.test(t) || /(^|\s)(ve|bir|için|çünkü|olur|ile|değil|olarak)(\s|[.,]|$)/i.test(t); }
+  function mmss(ms){ var s = Math.floor(ms / 1000), m = Math.floor(s / 60); s = s % 60; return (m < 10 ? '0' : '') + m + ':' + (s < 10 ? '0' : '') + s; }
+
+  function denemeSekmesi(){
+    var v = sinavVeri(), k = yukle();
+    var nm = Math.min(50, v.mcq.length), nk = Math.min(20, v.klasik.length);
+    body.appendChild(el('div', 'tk-muted', 'Gerçek sınav gibi: tüm sorular İngilizce, istasyonlar karışık. Önce çoktan seçmeli (MCQ), sonra klasik (yazılı) sorular. Cevaplarını İngilizce yaz; terim bilmiyorsan sınav sonundaki terim listesine bak.'));
+    var kutu = el('div', 'tk-kart'); kutu.appendChild(el('h4', '', 'Bu sınavda'));
+    kutu.appendChild(el('p', '', nm + ' çoktan seçmeli + ' + nk + ' klasik soru' + ((nm < 50 || nk < 20) ? ' (havuzda şimdilik bu kadar var; hedef 50 + 20)' : '') + '.'));
+    if (k.sinav && k.sinav.son) { var o = k.sinav.son; kutu.appendChild(el('p', 'tk-muted', 'Son deneme: MCQ ' + o.mcq[0] + '/' + o.mcq[1] + ', klasik ' + o.klasik[0] + '/' + o.klasik[1] + ' puan' + (o.sure ? ', süre ' + mmss(o.sure) : '') + '.')); }
+    body.appendChild(kutu);
+    function secenek(ad, anahtar, a, b){
+      var r = el('div', 'tk-row'); r.appendChild(el('span', '', ad));
+      var bs = [];
+      [[true, a], [false, b]].forEach(function(o){
+        var c = el('button', 'tk-chip', o[1]); c.type = 'button'; c.setAttribute('aria-pressed', denemeAyar[anahtar] === o[0] ? 'true' : 'false');
+        c.addEventListener('click', function(){ denemeAyar[anahtar] = o[0]; bs.forEach(function(x){ x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); }); });
+        bs.push(c); r.appendChild(c);
+      });
+      body.appendChild(r);
+    }
+    secenek('Süre sayacı:', 'sure', 'Açık', 'Kapalı');
+    secenek('MCQ geri bildirimi:', 'anlik', 'Her sorudan sonra', 'Sınav sonunda toplu');
+    var go = btn('Sınavı başlat', 'primary', function(){ denemeBasla(mix(v.mcq).slice(0, 50), mix(v.klasik).slice(0, 20)); });
+    if (!nm && !nk) { go.disabled = true; body.appendChild(el('div', 'tk-fb kotu', 'Sınav sorusu bulunamadı.')); }
+    var r = el('div', 'tk-row'); r.appendChild(go); body.appendChild(r);
+  }
+
+  function denemeBasla(mq, kq){
+    var tok = ++denemeTok, t0 = Date.now(), sonuc = { mcq: [], kl: [] }, zaman = el('span', 'tk-muted');
+    denemeDurdur();
+    function canli(){ return root && tok === denemeTok; }
+    function tick(){ zaman.textContent = '⏱ ' + mmss(Date.now() - t0); }
+    if (denemeAyar.sure) { tick(); denemeTimer = setInterval(tick, 1000); }
+    function ust(metin){
+      var r = el('div', 'tk-row'); r.appendChild(el('span', 'tk-muted', metin));
+      if (denemeAyar.sure) r.appendChild(zaman);
+      return r;
+    }
+    function mcqSor(i){
+      if (!canli()) return;
+      body.textContent = '';
+      if (i >= mq.length) return klSor(0);
+      var s = mq[i];
+      body.appendChild(ust('MCQ ' + (i + 1) + '/' + mq.length));
+      body.appendChild(el('div', 'tk-soru', s.q));
+      var host = el('div'); body.appendChild(host);
+      Q.ui.options.ask({ host: host, secenekler: s.options.map(function(t){ return { t: t }; }) }).then(function(idx){
+        if (!canli()) return;
+        var ok = idx === s.answer; sonuc.mcq.push({ s: s, idx: idx, ok: ok });
+        if (!denemeAyar.anlik) return mcqSor(i + 1);
+        host.textContent = '';
+        var fb = el('div', 'tk-fb ' + (ok ? 'iyi' : 'kotu')); fb.setAttribute('role', 'status');
+        fb.appendChild(el('p', '', ok ? 'Correct.' : 'Incorrect. Correct answer: ' + s.options[s.answer]));
+        fb.appendChild(el('p', '', s.explanation));
+        fb.appendChild(el('p', 'tk-muted', ok ? 'Doğru.' : 'Yanlış. Doğru şık: ' + s.options[s.answer] + '. Açıklamayı İngilizce okuyup terimleri not al.'));
+        host.appendChild(fb);
+        var dev = btn(i + 1 >= mq.length ? (kq.length ? 'Klasik sorulara geç' : 'Sonucu gör') : 'Sonraki soru', 'primary', function(){ mcqSor(i + 1); });
+        host.appendChild(dev); try { dev.focus(); } catch (e) { /* odak yok */ }
+      });
+    }
+    function klSor(i){
+      if (!canli()) return;
+      body.textContent = '';
+      if (i >= kq.length) return bitis();
+      var s = kq[i];
+      body.appendChild(ust('Klasik ' + (i + 1) + '/' + kq.length + ' · answer in English'));
+      body.appendChild(el('div', 'tk-soru', s.question));
+      var host = el('div'); body.appendChild(host);
+      var ta = el('textarea'); ta.rows = 9; ta.maxLength = 3000; ta.placeholder = 'Write your answer in English...'; ta.setAttribute('aria-label', 'Your answer');
+      ta.style.cssText = 'width:100%;box-sizing:border-box;background:var(--panel2);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;resize:vertical';
+      host.appendChild(ta);
+      var ac2 = el('div', 'tk-row');
+      function gonder(cevap){ ta.disabled = true; ac2.textContent = ''; degerlendir(s, cevap, host, function(p){ sonuc.kl.push({ s: s, puan: p }); klSor(i + 1); }, i + 1 >= kq.length); }
+      ac2.appendChild(btn('Submit', 'primary', function(){ var t = ta.value.trim(); gonder(t || null); }));
+      ac2.appendChild(btn('Bilmiyorum (skip)', '', function(){ gonder(null); }));
+      host.appendChild(ac2);
+      try { ta.focus(); } catch (e) { /* odak yok */ }
+    }
+    function degerlendir(s, cevap, host, bitti, son){
+      var fb = el('div', 'tk-fb'); host.appendChild(fb);
+      if (cevap && trMi(cevap)) fb.appendChild(el('p', 'tk-muted', 'Cevabın Türkçe görünüyor. İngilizce yazmayı dene; sınav İngilizce (Try to write in English).'));
+      fb.appendChild(el('p', '', 'Model answer (örnek cevap): ' + s.modelAnswer));
+      fb.appendChild(el('p', 'tk-muted', 'Key points (anahtar noktalar): ' + s.keyPoints.join(' · ')));
+      var son2 = el('div', 'tk-row'); host.appendChild(son2);
+      function ilerle(p, sinif){ if (sinif) fb.classList.add(sinif); son2.textContent = ''; var d = btn(son ? 'Sonucu gör' : 'Sonraki soru', 'primary', function(){ bitti(p); }); son2.appendChild(d); try { d.focus(); } catch (e) { /* odak yok */ } }
+      function kendin(){
+        if (!cevap) { son2.appendChild(el('span', '', 'Bu sefer boş; örnek cevaba bak.')); return ilerle(0, 'kotu'); }
+        son2.appendChild(el('span', '', 'Kendini işaretle:'));
+        [['✓ Doğru', 1, 'iyi'], ['Kısmen', 0.5, ''], ['✗ Yanlış', 0, 'kotu']].forEach(function(o){ son2.appendChild(btn(o[0], '', function(){ ilerle(o[1], o[2]); })); });
+      }
+      if (!cevap || !Q.claude || !Q.claude.grade || !Q.claude.available) return kendin();
+      var bekle = el('p', 'tk-muted', 'Puanlanıyor...'); fb.appendChild(bekle);
+      var tm = new Promise(function(_, rj){ setTimeout(function(){ rj({ code: 'gecici' }); }, 25000); });
+      Promise.race([Q.claude.available(), tm]).then(function(a){
+        if (!a || a.backend === 'none') throw { code: 'yok' };
+        return Promise.race([Q.claude.grade({ soru: s.question, anahtarFikirler: s.keyPoints, yanlisKavramlar: [], idealCevap: s.modelAnswer, cevap: cevap, eminlik: 1 }), tm]);
+      }).then(function(pu){
+        if (!canli()) return;
+        var p = Math.max(0, Math.min(1, (pu.dogruluk || 0) / 100));
+        bekle.textContent = 'Puanın: %' + pu.dogruluk + (pu.geriBildirim && pu.geriBildirim.length ? ' · ' + pu.geriBildirim.join(' ') : '');
+        ilerle(p, p >= 0.6 ? 'iyi' : 'kotu');
+      }, function(){ if (!canli()) return; bekle.textContent = 'Claude şu an yok; kendin işaretle.'; kendin(); });
+    }
+    function bitis(){
+      denemeDurdur(); var sure = Date.now() - t0;
+      body.textContent = '';
+      var dm = sonuc.mcq.filter(function(x){ return x.ok; }).length, pk = sonuc.kl.reduce(function(a, x){ return a + x.puan; }, 0);
+      var kay = yukle(); kay.sinav = { son: { mcq: [dm, sonuc.mcq.length], klasik: [Math.round(pk * 10) / 10, sonuc.kl.length], tarih: Date.now(), sure: sure } }; yaz(kay);
+      body.appendChild(el('div', 'tk-soru', 'MCQ: ' + dm + '/' + sonuc.mcq.length + ' · Klasik: ' + (Math.round(pk * 10) / 10) + '/' + sonuc.kl.length + ' puan · Süre: ' + mmss(sure)));
+      /* zayıf konular */
+      var agirlik = {};
+      sonuc.mcq.forEach(function(x){ if (!x.ok) agirlik[stAd(x.s.station)] = (agirlik[stAd(x.s.station)] || 0) + 1; });
+      var kavr = {};
+      sonuc.kl.forEach(function(x){ if (x.puan < 0.6) kavr[x.s.concept + ' (' + x.s.station + ')'] = 1; });
+      body.appendChild(el('div', 'tk-g', 'Zayıf konular'));
+      var ag = Object.keys(agirlik), kv = Object.keys(kavr);
+      if (!ag.length && !kv.length) body.appendChild(el('div', 'tk-fb iyi', 'Belirgin zayıf konu yok.'));
+      ag.forEach(function(a){ body.appendChild(el('div', 'tk-t', a + ': ' + agirlik[a] + ' yanlış MCQ')); });
+      if (kv.length) body.appendChild(el('div', 'tk-t', 'Klasik, tekrar edilecek kavramlar: ' + kv.join(', ')));
+      /* yanlış MCQ listesi */
+      var yan = sonuc.mcq.filter(function(x){ return !x.ok; });
+      if (yan.length) {
+        body.appendChild(el('div', 'tk-g', 'Yanlışların (' + yan.length + ')'));
+        yan.forEach(function(x){
+          var c = el('div', 'tk-kart'); c.appendChild(el('p', '', x.s.q));
+          c.appendChild(el('p', 'tk-muted', 'Your answer: ' + x.s.options[x.idx] + ' · Correct: ' + x.s.options[x.s.answer]));
+          c.appendChild(el('p', '', x.s.explanation)); body.appendChild(c);
+        });
+      }
+      /* sınav sonrası terim listesi */
+      var yanMetin = yan.map(function(x){ return x.s.q + ' ' + x.s.explanation; }).concat(sonuc.kl.filter(function(x){ return x.puan < 0.6; }).map(function(x){ return x.s.question + ' ' + x.s.modelAnswer; })).join(' ').toLowerCase();
+      var tum = mq.map(function(s){ return s.q + ' ' + s.options.join(' ') + ' ' + s.explanation; }).concat(kq.map(function(s){ return s.question + ' ' + s.modelAnswer + ' ' + s.keyPoints.join(' '); })).join(' ').toLowerCase();
+      function var2(t, m){ var i = m.indexOf(t.en.toLowerCase()); return i >= 0 && !/[a-z]/.test(m.charAt(i - 1) || ' ') ; }
+      var tl = terimler().filter(function(t){ return t.en.length >= 5 && var2(t, tum); }).map(function(t){ return { t: t, w: var2(t, yanMetin) ? 1 : 0 }; })
+        .sort(function(a, b){ return b.w - a.w || a.t.en.localeCompare(b.t.en); }).slice(0, 60);
+      body.appendChild(el('div', 'tk-g', 'Sınav sonrası terim listesi (' + tl.length + ')'));
+      if (!tl.length) body.appendChild(el('div', 'tk-muted', 'Eşleşen terim bulunamadı.'));
+      tl.forEach(function(o){ var row = el('div', 'tk-t'); row.appendChild(el('b', '', o.t.en)); row.appendChild(el('span', 'tr', o.t.tr + (o.w ? ' · yanlış yaptığın konuda' : ''))); body.appendChild(row); });
+      var r = el('div', 'tk-row'); r.appendChild(btn('Yeni deneme', 'primary', function(){ git('deneme'); })); body.appendChild(r);
+    }
+    mcqSor(0);
+  }
   Q.tekrar = { open: ac, close: kapat, terimler: terimler, havuz: havuz };
 })();
 
