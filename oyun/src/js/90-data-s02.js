@@ -66,7 +66,7 @@
         iddia: "Axis (eksen) parallel (paralel) plane (düzlem) için index (indis) sonsuzdur.",
         parcalar: ["Axis (eksen) parallel (paralel)", "plane (düzlem) için index (indis)", "sonsuzdur."],
         yanlisParca: 2,
-        duzeltme: "Axis (eksen) parallel (paralel) plane (düzlem) the axis (eksen) at ∞ keser (intercept, kesişim); index (indis) 0 olur." },
+        duzeltme: "Axis (eksen) parallel (paralel) plane (düzlem) axis (ekseni) ∞ noktasında keser (intercept, kesişim); index (indis) 0 olur." },
       { id: "s02-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "miller_duzlem", agirlik: 1,
         soru: "Miller indices (Miller indisleri) adımlarını sıraya diz",
         bloklar: [
