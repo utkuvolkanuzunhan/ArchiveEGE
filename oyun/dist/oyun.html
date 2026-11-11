@@ -167,7 +167,7 @@ html,body{height:100%;margin:0;overflow:hidden}
 .path-node.simdi{border-color:var(--cyan);background:var(--sel);box-shadow:var(--glow-cyan);transform:scale(1.2)}
 
 /* F4: dock içeriği kaydırmasız sığsın (1366x768 / 1280x720) */
-#dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 150px);overflow:hidden;display:flex;align-items:center;justify-content:center}
+#dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 96px);overflow:auto;display:flex;align-items:center;justify-content:center}
 #dock .kavram-sim canvas,#dock .kavram-sim svg{max-height:100%;max-width:100%;object-fit:contain}
 #dock .kavram-butonlar{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap}
 @media (max-height:800px){#dock{padding:8px 12px;gap:6px}}
@@ -3840,8 +3840,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
       function syncUI(){
         fIn.value = st.f; iIn.value = st.I; mSel.value = st.metal;
-        fC.s.textContent = 'Frequency ' + st.f.toFixed(1) + '×10¹⁴ Hz';
-        iC.s.textContent = 'Intensity ' + Math.round(st.I);
+        fC.s.textContent = 'Frequency (frekans) ' + st.f.toFixed(1) + '×10¹⁴ Hz';
+        iC.s.textContent = 'Intensity (şiddet) ' + Math.round(st.I);
       }
 
       function resize(){
@@ -3873,9 +3873,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         ctx.beginPath(); ctx.arc(14, mid, 12 + st.I, 0, 6.2832); ctx.fill();
         ctx.globalAlpha = 1;
         ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.stroke();
-        ctx.fillStyle = mut; ctx.fillRect(plateX, top + 6, 10, bot - top - 12);
+        ctx.fillStyle = mut; ctx.fillRect(plateX, top + 16, 10, bot - top - 22);
         ctx.fillStyle = ink; ctx.font = '700 13px sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText(st.metal, plateX + 5, top + 4);
+        ctx.fillText(st.metal, plateX + 5, top + 12);
         ctx.strokeStyle = cy; ctx.lineWidth = 3;
         ctx.beginPath(); ctx.moveTo(colX, top + 6); ctx.lineTo(colX, bot - 6); ctx.stroke();
         ctx.fillStyle = yel;
@@ -3885,11 +3885,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         ctx.fillStyle = mut; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText('hf = ' + c.e.toFixed(2) + ' eV  |  φ = ' + c.phi.toFixed(1) + ' eV', W * 0.5, Hh - 46);
         var gy = Hh - 40, gw = (W - 24) / 2;
-        box(8, gy, gw, 34, 'Electrons/s', String(c.n), c.ok ? cy : mut);
-        box(16 + gw, gy, gw, 34, 'Kinetic energy (eV)', c.K.toFixed(2), c.ok ? yel : mut);
+        box(8, gy, gw, 34, 'Electron (elektron)/s', String(c.n), c.ok ? cy : mut);
+        box(16 + gw, gy, gw, 34, 'Kinetic energy (kinetik enerji), eV', c.K.toFixed(2), c.ok ? yel : mut);
         function box(x, y, w, h, lab, val, col){
           ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.strokeRect(x, y, w, h);
-          ctx.fillStyle = mut; ctx.font = '12px sans-serif'; ctx.textAlign = 'left';
+          ctx.fillStyle = mut; ctx.textAlign = 'left';
+          var fs = 12; ctx.font = fs + 'px sans-serif';
+          while (fs > 8 && ctx.measureText(lab).width > w - 10) { fs--; ctx.font = fs + 'px sans-serif'; }
           ctx.fillText(lab, x + 6, y + 13);
           ctx.fillStyle = ink; ctx.font = '700 16px sans-serif';
           ctx.fillText(val, x + 6, y + 29);
@@ -4358,7 +4360,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       ctx.beginPath(); ctx.moveTo(L, Tp); ctx.lineTo(L, Tp+ph); ctx.lineTo(L+pw, Tp+ph); ctx.stroke();
       ctx.fillStyle = cMuted; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.font = '13px ' + fb;
-      ctx.fillText('Wavelength (nm)', L + pw/2, Hh-1);
+      ctx.fillText('Wavelength (dalga boyu, nm)', L + pw/2, Hh-1);
       ctx.save(); ctx.translate(11, Tp+ph/2); ctx.rotate(-Math.PI/2);
       ctx.textBaseline = 'top'; ctx.fillText('Intensity (şiddet)', 0, -4); ctx.restore();
 
@@ -4387,7 +4389,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       ctx.fillStyle = cYellow; ctx.beginPath(); ctx.arc(X(lm), Y(1), 4.5, 0, 7); ctx.fill();
       ctx.font = '700 14px ' + fb; ctx.textBaseline = 'top'; ctx.textAlign = 'left';
       ctx.fillStyle = cCyan; ctx.fillText('— Planck', L+8, Tp+4);
-      if (klasik){ ctx.fillStyle = cRed; ctx.fillText('- - Classical', L+8, Tp+22); }
+      if (klasik){ ctx.fillStyle = cRed; ctx.fillText('- - Classical (klasik)', L+8, Tp+22); }
       ctx.fillStyle = cYellow;
       ctx.fillText('λmax = ' + Math.round(lm) + ' nm', Math.max(L+8, Math.min(X(lm)+10, L+pw-125)), Tp+ph*0.7);
       var sw = 34, sx = L+pw-sw-6, sy = Tp+6;
@@ -5887,6 +5889,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         kutu.setAttribute('role', 'status');
         host.appendChild(kutu);
         confHost.style.display = 'none';
+        safe(function(){ var on = optHost.querySelector('.opt-onay'); if (on) on.style.display = 'none'; });
         Array.prototype.forEach.call(confHost.querySelectorAll('button'), function(b){ b.disabled = true; });
         safe(function(){ Array.prototype.forEach.call(optHost.querySelectorAll('.opt'), function(b){
           var oi = +b.dataset.i; b.disabled = true;
@@ -6641,6 +6644,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var em = await ui.confidence.ask({ host: eminHost });
 
         host.textContent = '';
+        host.appendChild(soru);
         var simHost = U.el('div', 'tahmin-sim');
         var sonucSatiri = U.el('p', 'tahmin-sonuc');
         sonucSatiri.textContent = 'Doğrulayalım...';
@@ -6751,6 +6755,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var confHost = mk('div', 'tuzak-emin');
         host.appendChild(confHost);
         var em = await ctx.ui.confidence.ask({ host: confHost });
+        confHost.style.display = 'none';
         var dogru = (secim === ob.yanlisParca);
 
         if (btns[ob.yanlisParca]) btns[ob.yanlisParca].classList.add('vurgu', 'dogru');
@@ -7384,7 +7389,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         iddia: "Axis (eksen) parallel (paralel) plane (düzlem) için index (indis) sonsuzdur.",
         parcalar: ["Axis (eksen) parallel (paralel)", "plane (düzlem) için index (indis)", "sonsuzdur."],
         yanlisParca: 2,
-        duzeltme: "Axis (eksen) parallel (paralel) plane (düzlem) the axis (eksen) at ∞ keser (intercept, kesişim); index (indis) 0 olur." },
+        duzeltme: "Axis (eksen) parallel (paralel) plane (düzlem) axis (ekseni) ∞ noktasında keser (intercept, kesişim); index (indis) 0 olur." },
       { id: "s02-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "miller_duzlem", agirlik: 1,
         soru: "Miller indices (Miller indisleri) adımlarını sıraya diz",
         bloklar: [
@@ -7517,7 +7522,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o04 = {
     id: 's03-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'planck_paket', agirlik: 1,
-    soru: 'Planck\'a göre bir light (ışık) paketinin (photon, foton) energy (enerji) değeri neye bağlıdır?',
+    soru: 'Planck\'a göre bir photon (foton) energy (enerji) değeri neye bağlıdır?',
     secenekler: [
       sec('Frequency (frekans) değerine (E = hf)', true, 'Doğru. Yüksek frequency (frekans), büyük paket.'),
       sec('Intensity (şiddet) değerine', false, 'Hayır. Intensity (şiddet) paket sayısını belirler.'),
@@ -7783,7 +7788,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         gorev: 'n=3\'ten n=2\'ye transition (geçiş) rengini bul.',
         sim: {
           modul: 'bohr',
-          params: { n: 3, m: 2 },
+          params: { n: 4, m: 1 },
           basari: { gecis: [3, 2] }
         },
         ogrenilen: 'Levels (seviyeler) discrete (ayrık); transition sırasında level farkı kadar enerjili photon çıkar.'

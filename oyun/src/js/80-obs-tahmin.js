@@ -83,6 +83,7 @@
         var em = await ui.confidence.ask({ host: eminHost });
 
         host.textContent = '';
+        host.appendChild(soru);
         var simHost = U.el('div', 'tahmin-sim');
         var sonucSatiri = U.el('p', 'tahmin-sonuc');
         sonucSatiri.textContent = 'Doğrulayalım...';

@@ -77,6 +77,7 @@
         var confHost = mk('div', 'tuzak-emin');
         host.appendChild(confHost);
         var em = await ctx.ui.confidence.ask({ host: confHost });
+        confHost.style.display = 'none';
         var dogru = (secim === ob.yanlisParca);
 
         if (btns[ob.yanlisParca]) btns[ob.yanlisParca].classList.add('vurgu', 'dogru');

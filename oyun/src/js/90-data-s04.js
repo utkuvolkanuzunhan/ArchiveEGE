@@ -71,7 +71,7 @@
         gorev: 'n=3\'ten n=2\'ye transition (geçiş) rengini bul.',
         sim: {
           modul: 'bohr',
-          params: { n: 3, m: 2 },
+          params: { n: 4, m: 1 },
           basari: { gecis: [3, 2] }
         },
         ogrenilen: 'Levels (seviyeler) discrete (ayrık); transition sırasında level farkı kadar enerjili photon çıkar.'
