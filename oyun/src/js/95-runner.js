@@ -245,10 +245,19 @@
     if (!h || typeof h.enter !== 'function') { toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: '' }; r.skipApply = true; }
     else {
       try {
-        var skipP = new Promise(function(res){ r.skipRes = res; if (r.skipReq) res('atla'); });
+        var skipP = new Promise(function(res){ r.skipRes = res; if (r.skipReq) res('atla'); else if (r.gotoReq != null) res('git'); });
         var hp = Promise.resolve(h.enter(ob, ctx));
         sonuc = await Promise.race([hp, skipP]);
         r.skipRes = null; r.skipReq = false;
+        if (sonuc === 'git') {
+          var hedef = Math.max(0, Math.min(r.gotoReq | 0, r.items.length - 1)); r.gotoReq = null;
+          try { B().hideBoss(); } catch (e) {}
+          try { if (Q.ui && Q.ui.dock) Q.ui.dock.clear(); if (Q.ui && Q.ui.bubble && Q.ui.bubble.clear) Q.ui.bubble.clear(); } catch (e) { console.error(e); }
+          r.items.forEach(function(it2, j){ it2.durum = j < hedef ? 'cozuldu' : 'idle'; it2.anim = null; });
+          r.cur = hedef; r.camX = Math.max(0, r.items[hedef].x - 1000 - rx()); r.tween = null; r.runnerAnim = null;
+          r.mode = 'stopped'; hudPath(r); toast('Geri alındı', 'bilgi');
+          return;
+        }
         if (sonuc === 'atla') { try { B().hideBoss(); } catch (e) {} sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: 'atlandi' }; r.skipApply = true; toast('Engel atlandı', 'iyi'); }
       } catch (e) { console.error('obs:' + ob.tip, e); toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, agirlik: 0, notlar: '' }; r.skipApply = true; }  // 6
     }
@@ -311,6 +320,8 @@
       devam: function(){ R.resume(); },
       ayarlar: function(){ try { if (Q.settings && Q.settings.open) Q.settings.open(); } catch (e) { console.error(e); } },
       atla: function(){ R.skip(); },
+      geri: function(){ R.back(1); },
+      basa: function(){ R.back(run ? run.cur : 0); },
       cik: function(){ R.resume(); abort('cikis'); }
     });
   }
@@ -393,6 +404,14 @@
     if (closeMenu) { closeMenu(); closeMenu = null; }
     paused = false; last = null;
     r.skipReq = true; if (r.skipRes) r.skipRes('atla');
+    return true;
+  };
+  R.back = function(n){
+    var r = run; if (!r) return false;
+    if (closeMenu) { closeMenu(); closeMenu = null; }
+    paused = false; last = null;
+    r.gotoReq = Math.max(0, r.cur - Math.max(1, n | 0));
+    if (r.skipRes) r.skipRes('git');
     return true;
   };
   R.abort = function(){ if (run) abort('cikis'); };
