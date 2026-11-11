@@ -79,7 +79,8 @@
         var em = await ctx.ui.confidence.ask({ host: confHost });
         var dogru = (secim === ob.yanlisParca);
 
-        if (btns[ob.yanlisParca]) btns[ob.yanlisParca].classList.add('vurgu');
+        if (btns[ob.yanlisParca]) btns[ob.yanlisParca].classList.add('vurgu', 'dogru');
+        if (!dogru && btns[secim]) btns[secim].classList.add('yanlis');
         if (dogru) {
           if (runway.anim) safe(function(){ runway.anim('tuzak-boz'); });
           host.appendChild(mk('div', 'aciklama iyi', 'Doğru. Düzeltilmiş hali: ' + ob.duzeltme));
