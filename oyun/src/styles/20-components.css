@@ -93,3 +93,4 @@
 #dock .kavram-sim canvas,#dock .kavram-sim svg{max-height:100%;max-width:100%;object-fit:contain}
 #dock .kavram-butonlar{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap}
 @media (max-height:800px){#dock{padding:8px 12px;gap:6px}}
+@media (max-height:800px){#dock .opts{gap:5px}#dock .opt{padding:5px 12px;min-height:38px}}  /* 4 şık + Onayla 1366x768 dock içinde kaydırmasız */

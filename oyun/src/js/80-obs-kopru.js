@@ -57,7 +57,7 @@
       poolBox.setAttribute('aria-label', 'Kartlar');
       poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
       var slotBox = el('ol', 'kopru-yuvalar');
-      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none;';
+      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none;';
       var bar = el('div', 'kopru-bar');
       bar.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;z-index:2;padding:4px 0;background:var(--panel,var(--bg,#1a1033));';
       var kontrol = el('button', 'btn primary kopru-kontrol', 'Kontrol');
@@ -101,7 +101,7 @@
         var s = el('button', 'kopru-yuva');
         s.type = 'button';
         s.setAttribute('data-yuva', String(i));
-        s.style.cssText = 'flex:1;min-height:34px;text-align:left;padding:2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
+        s.style.cssText = 'flex:1;min-height:30px;text-align:left;padding:1px 2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
         s.setAttribute('aria-label', 'Yuva ' + (i + 1) + ', boş');
         li.appendChild(no);
         li.appendChild(s);
