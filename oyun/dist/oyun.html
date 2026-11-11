@@ -78,11 +78,13 @@ html,body{height:100%;margin:0;overflow:hidden}
 
 /* 20-components.css (A4) Bileşenler: panel, düğme, seçenek, eminlik, balon, kart, toast, modal, voltaj, engel şeridi. */
 .panel{background:var(--panel);border:var(--bw) solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);min-width:0}
+.btn[hidden],button[hidden],p[hidden]{display:none!important}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 20px;border-radius:var(--rs);
   border:var(--bw) solid var(--line);background:var(--panel2);color:var(--ink);font-weight:800;font-size:var(--fs-body)}
 .btn.primary{background:var(--yellow);color:var(--ink-dark);border-color:var(--ink-dark);box-shadow:4px 4px 0 var(--magenta)}
 .btn.primary:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--magenta)}
 .btn:disabled{opacity:.45;cursor:not-allowed}
+.btn[hidden],[hidden].btn{display:none}
 .chip{display:inline-block;padding:2px 10px;border-radius:99px;border:2px solid var(--line);background:var(--panel2);font-size:var(--fs-small);font-weight:800}
 .title{font-family:var(--font-d);font-size:24px;transform:rotate(-1deg);-webkit-text-stroke:2px var(--ink-dark);paint-order:stroke fill}
 
@@ -5858,7 +5860,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (dogru) {
           metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + temizNeden(sec.neden);
         } else {
-          metin = 'Yanlış. ' + (dogruSec ? temizNeden(dogruSec.neden) : '');
+          metin = 'Yanlış. ' + (sec.neden ? temizNeden(sec.neden) + ' ' : '') + (dogruSec ? 'Doğrusu: ' + temizNeden(dogruSec.neden) : '');
         }
         var kutu = mk('div', 'aciklama ' + (dogru ? 'iyi' : 'kotu'), metin);
         kutu.setAttribute('role', 'status');
@@ -6067,7 +6069,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           hint: function(m){ if (typeof m === 'string' && m) sonHint = m; },
           onFail: function(){}
         };
-        simObj = Q.sim.mount(ob.sim && ob.sim.modul, simHost, ob.sim && ob.sim.params, api);
+        var simPrm = {}, simSrc = (ob.sim && ob.sim.params) || {};
+        Object.keys(simSrc).forEach(function(k){ simPrm[k] = simSrc[k]; });
+        if (ob.sim && ob.sim.basari && simPrm.basari == null) simPrm.basari = ob.sim.basari; /* basari veride sim.basari altinda */
+        simObj = Q.sim.mount(ob.sim && ob.sim.modul, simHost, simPrm, api);
 
         var ipBtn = btn('İpucu'); ipBtn.hidden = true;
         var gecBtn = btn('Geç'); gecBtn.hidden = true;
@@ -6159,14 +6164,14 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       for (i = 0; i < n; i++) slots.push(null);
 
       var root = el('div', 'kopru');
-      root.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
+      root.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
       var head = el('div', 'kopru-soru', ob.soru || 'Zinciri sıraya diz');
-      head.style.cssText = 'font-family:var(--font-d);font-size:20px;';
+      head.style.cssText = 'font-family:var(--font-d);font-size:18px;';
       var poolBox = el('div', 'kopru-havuz');
       poolBox.setAttribute('aria-label', 'Kartlar');
-      poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;min-height:48px;';
+      poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
       var slotBox = el('ol', 'kopru-yuvalar');
-      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none;';
+      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none;';
       var bar = el('div', 'kopru-bar');
       bar.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;';
       var kontrol = el('button', 'btn primary kopru-kontrol', 'Kontrol');
@@ -6198,6 +6203,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         c.style.touchAction = 'none';
         c.style.cursor = 'grab';
         c.style.userSelect = 'none';
+        c.style.minHeight = '36px'; c.style.padding = '4px 12px';
         cardEls[i] = c;
       }
 
@@ -6209,7 +6215,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var s = el('button', 'kopru-yuva');
         s.type = 'button';
         s.setAttribute('data-yuva', String(i));
-        s.style.cssText = 'flex:1;min-height:44px;text-align:left;padding:4px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
+        s.style.cssText = 'flex:1;min-height:40px;text-align:left;padding:2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
         s.setAttribute('aria-label', 'Yuva ' + (i + 1) + ', boş');
         li.appendChild(no);
         li.appendChild(s);
