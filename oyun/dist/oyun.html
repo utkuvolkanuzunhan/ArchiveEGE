@@ -822,6 +822,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     hb.id = 'a8-hata'; hb.style.marginTop = '12px';
     box.appendChild(hb);
     var row = el('div'); row.style.cssText = 'display:flex;gap:8px;margin-top:12px';
+    var tb = btn('Tekrar Merkezi', 'primary', function(){ if (Q.tekrar && Q.tekrar.open) Q.tekrar.open(); }); tb.id = 'a10-tekrar'; row.appendChild(tb);
     row.appendChild(btn('Ayarlar', '', function(){ S.open(); }));
     box.appendChild(row);
   }
@@ -1992,7 +1993,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);
         var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;
-        var ms = o.ms == null ? Math.min(20000, Math.max(7000, 3000 + kelime * 600)) : o.ms;
+        var ms = o.ms == null ? Math.min(9000, Math.max(2500, 1500 + kelime * 280)) : o.ms;
         /* Baloncuk süre dolunca KAYBOLMAZ: yalnızca tıklanınca, aynı konumdan yeni baloncuk gelince
          * ya da bubble.clear() (engel bitişi) ile kapanır. Süre yalnızca söz (promise) için okuma payıdır. */
         Array.prototype.slice.call(layer.querySelectorAll('.bubble.' + konum)).forEach(function(eski){
@@ -2917,9 +2918,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         l.appendChild(s); l.appendChild(inp); l.appendChild(v); bar.appendChild(l);
         return { l: l, s: s, inp: inp, v: v, get: get };
       }
-      var sE = mkSlider('Enerji E', 0.1, 3, 0.05, function(){ return E; }, function(x){ E = x; });
-      var sV = mkSlider('Basamak V₀', 0.2, 3, 0.05, function(){ return V0; }, function(x){ V0 = x; });
-      var sA = mkSlider('Kalınlık a', 0.1, 2, 0.05, function(){ return a; }, function(x){ a = x; });
+      var sE = mkSlider('Energy E (enerji)', 0.1, 3, 0.05, function(){ return E; }, function(x){ E = x; });
+      var sV = mkSlider('Step V₀ (basamak)', 0.2, 3, 0.05, function(){ return V0; }, function(x){ V0 = x; });
+      var sA = mkSlider('Thickness a (kalınlık)', 0.1, 2, 0.05, function(){ return a; }, function(x){ a = x; });
       var info = document.createElement('div');
       info.style.cssText = 'flex:1 1 100%;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
       info.setAttribute('aria-live','polite');
@@ -2935,8 +2936,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       function hesap(){ return mod === 'bariyer' ? bariyer(E, V0, a) : basamak(E, V0); }
       function bilgi(h){
         return mod === 'bariyer'
-          ? 'T = ' + fmt(h.T) + ' · R = ' + fmt(h.R) + (E < V0 ? ' · tünelleme' : ' · E > V₀')
-          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ sönümlenir' : ' · E > V₀ ama yansıma var');
+          ? 'T = ' + fmt(h.T) + ' · R = ' + fmt(h.R) + (E < V0 ? ' · tunneling (tünelleme)' : ' · E > V₀')
+          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ decays (sönümlenir)' : ' · E > V₀ ama yansıma var');
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -3022,7 +3023,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
       function guncelleKontrol(){
         sA.l.style.display = mod === 'bariyer' ? 'flex' : 'none';
-        sV.s.textContent = mod === 'bariyer' ? 'Bariyer V₀' : 'Basamak V₀';
+        sV.s.textContent = mod === 'bariyer' ? 'Barrier V₀ (bariyer)' : 'Step V₀ (basamak)';
         [sE, sV, sA].forEach(function(s){
           s.inp.value = s.get(); s.v.textContent = s.get().toFixed(2) + (s === sA ? ' nm' : ' eV');
         });
@@ -3071,7 +3072,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       } else {
         onWin = boyutla; window.addEventListener('resize', onWin);
       }
-      if (api.hint) { try { api.hint(mod === 'bariyer' ? 'Bariyeri kalınlaştır; geçen kısmın nasıl azaldığına bak.' : 'E > V₀ iken bile dalganın yansıdığına bak.'); } catch (e) {} }
+      if (api.hint) { try { api.hint(mod === 'bariyer' ? 'Barrier (bariyer) kalınlığını artır; transmission (geçen kısım) nasıl azalıyor, bak.' : 'E > V₀ iken bile wave (dalga) reflection (yansıma) yapıyor, bak.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {
@@ -3149,8 +3150,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
       function syncUI(){
         sIn.value = st.sx;
-        labS.textContent = 'Konum genişliği σx = ' + st.sx.toFixed(1) + ' nm';
-        tg.textContent = 'Eşlenik: ' + (st.eslenik ? 'açık' : 'kapalı');
+        labS.textContent = 'Position width (konum genişliği) σx = ' + st.sx.toFixed(1) + ' nm';
+        tg.textContent = 'Conjugate (eşlenik): ' + (st.eslenik ? 'açık' : 'kapalı');
         tg.setAttribute('aria-pressed', st.eslenik ? 'true' : 'false');
       }
       function resize(){
@@ -3327,13 +3328,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         s.addEventListener('change', function(){ fn(parseInt(s.value, 10)); });
         l.appendChild(s); bar.appendChild(l); return s;
       }
-      var selN = mkSel('Başlangıç n', n, function(v){ n = v; if (!anim) level = n; sonGecis = null; yenile(); });
-      var selM = mkSel('Bitiş m', m, function(v){
+      var selN = mkSel('Initial n (başlangıç n)', n, function(v){ n = v; if (!anim) level = n; sonGecis = null; yenile(); });
+      var selM = mkSel('Final m (bitiş m)', m, function(v){
         if (v < 1) { altinaDene(); selM.value = String(m); return; }
         m = v; sonGecis = null; yenile();
       }, true);
       var btn = document.createElement('button');
-      btn.type = 'button'; btn.textContent = 'Foton'; btn.style.cssText = ctlStyle;
+      btn.type = 'button'; btn.textContent = 'Photon (foton)'; btn.style.cssText = ctlStyle;
       btn.style.background = 'var(--accent,#ffd23f)'; btn.style.color = 'var(--accent-ink,#0b0620)';
       btn.addEventListener('click', function(){ gec(); });
       bar.appendChild(btn);
@@ -3389,7 +3390,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (destroyed) return;
         enAltDenendi = true;
         toast('n=1: en alt');
-        info.textContent = 'n=1: en alt. Altında seviye yok.';
+        info.textContent = 'n=1: ground state (temel hal). Altında level (seviye) yok.';
         if (!anim) {
           level = 1; bounce = 1;
           anim = { from: 1, to: 1, t: 0, dur: reduced ? 1 : 1100, kind: 'alt' };
@@ -3518,7 +3519,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         }
         c.textAlign = 'center'; c.font = '700 15px ' + fb;
         c.fillStyle = tam ? cyan : muted;
-        c.fillText(tam ? 'n = ' + Math.round(level) + ' tam dalga' : 'dalga sığmıyor', cx, H - 8);
+        c.fillText(tam ? 'n = ' + Math.round(level) + ' full wave (tam dalga)' : 'wave (dalga) sığmıyor', cx, H - 8);
         c.textAlign = 'left'; void dark;
       }
 
@@ -3593,10 +3594,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         l.appendChild(t); l.appendChild(r); bar.appendChild(l);
         return { l: l, t: t, r: r, etiket: etiket };
       }
-      var sV = slider('Çekme hızı', 0.2, 2.0, 0.05, v, function(x){ v = x; yeniden(); });
-      var sR = slider('Dönme', 0, 30, 1, rpm, function(x){ rpm = x; yeniden(); });
+      var sV = slider('Pulling rate (çekme hızı)', 0.2, 2.0, 0.05, v, function(x){ v = x; yeniden(); });
+      var sR = slider('Rotation (dönme)', 0, 30, 1, rpm, function(x){ rpm = x; yeniden(); });
       var btn = document.createElement('button');
-      btn.type = 'button'; btn.textContent = 'Çek';
+      btn.type = 'button'; btn.textContent = 'Pull (Çek)';
       btn.style.cssText = 'min-height:40px;padding:0 20px;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--accent-ink,#0b0620);background:var(--accent,#ffd23f);border:3px solid var(--line,#f4f0ff);border-radius:8px;cursor:pointer;';
       btn.addEventListener('click', cek);
       bar.appendChild(btn);
@@ -3620,9 +3621,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sV.r.value = v; sR.r.value = rpm;
         var q = Qn();
         var s = 'Kalite Q = ' + q.toFixed(2);
-        if (tamam) s += ' · ' + (sonQ >= 0.9 ? 'Tek kristal ✓' : 'Tane sınırı ✗');
-        else if (cekiyor) s += ' · çekiliyor…';
-        else s += q >= 0.9 ? ' · tek kristal bekleniyor' : ' · çok kristalli riski';
+        if (tamam) s += ' · ' + (sonQ >= 0.9 ? 'Single crystal (tek kristal) ✓' : 'Grain boundary (tane sınırı) ✗');
+        else if (cekiyor) s += ' · pulling (çekiliyor)…';
+        else s += q >= 0.9 ? ' · single crystal (tek kristal) expected' : ' · polycrystalline (çok kristalli) risk';
         info.textContent = s;
         btn.disabled = cekiyor;
         btn.style.opacity = cekiyor ? '0.6' : '1';
@@ -3740,13 +3741,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (tamam) {
           c.font = '400 ' + Math.round(Math.min(30, H * 0.12)) + 'px ' + col('--font-d','Impact, sans-serif');
           c.fillStyle = sonQ >= 0.9 ? lime : mag;
-          c.fillText(sonQ >= 0.9 ? 'Tek kristal ✓' : 'Tane sınırı ✗', lx, H * 0.42);
+          c.fillText(sonQ >= 0.9 ? 'Single crystal (tek kristal) ✓' : 'Grain boundary (tane sınırı) ✗', lx, H * 0.42);
         }
       }
 
       if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(boyutla); ro.observe(cv); }
       else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Yavaş çek, orta hızda döndür: Q en az 0,9 olsun.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Yavaş pull (çek), orta hızda rotate (döndür): quality (Q) en az 0,9 olsun.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {
@@ -3946,7 +3947,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(resize); ro.observe(host); }
       else window.addEventListener('resize', resize);
 
-      if (api.hint) api.hint('Işığın rengi elektronun enerjisini belirler, şiddet sadece sayısını.');
+      if (api.hint) api.hint('Işığın frequency (frekans) değeri electron (elektron) energy (enerji) değerini belirler, intensity (şiddet) yalnızca electron sayısını.');
       syncUI(); resize();
       var k, q;
       for (k = 0; k < 8; k++) photons.push({ x: 0.05 + k * 0.05, y: 14 + (k * 37) % 90 });
@@ -4109,14 +4110,14 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (sayModu) info.textContent = sonuc || 'Atoms per unit cell (hücre başına atom): ?';
         else info.textContent = 'Atoms per unit cell (hücre başına atom): ' + DOGRU[tur] + ' (' + kirilim(tur) + ') · Packing fraction (doluluk) %' + DOLULUK[tur] +
           (tur === 'elmas' ? ' · 4 nearest neighbors (en yakın komşu) per atom' : '');
-        cv.setAttribute('aria-label', 'Lattice (kafes): ' + tur + ', atoms per unit cell (hücre başına) ' + (sayModu ? 'bilinmeyen' : DOGRU[tur]) + ' atom');
+        cv.setAttribute('aria-label', 'Lattice (kafes): ' + tur + ', atoms per unit cell (hücre başına) ' + (sayModu ? 'unknown (bilinmeyen)' : DOGRU[tur]) + ' atoms (atom)');
         ciz();
       }
 
       function kontrolEt(){
         var d = DOGRU[tur];
         if (tahmin === d) {
-          sonuc = 'Doğru: ' + d + ' atom. ' + kirilim(tur);
+          sonuc = 'Doğru: ' + d + ' atoms (atom). ' + kirilim(tur);
           if (params.basari && params.basari.say && !bitti) {
             var h = params.basari.say;
             if ((!h.tur || h.tur === tur) && (h.atom == null || h.atom === d)) {
@@ -4125,7 +4126,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             }
           }
         } else {
-          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (içerideki) atom tam sayılır.';
+          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (iç) 1 atom (atom) sayılır.';
         }
         guncelle();
       }
@@ -4203,7 +4204,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         c.fillStyle = yel;
         var fs = Math.round(Math.min(44, H * 0.18));
         c.font = '400 ' + fs + 'px ' + col('--font-d','Impact, sans-serif');
-        c.fillText((sayModu ? '?' : String(DOGRU[tur])) + ' atom', lx, Math.min(H - fs * 0.6, ly + 3 * lh + fs * 0.6));
+        c.fillText((sayModu ? '?' : String(DOGRU[tur])) + ' atoms', lx, Math.min(H - fs * 0.6, ly + 3 * lh + fs * 0.6));
       }
 
       if (typeof ResizeObserver !== 'undefined') {
@@ -4213,7 +4214,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         onWin = boyutla;
         window.addEventListener('resize', onWin);
       }
-      if (api.hint) { try { api.hint('Corner (köşe), face (yüz) ve body (iç) atomların paylarını topla.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Corner (köşe), face (yüz) ve body (iç) atom (atom) paylarını topla.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {
@@ -4359,7 +4360,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       ctx.font = '13px ' + fb;
       ctx.fillText('Wavelength (nm)', L + pw/2, Hh-1);
       ctx.save(); ctx.translate(11, Tp+ph/2); ctx.rotate(-Math.PI/2);
-      ctx.textBaseline = 'top'; ctx.fillText('Intensity', 0, -4); ctx.restore();
+      ctx.textBaseline = 'top'; ctx.fillText('Intensity (şiddet)', 0, -4); ctx.restore();
 
       var pk = planckPeak(T), n = Math.max(60, Math.round(pw/2));
       ctx.beginPath(); ctx.moveTo(X(LMIN), Y(0));
@@ -4417,7 +4418,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     function onInput(){ stopAnim(); T = clampT(+sl.value); updateUI(); draw(); checkSuccess(); }
     function onToggle(){
       klasik = !klasik; updateUI(); draw();
-      if (klasik && api && api.hint) api.hint('Klasik eğri kısa dalgada sonsuza gider.');
+      if (klasik && api && api.hint) api.hint('Classical curve (klasik eğri) kısa wavelength (dalga boyu) değerinde sonsuza gider.');
       checkSuccess();
     }
     sl.addEventListener('input', onInput);
@@ -4445,7 +4446,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
     updateUI();
     resize();
-    if (api && api.hint) api.hint('Sıcaklığı değiştir, klasik eğriyle kıyasla.');
+    if (api && api.hint) api.hint('Temperature (sıcaklık) değiştir, classical curve (klasik eğri) ile compare (karşılaştır).');
 
     return {
       destroy: function(){
@@ -4548,7 +4549,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     var wrap = document.createElement('div'); wrap.className = 'sim-kt';
     var cv = document.createElement('canvas');
     cv.setAttribute('role', 'img');
-    cv.setAttribute('aria-label', 'Katı türlerinde elektron saçılması');
+    cv.setAttribute('aria-label', 'Electron (elektron) scattering (saçılma) in solid types (katı türleri)');
     var bar = document.createElement('div'); bar.className = 'sim-kt-bar';
     wrap.appendChild(cv); wrap.appendChild(bar); host.appendChild(wrap);
     var ctx = cv.getContext('2d');
@@ -4843,11 +4844,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         return b;
       }
       if (mod === 'tur') {
-        btn('Tek', function(){ send('tek'); }, 'Tek kristale elektron gönder');
-        btn('Çok', function(){ send('cok'); }, 'Çok kristalliye elektron gönder');
-        btn('Amorf', function(){ send('amorf'); }, 'Amorfa elektron gönder');
+        btn('Single (Tek)', function(){ send('tek'); }, 'Send electron (elektron) to single crystal (tek kristal)');
+        btn('Poly (Çok)', function(){ send('cok'); }, 'Send electron (elektron) to polycrystalline (çok kristalli)');
+        btn('Amorphous (Amorf)', function(){ send('amorf'); }, 'Send electron (elektron) to amorphous (amorf)');
       } else {
-        btn('Gönder', sendAll, '30 elektron gönder');
+        btn('Gönder', sendAll, 'Send 30 electron (elektron)');
       }
       var note = document.createElement('span');
       note.className = 'sim-kt-note'; note.textContent = 'oyun modeli';
@@ -4864,7 +4865,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     buildBar();
     layout();
     if (typeof api.hint === 'function') {
-      api.hint(mod === 'tur' ? 'Her türe bir elektron gönder, saçılmaları say.' : 'Gönder: tek mi çok kristalli mi daha uzağa gider?');
+      api.hint(mod === 'tur' ? 'Her türe bir electron (elektron) gönder, scattering (saçılma) say.' : 'Gönder: single crystal (tek kristal) mi polycrystalline (çok kristalli) mi daha uzağa gider?');
     }
     draw();
 
@@ -4916,7 +4917,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           fade = reduce() ? 1 : 0;
           buildBar(); layout();
           if (typeof api.hint === 'function') {
-            api.hint(mod === 'tur' ? 'Her türe bir elektron gönder, saçılmaları say.' : 'Gönder: tek mi çok kristalli mi daha uzağa gider?');
+            api.hint(mod === 'tur' ? 'Her türe bir electron (elektron) gönder, scattering (saçılma) say.' : 'Gönder: single crystal (tek kristal) mi polycrystalline (çok kristalli) mi daha uzağa gider?');
           }
           draw(); kick();
         }
@@ -4988,11 +4989,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
     /* 1) L kaydırıcısı */
     var r1 = row();
-    lab('Kuyu genişliği L', r1);
+    lab('Well width (kuyu genişliği) L', r1);
     var slider = document.createElement('input');
     slider.type = 'range'; slider.min = '1'; slider.max = '10'; slider.step = '0.5'; slider.value = String(L);
     slider.style.cssText = 'flex:1;min-height:40px;accent-color:var(--cyan);';
-    slider.setAttribute('aria-label', 'Kuyu genişliği L (nm)');
+    slider.setAttribute('aria-label', 'Well width (kuyu genişliği) L (nm)');
     r1.appendChild(slider);
     var lVal = document.createElement('span');
     lVal.style.cssText = 'font-family:var(--font-d);min-width:56px;text-align:right;';
@@ -5000,10 +5001,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
     /* 2) n düğmeleri + n=0 dene */
     var r2 = row();
-    lab('Seviye n', r2);
+    lab('Level (seviye) n', r2);
     var nBtns = [1, 2, 3, 4].map(function (k) {
       var b = mkBtn(String(k), 1);
-      b.setAttribute('aria-label', 'Seviye n = ' + k);
+      b.setAttribute('aria-label', 'Level (seviye) n = ' + k);
       on(b, 'click', function () { n = k; shownN = k; flat = false; amp = 1; refresh(); });
       r2.appendChild(b); return b;
     });
@@ -5062,7 +5063,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       lVal.textContent = (Math.round(L * 10) / 10) + ' nm';
       nBtns.forEach(function (b, k) { styleBtn(b, !flat && n === k + 1); });
       zeroBtn.style.borderColor = flat ? 'var(--yellow)' : 'var(--line)';
-      modBtn.textContent = mod === 'tel' ? 'Tel ⇄ Kuyu: Tel' : 'Tel ⇄ Kuyu: Kuyu';
+      modBtn.textContent = mod === 'tel' ? 'Wire (Tel) ⇄ Well (Kuyu): Wire' : 'Wire (Tel) ⇄ Well (Kuyu): Well';
       styleBtn(modBtn, false);
       canvas.setAttribute('aria-label', flat ? 'Dalga yok, parçacık yok'
         : (mod === 'tel' ? 'İki ucu sabit tel' : 'Sonsuz kuyu') + ', n = ' + n + ', L = ' + L + ' nm, E' + SUB[n] + ' = ' + fmtE(energy(n, L)));
@@ -5166,7 +5167,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(function () { resize(); }); ro.observe(host); }
     else { on(window, 'resize', resize); }
 
-    if (api && api.hint) { api.hint('Kuyuyu daralt, seviyeyi değiştir; enerjiye bak.'); }
+    if (api && api.hint) { api.hint('Well\'i (kuyuyu) daralt, level (seviye) değiştir; energy (enerji) değerine bak.'); }
     resize();
     refresh();
 
@@ -5328,7 +5329,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           row.appendChild(lab);
           var bs = OPTS.map(function (o) {
             var b = mkBtn(o === INF ? '∞' : String(o));
-            b.setAttribute('aria-label', AX[ax] + ' axis intercept (ekseni kesişimi) ' + (o === INF ? 'sonsuz' : o));
+            b.setAttribute('aria-label', AX[ax] + ' axis (eksen) intercept (kesişim) ' + (o === INF ? 'infinite (sonsuz)' : o));
             on(b, 'click', function () { setC(ax, o); });
             row.appendChild(b); return b;
           });
@@ -5382,7 +5383,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (r) {
           var s2 = r[0] * r[0] + r[1] * r[1] + r[2] * r[2];
           dline.textContent = 'd = a / √(h²+k²+l²) = a / √' + s2 + ' = ' + (1 / Math.sqrt(s2)).toFixed(2) + ' a';
-        } else { dline.textContent = 'Üç eksen de ∞ olamaz'; }
+        } else { dline.textContent = 'All three axes (eksen) cannot be ∞'; }
       } else {
         var g = vec.reduce(function (a, t) { return gcd(a, t); }, 0);
         setStep(0, fmtNums(vec));
@@ -5392,10 +5393,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (r) {
           var ln = Math.sqrt(r[0] * r[0] + r[1] * r[1] + r[2] * r[2]);
           dline.textContent = 'Uzunluk = a·√(u²+v²+w²) = ' + ln.toFixed(2) + ' a';
-        } else { dline.textContent = 'Zero vector (sıfır vektör) yön belirtmez'; }
+        } else { dline.textContent = 'Zero vector (sıfır vektör) does not define a direction (yön)'; }
       }
       canvas.setAttribute('aria-label', mod === 'duzlem'
-        ? 'Düzlem ' + (r ? fmtCompact(r, '(', ')') : 'yok') : 'Yön ' + (r ? fmtCompact(r, '[', ']') : 'yok'));
+        ? 'Plane (düzlem) ' + (r ? fmtCompact(r, '(', ')') : 'yok') : 'Direction (yön) ' + (r ? fmtCompact(r, '[', ']') : 'yok'));
       animateTo();
       checkDone(r);
     }
@@ -5551,7 +5552,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     else { on(window, 'resize', resize); }
 
     if (api && api.hint) {
-      api.hint(mod === 'yon' ? 'Vector (vektörü) seç, en küçük integers (tam sayılara) indir.' : 'Intercept (kesişim) için reciprocal (ters) al, fractions (kesirleri) temizle.');
+      api.hint(mod === 'yon' ? 'Vector (vektör) seç, en küçük integers (tam sayılar) değerine indir.' : 'Intercept (kesişim) için reciprocal (ters) al, fractions (kesirleri) temizle.');
     }
     resize();
     refresh();
@@ -5630,7 +5631,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       lab.appendChild(labT); lab.appendChild(sl); lab.appendChild(slV);
       bar.appendChild(lab);
       var bOlc = mkBtn('Ölç', function(){ hazirla(); olc(true); });
-      var bTek = mkBtn('Tekrar ölç', tekrarOlc);
+      var bTek = mkBtn('Tekrar measure (ölç)', tekrarOlc);
       var bYuz = mkBtn('100 kez', yuzKez);
       bOlc.style.background = 'var(--accent,#ffd23f)'; bOlc.style.color = 'var(--accent-ink,#0b0620)';
       bar.appendChild(bOlc); bar.appendChild(bTek); bar.appendChild(bYuz);
@@ -5661,14 +5662,14 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var s = Math.random() < c1sq ? 1 : 2;
         collapsed = s; anim = 0;
         kaydet(s);
-        sonMetin = 'ÇÖKTÜ: sonuç ' + s;
+        sonMetin = 'Collapse (çökme): sonuç ' + s;
         guncelle();
       }
       function tekrarOlc(){
         if (!collapsed) { sonMetin = 'Önce bir kez ölç.'; guncelle(); return; }
         kaydet(collapsed);
         tekrarYapti = true;
-        sonMetin = 'Tekrar: yine ' + collapsed + '. Çökmüş durum değişmez.';
+        sonMetin = 'Tekrar: yine ' + collapsed + '. Collapsed state (çökmüş durum) değişmez.';
         guncelle(); bildir();
       }
       function yuzKez(){
@@ -5689,7 +5690,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         slV.textContent = c1sq.toFixed(2);
         bTek.disabled = !collapsed; bTek.style.opacity = collapsed ? '1' : '0.5';
         info.textContent = sonMetin || ('|c₁|² = ' + c1sq.toFixed(2) + ', |c₂|² = ' + (1 - c1sq).toFixed(2));
-        cv.setAttribute('aria-label', collapsed ? 'Durum ' + collapsed + '. özdurumda çöktü' : 'Süperpozisyon: ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
+        cv.setAttribute('aria-label', collapsed ? 'Durum ' + collapsed + '. özdurumda çöktü' : 'Superposition (süperpozisyon): ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -5775,7 +5776,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       if (typeof ResizeObserver !== 'undefined') {
         ro = new ResizeObserver(boyutla); ro.observe(cv);
       } else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Ölç, sonra tekrar ölç: çökmüş durum değişmez.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Measure (ölç), sonra tekrar ölç: collapsed state (çökmüş durum) değişmez.'); } catch (e) {} }
       t0 = performance.now();
       guncelle(); boyutla();
       if (params.olcTekrar) { olc(); tmo = setTimeout(function(){ tmo = 0; if (!destroyed) tekrarOlc(); }, 600); }
@@ -7012,7 +7013,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var area = newArea();
       head(area, i, n, no);
       var alt = faz.alt || {}, r;
+      function soruKutusu(m){
+        var q = el('div', 'p5-soru', m);
+        q.style.cssText = 'font-weight:800;font-size:17px;line-height:1.35;margin:0 0 8px;color:var(--ink,#fff)';
+        area.appendChild(q);
+      }
       if (faz.tip === 'secmeli') {
+        soruKutusu(no === 2 && alt.soru ? alt.soru : faz.soru);
         say(no === 2 && alt.soru ? alt.soru : faz.soru);
         r = await secmeliSor(area, no === 2 && alt.secenekler ? alt.secenekler : faz.secenekler, faz, true);
         uygula(sonucOf(r));
@@ -7020,6 +7027,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         return r;
       }
       var sm = no === 2 && alt.soru ? alt.soru : faz.soru;
+      soruKutusu(sm);
       say(sm);
       var a = await acikSor(area, sm, faz, no);
       if (a.kind === 'bos') {
@@ -7035,6 +7043,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (!y) { r = { dogru: false, eminlik: a.eminlik, kavram: kavramOf(faz), notlar: 'yedek yok' }; uygula(sonucOf(r)); return r; }
         area.textContent = '';
         head(area, i, n, no);
+        soruKutusu(y.soru);
         say(y.soru);
         hint(area, 'Claude yok, çoktan seçmeli soru:');
         r = await secmeliSor(area, y.secenekler, faz, false, a.eminlik);
@@ -7109,9 +7118,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: "s01-o03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kati_turleri", agirlik: 1,
     soru: "Amorf (amorphous) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
     secenekler: [
-      sec("Evet, kristal gibi", false, "Hayır. Long-range order yalnızca kristalde vardır."),
-      sec("Hayır, düzen yalnızca yakın komşuluktadır", true, "Doğru. Amorfta yalnızca short-range order (kısa menzilli düzen) vardır."),
-      sec("Yalnızca soğuyunca düzenlenir", false, "Yanlış. Amorf kalan katıda long-range order hiç oluşmaz.")
+      sec("Evet, crystal (kristal) gibi", false, "Hayır. Long-range order yalnızca crystal (kristal) içinde vardır."),
+      sec("Hayır, order (düzen) yalnızca yakın neighbor (komşu) atomlardadır", true, "Doğru. Amorphous (amorf) katıda yalnızca short-range order (kısa menzilli düzen) vardır."),
+      sec("Yalnızca cooling (soğuma) sonrası düzenlenir", false, "Yanlış. Amorphous (amorf) kalan katıda long-range order hiç oluşmaz.")
     ],
     kusurSkin: "vakans"
   };
@@ -7120,17 +7129,17 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     id: "s01-o04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "tane_siniri", agirlik: 1,
     soru: "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı) nedir?",
     secenekler: [
-      sec("İki grain (tane) arasındaki düzensiz ara bölge", true, "Doğru. Kristal yönünün değiştiği interface (ara yüz) bölgesidir."),
-      sec("Kristalin dış yüzeyi", false, "Hayır. Grain boundary malzemenin içinde, tanelerin buluştuğu yerdir."),
-      sec("Katkı atomlarının toplandığı yer", false, "Hayır. Grain boundary, kristal yönünün değiştiği ara yüzdür.")
+      sec("İki grain (tane) arasındaki disordered (düzensiz) interface (ara yüz) bölgesi", true, "Doğru. Crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir."),
+      sec("Crystal (kristal) dış surface (yüzey) katmanı", false, "Hayır. Grain boundary (tane sınırı) malzemenin içinde, grain (tane) buluşma yeridir."),
+      sec("dopant atom (katkı atomu) toplanma yeri", false, "Hayır. Grain boundary (tane sınırı), crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir.")
     ],
     kusurSkin: "tane_siniri"
   };
 
   var o05secenekler = [
-    sec("Artar", false, "Yanlış. Grain boundary elektronu saçar (scattering), mean free path (serbest yol) kısalır."),
-    sec("Azalır", true, "Doğru. Her grain boundary bir engeldir."),
-    sec("Değişmez", false, "Yanlış. Grain boundary ek scattering (saçılma) getirir.")
+    sec("Artar (increase)", false, "Yanlış. Grain boundary (tane sınırı) electron (elektron) saçar (scattering), mean free path (serbest yol) kısalır."),
+    sec("Azalır (decrease)", true, "Doğru. Her grain boundary (tane sınırı) bir barrier (engel) oluşturur."),
+    sec("Değişmez (unchanged)", false, "Yanlış. Grain boundary (tane sınırı) ek scattering (saçılma) getirir.")
   ];
 
   Q.data.stations.s01 = {
@@ -7139,7 +7148,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     ad: "Kristal fırını",
     makine: "Kristal fırını",
     renk: "#ff9f1c",
-    konu: "Katı türleri, neden crystal (kristal), CZ ile single crystal (tek kristal)",
+    konu: "Types of solids (katı türleri), neden crystal (kristal), CZ ile single crystal (tek kristal)",
     sinavSorulari: ["S1", "S2"],
     sureHedefDk: 22,
     patronId: "czoch",
@@ -7149,16 +7158,16 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: "s01-o01", tip: "hikaye", baslik: "Zaman kapısı", kavram: null, agirlik: 1,
         yer: "Polonya", yil: 1916, rivayet: true,
         satirlar: [
-          { kim: "selin", metin: "Sipariş: 10.000 çip. Hammadde kum, ama kum önce kristal olmalı." },
-          { kim: "selin", metin: "Zaman makinesi hazır. 1916'ya, kristal çekmenin doğduğu yere gidiyoruz." },
-          { kim: "czoch", metin: "Rivayete göre kalemi mürekkep yerine eriyik kalaya batırdım. Tel tek kristal çıktı." }
+          { kim: "selin", metin: "Sipariş: 10.000 chip (çip). Hammadde sand (kum), ama kum önce crystal (kristal) olmalı." },
+          { kim: "selin", metin: "Zaman makinesi hazır. 1916'ya, crystal (kristal) çekmenin doğduğu yere gidiyoruz." },
+          { kim: "czoch", metin: "Rivayete göre kalemi mürekkep yerine melt (eriyik) kalaya batırdım. Wire (tel) single crystal (tek kristal) çıktı." }
         ]
       },
       {
         id: "s01-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "kati_turleri", agirlik: 1,
-        gorev: "Elektronu üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
+        gorev: "Electron (elektron) üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
         sim: { modul: "kristal_tur", params: { mod: "tur" }, basari: { hepsiniDene: true } },
-        ogrenilen: "Düzen bozuldukça elektron daha çok saçılır (scattering); single crystal (tek kristal) içinde yolu en açıktır."
+        ogrenilen: "Order (düzen) bozuldukça electron (elektron) daha çok saçılır (scattering); single crystal (tek kristal) içinde yolu en açıktır."
       },
       o03,
       o04,
@@ -7167,40 +7176,40 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         soru: "Single crystal (tek kristal) yerine polycrystalline (çok kristalli) malzeme kullanırsan mean free path (serbest yol) ne olur?",
         secenekler: o05secenekler,
         sim: { modul: "kristal_tur", onceki: { mod: "serbest_yol" }, sonraki: { mod: "serbest_yol", gonder: true } },
-        acik: "Grain boundary elektronu saçıyor; single crystal içinde yol açık, mean free path uzun."
+        acik: "Grain boundary (tane sınırı) electron (elektron) saçıyor; single crystal (tek kristal) içinde yol açık, mean free path (serbest yol) uzun."
       },
       {
         id: "s01-o06", tip: "tuzak", baslik: "Yanılgı tuzağı", kavram: "kristal_pahali", agirlik: 1,
-        iddia: "Kristal pahalı olduğu için semiconductor (yarıiletken) endüstrisinde tercih edilir.",
-        parcalar: ["Kristal pahalı olduğu için", "semiconductor (yarıiletken) endüstrisinde", "tercih edilir."],
+        iddia: "Crystal (kristal) pahalı olduğu için semiconductor (yarıiletken) endüstrisinde tercih edilir.",
+        parcalar: ["Crystal (kristal) pahalı olduğu için", "semiconductor (yarıiletken) endüstrisinde", "tercih edilir."],
         yanlisParca: 0,
-        duzeltme: "Crystal (kristal) periyodik olduğu için energy band (enerji bandı) yapısı öngörülebilir, özellikler kontrol edilebilir."
+        duzeltme: "Crystal (kristal) periodic (periyodik) olduğu için energy band (enerji bandı) yapısı öngörülebilir, properties (özellikler) kontrol edilebilir."
       },
       {
         id: "s01-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "kristal_neden", agirlik: 1,
         soru: "Zinciri sıraya diz",
-        bloklar: ["Lattice (kafes) periyodik tekrar eder", "Elektron periodic potential (periyodik potansiyel) görür", "Energy bands (enerji bantları) net oluşur", "Özellikler öngörülebilir ve tekrarlanabilir"],
-        sonuc: "Periodic lattice, periodic potential, net bantlar, öngörülebilir aygıt."
+        bloklar: ["Lattice (kafes) periyodik tekrar eder", "Electron (elektron) periodic potential (periyodik potansiyel) görür", "Energy bands (enerji bantları) net oluşur", "Properties (özellikler) öngörülebilir ve tekrarlanabilir"],
+        sonuc: "Periodic lattice (periyodik kafes), periodic potential (periyodik potansiyel), net energy bands (enerji bantları), öngörülebilir device (aygıt)."
       },
       {
-        id: "s01-o08", tip: "patron", baslik: "Tane Sınırı Canavarı", kavram: null, agirlik: 1,
-        canavar: "czoch", canavarAd: "Tane Sınırı Canavarı",
-        giris: "Ben grain boundary (tane sınırı) canavarıyım! Elektronlarını saçarım. Beni nasıl yenersin?",
+        id: "s01-o08", tip: "patron", baslik: "Grain Boundary (Tane Sınırı) Canavarı", kavram: null, agirlik: 1,
+        canavar: "czoch", canavarAd: "Grain Boundary (Tane Sınırı) Canavarı",
+        giris: "Ben grain boundary (tane sınırı) canavarıyım! Electron (elektron) saçarım. Beni nasıl yenersin?",
         fazlar: [
           {
             tip: "secmeli", kavram: "cz_tohum",
             soru: "CZ (Czochralski) yönteminde seed crystal (tohum kristal) görevi nedir?",
             secenekler: [
-              sec("Eriyiği ısıtır", false, "Hayır. Isıtmayı fırın yapar, seed değil."),
-              sec("Katılaşan atomlara kristal düzenini aktarır", true, "Doğru. Atomlar seed crystal düzenini sürdürür."),
-              sec("Eriyiği karıştırır", false, "Hayır. Karıştırma tohumun işi değil.")
+              sec("melt (eriyik) ısıtır", false, "Hayır. Heating (ısıtma) işini furnace (fırın) yapar, seed (tohum) değil."),
+              sec("Solidifying (katılaşan) atom üzerine crystal (kristal) order (düzen) aktarır", true, "Doğru. Atom, seed crystal (tohum kristal) düzenini sürdürür."),
+              sec("melt (eriyik) karıştırır", false, "Hayır. Stirring (karıştırma) seed (tohum) işi değil.")
             ],
             alt: {
               soru: "CZ'de ingot (külçe) neden yavaşça döndürülerek çekilir?",
               secenekler: [
-                sec("Tohumun düzeni homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme single crystal yapısını korur."),
-                sec("Daha hızlı soğusun diye", false, "Hayır. Hızlı soğuma defect (kusur) yapar."),
-                sec("Eriyik atılsın diye", false, "Hayır. Amaç eriyik atmak değil.")
+                sec("seed (tohum) order (düzen) homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme single crystal (tek kristal) yapısını korur."),
+                sec("Daha hızlı cooling (soğuma) olsun diye", false, "Hayır. Hızlı cooling defect (kusur) yapar."),
+                sec("melt (eriyik) atılsın diye", false, "Hayır. Amaç melt (eriyik) atmak değil.")
               ]
             }
           },
@@ -7209,62 +7218,62 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             pdfSoru: "Why are crystalline solids used in the semiconductor industry?",
             soru: "Crystalline solids (kristal katılar) semiconductor (yarıiletken) endüstrisinde neden kullanılır? Explain (açıkla).",
             anahtarFikirler: [
-              "Kristalde atomlar periyodik dizilir, periodic potential (periyodik potansiyel) oluşur.",
+              "Crystal (kristal) içinde atom periyodik dizilir, periodic potential (periyodik potansiyel) oluşur.",
               "Periyodiklik iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) verir.",
-              "Özellikler öngörülebilir ve tekrarlanabilir, doping (katkılama) ile kontrol edilir.",
-              "Çok kristalli veya amorfta carriers (taşıyıcılar) grain boundary üzerinde saçılır."
+              "Properties (özellikler) öngörülebilir ve tekrarlanabilir, doping (katkılama) ile kontrol edilir.",
+              "Polycrystalline (çok kristalli) veya amorphous (amorf) malzemede carriers (taşıyıcılar) grain boundary üzerinde saçılır."
             ],
-            yanlisKavramlar: ["Kristal pahalı olduğu için tercih edilir", "Kristal sadece daha parlak olduğu için kullanılır"],
+            yanlisKavramlar: ["Crystal (kristal) pahalı olduğu için tercih edilir", "Crystal (kristal) sadece daha parlak olduğu için kullanılır"],
             yanlisKavramIds: ["kristal_pahali", "kristal_pahali"],
-            idealCevap: "Kristalde atomlar periyodik dizilir. Bu periodic potential (periyodik potansiyel) iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) doğurur. Böylece iletkenlik öngörülebilir, doping (katkılama) ile kontrol edilir ve her aygıtta tekrarlanır. Çok kristalli veya amorf malzemede grain boundary taşıyıcıları (carriers) saçar.",
+            idealCevap: "Crystal (kristal) içinde atom periyodik dizilir. Bu periodic potential (periyodik potansiyel) iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) doğurur. Böylece conductivity (iletkenlik) öngörülebilir, doping (katkılama) ile kontrol edilir ve her aygıtta tekrarlanır. Polycrystalline (çok kristalli) veya amorphous (amorf) malzemede grain boundary (tane sınırı) carriers (taşıyıcılar) saçar.",
             yedekSecmeli: {
-              soru: "Kristal neden semiconductor (yarıiletken) aygıtta tercih edilir?",
+              soru: "Crystal (kristal) neden semiconductor (yarıiletken) device (aygıt) içinde tercih edilir?",
               secenekler: [
-                sec("Periyodik yapı öngörülebilir energy bands verir", true, "Doğru. Periodic potential net bantlar ve tekrarlanabilirlik sağlar."),
-                sec("Kristal en ucuz malzemedir", false, "Yanlış. Maliyet sebep değil, tam tersine kristal büyütmek pahalıdır."),
-                sec("Kristal ışığı daha çok yansıtır", false, "Yanlış. Yansıma elektriksel özelliklerle ilgisizdir."),
-                sec("Kristalde elektron hiç saçılmaz", false, "Yanlış. Phonon (fonon) ve defect (kusur) saçılması vardır, ama çok daha az.")
+                sec("Periodic (periyodik) yapı öngörülebilir energy bands (enerji bantları) verir", true, "Doğru. Periodic potential (periyodik potansiyel) net energy bands (enerji bantları) ve tekrarlanabilirlik sağlar."),
+                sec("Crystal (kristal) en ucuz malzemedir", false, "Yanlış. Maliyet sebep değil, tam tersine crystal (kristal) büyütmek pahalıdır."),
+                sec("Crystal (kristal) light (ışık) daha çok yansıtır", false, "Yanlış. Reflection (yansıma) electrical properties (elektriksel özellikler) ile ilgisizdir."),
+                sec("Crystal (kristal) içinde electron (elektron) hiç saçılmaz", false, "Yanlış. Phonon (fonon) ve defect (kusur) saçılması vardır, ama çok daha az.")
               ]
             },
-            alt: { soru: "Amorf silisyum yerine single crystal silicon (tek kristal silisyum) neden tercih edilir?" }
+            alt: { soru: "Amorphous silicon (amorf silisyum) yerine single crystal silicon (tek kristal silisyum) neden tercih edilir?" }
           },
           {
             tip: "acik", kavram: "tane_siniri",
             pdfSoru: "Explain the main reason for single-crystal growth in the CZ method",
             soru: "Explain (açıkla): CZ yönteminde single crystal (tek kristal) büyütmenin ana nedeni nedir?",
             anahtarFikirler: [
-              "Single crystal içinde grain boundary yoktur.",
-              "Grain boundary carriers (taşıyıcıları) saçar ve tuzaklar.",
+              "Single crystal (tek kristal) içinde grain boundary (tane sınırı) yoktur.",
+              "Grain boundary (tane sınırı) carriers (taşıyıcılar) saçar ve trap (tuzak) oluşturur.",
               "Mobility (hareketlilik) ve carrier lifetime (taşıyıcı ömrü) yüksek kalır.",
-              "Tüm wafer boyunca aynı özellik, tekrarlanabilir aygıt."
+              "Tüm wafer (dilim) boyunca aynı property (özellik), tekrarlanabilir device (aygıt)."
             ],
-            yanlisKavramlar: ["Tek kristal sadece daha güzel görünür", "Tane sınırı elektriği daha iyi iletir"],
+            yanlisKavramlar: ["Single crystal (tek kristal) sadece daha güzel görünür", "Grain boundary (tane sınırı) electric current (elektrik akımı) daha iyi iletir"],
             yanlisKavramIds: ["kristal_pahali", "tane_siniri"],
-            idealCevap: "Single crystal içinde grain boundary yoktur. Grain boundary carriers (taşıyıcıları) saçar ve tuzaklar, mobility (hareketlilik) ve lifetime (ömür) düşer. Single crystal, wafer boyunca aynı band structure (bant yapısı) ve tekrarlanabilir aygıt özelliklerini sağlar.",
+            idealCevap: "Single crystal (tek kristal) içinde grain boundary (tane sınırı) yoktur. Grain boundary carriers (taşıyıcılar) saçar ve trap (tuzak) oluşturur, mobility (hareketlilik) ve lifetime (ömür) düşer. Single crystal, wafer (dilim) boyunca aynı band structure (bant yapısı) ve tekrarlanabilir device (aygıt) properties (özellikleri) sağlar.",
             yedekSecmeli: {
               soru: "CZ'de single crystal (tek kristal) neden istenir?",
               secenekler: [
-                sec("Grain boundary yok, carriers saçılmaz", true, "Doğru. Mobility ve lifetime yüksek kalır."),
-                sec("Tek kristal daha hızlı büyür", false, "Yanlış. Tek kristal yavaş büyütülür."),
-                sec("Tane sınırı akımı artırır", false, "Yanlış. Grain boundary carriers saçar."),
-                sec("Kristal rengi daha homojen olur", false, "Yanlış. Renk sebep değil.")
+                sec("Grain boundary (tane sınırı) yok, carriers (taşıyıcılar) saçılmaz", true, "Doğru. Mobility (hareketlilik) ve lifetime (ömür) yüksek kalır."),
+                sec("Single crystal (tek kristal) daha hızlı büyür", false, "Yanlış. Single crystal yavaş büyütülür."),
+                sec("Grain boundary (tane sınırı) current (akım) artırır", false, "Yanlış. Grain boundary carriers (taşıyıcılar) saçar."),
+                sec("Crystal (kristal) color (renk) daha homojen olur", false, "Yanlış. Color (renk) sebep değil.")
               ]
             },
-            alt: { soru: "Grain boundary aygıt performansını nasıl bozar? Justify (gerekçelendir)." }
+            alt: { soru: "Grain boundary (tane sınırı) device (aygıt) performansını nasıl bozar? Justify (gerekçelendir)." }
           }
         ]
       },
       {
         id: "s01-o09", tip: "sandik", baslik: "Sandık", kavram: null, agirlik: 1,
         kart: { id: "czoch", yil: 1916, tekCumle: "Melt (eriyik) içinden seed (tohum) ile single crystal (tek kristal) çekmenin yolunu buldu." },
-        ozet: ["Crystal (kristal): periyodik düzen", "Grain boundary elektronu saçar", "CZ: seed crystal melt içinden yavaşça çekilir"],
+        ozet: ["Crystal (kristal): periodic order (periyodik düzen)", "Grain boundary (tane sınırı) electron (elektron) saçar", "CZ: seed crystal (tohum kristal) melt (eriyik) içinden yavaşça çekilir"],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: "Crystal (kristal) nedir?", metin: "Atomlar long-range order (uzun menzilli düzen) ile dizilir." },
-        { baslik: "Neden scattering?", metin: "Düzen bozuldukça elektron daha sık saçılır (scattering)." },
+        { baslik: "Crystal (kristal) nedir?", metin: "Atom (atom) long-range order (uzun menzilli düzen) ile dizilir." },
+        { baslik: "Neden scattering?", metin: "Order (düzen) bozuldukça electron (elektron) daha sık saçılır (scattering)." },
         { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt içinden yavaşça çekilir, düzen sürer." }
       ],
       sim: { modul: "kristal_tur", params: { mod: "tur" } }
@@ -7287,19 +7296,19 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: "s01-t04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "cz_tohum", agirlik: 1,
         soru: "CZ'de seed crystal (tohum kristal) ne işe yarar?",
         secenekler: [
-          sec("Düzeni atomlara aktarır", true, "Doğru. Katılaşan atomlar seed crystal düzenini sürdürür."),
-          sec("Eriyiği soğutur", false, "Hayır. Cooling (soğutma) seed işi değil."),
-          sec("Eriyiği temizler", false, "Hayır. Temizlik başka süreç.")
+          sec("Order (düzen) atom üzerine aktarır", true, "Doğru. Solidifying (katılaşan) atom seed crystal (tohum kristal) düzenini sürdürür."),
+          sec("melt (eriyik) soğutur", false, "Hayır. Cooling (soğutma) seed (tohum) işi değil."),
+          sec("melt (eriyik) temizler", false, "Hayır. Cleaning (temizlik) başka süreç.")
         ],
         kusurSkin: "dislokasyon"
       },
       {
         id: "s01-t05", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kristal_neden", agirlik: 1,
-        soru: "Çip için neden single crystal silicon (tek kristal silisyum) kullanılır?",
+        soru: "Chip (çip) için neden single crystal silicon (tek kristal silisyum) kullanılır?",
         secenekler: [
-          sec("Elektron akışı düzenli dizilimde öngörülebilir olur", true, "Doğru. Düzenli lattice (kafes) elektronu rastgele saçmaz."),
-          sec("Daha parlak göründüğü için", false, "Hayır. Parlaklık seçim nedeni değil."),
-          sec("Her zaman daha ucuz olduğu için", false, "Hayır. Single crystal üretmek pahalıdır.")
+          sec("electron (elektron) akışı ordered (düzenli) dizilimde öngörülebilir olur", true, "Doğru. Ordered lattice (düzenli kafes) electron (elektron) rastgele saçmaz."),
+          sec("Daha shiny (parlak) göründüğü için", false, "Hayır. Brightness (parlaklık) seçim nedeni değil."),
+          sec("Her zaman daha cheap (ucuz) olduğu için", false, "Hayır. Single crystal (tek kristal) üretmek pahalıdır.")
         ],
         kusurSkin: "vakans"
       }
@@ -7313,36 +7322,36 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: "s02-o03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "atom_sayisi", agirlik: 1,
-    soru: "bcc unit cell (birim hücre) başına kaç atom düşer? Calculate (hesapla).",
+    soru: "bcc unit cell (birim hücre) başına kaç atom (atom) düşer? Calculate (hesapla).",
     secenekler: [
-      s("1", false, "Hayır. Hücre başına 1 atom simple cubic (basit kübik, sc) yapıda düşer."),
-      s("2", true, "Doğru. 8 corner (köşe) × 1/8 + 1 body-center (merkez) atomu = 2."),
-      s("4", false, "Hayır. Hücre başına 4 atom face-centered cubic (yüzey merkezli kübik, fcc) yapıda düşer.")
+      s("1", false, "Hayır. 1 atom per unit cell (hücre başına atom) simple cubic (basit kübik, sc) lattice (kafes) içindir."),
+      s("2", true, "Doğru. 8 corner (köşe) × 1/8 + 1 body-center atom (merkez atomu) = 2."),
+      s("4", false, "Hayır. 4 atoms per unit cell (hücre başına atom) face-centered cubic (yüzey merkezli kübik, fcc) lattice (kafes) içindir.")
     ],
     kusurSkin: "vakans"
   };
 
   var o04 = {
     id: "s02-o04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "birim_hucre", agirlik: 1,
-    soru: "diamond structure (elmas yapı) içinde her atomun kaç nearest neighbor (en yakın komşu) sayısı vardır?",
+    soru: "diamond structure (elmas yapı) içinde her atom (atom) için nearest neighbor (en yakın komşu) sayısı kaçtır?",
     secenekler: [
-      s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 komşulu."),
-      s("6", false, "Hayır. 6 komşu simple cubic (basit kübik) düzende olur."),
-      s("12", false, "Hayır. 12 komşu fcc (close-packed, sıkı paket) düzeninde olur.")
+      s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 neighbors (komşu) ile."),
+      s("6", false, "Hayır. 6 neighbors (komşu) simple cubic (basit kübik) lattice (kafes) içindir."),
+      s("12", false, "Hayır. 12 neighbors (komşu) fcc (close-packed, sıkı paket) lattice (kafes) içindir.")
     ],
     kusurSkin: "safsizlik"
   };
 
   var o05 = {
     id: "s02-o05", tip: "tahmin", baslik: "Tahmin çukuru", kavram: "miller_duzlem", agirlik: 1.5,
-    soru: "Eksenleri 2, ∞, ∞ noktasında kesen plane (düzlem) için Miller indices (Miller indisleri) nedir? Determine (belirle).",
+    soru: "Axes (eksenleri) 2, ∞, ∞ noktasında kesen plane (düzlem) için Miller indices (Miller indisleri) nedir? Determine (belirle).",
     secenekler: [
-      s("(200)", false, "Yanlış. Önce reciprocal (ters) al: ½, 0, 0. Sonra integer (tam sayı) yap: (100)."),
-      s("(100)", true, "Doğru. Reciprocal (ters): ½, 0, 0. İki ile çarp: (100)."),
-      s("(210)", false, "Yanlış. ∞ intercept (kesişim) indisi 0 yapar; (210) farklı kesişimler ister.")
+      s("(200)", false, "Yanlış. Önce reciprocal (ters) al: ½, 0, 0. Sonra integer (tam sayı) yap: (100). Miller indices (Miller indisleri) en küçük integers (tam sayılar) olur."),
+      s("(100)", true, "Doğru. Reciprocal (ters): ½, 0, 0. İki ile çarp, integer (tam sayı): (100)."),
+      s("(210)", false, "Yanlış. ∞ intercept (kesişim), index (indis) 0 yapar; (210) farklı intercepts (kesişimler) ister.")
     ],
     sim: { modul: "miller", onceki: { c: [1, 1, 1] }, sonraki: { c: [2, "inf", "inf"] } },
-    acik: "Intercept (kesişim) 2, ∞, ∞. Reciprocal (ters) ½, 0, 0. İki ile çarpınca (100)."
+    acik: "Intercept (kesişim) 2, ∞, ∞. Reciprocal (ters) ½, 0, 0. İki ile çarpınca integer (tam sayı): (100)."
   };
 
   Q.data.stations.s02 = {
@@ -7360,29 +7369,29 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       { id: "s02-o01", tip: "hikaye", baslik: "Zaman kapısı", kavram: null, agirlik: 1,
         yer: "Cambridge", yil: 1839, rivayet: false,
         satirlar: [
-          { kim: "selin", metin: "Ingot (külçe) hazır. Şimdi wafer kesilecek, ama hangi plane (düzlem) boyunca?" },
+          { kim: "selin", metin: "Ingot (külçe) hazır. Şimdi wafer (dilim) kesilecek, ama hangi plane (düzlem) boyunca?" },
           { kim: "selin", metin: "Cevap 1839'da, Cambridge'de. Zaman kapısına!" },
-          { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Kristalcilerin dili oldu." }
+          { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
-        gorev: "fcc unit cell (birim hücre) içinde kaç atom olduğunu determine (belirle).",
+        gorev: "fcc unit cell (birim hücre) içinde kaç atom (atom) olduğunu determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
-        ogrenilen: "Corner (köşe) atomu 1/8, face (yüz) atomu 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atom." },
+        ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },
       o03,
       o04,
       o05,
       { id: "s02-o06", tip: "tuzak", baslik: "Yanılgı tuzağı", kavram: "miller_duzlem", agirlik: 1,
-        iddia: "Eksene paralel plane (düzlem) için indis sonsuzdur.",
-        parcalar: ["Eksene paralel", "plane (düzlem) için indis", "sonsuzdur."],
+        iddia: "Axis (eksen) parallel (paralel) plane (düzlem) için index (indis) sonsuzdur.",
+        parcalar: ["Axis (eksen) parallel (paralel)", "plane (düzlem) için index (indis)", "sonsuzdur."],
         yanlisParca: 2,
-        duzeltme: "Eksene paralel plane (düzlem) o ekseni ∞'da keser (intercept, kesişim); indisi 0 olur." },
+        duzeltme: "Axis (eksen) parallel (paralel) plane (düzlem) the axis (eksen) at ∞ keser (intercept, kesişim); index (indis) 0 olur." },
       { id: "s02-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "miller_duzlem", agirlik: 1,
         soru: "Miller indices (Miller indisleri) adımlarını sıraya diz",
         bloklar: [
           "Axis intercepts (eksen kesişimlerini) bul",
           "Reciprocals (tersleri) al",
           "Fractions (kesirleri) en küçük integers (tam sayılara) çevir",
-          "Parantez içine yaz: (hkl)"
+          "Parentheses (parantez) içine yaz: (hkl)"
         ],
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
       { id: "s02-o08", tip: "patron", baslik: "Düzlem Canavarı", kavram: null, agirlik: 1,
@@ -7390,18 +7399,18 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         giris: "Hangi düzlemdeyim? Bil bakalım, yoksa seni yanlış açıdan keserim!",
         fazlar: [
           { tip: "secmeli", kavram: "miller_duzlem",
-            soru: "(111) plane (düzlem) eksenleri nerede keser? Determine (belirle): intercepts (kesişimler).",
+            soru: "(111) plane (düzlem) axes (eksenler) nerede keser? Determine (belirle): intercepts (kesişimler).",
             secenekler: [
               s("1, 1, 1", true, "Doğru. Reciprocal (ters) 1, 1, 1; integer (tam sayı) zaten (111)."),
-              s("1, ∞, ∞", false, "Hayır. Bu (100) plane (düzlem)."),
+              s("1, ∞, ∞", false, "Hayır. Bu (100) plane (düzlem), intercepts (kesişimler) 1, ∞, ∞."),
               s("1, 2, 3", false, "Hayır. (123) intercepts (kesişimleri) 1, ½, ⅓'tür.")
             ],
             alt: {
               soru: "cubic (kübik) yapıda [111] direction (yön) hangi plane (düzlem) için normal (dik)?",
               secenekler: [
                 s("(111)", true, "Doğru. Cubic (kübik) yapıda [hkl] direction (yön), (hkl) plane (düzlem) için normaldir (diktir)."),
-                s("(100)", false, "Hayır. (100), [100] yönüne diktir."),
-                s("(110)", false, "Hayır. (110), [110] yönüne diktir.")
+                s("(100)", false, "Hayır. (100), [100] direction (yön) için normaldir; (111) için [111]."),
+                s("(110)", false, "Hayır. (110), [110] direction (yön) için normaldir; (111) için [111].")
               ]
             } },
           { tip: "acik", kavram: "miller_duzlem",
@@ -7409,50 +7418,50 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             soru: "Miller indices (Miller indisleri) nasıl bulunur? Explain (açıkla): (hkl), {hkl} ve [uvw] ne anlama gelir?",
             anahtarFikirler: [
               "Axis intercepts (eksen kesişimleri) bulunur, reciprocals (tersleri) alınır.",
-              "Fractions (kesirler) en küçük integers (tam sayılara) çevrilir, ∞ indisi 0 yapar.",
+              "Fractions (kesirler) en küçük integers (tam sayılara) çevrilir, ∞ index (indis) 0 yapar.",
               "(hkl) tek plane (düzlem), {hkl} equivalent planes (eşdeğer düzlemler) ailesidir.",
               "[uvw] bir direction (yön), ⟨uvw⟩ direction family (yön ailesi) demektir."
             ],
-            yanlisKavramlar: ["Miller indisi kesişimin kendisidir", "Paralel düzlemin indisi sonsuzdur"],
+            yanlisKavramlar: ["Miller index (Miller indisi) intercept (kesişim) değerinin kendisidir", "Parallel plane (paralel düzlem) için index (indis) sonsuzdur"],
             yanlisKavramIds: ["miller_duzlem", "miller_duzlem"],
-            idealCevap: "Plane (düzlem) eksenleri kestiği noktalar (intercepts, kesişimler) bulunur, reciprocals (tersleri) alınır, fractions (kesirler) en küçük integers (tam sayılara) çevrilir. Eksene paralel intercept ∞'dur, indis 0 olur. (hkl) tek bir plane, {hkl} symmetry (simetri) ile equivalent planes (eşdeğer düzlemler) ailesidir. [uvw] bir direction (yön), ⟨uvw⟩ equivalent directions (eşdeğer yönler) demektir.",
+            idealCevap: "Plane (düzlem) axes (eksenler) kestiği noktalar (intercepts, kesişimler) bulunur, reciprocals (tersleri) alınır, fractions (kesirler) en küçük integers (tam sayılara) çevrilir. Eksene parallel (paralel) intercept ∞'dur, index (indis) 0 olur. (hkl) tek bir plane, {hkl} symmetry (simetri) ile equivalent planes (eşdeğer düzlemler) ailesidir. [uvw] bir direction (yön), ⟨uvw⟩ equivalent directions (eşdeğer yönler) demektir.",
             yedekSecmeli: {
               soru: "Miller index (Miller indisi) bulurken ilk adım nedir?",
               secenekler: [
-                s("Axis intercepts (eksen kesişimlerini) bulmak", true, "Doğru. Sonra reciprocals (tersleri) alınır."),
-                s("Integer (tam sayıya) çevirmek", false, "Yanlış. Bu üçüncü adım."),
-                s("Parantez yazmak", false, "Yanlış. Bu son adım."),
-                s("Hücre atom sayısını saymak", false, "Yanlış. Miller indices (Miller indisleri) ile ilgisiz.")
+                s("Axis (eksen) intercepts (kesişimleri) bulmak", true, "Doğru. Sonra reciprocals (tersleri) alınır."),
+                s("Integer (tam sayı) değerine çevirmek", false, "Yanlış. Bu üçüncü adım."),
+                s("Parentheses (parantez) yazmak", false, "Yanlış. Bu son adım."),
+                s("unit cell (birim hücre) atom (atom) sayısını saymak", false, "Yanlış. Miller indices (Miller indisleri) ile ilgisiz.")
               ]
             },
             alt: { soru: "Intercepts (kesişimleri) 1, 2, ∞ olan plane (düzlem) için indisi adımlarıyla derive (türet)." } },
           { tip: "acik", kavram: "duzlem_neden",
             pdfSoru: null,
-            soru: "Silisyum wafer neden belirli bir crystal plane (kristal düzlemi) boyunca kesilir? Explain (açıkla).",
+            soru: "Silicon (silisyum) wafer (dilim) neden belirli bir crystal plane (kristal düzlemi) boyunca kesilir? Explain (açıkla).",
             anahtarFikirler: [
               "Planes (düzlemler) farklı atomic density (atom yoğunluğu) taşır.",
-              "Surface (yüzey) özellikleri düzleme göre değişir.",
-              "Interface defect density (arayüz kusur yoğunluğu) aygıt performansını etkiler.",
-              "Bu yüzden (100) veya (111) gibi belirli düzlemler seçilir."
+              "Surface (yüzey) özellikleri plane (düzlem) değerine göre değişir.",
+              "Interface defect density (arayüz kusur yoğunluğu) device (aygıt) performansını etkiler.",
+              "Bu yüzden (100) veya (111) gibi belirli planes (düzlemler) seçilir."
             ],
-            yanlisKavramlar: ["Hangi düzlemden kesildiği fark etmez", "Düzlem seçimi sadece wafer şekli içindir"],
+            yanlisKavramlar: ["Hangi plane (düzlem) boyunca kesildiği fark etmez", "Plane (düzlem) seçimi yalnızca wafer (dilim) şekli içindir"],
             yanlisKavramIds: ["duzlem_neden", "duzlem_neden"],
-            idealCevap: "Her crystal plane (kristal düzlemi) için atomic density (atom yoğunluğu) ve surface (yüzey) özellikleri farklıdır. Yüzeydeki interface defects (arayüz kusurları) aygıt performansını etkiler, bu yüzden aygıta uygun (100) veya (111) gibi belirli bir düzlem seçilir.",
+            idealCevap: "Her crystal plane (kristal düzlemi) için atomic density (atom yoğunluğu) ve surface (yüzey) özellikleri farklıdır. Surface (yüzey) üzerindeki interface defects (arayüz kusurları) device (aygıt) performansını etkiler, bu yüzden device için uygun (100) veya (111) gibi belirli bir plane (düzlem) seçilir.",
             yedekSecmeli: {
-              soru: "Wafer orientation (yönelimi) neden önemlidir?",
+              soru: "Wafer (dilim) orientation (yönelim) neden önemlidir?",
               secenekler: [
-                s("Düzleme göre surface (yüzey) ve interface (arayüz) özellikleri değişir", true, "Doğru. Atomic density (atom yoğunluğu) ve defect density (kusur yoğunluğu) düzleme bağlıdır."),
-                s("Yalnızca wafer daha parlak olsun diye", false, "Yanlış. Parlaklık sebep değil."),
-                s("Hiç önemi yoktur", false, "Yanlış. Aygıt performansını etkiler."),
-                s("Atomlar düzleme göre kaybolur", false, "Yanlış. Atom kaybolmaz.")
+                s("Surface (yüzey) ve interface (arayüz) özellikleri plane (düzlem) değerine göre değişir", true, "Doğru. Atomic density (atom yoğunluğu) ve defect density (kusur yoğunluğu) plane (düzlem) değerine bağlıdır."),
+                s("Yalnızca wafer (dilim) daha parlak olsun diye", false, "Yanlış. Parlaklık (brightness) sebep değil."),
+                s("Hiç önemi yoktur", false, "Yanlış. Device (aygıt) performansını etkiler."),
+                s("Atoms (atom) plane (düzlem) değerine göre kaybolur", false, "Yanlış. Atom (atom) kaybolmaz.")
               ]
             },
-            alt: { soru: "(100) ve (111) planes (düzlemleri) arasındaki farkı compare (karşılaştır): aygıt için neden önemli?" } }
+            alt: { soru: "(100) ve (111) planes (düzlemleri) arasındaki farkı compare (karşılaştır): device (aygıt) için neden önemli?" } }
         ] },
       { id: "s02-o09", tip: "sandik", baslik: "Sandık", kavram: null, agirlik: 1,
         kart: { id: "miller", yil: 1839, tekCumle: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdı: Miller indices (Miller indisleri)." },
         ozet: [
-          "Hücre başına atom: sc 1, bcc 2, fcc 4",
+          "Atoms per unit cell (hücre başına atom): sc 1, bcc 2, fcc 4",
           "Miller: intercept (kesişim), reciprocal (ters), integer (tam sayı)",
           "(hkl) plane (düzlem), [uvw] direction (yön)"
         ],
@@ -7460,9 +7469,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     ],
     temelTur: {
       kartlar: [
-        { baslik: "Hücre ve atom", metin: "Unit cell (birim hücre) tekrar eder. Corner (köşe) 1/8, face (yüz) 1/2, içeri 1 sayılır." },
-        { baslik: "Miller adımları", metin: "Intercept (kesişim) bul, reciprocal (ters) al, integer (tam sayı) yap, (hkl) yaz." },
-        { baslik: "∞ ne olur?", metin: "Eksene paralel plane (düzlem) o ekseni ∞'da keser, indis 0." }
+        { baslik: "Unit cell (birim hücre) ve atom (atom)", metin: "Unit cell (birim hücre) tekrar eder. Corner (köşe) 1/8, face (yüz) 1/2, inside (iç) atom 1 sayılır." },
+        { baslik: "Miller indices (Miller indisleri) adımları", metin: "Intercept (kesişim) bul, reciprocal (ters) al, integer (tam sayı) yap, (hkl) yaz." },
+        { baslik: "What happens at ∞ (infinity, sonsuz)?", metin: "Axis (eksen) parallel (paralel) plane (düzlem) the axis (eksen) at ∞ keser, index (indis) 0." }
       ],
       sim: { modul: "miller", params: { c: [1, 1, 1] } }
     },
@@ -7474,11 +7483,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       { id: "s02-t03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "miller_duzlem", agirlik: 1,
         soru: o05.soru, secenekler: o05.secenekler.map(kopya), kusurSkin: "vakans" },
       { id: "s02-t04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "miller_yon", agirlik: 1,
-        soru: "[100] direction (yön) hangi axis (eksen) için paraleldir?",
+        soru: "[100] direction (yön) hangi axis (eksen) için parallel (paralel) olur?",
         secenekler: [
-          s("x ekseni", true, "Doğru. [100] = (1,0,0) vector (vektör), x yönü."),
-          s("y ekseni", false, "Hayır. y yönü [010]."),
-          s("z ekseni", false, "Hayır. z yönü [001].")
+          s("x axis (x ekseni)", true, "Doğru. [100] = (1,0,0) vector (vektör), x direction (yön)."),
+          s("y axis (y ekseni)", false, "Hayır. y direction (yön) [010]."),
+          s("z axis (z ekseni)", false, "Hayır. z direction (yön) [001].")
         ],
         kusurSkin: "dislokasyon" }
     ]
@@ -7497,40 +7506,40 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: 's03-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'karacisim_felaket', agirlik: 1,
-    soru: 'Ultraviolet catastrophe (mor ötesi felaketi), klasik teorinin neyi yanlış öngörmesidir?',
+    soru: 'Ultraviolet catastrophe (mor ötesi felaketi), classical theory (klasik teori) neyi yanlış öngörmesidir?',
     secenekler: [
-      sec('Kısa wavelength (dalga boyu) değerinde sonsuz enerji', true, 'Doğru. Klasik teori yüksek frequency (frekans) değerinde enerjiyi sonsuz buluyordu.'),
-      sec('Işığın hiç yayılmaması', false, 'Hayır. Sorun sonsuz enerji öngörüsüydü.'),
-      sec('Sıcaklığın hep sabit kalması', false, 'Hayır. Sıcaklıkla ilgili bir sorun değildi.')
+      sec('Kısa wavelength (dalga boyu) değerinde infinite energy (sonsuz enerji)', true, 'Doğru. Classical theory (klasik teori) yüksek frequency (frekans) değerinde energy (enerji) değerini sonsuz buluyordu.'),
+      sec('No emission (yayılma) of light (ışık)', false, 'Hayır. Sorun infinite energy (sonsuz enerji) öngörüsüydü.'),
+      sec('Temperature (sıcaklık) hep sabit kalması', false, 'Hayır. Temperature (sıcaklık) ile ilgili bir sorun değildi.')
     ],
     kusurSkin: 'vakans'
   };
 
   var o04 = {
     id: 's03-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'planck_paket', agirlik: 1,
-    soru: 'Planck\'a göre bir ışık paketinin (photon, foton) enerjisi neye bağlıdır?',
+    soru: 'Planck\'a göre bir light (ışık) paketinin (photon, foton) energy (enerji) değeri neye bağlıdır?',
     secenekler: [
-      sec('Frekansına (E = hf)', true, 'Doğru. Yüksek frekans, büyük paket.'),
-      sec('Intensity (şiddet) değerine', false, 'Hayır. Intensity paket sayısını belirler.'),
-      sec('Hızına', false, 'Hayır. Işığın hızı sabit; enerji frekansla değişir.')
+      sec('Frequency (frekans) değerine (E = hf)', true, 'Doğru. Yüksek frequency (frekans), büyük paket.'),
+      sec('Intensity (şiddet) değerine', false, 'Hayır. Intensity (şiddet) paket sayısını belirler.'),
+      sec('Speed (hız) değerine', false, 'Hayır. Light (ışık) speed (hız) sabit; energy (enerji) frequency (frekans) ile değişir.')
     ],
     kusurSkin: 'tane_siniri'
   };
 
   var o05 = {
     id: 's03-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'fotoelektrik_siddet', agirlik: 1.5,
-    soru: 'Threshold frequency (eşik frekans) altındaki ışığı 10 kat parlatırsan kaç elektron kopar? Explain (açıkla).',
+    soru: 'Threshold frequency (eşik frekans) altındaki light (ışık) 10 kat parlatırsan kaç electron (elektron) kopar? Explain (açıkla).',
     secenekler: [
-      sec('Çok sayıda', false, 'Yanlış. Tek photon (foton) yetmezse kaç photon olursa olsun elektron kopmaz.'),
-      sec('Hiç', true, 'Doğru. Intensity (şiddet) photon sayısını artırır, photon başına enerjiyi değil.'),
-      sec('Gecikmeyle kopar', false, 'Yanlış. Enerji birikmez, time delay (gecikme) gözlenmez.')
+      sec('Çok sayıda electron (elektron)', false, 'Yanlış. Tek photon (foton) yetmezse kaç photon (foton) olursa olsun electron (elektron) kopmaz.'),
+      sec('Hiç electron (elektron)', true, 'Doğru. Intensity (şiddet) photon (foton) sayısını artırır, photon başına energy (enerji) değerini değil.'),
+      sec('time delay (gecikme) ile electron (elektron) kopar', false, 'Yanlış. Energy (enerji) birikmez, time delay (gecikme) gözlenmez.')
     ],
     sim: {
       modul: 'fotoelektrik',
       onceki: { f: 3.0, I: 1, metal: 'Na' },
       sonraki: { f: 3.0, I: 10, metal: 'Na' }
     },
-    acik: 'hf < φ: photon başına enerji yetmiyor, parlaklık işe yaramaz.'
+    acik: 'hf < φ: photon (foton) başına energy (enerji) yetmiyor, brightness (parlaklık) işe yaramaz.'
   };
 
   Q.data.stations.s03 = {
@@ -7549,9 +7558,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's03-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Berlin', yil: 1900, rivayet: false,
         satirlar: [
-          { kim: 'selin', metin: 'Işık-test odası ışığı ölçüyor. Classical physics (klasik fizik) burada tökezledi.' },
-          { kim: 'planck', metin: 'Energy quantum (enerji paketi) fikriyle sonsuzluk kayboldu. Çaresizlikten attığım bir adımdı.' },
-          { kim: 'einstein', metin: 'Ben ışığı paketlere böldüm: photons (fotonlar). Photoelectric effect (fotoelektrik olay) böyle açıklandı.' }
+          { kim: 'selin', metin: 'Işık-test odası light (ışık) ölçüyor. Classical physics (klasik fizik) burada tökezledi.' },
+          { kim: 'planck', metin: 'Energy quantum (enerji paketi) fikriyle infinity (sonsuzluk) kayboldu. Çaresizlikten attığım bir adımdı.' },
+          { kim: 'einstein', metin: 'Ben light (ışık) paketlere böldüm: photons (fotonlar). Photoelectric effect (fotoelektrik olay) böyle açıklandı.' }
         ]
       },
       {
@@ -7569,41 +7578,41 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       o05,
       {
         id: 's03-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'fotoelektrik_siddet', agirlik: 1,
-        iddia: 'Işığı yeterince parlatırsan threshold (eşik) altında da elektron koparabilirsin.',
-        parcalar: ['Işığı yeterince parlatırsan', 'threshold (eşik) altında da', 'elektron koparabilirsin.'],
+        iddia: 'Light (ışık) yeterince parlatırsan threshold (eşik) altında da electron (elektron) koparabilirsin.',
+        parcalar: ['Light (ışık) yeterince parlatırsan', 'threshold (eşik) altında da', 'electron (elektron) koparabilirsin.'],
         yanlisParca: 0,
-        duzeltme: 'Threshold (eşik) altında parlaklık işe yaramaz; elektron için photon (foton) başına yeterli enerji gerekir.'
+        duzeltme: 'Threshold (eşik) altında brightness (parlaklık) işe yaramaz; electron (elektron) için photon (foton) başına yeterli energy (enerji) gerekir.'
       },
       {
         id: 's03-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'fotoelektrik_siddet', agirlik: 1,
         soru: 'Photoelectric effect (fotoelektrik olay) mantığını sıraya diz',
         bloklar: [
-          'Işık photon (foton) paketlerinden oluşur',
+          'Light (ışık) photon (foton) paketlerinden oluşur',
           'Photon energy (foton enerjisi) E = hf',
-          'hf, work function (iş fonksiyonu) aşarsa elektron kopar',
-          'Intensity (şiddet) yalnızca elektron sayısını artırır'
+          'hf, work function (iş fonksiyonu) aşarsa electron (elektron) kopar',
+          'Intensity (şiddet) yalnızca electron (elektron) sayısını artırır'
         ],
-        sonuc: 'Photon energy (foton enerjisi) frequency (frekans) ile belirlenir, threshold (eşik) aşılırsa elektron kopar, intensity (şiddet) sayıyı artırır.'
+        sonuc: 'Photon energy (foton enerjisi) frequency (frekans) ile belirlenir, threshold (eşik) aşılırsa electron (elektron) kopar, intensity (şiddet) sayıyı artırır.'
       },
       {
         id: 's03-o08', tip: 'patron', baslik: 'Foton Canavarı', kavram: null, agirlik: 1,
         canavar: 'einstein', canavarAd: 'Foton Canavarı',
-        giris: 'Ben photon (foton) canavarıyım! Parlaklığımı artırsam da seni threshold (eşik) değerinden geçirmem.',
+        giris: 'Ben photon (foton) canavarıyım! Brightness (parlaklık) artırsam da seni threshold (eşik) değerinden geçirmem.',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'fotoelektrik_siddet',
-            soru: 'Photoelectric effect (fotoelektrik olay) içinde elektronun kinetic energy (kinetik enerji) değeri neye bağlıdır?',
+            soru: 'Photoelectric effect (fotoelektrik olay) içinde electron (elektron) kinetic energy (kinetik enerji) değeri neye bağlıdır?',
             secenekler: [
-              sec('Işığın frequency (frekans) değerine (K = hf − φ)', true, 'Doğru. Frequency arttıkça kinetic energy artar.'),
-              sec('Işığın intensity (şiddet) değerine', false, 'Hayır. Intensity elektron sayısını etkiler.'),
-              sec('Metalin kalınlığına', false, 'Hayır. Thickness (kalınlık) enerjiyi belirlemez.')
+              sec('Light (ışık) frequency (frekans) değerine (K = hf − φ)', true, 'Doğru. Frequency (frekans) arttıkça kinetic energy (kinetik enerji) artar.'),
+              sec('Light (ışık) intensity (şiddet) değerine', false, 'Hayır. Intensity (şiddet) electron (elektron) sayısını etkiler.'),
+              sec('Metal (metal) thickness (kalınlık) değerine', false, 'Hayır. Thickness (kalınlık) energy (enerji) değerini belirlemez.')
             ],
             alt: {
               soru: 'Frequency (frekans) değerini ikiye katlarsan photon energy (foton enerjisi) ne olur?',
               secenekler: [
-                sec('İki katına çıkar', true, 'Doğru. E = hf, frequency ile orantılı.'),
-                sec('Aynı kalır', false, 'Hayır. Enerji frequency ile artar.'),
-                sec('Yarıya iner', false, 'Hayır. Frequency artınca enerji düşmez.')
+                sec('Doubles (iki katına çıkar)', true, 'Doğru. E = hf, frequency (frekans) ile orantılı.'),
+                sec('Stays the same (aynı kalır)', false, 'Hayır. Energy (enerji) frequency (frekans) ile artar.'),
+                sec('Halves (yarıya iner)', false, 'Hayır. Frequency (frekans) artınca energy (enerji) düşmez.')
               ]
             }
           },
@@ -7612,24 +7621,24 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             pdfSoru: 'Explain the reasons for the emergence and success of quantum mechanics.',
             soru: 'Quantum mechanics (kuantum mekaniği) neden doğdu ve neden başarılı oldu? Explain (açıkla).',
             anahtarFikirler: [
-              'Classical physics (klasik fizik) blackbody radiation (kara cisim ışıması) ve ultraviolet catastrophe sorununu açıklayamadı.',
+              'Classical physics (klasik fizik) blackbody radiation (kara cisim ışıması) ve ultraviolet catastrophe (mor ötesi felaketi) sorununu açıklayamadı.',
               'Photoelectric effect (fotoelektrik olay) ve discrete atomic spectra (ayrık atom spektrumları) da açıklanamadı.',
               'Çözüm: quantized energy (paketli enerji, E = hf), wave-particle duality (dalga-parçacık ikiliği).',
-              'Başarı: bu gözlemleri ve atom ile solid (katı) özelliklerini doğru öngördü.'
+              'Başarı: bu observations (gözlemleri) ve atom (atom) ile solid (katı) özelliklerini doğru öngördü.'
             ],
             yanlisKavramlar: [
-              'Işığın intensity (şiddet) değeri artarsa threshold (eşik) altında da elektron kopar',
-              'Quantum (kuantum) küçük cisimlerde bilgi eksikliğinden doğan randomness (rastgelelik) demektir'
+              'Light (ışık) intensity (şiddet) artarsa threshold (eşik) altında da electron (elektron) kopar',
+              'Quantum (kuantum) küçük cisimlerde lack of information (bilgi eksikliği) kaynaklı randomness (rastgelelik) demektir'
             ],
             yanlisKavramIds: ['fotoelektrik_siddet', 'kuantum_rastgele_sanisi'],
-            idealCevap: 'Classical physics (klasik fizik) blackbody radiation (kara cisim ışıması), photoelectric effect (fotoelektrik olay) ve discrete spectrum (ayrık spektrum) olaylarını açıklayamadı. Planck enerjiyi quantized (paketli, E = hf) kabul etti, Einstein ışığı photon (foton) olarak aldı, madde wave behavior (dalga davranışı) gösterdi. Quantum mechanics (kuantum mekaniği) bu gözlemleri ve atom ile solid (katı) özelliklerini doğru öngördüğü için başarılıdır.',
+            idealCevap: 'Classical physics (klasik fizik) blackbody radiation (kara cisim ışıması), photoelectric effect (fotoelektrik olay) ve discrete spectrum (ayrık spektrum) olaylarını açıklayamadı. Planck energy (enerji) quantized (paketli, E = hf) kabul etti, Einstein light (ışık) photon (foton) olarak aldı, matter (madde) wave behavior (dalga davranışı) gösterdi. Quantum mechanics (kuantum mekaniği) bu observations (gözlemleri) ve atom (atom) ile solid (katı) özelliklerini doğru öngördüğü için başarılıdır.',
             yedekSecmeli: {
               soru: 'Quantum mechanics (kuantum mekaniği) neden doğdu?',
               secenekler: [
-                sec('Classical physics (klasik fizik) blackbody, photoelectric, spectra olaylarını açıklayamadı', true, 'Doğru. Üç temel başarısızlık.'),
-                sec('Bilgisayarlar icat edildiği için', false, 'Yanlış. Kuantum bilgisayardan öncedir.'),
-                sec('Newton yanıldığı için her şey değişti', false, 'Yanlış. Klasik fizik büyük ölçekte hâlâ geçerli.'),
-                sec('Işık hiç wave (dalga) olmadığı için', false, 'Yanlış. Işık hem dalga hem parçacık gibi davranır.')
+                sec('Classical physics (klasik fizik) blackbody (kara cisim), photoelectric effect (fotoelektrik olay), spectra (spektrum) olaylarını açıklayamadı', true, 'Doğru. Üç temel failure (başarısızlık).'),
+                sec('Computers (bilgisayar) icat edildiği için', false, 'Yanlış. Quantum mechanics (kuantum mekaniği) computer (bilgisayar) öncesidir.'),
+                sec('Newton yanıldığı için her şey değişti', false, 'Yanlış. Classical physics (klasik fizik) büyük ölçekte hâlâ geçerli.'),
+                sec('Light (ışık) hiç wave (dalga) olmadığı için', false, 'Yanlış. Light (ışık) hem wave (dalga) hem particle (parçacık) gibi davranır.')
               ]
             },
             alt: { soru: 'Classical physics (klasik fizik) için açıklanamayan üç gözlemi state (belirt).' }
@@ -7639,24 +7648,24 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             pdfSoru: null,
             soru: 'Photoelectric effect (fotoelektrik olay) için classical wave theory (klasik dalga teorisi) neden açıklama yapamaz? Explain (açıkla).',
             anahtarFikirler: [
-              'Classical wave (klasik dalga) modelinde intensity (şiddet) arttıkça enerji artar, threshold (eşik) beklenmez.',
-              'Deneyde threshold frequency (eşik frekans) altında elektron hiç kopmaz.',
-              'Elektron tek bir photon (foton) enerjisi alır, enerji birikmez.',
-              'Kinetic energy (kinetik enerji) frequency ile artar, intensity ile değil.'
+              'Classical wave (klasik dalga) modelinde intensity (şiddet) arttıkça energy (enerji) artar, threshold (eşik) beklenmez.',
+              'Deneyde threshold frequency (eşik frekans) altında electron (elektron) hiç kopmaz.',
+              'Electron (elektron) tek bir photon (foton) energy (enerji) alır, energy birikmez.',
+              'Kinetic energy (kinetik enerji) frequency (frekans) ile artar, intensity (şiddet) ile değil.'
             ],
             yanlisKavramlar: [
-              'Elektronlar enerjiyi biriktirip time delay (gecikme) ile çıkar',
-              'Brightness (parlaklık) elektronun enerjisini artırır'
+              'Electron (elektron) energy (enerji) biriktirip time delay (gecikme) ile çıkar',
+              'Brightness (parlaklık) electron (elektron) energy (enerji) değerini artırır'
             ],
             yanlisKavramIds: ['fotoelektrik_siddet', 'fotoelektrik_siddet'],
-            idealCevap: 'Classical wave theory (klasik dalga teorisi) içinde intensity (şiddet) arttıkça enerji artar, yani yeterince parlak ışık her frequency (frekans) değerinde elektron koparmalıydı. Deneyde threshold frequency (eşik frekans) altında hiç elektron kopmaz, üstünde ise gecikmesiz kopar. Einstein: elektron tek bir photon (foton) enerjisi alır, kinetic energy (kinetik enerji) frequency ile artar, intensity yalnızca sayıyı artırır.',
+            idealCevap: 'Classical wave theory (klasik dalga teorisi) içinde intensity (şiddet) arttıkça energy (enerji) artar, yani yeterince parlak light (ışık) her frequency (frekans) değerinde electron (elektron) koparmalıydı. Deneyde threshold frequency (eşik frekans) altında hiç electron kopmaz, üstünde ise no time delay (gecikmesiz) kopar. Einstein: electron tek bir photon (foton) energy (enerji) alır, kinetic energy (kinetik enerji) frequency (frekans) ile artar, intensity (şiddet) yalnızca sayıyı artırır.',
             yedekSecmeli: {
               soru: 'Classical theory (klasik teori) photoelectric effect (fotoelektrik olay) için neyi yanlış bekler?',
               secenekler: [
-                sec('Yeterince parlak ışığın her frequency (frekans) değerinde elektron koparmasını', true, 'Doğru. Deneyde threshold (eşik) altında hiç kopmaz.'),
-                sec('Elektronun hiç kopmamasını', false, 'Yanlış. Klasik teori kopacağını söyler.'),
-                sec('Işığın hızının değişmesini', false, 'Yanlış. Hız konusu değil.'),
-                sec('Metalin erimesini', false, 'Yanlış. Erime konusu değil.')
+                sec('Yeterince parlak light (ışık) her frequency (frekans) değerinde electron (elektron) koparmasını', true, 'Doğru. Deneyde threshold (eşik) altında hiç kopmaz.'),
+                sec('Electron (elektron) hiç kopmaması', false, 'Yanlış. Classical theory (klasik teori) kopacağını söyler.'),
+                sec('Light (ışık) speed (hız) değişmesi', false, 'Yanlış. Speed (hız) konusu değil.'),
+                sec('Metal (metal) melting (erime)', false, 'Yanlış. Melting (erime) konusu değil.')
               ]
             },
             alt: { soru: 'Threshold frequency (eşik frekans) deneyi wave theory (dalga teorisi) modelini nasıl çürütür? Explain (açıkla).' }
@@ -7665,16 +7674,16 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's03-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'einstein', yil: 1905, tekCumle: 'Işığı photon (foton) paketlerine bölüp photoelectric effect (fotoelektrik olay) olayını açıkladı.' },
-        ozet: ['Classical physics (klasik fizik) üç yerde tökezledi', 'E = hf: enerji paket paket (quantized, paketli)', 'Threshold (eşik) altı: intensity (şiddet) işe yaramaz'],
+        kart: { id: 'einstein', yil: 1905, tekCumle: 'Light (ışık) photon (foton) paketlerine bölüp photoelectric effect (fotoelektrik olay) olayını açıkladı.' },
+        ozet: ['Classical physics (klasik fizik) üç yerde tökezledi', 'E = hf: energy (enerji) paket paket (quantized, paketli)', 'Threshold (eşik) altı: intensity (şiddet) işe yaramaz'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Ultraviolet catastrophe (mor ötesi felaketi)', metin: 'Klasik teori kısa wavelength (dalga boyu) değerinde sonsuz enerji buluyordu.' },
-        { baslik: 'Quantized energy (paket enerji)', metin: 'Planck: ışık paket paket yayılır, E = hf.' },
-        { baslik: 'Threshold (eşik)', metin: 'Tek photon (foton) yetmezse parlaklık işe yaramaz.' }
+        { baslik: 'Ultraviolet catastrophe (mor ötesi felaketi)', metin: 'Classical theory (klasik teori) kısa wavelength (dalga boyu) değerinde infinite energy (sonsuz enerji) buluyordu.' },
+        { baslik: 'Quantized energy (paket enerji)', metin: 'Planck: light (ışık) paket paket yayılır, E = hf.' },
+        { baslik: 'Threshold (eşik)', metin: 'Tek photon (foton) yetmezse brightness (parlaklık) işe yaramaz.' }
       ],
       sim: { modul: 'fotoelektrik', params: { f: 3.0, I: 1, metal: 'Na' } }
     },
@@ -7691,9 +7700,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's03-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantum_rastgele_sanisi', agirlik: 1,
         soru: 'Quantum randomness (kuantum rastgeleliği) neden bilgi eksikliği değildir? Explain (açıkla).',
         secenekler: [
-          sec('Doğanın temel yapısıdır, daha çok bilgiyle ortadan kalkmaz', true, 'Doğru. Standart yorumda probability (olasılık) temeldir.'),
-          sec('Aletler yetersiz olduğu için', false, 'Hayır. Daha iyi alet randomness (rastgelelik) durumunu gidermez.'),
-          sec('Yalnızca sıcaklıkla oluşur', false, 'Hayır. Sıcaklıktan bağımsızdır.')
+          sec('Doğanın fundamental (temel) yapısıdır, daha çok information (bilgi) ile ortadan kalkmaz', true, 'Doğru. Standart yorumda probability (olasılık) temeldir.'),
+          sec('Instruments (alet) yetersiz olduğu için', false, 'Hayır. Daha iyi instrument (alet) randomness (rastgelelik) durumunu gidermez.'),
+          sec('Yalnızca temperature (sıcaklık) ile oluşur', false, 'Hayır. Temperature (sıcaklık) değerinden bağımsızdır.')
         ],
         kusurSkin: 'safsizlik'
       }
@@ -7712,40 +7721,40 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: 's04-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ayrik_spektrum', agirlik: 1,
-    soru: 'Hidrojen atomu neden yalnızca belirli renklerde ışır?',
+    soru: 'Hydrogen atom (hidrojen atomu) neden yalnızca belirli renklerde ışır?',
     secenekler: [
-      sec('Enerji seviyeleri ayrık, geçiş farkı kadar foton çıkar', true, 'Doğru. Her renk bir seviye farkına karşılık gelir.'),
-      sec('Atom sıcaklığa göre renk seçer', false, 'Hayır. Renkler seviye farklarından gelir, sıcaklıktan değil.'),
-      sec('Elektron her enerjide dolaşabilir', false, 'Hayır. Yalnızca belirli seviyeler izinlidir.')
+      sec('Energy levels (enerji seviyeleri) ayrık, geçiş farkı kadar photon (foton) çıkar', true, 'Doğru. Her renk bir energy level (enerji seviyesi) farkına karşılık gelir.'),
+      sec('Atom temperature (sıcaklık) ile renk seçer', false, 'Hayır. Renkler energy level (enerji seviyesi) farklarından gelir, temperature (sıcaklık) değil.'),
+      sec('Electron (elektron) her energy (enerji) değerinde dolaşabilir', false, 'Hayır. Yalnızca belirli energy levels (enerji seviyeleri) izinlidir.')
     ],
     kusurSkin: 'vakans'
   };
 
   var o04 = {
     id: 's04-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'debroglie_dalga', agirlik: 1,
-    soru: 'Bilardo topu neden dalga gibi davranmıyor?',
+    soru: 'Bilardo topu neden wave (dalga) gibi davranmıyor?',
     secenekler: [
-      sec('Dalga boyu (h/p) çok küçük kalıyor', true, 'Doğru. Büyük momentum, ihmal edilecek kadar küçük dalga boyu.'),
-      sec('Top atomlardan oluşmadığı için', false, 'Hayır. Top da atomdan oluşur; dalga boyu ölçülemeyecek kadar küçük.'),
-      sec('Dalga özelliği yalnızca ışıkta var', false, 'Hayır. Elektron kırınımı maddenin de dalga olduğunu gösterir.')
+      sec('Wavelength (dalga boyu) (h/p) çok küçük kalıyor', true, 'Doğru. Büyük momentum (momentum), ihmal edilecek kadar küçük wavelength (dalga boyu).'),
+      sec('Top atom (atom) içermediği için', false, 'Hayır. Top da atomdan oluşur; wavelength (dalga boyu) ölçülemeyecek kadar küçük.'),
+      sec('Wave property (dalga özelliği) yalnızca light (ışık) için var', false, 'Hayır. Electron diffraction (elektron kırınımı) matter (madde) için de wave (dalga) davranışını gösterir.')
     ],
     kusurSkin: 'safsizlik'
   };
 
   var o05 = {
     id: 's04-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'atom_kararlilik', agirlik: 1.5,
-    soru: 'Hidrojende elektron, n=1 seviyesinin (−13,6 eV) altına inebilir mi?',
+    soru: 'Hidrojende electron (elektron), n=1 level (seviye) (−13,6 eV) altına inebilir mi?',
     secenekler: [
-      sec('Hayır, n=1 en alt seviye', true, 'Doğru. Altında izinli seviye yok, atom kararlı.'),
-      sec('Evet, ışıma yaparak çekirdeğe düşer', false, 'Yanlış. Klasik tahmin buydu; kuantumda alt seviye var.'),
-      sec('Evet, sıcaklık düşerse', false, 'Yanlış. Sebep sıcaklık değil, dalga doğasıdır.')
+      sec('Hayır, n=1 ground state (temel hal)', true, 'Doğru. Altında izinli level (seviye) yok, atom stable (kararlı).'),
+      sec('Evet, radiation (ışıma) yaparak nucleus (çekirdek) içine düşer', false, 'Yanlış. Klasik tahmin buydu; quantum (kuantum) teoride lower limit (alt sınır) level var.'),
+      sec('Evet, temperature (sıcaklık) düşerse', false, 'Yanlış. Sebep temperature (sıcaklık) değil, wave nature (dalga doğası).')
     ],
     sim: {
       modul: 'bohr',
       onceki: { n: 2, m: 1 },
       sonraki: { n: 1, m: 1, altinaDene: true }
     },
-    acik: 'n=1\'in altında izinli seviye yok; elektron daha aşağı inemez.'
+    acik: 'n=1\'in altında izinli level (seviye) yok; electron (elektron) daha aşağı inemez.'
   };
 
   Q.data.stations.s04 = {
@@ -7764,132 +7773,132 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's04-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Kopenhag', yil: 1913, rivayet: false,
         satirlar: [
-          { kim: 'selin', metin: 'Atom mikroskobu bir elektron arıyor. O neden çekirdeğe düşmüyor?' },
-          { kim: 'bohr', metin: 'Elektron yalnızca belirli seviyelerde durabilir. Seviyeler arası atlarken ışık yayar.' },
-          { kim: 'anlatici', metin: 'On bir yıl sonra de Broglie ekledi: elektron da dalga, yörüngeye tam sayı dalga sığar.' }
+          { kim: 'selin', metin: 'Atom mikroskobu bir electron (elektron) arıyor. O neden nucleus (çekirdek) içine düşmüyor?' },
+          { kim: 'bohr', metin: 'Electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir. Levels arası atlarken photon (foton) yayar.' },
+          { kim: 'anlatici', metin: 'On bir yıl sonra de Broglie ekledi: electron (elektron) da wave (dalga), orbit (yörünge) üzerine tam sayı wave (dalga) sığar.' }
         ]
       },
       {
         id: 's04-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bohr_seviye', agirlik: 1,
-        gorev: 'n=3\'ten n=2\'ye geçişin rengini bul.',
+        gorev: 'n=3\'ten n=2\'ye transition (geçiş) rengini bul.',
         sim: {
           modul: 'bohr',
           params: { n: 3, m: 2 },
           basari: { gecis: [3, 2] }
         },
-        ogrenilen: 'Seviyeler ayrık; geçişte seviye farkı kadar enerjili foton çıkar.'
+        ogrenilen: 'Levels (seviyeler) discrete (ayrık); transition sırasında level farkı kadar enerjili photon çıkar.'
       },
       o03,
       o04,
       o05,
       {
         id: 's04-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'atom_kararlilik', agirlik: 1,
-        iddia: 'Klasik fiziğe göre elektron çekirdek çevresinde sonsuza kadar kararlı döner.',
-        parcalar: ['Klasik fiziğe göre', 'elektron çekirdek çevresinde', 'sonsuza kadar kararlı döner.'],
+        iddia: 'Klasik fiziğe göre electron (elektron) nucleus (çekirdek) çevresinde sonsuza kadar kararlı döner.',
+        parcalar: ['Klasik fiziğe göre', 'electron (elektron) nucleus (çekirdek) çevresinde', 'sonsuza kadar kararlı döner.'],
         yanlisParca: 2,
-        duzeltme: 'Klasikte ivmeli elektron ışıma yapar, enerji kaybeder ve çekirdeğe düşer; kuantum bunu önler.'
+        duzeltme: 'Klasikte ivmeli electron radiation (ışıma) yapar, energy (enerji) kaybeder ve nucleus (çekirdek) içine düşer; quantum (kuantum) mekaniği bunu önler.'
       },
       {
         id: 's04-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'atom_kararlilik', agirlik: 1,
-        soru: 'Kararlılık zincirini sıraya diz',
+        soru: 'Stability (kararlılık) zincirini sıraya diz',
         bloklar: [
-          'Elektron hapsolmuş bir dalgadır',
-          'Yalnızca belirli dalga boyları sığar',
-          'En alt seviyenin enerjisi sıfır değildir',
-          'Elektron daha aşağı düşemez, atom kararlıdır'
+          'Electron (elektron) confined wave (hapsolmuş dalga) olarak davranır',
+          'Yalnızca belirli wavelengths (dalga boyları) sığar',
+          'Ground state (temel hal) enerjisi sıfır değildir',
+          'Electron (elektron) daha aşağı düşemez, atom stable (kararlı)'
         ],
-        sonuc: 'Hapsolmuş dalga, ayrık seviyeler, alt sınır, kararlı atom.'
+        sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), alt sınır, stable atom (kararlı atom).'
       },
       {
         id: 's04-o08', tip: 'patron', baslik: 'Yörünge Canavarı', kavram: null, agirlik: 1,
         canavar: 'bohr', canavarAd: 'Yörünge Canavarı',
-        giris: 'Elektronunu çekirdeğime düşüreceğim! Düşemez diyorsan kanıtla.',
+        giris: 'Electronunu (elektron) nucleus (çekirdek) içine düşüreceğim! Düşemez diyorsan justify (gerekçelendir).',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'atom_kararlilik',
-            soru: 'Atomun en düşük enerji seviyesi neden vardır?',
+            soru: 'Atomun ground state (temel hal) enerjisi neden vardır?',
             secenekler: [
-              sec('Elektron dalgası çekirdek çevresinde sınırlı sığar, alt sınır oluşur', true, 'Doğru. Hapsolmuş dalganın enerjisi sıfır olamaz.'),
-              sec('Çekirdek elektronu iter', false, 'Hayır. Çekirdek elektronu çeker.'),
-              sec('Sıcaklık sıfıra inemez', false, 'Hayır. Sebep sıcaklık değil, dalga doğasıdır.')
+              sec('Electron wave (elektron dalgası) nucleus (çekirdek) çevresinde sığar, lower limit (alt sınır) oluşur', true, 'Doğru. Confined wave (hapsolmuş dalga) enerjisi sıfır olamaz.'),
+              sec('Nucleus (çekirdek) electron (elektron) iter', false, 'Hayır. Nucleus (çekirdek) electron (elektron) çeker.'),
+              sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Sebep temperature (sıcaklık) değil, wave nature (dalga doğası).')
             ],
             alt: {
-              soru: 'Elektronu çekirdeğe daha çok sıkıştırırsan kinetik enerjisi ne olur?',
+              soru: 'Electron nucleus (çekirdek) içine daha çok sıkıştırılırsa kinetic energy (kinetik enerji) ne olur?',
               secenekler: [
-                sec('Artar', true, 'Doğru. Konum daralır, momentum ve kinetik enerji büyür.'),
-                sec('Azalır', false, 'Hayır. Dar alanda dalga boyu kısalır, enerji artar.'),
-                sec('Değişmez', false, 'Hayır. Belirsizlik ilkesi sıkıştırmayı sınırlar.')
+                sec('Artar', true, 'Doğru. Position (konum) daralır, momentum (momentum) ve kinetic energy (kinetik enerji) büyür.'),
+                sec('Azalır', false, 'Hayır. Dar alanda wavelength (dalga boyu) kısalır, energy (enerji) artar.'),
+                sec('Değişmez', false, 'Hayır. Uncertainty principle (belirsizlik ilkesi) sıkıştırmayı sınırlar.')
               ]
             }
           },
           {
             tip: 'acik',
             pdfSoru: 'Briefly explain the stability of the Hydrogen atom using quantum mechanical theory.',
-            soru: 'Hidrojen atomunun kararlılığını kuantum teorisiyle kısaca açıkla.',
+            soru: 'Hydrogen atom (hidrojen atomu) stability (kararlılık) konusunu quantum theory (kuantum teorisi) ile kısaca explain (açıkla).',
             anahtarFikirler: [
-              'Klasikte ışıma yapan elektron çekirdeğe düşmeliydi.',
-              'Kuantumda elektron hapsolmuş dalgadır, enerji seviyeleri ayrıktır.',
-              'En düşük seviyenin enerjisi sıfır değildir, altına inilemez.',
-              'Çekirdeğe sıkışmak kinetik enerjiyi artırır (belirsizlik), denge oluşur.'
+              'Klasikte radiation (ışıma) yapan electron (elektron) nucleus (çekirdek) içine düşmeliydi.',
+              'Quantum (kuantum) teoride electron (elektron) confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık).',
+              'Ground state (temel hal) energy (enerji) sıfır değildir, altına inilemez.',
+              'Nucleus (çekirdek) içine sıkışmak kinetic energy (kinetik enerji) artırır (uncertainty principle, belirsizlik ilkesi), denge oluşur.'
             ],
             yanlisKavramlar: [
-              'Elektron çekirdekten itildiği için düşmez',
-              'Atom sıcaklık yüzünden kararlıdır'
+              'Electron (elektron) nucleus (çekirdek) tarafından itildiği için düşmez',
+              'Atom temperature (sıcaklık) yüzünden kararlıdır'
             ],
             yanlisKavramIds: ['atom_kararlilik', 'sifir_noktasi_sicaklik'],
-            idealCevap: 'Klasik fizikte yörüngedeki elektron ışıma yapıp enerji kaybeder ve çekirdeğe düşerdi. Kuantumda elektron hapsolmuş bir dalgadır, enerjisi ayrık seviyelerdir ve en düşük seviyenin enerjisi sıfır değildir. Çekirdeğe daha çok sıkışmak kinetik enerjiyi artırdığından elektron bir denge durumunda kalır.',
+            idealCevap: 'Klasik fizikte orbit (yörünge) üzerindeki electron (elektron) radiation (ışıma) yapıp energy (enerji) kaybeder ve nucleus (çekirdek) içine düşerdi. Quantum (kuantum) teoride electron confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık) ve ground state (temel hal) enerjisi sıfır değildir. Nucleus içine daha çok sıkışmak kinetic energy (kinetik enerji) artırdığından electron bir denge durumunda kalır.',
             yedekSecmeli: {
-              soru: 'H atomu neden kararlıdır?',
+              soru: 'H atom (H atomu) neden stable (kararlı)?',
               secenekler: [
-                sec('En alt seviyenin altı yok, elektron düşemez', true, 'Doğru. Hapsolmuş dalganın alt enerji sınırı var.'),
-                sec('Elektron çekirdekten itilir', false, 'Yanlış. Çekirdek elektronu çeker.'),
-                sec('Atom çok soğuk olduğu için', false, 'Yanlış. Sıcaklık sebep değil.'),
-                sec('Elektron aslında durur', false, 'Yanlış. Elektron durmaz, en düşük enerjili dalga durumundadır.')
+                sec('Ground state (temel hal) altı yok, electron (elektron) düşemez', true, 'Doğru. Confined wave (hapsolmuş dalga) için lower energy limit (alt enerji sınırı) var.'),
+                sec('Electron nucleus (çekirdek) tarafından itilir', false, 'Yanlış. Nucleus (çekirdek) electron (elektron) çeker.'),
+                sec('Atom çok cold (soğuk) olduğu için', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
+                sec('Electron (elektron) aslında durur', false, 'Yanlış. Electron durmaz, lowest energy (en düşük enerji) wave state (dalga durumu) içindedir.')
               ]
             },
-            alt: { soru: 'Klasik atom modeli neden çöküyordu, kuantum bunu nasıl çözdü?' }
+            alt: { soru: 'Klasik atom modeli neden çöküyordu, quantum (kuantum) teori bunu nasıl çözdü? Explain (açıkla).' }
           },
           {
             tip: 'acik',
             pdfSoru: null,
-            soru: 'Madde dalgası nedir? Günlük hayatta neden dalga davranışı görmeyiz?',
+            soru: 'Matter wave (madde dalgası) nedir, define (tanımla). Günlük hayatta neden wave behavior (dalga davranışı) görmeyiz?',
             anahtarFikirler: [
-              'de Broglie: parçacığın dalga boyu λ = h/p.',
-              'Elektron kırınımı maddenin dalga davrandığını gösterir.',
-              'Büyük cisimde momentum büyük, λ ihmal edilebilir.',
-              'Atom ölçeğinde λ boyutla kıyaslanabilir, dalga etkisi görünür.'
+              'de Broglie: particle (parçacık) wavelength (dalga boyu) λ = h/p.',
+              'Electron diffraction (elektron kırınımı) maddenin dalga davrandığını gösterir.',
+              'Büyük cisimde momentum (momentum) büyük, λ ihmal edilebilir.',
+              'Atom ölçeğinde λ boyutla kıyaslanabilir, wave effect (dalga etkisi) görünür.'
             ],
             yanlisKavramlar: [
-              'Dalga yalnızca ışığa özgüdür',
-              'Büyük cisimler rastgele davranır'
+              'Wave (dalga) yalnızca light (ışık) için geçerlidir',
+              'Büyük cisimler random (rastgele) davranır'
             ],
             yanlisKavramIds: ['debroglie_dalga', 'kuantum_rastgele_sanisi'],
-            idealCevap: 'de Broglie\'ye göre momentumlu her parçacığın dalga boyu λ = h/p\'dir; elektron kırınımı bunu doğrular. Günlük cisimlerde momentum çok büyük olduğundan λ ihmal edilecek kadar küçüktür. Atom boyutunda λ boyutla kıyaslanabilir olduğundan dalga etkisi görünür.',
+            idealCevap: 'de Broglie\'ye göre momentum (momentum) taşıyan her particle (parçacık) wavelength (dalga boyu) λ = h/p\'dir; electron diffraction (elektron kırınımı) bunu doğrular. Günlük cisimlerde momentum (momentum) çok büyük olduğundan λ ihmal edilecek kadar küçüktür. Atom boyutunda λ boyutla kıyaslanabilir olduğundan wave effect (dalga etkisi) görünür.',
             yedekSecmeli: {
-              soru: 'Madde dalga boyu neye bağlıdır?',
+              soru: 'Matter wavelength (madde dalga boyu) neye bağlıdır?',
               secenekler: [
-                sec('Momentuma, λ = h/p', true, 'Doğru. Momentum büyüdükçe λ küçülür.'),
-                sec('Rengine', false, 'Yanlış. Renk bu kavramla ilgisiz.'),
-                sec('Hacmine', false, 'Yanlış. Hacim λ\'yı belirlemez.'),
-                sec('Sıcaklığa yalnızca', false, 'Yanlış. Doğrudan momentuma bağlıdır.')
+                sec('Momentum (momentum), λ = h/p', true, 'Doğru. Momentum (momentum) büyüdükçe λ küçülür.'),
+                sec('Color (renk)', false, 'Yanlış. Color (renk) bu kavramla ilgisiz.'),
+                sec('Volume (hacim)', false, 'Yanlış. Volume (hacim) λ\'yı belirlemez.'),
+                sec('Yalnızca temperature (sıcaklık)', false, 'Yanlış. Doğrudan momentum (momentum) bağlıdır.')
               ]
             },
-            alt: { soru: 'Elektron kırınımı deneyi neyi kanıtlar?' }
+            alt: { soru: 'Electron diffraction (elektron kırınımı) deneyi neyi kanıtlar? Justify (gerekçelendir).' }
           }
         ]
       },
       {
         id: 's04-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'bohr', yil: 1913, tekCumle: 'Atomda elektronun yalnızca belirli seviyelerde durabileceğini gösterdi.' },
-        ozet: ['Seviyeler ayrık, geçişte foton çıkar', 'n=1 en alt seviye, atom kararlı', 'λ = h/p: madde de dalga'],
+        kart: { id: 'bohr', yil: 1913, tekCumle: 'Atomda electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir, diye gösterdi.' },
+        ozet: ['Levels (seviyeler) discrete (ayrık), transition (geçiş) sırasında photon (foton) çıkar', 'n=1 ground state (temel hal), atom stable (kararlı)', 'λ = h/p: matter (madde) de wave (dalga)'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Ayrık seviyeler', metin: 'Elektron yalnızca belirli enerjilerde durur.' },
-        { baslik: 'En alt seviye', metin: 'n=1\'in altı yok; elektron çekirdeğe düşmez.' },
-        { baslik: 'Madde dalgası', metin: 'Her parçacığın λ = h/p dalga boyu vardır.' }
+        { baslik: 'Discrete levels (ayrık seviyeler)', metin: 'Electron (elektron) yalnızca belirli energies (enerjiler) üzerinde durur.' },
+        { baslik: 'Ground state (temel hal)', metin: 'n=1\'in altı yok; electron nucleus (çekirdek) içine düşmez.' },
+        { baslik: 'Matter wave (madde dalgası)', metin: 'Her particle (parçacık) λ = h/p wavelength (dalga boyu) taşır.' }
       ],
       sim: { modul: 'bohr', params: { n: 3, m: 2 } }
     },
@@ -7904,11 +7913,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's04-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
-        soru: 'Hapsolmuş parçacığın en düşük enerjisi neden sıfır değildir?',
+        soru: 'Confined particle (hapsolmuş parçacık) için lowest energy (en düşük enerji) neden sıfır değildir?',
         secenekler: [
-          sec('Sınır koşulu dalganın sığmasını gerektirir', true, 'Doğru. Sıcaklık değil, sınır koşulu sebep.'),
-          sec('Sıcaklık sıfıra inemez', false, 'Hayır. Mutlak sıfırda da E₁ > 0.'),
-          sec('Ölçüm enerjiyi ekler', false, 'Hayır. Ölçüm olmasa da alt enerji vardır.')
+          sec('Boundary condition (sınır koşulu) dalganın sığmasını gerektirir', true, 'Doğru. Temperature (sıcaklık) değil, boundary condition (sınır koşulu) sebep.'),
+          sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Absolute zero (mutlak sıfır) da E₁ > 0.'),
+          sec('Measurement (ölçüm) energy (enerji) ekler', false, 'Hayır. Measurement (ölçüm) olmasa da lower energy (alt enerji) vardır.')
         ],
         kusurSkin: 'tane_siniri'
       }
@@ -7928,21 +7937,21 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: 's05-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'psi_olasilik', agirlik: 1,
-    soru: 'Dalga fonksiyonu ψ(x) fiziksel olarak neyi anlatır?',
+    soru: 'Wave function (dalga fonksiyonu) ψ(x) fiziksel olarak neyi anlatır?',
     secenekler: [
-      sec('|ψ(x)|² bulunma olasılık yoğunluğunu verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi olasılıktır.'),
-      sec('Parçacığın gerçek konumunu', false, 'Hayır. ψ konum vermez, olasılık dağılımı verir.'),
-      sec('Parçacığın enerjisini', false, 'Hayır. Enerji denklemin özdeğeridir.')
+      sec('|ψ(x)|² probability density (olasılık yoğunluğu) verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi probability (olasılık) yoğunluğudur.'),
+      sec('Parçacığın gerçek konumunu', false, 'Hayır. ψ konum vermez, probability distribution (olasılık dağılımı) verir.'),
+      sec('Parçacığın enerjisini', false, 'Hayır. Enerji denklemin eigenvalue (özdeğer) değeridir.')
     ],
     kusurSkin: 'vakans'
   };
 
   var o04 = {
     id: 's05-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'schrodinger_girdi_cikti', agirlik: 1,
-    soru: 'Schrödinger denklemine ne verirsin, ne alırsın?',
+    soru: 'Schrödinger equation (Schrödinger denklemi) için ne verirsin, ne alırsın?',
     secenekler: [
-      sec('Potansiyel V(x) ve sınır koşulu ver; ψ, izinli E\'leri al', true, 'Doğru. Girdi V(x) ve sınır koşulu, çıktı ψ ile E.'),
-      sec('ψ ver, potansiyeli al', false, 'Hayır. Potansiyel girdidir, ψ çıktıdır.'),
+      sec('V(x) ve boundary condition (sınır koşulu) ver; ψ ile izinli E al', true, 'Doğru. Girdi V(x) ve boundary condition, çıktı ψ ile E.'),
+      sec('ψ ver, potansiyeli al', false, 'Hayır. Potential girdidir, ψ çıktıdır.'),
       sec('Enerji ver, konumu al', false, 'Hayır. Enerjiler denklemin çıktısıdır.')
     ],
     kusurSkin: 'tane_siniri'
@@ -7950,11 +7959,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o05 = {
     id: 's05-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'kuantalasma_sinir', agirlik: 1.5,
-    soru: 'Kuyu genişliği L yarıya inerse E₁ ne olur?',
+    soru: 'Potential well (potansiyel kuyusu) genişliği L yarıya inerse E₁ ne olur?',
     secenekler: [
       sec('4 katına çıkar', true, 'Doğru. E ∝ 1/L².'),
-      sec('2 katına çıkar', false, 'Yanlış. Enerji L²\'ye ters orantılıdır: 4 kat.'),
-      sec('Değişmez', false, 'Yanlış. Dar kuyuda dalga boyu kısalır, enerji artar.')
+      sec('2 katına çıkar', false, 'Yanlış. Energy (enerji) L²\'ye ters orantılıdır: 4 kat.'),
+      sec('Değişmez', false, 'Yanlış. Dar well\'de wavelength (dalga boyu) kısalır, enerji artar.')
     ],
     sim: {
       modul: 'kuyu',
@@ -7970,7 +7979,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     ad: 'Dalga odası',
     makine: 'Dalga odası',
     renk: '#00e5ff',
-    konu: 'Schrödinger denklemi, ψ, sonsuz kuyu, kuantalaşma',
+    konu: 'Schrödinger equation (Schrödinger denklemi), ψ, infinite well (sonsuz kuyu), quantization (kuantalaşma)',
     sinavSorulari: ['S5'],
     sureHedefDk: 24,
     patronId: 'schro',
@@ -7981,40 +7990,40 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         yer: 'Zürih', yil: 1926, rivayet: false,
         satirlar: [
           { kim: 'selin', metin: 'Dalga odası: burada her şey tek bir denkleme bağlı.' },
-          { kim: 'schro', metin: 'Dalga fonksiyonu ψ için bir denklem yazdım. Atomun enerjileri denklemden çıktı.' },
-          { kim: 'schro', metin: 'Enerjileri ben eklemedim. Sınır koşullarından kendiliğinden ortaya çıktılar.' }
+          { kim: 'schro', metin: 'Wave function (dalga fonksiyonu) ψ için bir denklem yazdım. Atomun energy levels (enerji seviyeleri) denklemden çıktı.' },
+          { kim: 'schro', metin: 'Enerjileri ben eklemedim. Boundary conditions (sınır koşulları) yüzünden kendiliğinden ortaya çıktılar.' }
         ]
       },
       {
         id: 's05-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'kuantalasma_sinir', agirlik: 1,
-        gorev: 'Kuyu genişliğini 2\'den 1 nm\'ye indir.',
+        gorev: 'Well (kuyu) genişliğini 2\'den 1 nm\'ye indir.',
         sim: {
           modul: 'kuyu',
           params: { L: 2, n: 1 },
           basari: { yariya: true }
         },
-        ogrenilen: 'Duvarda ψ = 0 olduğundan yalnızca belirli dalga boyları sığar; enerji kuantalanır.'
+        ogrenilen: 'Duvarda ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar; energy quantization (enerji kuantalaşması) oluşur.'
       },
       o03,
       o04,
       o05,
       {
         id: 's05-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
-        iddia: 'Sonsuz kuyudaki parçacığın enerjisi, sıcaklık sıfır olmadığı için sıfırdan büyüktür.',
-        parcalar: ['Sonsuz kuyudaki parçacığın enerjisi,', 'sıcaklık sıfır olmadığı için', 'sıfırdan büyüktür.'],
+        iddia: 'Infinite well (sonsuz kuyu) içindeki parçacığın enerjisi, sıcaklık sıfır olmadığı için sıfırdan büyüktür.',
+        parcalar: ['Infinite well (sonsuz kuyu) içindeki parçacığın enerjisi,', 'sıcaklık sıfır olmadığı için', 'sıfırdan büyüktür.'],
         yanlisParca: 1,
-        duzeltme: 'Sebep sıcaklık değil: sınır koşulu dalganın sığmasını gerektirir. Mutlak sıfırda da E₁ > 0.'
+        duzeltme: 'Sebep sıcaklık değil: boundary condition (sınır koşulu) dalganın sığmasını gerektirir. Mutlak sıfırda da E₁ > 0 (zero-point energy, sıfır noktası enerjisi).'
       },
       {
         id: 's05-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'kuantalasma_sinir', agirlik: 1,
-        soru: 'Kuantalaşma zincirini sıraya diz',
+        soru: 'Quantization (kuantalaşma) zincirini sıraya diz',
         bloklar: [
-          'Duvarlarda ψ sıfır olmak zorundadır',
-          'Kuyuya yalnızca tam sayı yarım dalga sığar',
-          'Dalga boyu λ = 2L/n ile sınırlanır',
-          'Enerji E ∝ n²/L² belirli değerler alır'
+          'Walls (duvarlar) üzerinde ψ sıfır olmak zorundadır',
+          'Well (kuyu) içine yalnızca tam sayı yarım dalga sığar',
+          'Wavelength (dalga boyu) λ = 2L/n ile sınırlanır',
+          'Energy (enerji) E ∝ n²/L² belirli değerler alır'
         ],
-        sonuc: 'Sınır koşulu, sığan dalgalar, kısıtlı λ, kuantalı enerji.'
+        sonuc: 'Boundary condition (sınır koşulu), sığan dalgalar, kısıtlı λ, quantized energy (kuantalı enerji).'
       },
       {
         id: 's05-o08', tip: 'patron', baslik: 'Kuantum Kedisi', kavram: null, agirlik: 1,
@@ -8023,89 +8032,89 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         fazlar: [
           {
             tip: 'secmeli', kavram: 'schrodinger_cokme',
-            soru: 'Zamana bağlı Schrödinger denklemi ψ\'yi nasıl değiştirir?',
+            soru: 'Time-dependent Schrödinger equation (zamana bağlı Schrödinger denklemi) ψ\'yi nasıl değiştirir?',
             secenekler: [
-              sec('Düzgün ve belirlenimci biçimde evriltir', true, 'Doğru. Çökme denklemden değil, ölçümden gelir.'),
-              sec('Ölçüm yapınca çökertir', false, 'Hayır. Çökme ayrı bir postülattır, denklemin işi değil.'),
-              sec('Rastgele değiştirir', false, 'Hayır. Denklem rastgele değil, belirlenimcidir.')
+              sec('Düzgün ve belirlenimci biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postülatından gelir.'),
+              sec('Ölçüm yapınca çökertir', false, 'Hayır. Collapse ayrı bir postülattır, denklemin işi değil.'),
+              sec('Rastgele değiştirir', false, 'Hayır. Denklem rastgele değil, deterministic (belirlenimci) yapıdadır.')
             ],
             alt: {
               soru: 'Ĥψ = Eψ matematiksel olarak nasıl bir problemdir?',
               secenekler: [
-                sec('Özdeğer problemi', true, 'Doğru. İzinli E\'ler özdeğerlerdir.'),
-                sec('Başlangıç değer problemi', false, 'Hayır. Bu zamana bağlı denklem için geçerli.'),
-                sec('Olasılık hesabı', false, 'Hayır. Olasılık |ψ|²\'dir, denklem değil.')
+                sec('Eigenvalue problem (özdeğer problemi)', true, 'Doğru. İzinli E\'ler eigenvalues (özdeğerler) olur.'),
+                sec('Initial value problem (başlangıç değer problemi)', false, 'Hayır. Bu zamana bağlı denklem için geçerli.'),
+                sec('Olasılık hesabı', false, 'Hayır. Probability density |ψ|²\'dir, denklem değil.')
               ]
             }
           },
           {
             tip: 'acik',
             pdfSoru: 'For the given potential below, it is required to calculate the wave function and the allowed energies in electron-volts (eV).',
-            soru: 'Sonsuz kuyuda ψ ve izinli enerjiler nasıl bulunur? Mantığı anlat.',
+            soru: 'Infinite well (sonsuz kuyu) için ψ ve allowed energies (izinli enerjiler) nasıl bulunur? Mantığı explain (açıkla).',
             anahtarFikirler: [
-              'Duvarlarda ψ = 0 sınır koşulu uygulanır.',
-              'Çözüm sinüs dalgasıdır: ψ = √(2/L) sin(nπx/L).',
-              'Yalnızca L = nλ/2 ile sığan dalgalar izinlidir.',
+              'Walls (duvarlar) üzerinde ψ = 0 boundary condition (sınır koşulu) uygulanır.',
+              'Çözüm sinüs dalgasıdır (standing wave, duran dalga): ψ = √(2/L) sin(nπx/L).',
+              'Yalnızca L = nλ/2 ile sığan waves (dalgalar) izinlidir.',
               'Enerji E = n²π²ħ²/(2mL²), elektron için yaklaşık 0,376·n²/L² eV (L nm).'
             ],
             yanlisKavramlar: [
-              'Enerji sıcaklıktan gelir',
-              'Kuantalaşma ölçüm sonucudur'
+              'Energy (enerji) sıcaklıktan gelir',
+              'Quantization (kuantalaşma) ölçüm sonucudur'
             ],
             yanlisKavramIds: ['sifir_noktasi_sicaklik', 'kuantalasma_olcum'],
-            idealCevap: 'Duvarlarda ψ = 0 olmalıdır. Çözüm ψ = √(2/L) sin(nπx/L) sinüs dalgasıdır; yalnızca L = nλ/2 ile sığan dalgalar izinlidir. Bu yüzden enerji E = n²π²ħ²/(2mL²) değerleriyle kuantalanır. n = 0 dalga olmadığı için yoktur, en düşük enerji E₁ > 0\'dır.',
+            idealCevap: 'Duvarlarda ψ = 0 olmalıdır (boundary condition, sınır koşulu). Çözüm ψ = √(2/L) sin(nπx/L) sinüs dalgasıdır; yalnızca L = nλ/2 ile sığan dalgalar izinlidir. Bu yüzden energy (enerji) E = n²π²ħ²/(2mL²) değerleriyle quantized (kuantalı) olur. n = 0 dalga olmadığı için yoktur, en düşük enerji E₁ > 0\'dır (zero-point energy, sıfır noktası enerjisi).',
             yedekSecmeli: {
-              soru: 'Sonsuz kuyuda enerji neden kuantalıdır?',
+              soru: 'Infinite well (sonsuz kuyu) içinde energy (enerji) neden quantized (kuantalı) olur?',
               secenekler: [
-                sec('Duvarlarda ψ = 0 olduğundan yalnızca belirli dalga boyları sığar', true, 'Doğru. Sınır koşulu kuantalaşmayı doğurur.'),
-                sec('Ölçüm enerjiyi ayrıklaştırır', false, 'Yanlış. Kuantalaşma ölçümden önce de vardır.'),
+                sec('Duvarlarda ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar', true, 'Doğru. Boundary condition (sınır koşulu) quantization (kuantalaşma) doğurur.'),
+                sec('Measurement (ölçüm) enerjiyi ayrıklaştırır', false, 'Yanlış. Quantization ölçümden önce de vardır.'),
                 sec('Sıcaklık seviyeleri ayırır', false, 'Yanlış. Sıcaklık sebep değil.'),
-                sec('Bantlar oluşur', false, 'Yanlış. Bantlar çok atomlu katıda oluşur.')
+                sec('Bands (bantlar) oluşur', false, 'Yanlış. Bantlar çok atomlu katıda oluşur.')
               ]
             },
-            alt: { soru: 'Sonsuz kuyuda n = 0 neden yoktur ve bu E₁\'e ne söyler?' }
+            alt: { soru: 'Infinite well (sonsuz kuyu) içinde n = 0 neden yoktur ve bu E₁\'e ne söyler? Justify (gerekçelendir).' }
           },
           {
             tip: 'acik',
             pdfSoru: null,
-            soru: 'Schrödinger denklemi çöker mi? Çökme nedir?',
+            soru: 'Schrödinger equation (Schrödinger denklemi) collapse (çökme) yapar mı? Collapse nedir? Define (tanımla).',
             anahtarFikirler: [
-              'Zamana bağlı denklem ψ\'yi düzgün ve belirlenimci evriltir.',
-              'Çökme ayrı bir postülattır ve ölçümle olur.',
-              'Zamandan bağımsız denklem özdeğer problemidir (Ĥψ = Eψ).',
-              'Girdi V(x) ve sınır koşulu, çıktı ψ ve izinli E\'ler.'
+              'Time-dependent equation (zamana bağlı denklem) ψ\'yi düzgün ve deterministic (belirlenimci) evriltir.',
+              'Collapse (çökme) ayrı bir postülattır ve measurement (ölçüm) ile olur.',
+              'Time-independent equation (zamandan bağımsız denklem) eigenvalue problem (özdeğer problemi) olur (Ĥψ = Eψ).',
+              'Girdi V(x) ve boundary condition, çıktı ψ ve allowed energies (izinli enerjiler).'
             ],
             yanlisKavramlar: [
-              'Schrödinger denklemi çöker',
-              'Denklem yalnızca bir olasılık denklemidir'
+              'Schrödinger equation (Schrödinger denklemi) çöker',
+              'Denklem yalnızca bir probability (olasılık) denklemidir'
             ],
             yanlisKavramIds: ['schrodinger_cokme', 'schrodinger_cokme'],
-            idealCevap: 'Schrödinger denklemi çökmez; ψ\'yi zamanla düzgün ve belirlenimci biçimde evriltir. Çökme ayrı bir postülattır ve yalnızca ölçümle olur. Denklemin girdisi potansiyel V(x) ve sınır koşullarıdır, çıktısı ψ ve izinli E değerleridir.',
+            idealCevap: 'Schrödinger equation (Schrödinger denklemi) çökmez; ψ\'yi zamanla düzgün ve deterministic (belirlenimci) biçimde evriltir. Collapse (çökme) ayrı bir postülattır ve yalnızca measurement (ölçüm) ile olur. Denklemin girdisi potential (potansiyel) V(x) ve boundary conditions (sınır koşulları), çıktısı ψ ve allowed energies (izinli enerjiler) E olur.',
             yedekSecmeli: {
-              soru: 'Çökme ne zaman olur?',
+              soru: 'Collapse (çökme) ne zaman olur?',
               secenekler: [
-                sec('Ölçüm sırasında', true, 'Doğru. Çökme ölçüm postülatıdır.'),
-                sec('Denklem çözülürken', false, 'Yanlış. Denklem çökme üretmez.'),
-                sec('Zaman geçtikçe', false, 'Yanlış. Zamanla evrim düzgündür.'),
+                sec('Measurement (ölçüm) sırasında', true, 'Doğru. Collapse ölçüm postülatıdır.'),
+                sec('Denklem çözülürken', false, 'Yanlış. Denklem collapse üretmez.'),
+                sec('Zaman geçtikçe', false, 'Yanlış. Time evolution (zamanla evrim) düzgündür.'),
                 sec('Sıcaklık artınca', false, 'Yanlış. Sıcaklıkla ilgisi yok.')
               ]
             },
-            alt: { soru: 'Zamana bağlı denklemle çökme arasındaki farkı anlat.' }
+            alt: { soru: 'Time-dependent equation (zamana bağlı denklem) ile collapse (çökme) arasındaki farkı compare (karşılaştır).' }
           }
         ]
       },
       {
         id: 's05-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'schro', yil: 1926, tekCumle: 'Dalga fonksiyonunun denklemini yazdı; enerjiler kendiliğinden çıktı.' },
-        ozet: ['Girdi: V(x) ve sınır koşulu', 'Sınır koşulu enerjiyi kuantalar', 'En düşük enerji sıfır olamaz'],
+        kart: { id: 'schro', yil: 1926, tekCumle: 'Wave function (dalga fonksiyonu) denklemini yazdı; energy levels (enerji seviyeleri) kendiliğinden çıktı.' },
+        ozet: ['Girdi: V(x) ve boundary condition (sınır koşulu)', 'Boundary condition enerjiyi quantize (kuantalar) eder', 'Lowest energy (en düşük enerji) sıfır olamaz'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'ψ nedir?', metin: '|ψ|² bulunma olasılık yoğunluğudur.' },
-        { baslik: 'Sınır koşulu', metin: 'Duvarda ψ = 0: yalnızca sığan dalgalar izinli.' },
-        { baslik: 'E₁ > 0', metin: 'n = 0 dalga yok demek; en düşük enerji sıfır değil.' }
+        { baslik: 'ψ nedir?', metin: '|ψ|² probability density (olasılık yoğunluğu) olur.' },
+        { baslik: 'Sınır koşulu', metin: 'Boundary condition (sınır koşulu): duvarda ψ = 0, yalnızca sığan dalgalar izinli.' },
+        { baslik: 'E₁ > 0', metin: 'n = 0 dalga yok demek; lowest energy (en düşük enerji) sıfır değil.' }
       ],
       sim: { modul: 'kuyu', params: { L: 2, n: 1 } }
     },
@@ -8120,10 +8129,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's05-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
-        soru: 'Enerji kuantalaşması nereden gelir?',
+        soru: 'Energy quantization (enerji kuantalaşması) nereden gelir?',
         secenekler: [
-          sec('Sınır koşullarından', true, 'Doğru. Yalnızca sığan çözümler izinli.'),
-          sec('Ölçüm sonucundan', false, 'Hayır. Ölçümden önce de enerjiler ayrıktır.'),
+          sec('Boundary conditions (sınır koşulları)', true, 'Doğru. Yalnızca sığan çözümler izinli.'),
+          sec('Measurement (ölçüm) sonucundan', false, 'Hayır. Ölçümden önce de enerjiler ayrıktır.'),
           sec('Sıcaklıktan', false, 'Hayır. Sıcaklık sebep değil.')
         ],
         kusurSkin: 'safsizlik'
@@ -8143,10 +8152,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: 's06-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'basamak_yansima', agirlik: 1,
-    soru: 'E > V₀ iken parçacığın basamaktan yansıma olasılığı nedir?',
+    soru: 'E > V₀ iken parçacığın step (basamak) potansiyelinden reflection (yansıma) olasılığı nedir?',
     secenekler: [
-      sec('Sıfırdan büyük, dalga kısmen yansır', true, 'Doğru. k₁ ≠ k₂ olduğundan yansıma vardır.'),
-      sec('Sıfır, klasik fizik gibi', false, 'Hayır. Klasikte sıfır, dalga mekaniğinde değil.'),
+      sec('Sıfırdan büyük, wave (dalga) kısmen yansır', true, 'Doğru. k₁ ≠ k₂ olduğundan reflection (yansıma) vardır.'),
+      sec('Sıfır, klasik fizik gibi', false, 'Hayır. Klasikte sıfır, wave mechanics (dalga mekaniği) içinde değil.'),
       sec('Yüzde yüz', false, 'Hayır. E > V₀ ise bir kısmı geçer.')
     ],
     kusurSkin: 'vakans'
@@ -8154,9 +8163,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o04 = {
     id: 's06-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bariyer_sonumlenme', agirlik: 1,
-    soru: 'E < V₀ iken ψ bariyerin içinde ne yapar?',
+    soru: 'E < V₀ iken wave function (dalga fonksiyonu) ψ, barrier (bariyer) içinde ne yapar?',
     secenekler: [
-      sec('Üstel olarak sönümlenir ama sıfır olmaz', true, 'Doğru. Yasak bölgede dalga salınmaz, sönümlenir.'),
+      sec('Üstel olarak sönümlenir ama sıfır olmaz', true, 'Doğru. Forbidden region (yasak bölge) içinde dalga salınmaz, decays (sönümlenir).'),
       sec('Aniden sıfır olur', false, 'Hayır. ψ ve türevi süreklidir, aniden sıfır olamaz.'),
       sec('Salınmaya devam eder', false, 'Hayır. Yasak bölgede dalga salınmaz.')
     ],
@@ -8165,10 +8174,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o05 = {
     id: 's06-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'tunelleme_kalinlik', agirlik: 1.5,
-    soru: 'Bariyeri kalınlaştırırsan geçiş olasılığı ne olur?',
+    soru: 'Barrier (bariyer) kalınlaşırsa transmission probability (geçiş olasılığı) ne olur?',
     secenekler: [
-      sec('Üstel olarak azalır', true, 'Doğru. T ∝ e^(−2κa).'),
-      sec('Doğrusal azalır', false, 'Yanlış. Azalma üsteldir, çok hızlıdır.'),
+      sec('Üstel olarak azalır', true, 'Doğru. Exponential decay (üstel azalma): T ∝ e^(−2κa).'),
+      sec('Doğrusal azalır', false, 'Yanlış. Azalma exponential (üstel), çok hızlıdır.'),
       sec('Değişmez', false, 'Yanlış. Kalınlık arttıkça sönümlenme büyür.')
     ],
     sim: {
@@ -8176,7 +8185,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       onceki: { mod: 'bariyer', E: 2, V0: 4, a: 0.3 },
       sonraki: { mod: 'bariyer', E: 2, V0: 4, a: 1.5 }
     },
-    acik: 'Kalınlık 0,3\'ten 1,5 nm\'ye çıkınca geçiş olasılığı milyarlarca kat düşüyor.'
+    acik: 'Thickness (kalınlık) 0,3\'ten 1,5 nm\'ye çıkınca transmission (geçiş) olasılığı milyarlarca kat düşüyor.'
   };
 
   Q.data.stations.s06 = {
@@ -8185,7 +8194,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     ad: 'Tünel istasyonu',
     makine: 'Tünel istasyonu',
     renk: '#7a5cff',
-    konu: 'Basamak potansiyeli, yansıma, bariyer, tünelleme',
+    konu: 'Step potential (basamak potansiyeli), reflection (yansıma), barrier (bariyer), tunneling (tünelleme)',
     sinavSorulari: ['S5', 'S6'],
     sureHedefDk: 22,
     patronId: 'broglie',
@@ -8195,60 +8204,60 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's06-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Paris', yil: 1924, rivayet: false,
         satirlar: [
-          { kim: 'selin', metin: 'Tünel istasyonunda elektron bir duvarla karşılaşıyor. Geçer mi?' },
-          { kim: 'broglie', metin: 'Madde dalgaysa ışık gibi davranır: engelde hem yansır hem geçebilir.' },
-          { kim: 'selin', metin: 'Önce basamak, sonra bariyer. Dalga davranışı hep aynı.' }
+          { kim: 'selin', metin: 'Tünel istasyonunda electron (elektron) bir duvarla karşılaşıyor. Geçer mi?' },
+          { kim: 'broglie', metin: 'Matter wave (madde dalgası) ise ışık gibi davranır: engelde hem yansır hem geçebilir.' },
+          { kim: 'selin', metin: 'Önce step (basamak), sonra barrier (bariyer). Wave (dalga) davranışı hep aynı.' }
         ]
       },
       {
         id: 's06-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'basamak_yansima', agirlik: 1,
-        gorev: 'Enerjiyi basamaktan yüksek tut, R\'yi 0,1-0,2 yap.',
+        gorev: 'Energy (enerji) step (basamak) yüksekliğinden büyük kalsın; R\'yi 0,1-0,2 yap.',
         sim: {
           modul: 'basamak',
           params: { mod: 'basamak', V0: 1.0, E: 3.0 },
           basari: { R: [0.1, 0.2] }
         },
-        ogrenilen: 'E > V₀ iken bile dalga kısmen yansır; klasikte yansıma olmazdı.'
+        ogrenilen: 'E > V₀ iken bile wave (dalga) kısmen yansır; klasikte reflection (yansıma) olmazdı.'
       },
       o03,
       o04,
       o05,
       {
         id: 's06-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'bariyer_sonumlenme', agirlik: 1,
-        iddia: 'Enerjisi bariyerden düşük parçacık, kuantumda da kesinlikle geçemez.',
-        parcalar: ['Enerjisi bariyerden düşük parçacık,', 'kuantumda da', 'kesinlikle geçemez.'],
+        iddia: 'Enerjisi barrier (bariyer) yüksekliğinden düşük parçacık, kuantumda da kesinlikle geçemez.',
+        parcalar: ['Enerjisi barrier (bariyer) yüksekliğinden düşük parçacık,', 'kuantumda da', 'kesinlikle geçemez.'],
         yanlisParca: 1,
-        duzeltme: 'Kuantumda ψ bariyerde sönümlenir ama sıfır olmaz; ince bariyerden geçiş olasılığı vardır.'
+        duzeltme: 'Kuantumda ψ barrier (bariyer) içinde decays (sönümlenir) ama sıfır olmaz; ince bariyerde tunneling (tünelleme) olasılığı vardır.'
       },
       {
         id: 's06-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'dalga_surekli', agirlik: 1,
-        soru: 'Basamak çözümünü sıraya diz',
+        soru: 'Step potential (basamak) çözümünü sıraya diz',
         bloklar: [
-          'ψ iki bölgede de yazılır',
-          'x = 0\'da ψ ve ψ\' sürekli olmalı',
-          'Süreklilik katsayıları (r, t) belirler',
+          'ψ iki region (bölge) için de yazılır',
+          'x = 0\'da ψ ve ψ\' continuous (sürekli) olmalı',
+          'Continuity (süreklilik) katsayıları (r, t) belirler',
           'R=|r|² ve T=1−R'
         ],
-        sonuc: 'Her bölgede ψ, sınırda süreklilik, katsayılar, R ve T.'
+        sonuc: 'Her region (bölge) için ψ, boundary condition (sınır koşulu) olarak süreklilik, katsayılar, R ve T.'
       },
       {
         id: 's06-o08', tip: 'patron', baslik: 'Dalga Canavarı', kavram: null, agirlik: 1,
         canavar: 'broglie', canavarAd: 'Dalga Canavarı',
-        giris: 'Ben dalgayım! Duvarlara çarparım, bazen içinden geçerim.',
+        giris: 'Ben wave (dalga)! Duvarlara çarparım, bazen içinden geçerim.',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'basamak_yansima',
-            soru: 'E < V₀ olan basamakta yansıma katsayısı R kaçtır?',
+            soru: 'E < V₀ olan step (basamak) potansiyelinde reflection coefficient (yansıma katsayısı) R kaçtır?',
             secenekler: [
-              sec('R = 1', true, 'Doğru. Hepsi yansır; bölge 2\'de yalnızca sönümlü ψ var.'),
+              sec('R = 1', true, 'Doğru. Hepsi yansır; bölge 2\'de yalnızca decaying (sönümlü) ψ var.'),
               sec('R = 0', false, 'Hayır. R = 0 hiç yansıma olmaması demek; E < V₀ iken hepsi yansır.'),
               sec('R = 0,5', false, 'Hayır. E < V₀ iken bölge 2\'ye akı gitmez, yani R = 1.')
             ],
             alt: {
-              soru: 'Tünelleme hangi dalga özelliğinin sonucudur?',
+              soru: 'Tunneling (tünelleme) hangi wave (dalga) özelliğinin sonucudur?',
               secenekler: [
                 sec('ψ\'nin bariyerde sönümlenip sıfır olmaması', true, 'Doğru. Öbür yanda ψ sıfırdan farklı kalır.'),
-                sec('Parçacığın bariyerden zıplaması', false, 'Hayır. Zıplama klasik bir fikir.'),
+                sec('Parçacığın bariyerden zıplaması', false, 'Hayır. Zıplama classical (klasik) bir fikir.'),
                 sec('Bariyerin erimesi', false, 'Hayır. Bariyer değişmez.')
               ]
             }
@@ -8256,9 +8265,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           {
             tip: 'acik',
             pdfSoru: 'Calculate the wave function and the reflection coefficient of the electron for the given potential.',
-            soru: 'Basamak potansiyelinde ψ ve yansıma katsayısı nasıl bulunur? Mantığı anlat.',
+            soru: 'Step potential (basamak potansiyeli) için wave function (dalga fonksiyonu) ve reflection coefficient (yansıma katsayısı) nasıl bulunur? Explain (açıkla): mantığı anlat.',
             anahtarFikirler: [
-              'İki bölgede ψ yazılır: gelen, yansıyan ve geçen dalga.',
+              'İki region (bölge) için ψ yazılır: incident (gelen), reflected (yansıyan) ve transmitted (geçen) wave (dalga).',
               'x = 0\'da ψ ve ψ\' sürekli olmalı.',
               'k₁=√(2mE)/ħ, k₂=√(2m(E−V₀))/ħ ile r=(k₁−k₂)/(k₁+k₂).',
               'R = |r|², T = 1 − R; E < V₀ ise R = 1.'
@@ -8272,23 +8281,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             yedekSecmeli: {
               soru: 'R = |r|² nasıl bulunur?',
               secenekler: [
-                sec('ψ ve ψ\' sürekliliğinden r bulunur', true, 'Doğru. Sınırda süreklilik katsayıları belirler.'),
+                sec('ψ ve ψ\' continuity (sürekliliği) ile r bulunur', true, 'Doğru. Boundary (sınır) noktasında continuity katsayıları belirler.'),
                 sec('E\'yi V₀\'a bölerek', false, 'Yanlış. Bu doğrudan R vermez.'),
                 sec('Sıcaklıkla', false, 'Yanlış. Sıcaklık gerekmez.'),
                 sec('ψ\'nin karesini alarak', false, 'Yanlış. Önce r bulunur.')
               ]
             },
-            alt: { soru: 'Basamakta ψ sürekliliği neden gerekir ve neyi belirler?' }
+            alt: { soru: 'Step (basamak) potansiyelinde ψ continuity (sürekliliği) neden gerekir ve neyi belirler? Justify (gerekçelendir).' }
           },
           {
             tip: 'acik',
             pdfSoru: null,
-            soru: 'Tünelleme nedir? Geçiş olasılığı neden kalınlıkla azalır?',
+            soru: 'Tunneling (tünelleme) nedir? Define (tanımla) ve transmission probability (geçiş olasılığı) neden thickness (kalınlık) ile azalır, explain (açıkla).',
             anahtarFikirler: [
-              'E < V₀ iken klasik geçiş yok; kuantumda ψ bariyerde sönümlenir.',
+              'E < V₀ iken klasik geçiş yok; kuantumda ψ barrier (bariyer) içinde decays (sönümlenir).',
               'ψ sıfırdan farklı kaldığından öbür yanda bulunma olasılığı vardır.',
               'Geçiş olasılığı T ∝ e^(−2κa), kalınlıkla üstel azalır.',
-              'Tünel diyodu ve flash bellek gibi aygıtlarda önemlidir.'
+              'Tunnel diode (tünel diyodu) ve flash memory (flash bellek) gibi aygıtlarda önemlidir.'
             ],
             yanlisKavramlar: [
               'Parçacık bariyerin üstünden zıplar',
@@ -8297,30 +8306,30 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             yanlisKavramIds: ['tunelleme_kalinlik', 'tunelleme_kalinlik'],
             idealCevap: 'E < V₀ iken klasik fizik geçişi yasaklar. Kuantumda ψ bariyerin içinde üstel olarak sönümlenir ama sıfır olmaz, bu yüzden öbür tarafta bulunma olasılığı vardır. Geçiş olasılığı T ∝ e^(−2κa) olduğundan bariyer kalınlaştıkça çok hızlı azalır. Tünel diyodu ve flash bellek gibi aygıtlarda kullanılır.',
             yedekSecmeli: {
-              soru: 'Tünelleme neden olur?',
+              soru: 'Tunneling (tünelleme) neden olur?',
               secenekler: [
-                sec('ψ bariyerde sönümlenir ama sıfır olmaz', true, 'Doğru. Öbür yanda ψ kalır.'),
+                sec('ψ barrier (bariyer) içinde decays (sönümlenir) ama sıfır olmaz', true, 'Doğru. Öbür yanda ψ kalır.'),
                 sec('Parçacık enerji kazanır', false, 'Yanlış. Enerji aynı kalır.'),
                 sec('Bariyer ısınır', false, 'Yanlış. Isı sebep değil.'),
-                sec('Parçacık dalga değildir', false, 'Yanlış. Tünelleme dalga davranışıdır.')
+                sec('Parçacık dalga değildir', false, 'Yanlış. Tunneling wave (dalga) davranışıdır.')
               ]
             },
-            alt: { soru: 'Tünelleme olasılığı neden kalınlıkla üstel azalır?' }
+            alt: { soru: 'Tunneling (tünelleme) olasılığı neden thickness (kalınlık) ile exponentially (üstel) azalır?' }
           }
         ]
       },
       {
         id: 's06-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'broglie', yil: 1924, tekCumle: 'Maddenin de dalga gibi davrandığını önerdi.' },
-        ozet: ['E > V₀ iken bile kısmi yansıma', 'E < V₀: ψ bariyerde sönümlenir', 'Tünelleme kalınlıkla üstel azalır'],
+        kart: { id: 'broglie', yil: 1924, tekCumle: 'Matter (madde) için de wave (dalga) davranışı önerdi.' },
+        ozet: ['E > V₀ iken bile partial reflection (kısmi yansıma)', 'E < V₀: ψ barrier (bariyer) içinde decays (sönümlenir)', 'Tunneling (tünelleme) thickness (kalınlık) ile exponentially (üstel) azalır'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Basamak', metin: 'Dalga basamakta kısmen yansır, kısmen geçer.' },
-        { baslik: 'Yasak bölge', metin: 'E < V₀ iken ψ sönümlenir, sıfır olmaz.' },
-        { baslik: 'Tünelleme', metin: 'İnce bariyerde geçiş olasılığı var, kalınlıkla azalır.' }
+        { baslik: 'Step (basamak)', metin: 'Wave (dalga) step üzerinde kısmen yansır, kısmen geçer.' },
+        { baslik: 'Forbidden region (yasak bölge)', metin: 'E < V₀ iken ψ decays (sönümlenir), sıfır olmaz.' },
+        { baslik: 'Tunneling (tünelleme)', metin: 'İnce barrier (bariyer) için transmission (geçiş) olasılığı var, kalınlıkla azalır.' }
       ],
       sim: { modul: 'basamak', params: { mod: 'bariyer', E: 2, V0: 4, a: 0.3 } }
     },
@@ -8335,10 +8344,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's06-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'dalga_surekli', agirlik: 1,
-        soru: 'Sınırda neden ψ ve ψ\' sürekli olmalıdır?',
+        soru: 'Boundary (sınır) noktasında neden ψ ve ψ\' continuous (sürekli) olmalıdır?',
         secenekler: [
-          sec('Denklemin ikinci türev içermesi bunu gerektirir', true, 'Doğru. Süreksizlik denklemi sağlamaz.'),
-          sec('Süreklilik şart değildir', false, 'Hayır. Süreklilik katsayıları belirler.'),
+          sec('Denklemin second derivative (ikinci türev) içermesi bunu gerektirir', true, 'Doğru. Discontinuity (süreksizlik) denklemi sağlamaz.'),
+          sec('Süreklilik şart değildir', false, 'Hayır. Continuity (süreklilik) katsayıları belirler.'),
           sec('Yalnızca E < V₀ için gerekir', false, 'Hayır. Her durumda gerekir.')
         ],
         kusurSkin: 'safsizlik'
@@ -8358,21 +8367,21 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: 's07-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
-    soru: 'Bir ölçüm hangi değerleri verebilir?',
+    soru: 'Bir measurement (ölçüm) hangi değerleri verebilir?',
     secenekler: [
-      sec('Yalnızca operatörün özdeğerlerini', true, 'Doğru. Her ölçüm özdeğerlerden birini verir.'),
-      sec('Herhangi bir değeri', false, 'Hayır. Yalnızca özdeğerler çıkabilir.'),
-      sec('Özdeğerlerin ortalamasını', false, 'Hayır. Tek ölçümde ortalama değil, bir özdeğer çıkar.')
+      sec('Yalnızca operatörün eigenvalue (özdeğer) değerlerini', true, 'Doğru. Her ölçüm eigenvalue değerlerinden birini verir.'),
+      sec('Herhangi bir değeri', false, 'Hayır. Yalnızca eigenvalue (özdeğer) çıkabilir.'),
+      sec('Eigenvalue ortalamasını', false, 'Hayır. Tek ölçümde ortalama değil, bir eigenvalue çıkar.')
     ],
     kusurSkin: 'vakans'
   };
 
   var o04 = {
     id: 's07-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
-    soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma olasılığı nedir?',
+    soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma probability (olasılık) değeri nedir?',
     secenekler: [
-      sec('|c₁|²', true, 'Doğru. Olasılık katsayının karesidir.'),
-      sec('c₁', false, 'Hayır. Olasılık katsayının kendisi değil karesidir.'),
+      sec('|c₁|²', true, 'Doğru. Probability (olasılık) katsayının karesidir.'),
+      sec('c₁', false, 'Hayır. Probability katsayının kendisi değil karesidir.'),
       sec('c₁ + c₂', false, 'Hayır. Katsayılar toplanmaz; her sonucun olasılığı kendi karesidir.')
     ],
     kusurSkin: 'tane_siniri'
@@ -8380,18 +8389,18 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o05 = {
     id: 's07-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'olcum_cokme', agirlik: 1.5,
-    soru: 'Çöktükten sonra aynı büyüklüğü hemen tekrar ölçersen ne olur?',
+    soru: 'Collapse (çökme) sonrası aynı büyüklüğü hemen tekrar ölçersen ne olur?',
     secenekler: [
-      sec('Aynı sonuç çıkar', true, 'Doğru. ψ artık özdurumda, sonuç değişmez.'),
-      sec('Yeni rastgele sonuç', false, 'Yanlış. Çöken durum özdurumdur, sonuç aynı kalır.'),
-      sec('İki sonucun ortalaması', false, 'Yanlış. Tek ölçüm bir özdeğer verir.')
+      sec('Aynı sonuç çıkar', true, 'Doğru. ψ artık eigenstate (özdurum) içinde, sonuç değişmez.'),
+      sec('Yeni rastgele sonuç', false, 'Yanlış. Çöken durum eigenstate olur, sonuç aynı kalır.'),
+      sec('İki sonucun ortalaması', false, 'Yanlış. Tek ölçüm bir eigenvalue verir.')
     ],
     sim: {
       modul: 'olcum',
       onceki: { c1sq: 0.3 },
       sonraki: { c1sq: 0.3, olcTekrar: true }
     },
-    acik: 'Çöktükten sonra ψ özdurumdur; tekrar ölçüm aynı sonucu verir.'
+    acik: 'Collapse sonrası ψ eigenstate (özdurum) olur; tekrar ölçüm aynı sonucu verir.'
   };
 
   Q.data.stations.s07 = {
@@ -8411,40 +8420,40 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         yer: 'Göttingen', yil: 1926, rivayet: false,
         satirlar: [
           { kim: 'selin', metin: 'Ölçüm laboratuvarı: bakınca ne oluyor?' },
-          { kim: 'born', metin: 'ψ\'nin karesini olasılık olarak yorumladım. Ölçümde sonuç kesin değil, olasılıkla çıkar.' },
-          { kim: 'selin', metin: 'Kuantumun kuralları beş postülat. Ölçüm üçüncü ve dördüncüde.' }
+          { kim: 'born', metin: 'ψ\'nin karesini probability (olasılık) olarak yorumladım. Measurement (ölçüm) sonucu kesin değil, olasılıkla çıkar.' },
+          { kim: 'selin', metin: 'Kuantumun kuralları beş postulate (postülat). Ölçüm üçüncü ve dördüncüde.' }
         ]
       },
       {
         id: 's07-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'olcum_cokme', agirlik: 1,
-        gorev: 'Ölç, sonra tekrar ölç: sonuç ne?',
+        gorev: 'Measure (ölç), sonra tekrar ölç: sonuç ne?',
         sim: {
           modul: 'olcum',
           params: { c1sq: 0.3 },
           basari: { tekrarAyni: true }
         },
-        ogrenilen: 'Ölçüm ψ\'yi sonuca çökertir; hemen tekrar ölçersen aynı sonucu alırsın.'
+        ogrenilen: 'Measurement (ölçüm) ψ\'yi sonuca collapse (çökertir) eder; hemen tekrar ölçersen aynı sonucu alırsın.'
       },
       o03,
       o04,
       o05,
       {
         id: 's07-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'schrodinger_cokme', agirlik: 1,
-        iddia: 'Schrödinger denklemi ψ\'yi ölçüm anında çökertir.',
-        parcalar: ['Schrödinger denklemi', 'ψ\'yi ölçüm anında', 'çökertir.'],
+        iddia: 'Schrödinger denklemi ψ\'yi ölçüm anında collapse (çökme) ettirir.',
+        parcalar: ['Schrödinger denklemi', 'ψ\'yi ölçüm anında', 'collapse (çökme) ettirir.'],
         yanlisParca: 0,
-        duzeltme: 'Denklem ψ\'yi düzgün evriltir. Çökme ayrı postülattır ve yalnızca ölçümle olur.'
+        duzeltme: 'Denklem ψ\'yi düzgün evriltir. Collapse (çökme) ayrı postulate (postülat) olup yalnızca ölçümle olur.'
       },
       {
         id: 's07-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'evrim_belirlenimci', agirlik: 1,
         soru: 'Ölçüm döngüsünü sıraya diz',
         bloklar: [
-          'Sistem özdurumların süperpozisyonundadır',
-          'Ölçüm bir özdeğeri |c|² olasılıkla verir',
-          'ψ o özdurumuna çöker',
+          'Sistem eigenstate (özdurum) superposition (süperpozisyon) içindedir',
+          'Ölçüm bir eigenvalue (özdeğer) değerini |c|² olasılıkla verir',
+          'ψ o eigenstate durumuna collapse (çöker) eder',
           'Sonra denklem ψ\'yi yeniden evriltir'
         ],
-        sonuc: 'Süperpozisyon, olasılıklı sonuç, çökme, belirlenimci evrim.'
+        sonuc: 'Superposition (süperpozisyon), olasılıklı sonuç, collapse (çökme), deterministic (belirlenimci) evrim.'
       },
       {
         id: 's07-o08', tip: 'patron', baslik: 'Olasılık Canavarı', kavram: null, agirlik: 1,
@@ -8453,17 +8462,17 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         fazlar: [
           {
             tip: 'secmeli', kavram: 'olcum_cokme',
-            soru: 'Ölçümden önce sistem özdurumda değilse ne vardır?',
+            soru: 'Ölçümden önce sistem eigenstate (özdurum) içinde değilse ne vardır?',
             secenekler: [
-              sec('Özdurumların süperpozisyonu', true, 'Doğru. ψ = Σ cₙφₙ.'),
+              sec('Eigenstate (özdurum) superposition (süperpozisyonu)', true, 'Doğru. ψ = Σ cₙφₙ.'),
               sec('Gizli ama belirli bir değer', false, 'Hayır. Standart yorumda ölçümden önce belirli değer yoktur.'),
               sec('Sıfır enerji', false, 'Hayır. Enerji sıfır olmak zorunda değil.')
             ],
             alt: {
               soru: 'Hangi büyüklük bir ölçüm sonucu olabilir?',
               secenekler: [
-                sec('Operatörün özdeğeri', true, 'Doğru. Ölçüm özdeğer verir.'),
-                sec('Herhangi bir sayı', false, 'Hayır. Yalnızca özdeğerler.'),
+                sec('Operatörün eigenvalue (özdeğer) değeri', true, 'Doğru. Ölçüm eigenvalue verir.'),
+                sec('Herhangi bir sayı', false, 'Hayır. Yalnızca eigenvalue.'),
                 sec('ψ\'nin kendisi', false, 'Hayır. ψ doğrudan ölçülmez.')
               ]
             }
@@ -8471,71 +8480,71 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           {
             tip: 'acik',
             pdfSoru: 'Explain the principles of quantum mechanics.',
-            soru: 'Kuantum mekaniğinin ilkelerini (postülatlarını) açıkla.',
+            soru: 'Quantum mechanics (kuantum mekaniği) postulate (postülat) ilkelerini explain (açıkla).',
             anahtarFikirler: [
-              'Durum ψ ile tarif edilir, |ψ|² olasılık yoğunluğudur.',
-              'Her gözlenebilir bir operatöre karşılık gelir.',
-              'Ölçüm yalnızca özdeğer verir, durum özdurumuna çöker.',
-              'Zaman evrimi Schrödinger denklemiyle belirlenimcidir.'
+              'State (durum) ψ ile tarif edilir, |ψ|² probability density (olasılık yoğunluğu) olur.',
+              'Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir.',
+              'Ölçüm yalnızca eigenvalue (özdeğer) verir, durum eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Time evolution (zaman evrimi) Schrödinger denklemiyle deterministic (belirlenimci) olur.'
             ],
             yanlisKavramlar: [
               'Kuantum mekaniği her şeyi rastgele yapar',
               'Ölçümde ψ hiç değişmez'
             ],
             yanlisKavramIds: ['evrim_belirlenimci', 'olcum_cokme'],
-            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² olasılık yoğunluğudur. Her gözlenebilir bir operatörle temsil edilir. Ölçüm yalnızca operatörün özdeğerlerinden birini verir ve durum o özdurumuna çöker. Ölçümler arasında ψ, Schrödinger denklemiyle belirlenimci biçimde evrilir.',
+            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker) eder. Ölçümler arasında ψ, Schrödinger denklemiyle deterministic (belirlenimci) biçimde evrilir.',
             yedekSecmeli: {
-              soru: 'Hangisi kuantum postülatlarından biridir?',
+              soru: 'Hangisi kuantum postulate (postülat) ilkelerinden biridir?',
               secenekler: [
-                sec('Her gözlenebilir bir operatöre karşılık gelir', true, 'Doğru. Bu ikinci postülat.'),
-                sec('Ölçüm ψ\'yi değiştirmez', false, 'Yanlış. Ölçüm ψ\'yi özdurumuna çökertir.'),
-                sec('Enerji her değeri alır', false, 'Yanlış. Yalnızca özdeğerler.'),
-                sec('Denklem rastgele evrilir', false, 'Yanlış. Evrim belirlenimcidir.')
+                sec('Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir', true, 'Doğru. Bu ikinci postulate.'),
+                sec('Ölçüm ψ\'yi değiştirmez', false, 'Yanlış. Ölçüm ψ\'yi eigenstate durumuna collapse ettirir.'),
+                sec('Enerji her değeri alır', false, 'Yanlış. Yalnızca eigenvalue.'),
+                sec('Denklem rastgele evrilir', false, 'Yanlış. Evrim deterministic (belirlenimci) olur.')
               ]
             },
-            alt: { soru: 'Postülatların ölçümle ilgili olanlarını anlat.' }
+            alt: { soru: 'Postulate (postülat) ilkelerinin measurement (ölçüm) ile ilgili olanlarını explain (açıkla).' }
           },
           {
             tip: 'acik',
             pdfSoru: 'The third postulate of quantum mechanics concerns measurement; explain how the system changes its state if its current state is not an eigenstate of the observable being measured.',
-            soru: '3. postülat: durum özdurum değilse ölçümde sistem nasıl değişir?',
+            soru: '3. postulate (postülat): durum eigenstate (özdurum) değilse ölçümde sistem nasıl değişir? Explain (açıkla).',
             anahtarFikirler: [
-              'Durum özdurumların süperpozisyonudur: ψ = Σ cₙφₙ.',
-              'Ölçüm özdeğerlerden birini |cₙ|² olasılıkla verir.',
-              'Ölçümden sonra ψ ölçülen özdurumuna çöker.',
+              'State superposition (süperpozisyon) olarak eigenstate (özdurum) toplamıdır: ψ = Σ cₙφₙ.',
+              'Ölçüm eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir.',
+              'Ölçümden sonra ψ ölçülen eigenstate durumuna collapse (çöker) eder.',
               'Hemen tekrar ölçüm aynı sonucu verir.'
             ],
             yanlisKavramlar: [
-              'Ölçüm özdeğerlerin ortalamasını verir',
-              'Çökme Schrödinger denkleminden gelir'
+              'Ölçüm eigenvalue ortalamasını verir',
+              'Collapse Schrödinger denkleminden gelir'
             ],
             yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
-            idealCevap: 'Durum özdurum değilse özdurumların süperpozisyonudur: ψ = Σ cₙφₙ. Ölçüm özdeğerlerden birini |cₙ|² olasılıkla verir. Ölçümden sonra durum ölçülen özdurumuna çöker; hemen tekrar ölçüm aynı sonucu verir.',
+            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir. Ölçümden sonra durum ölçülen eigenstate durumuna collapse (çöker) eder; hemen tekrar ölçüm aynı sonucu verir.',
             yedekSecmeli: {
-              soru: 'Özdurum olmayan durumda ölçümden sonra ne olur?',
+              soru: 'Eigenstate (özdurum) olmayan durumda ölçümden sonra ne olur?',
               secenekler: [
-                sec('Durum ölçülen özdurumuna çöker', true, 'Doğru. Sonuç olasılıkla belirlenir.'),
+                sec('Durum ölçülen eigenstate durumuna collapse (çöker) eder', true, 'Doğru. Sonuç olasılıkla belirlenir.'),
                 sec('Durum hiç değişmez', false, 'Yanlış. Ölçüm durumu değiştirir.'),
-                sec('Durum ortalama özdurumda olur', false, 'Yanlış. Ortalama özdurum diye bir şey yok.'),
-                sec('Sistem yok olur', false, 'Yanlış. Sistem özdurumda kalır.')
+                sec('Durum ortalama eigenstate içinde olur', false, 'Yanlış. Ortalama eigenstate diye bir şey yok.'),
+                sec('Sistem yok olur', false, 'Yanlış. Sistem eigenstate içinde kalır.')
               ]
             },
-            alt: { soru: 'Ölçüm sonucu hangi olasılıkla çıkar ve ölçümden sonra ψ ne olur?' }
+            alt: { soru: 'Measurement (ölçüm) sonucu hangi probability (olasılık) ile çıkar ve ölçümden sonra ψ ne olur? Explain (açıkla).' }
           }
         ]
       },
       {
         id: 's07-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin olasılık olduğunu söyledi.' },
-        ozet: ['Ölçüm özdeğer verir, |c|² olasılıkla', 'Ölçümde ψ özdurumuna çöker', 'Denklem belirlenimci, çökme ölçümle'],
+        ozet: ['Ölçüm eigenvalue (özdeğer) verir, |c|² olasılıkla', 'Ölçümde ψ eigenstate (özdurum) durumuna collapse (çöker) eder', 'Denklem deterministic (belirlenimci), collapse ölçümle'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Süperpozisyon', metin: 'Ölçümden önce durum özdurumların toplamı olabilir.' },
-        { baslik: 'Ölçüm', metin: 'Bir özdeğer çıkar, olasılığı |c|².' },
-        { baslik: 'Çökme', metin: 'Ölçümden sonra ψ o özdurumdadır.' }
+        { baslik: 'Superposition (süperpozisyon)', metin: 'Ölçümden önce durum eigenstate (özdurum) toplamı olabilir.' },
+        { baslik: 'Measurement (ölçüm)', metin: 'Bir eigenvalue (özdeğer) çıkar, olasılığı |c|².' },
+        { baslik: 'Collapse (çökme)', metin: 'Ölçümden sonra ψ o eigenstate (özdurum) içindedir.' }
       ],
       sim: { modul: 'olcum', params: { c1sq: 0.3 } }
     },
@@ -8550,9 +8559,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's07-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
-        soru: 'Ölçümler arasında ψ nasıl evrilir?',
+        soru: 'Ölçümler arasında ψ nasıl evolve (evrilir)?',
         secenekler: [
-          sec('Schrödinger denklemiyle belirlenimci biçimde', true, 'Doğru. Rastgelelik yalnızca ölçümde ortaya çıkar.'),
+          sec('Schrödinger denklemiyle deterministic (belirlenimci) biçimde', true, 'Doğru. Rastgelelik yalnızca ölçümde ortaya çıkar.'),
           sec('Rastgele', false, 'Hayır. Evrim düzgündür.'),
           sec('Hiç evrilmez', false, 'Hayır. Zamanla evrilir.')
         ],
@@ -8573,10 +8582,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o03 = {
     id: 's08-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
-    soru: 'Δx küçülürse Δp ne olur?',
+    soru: 'Δx küçülürse Δp (momentum) ne olur?',
     secenekler: [
       sec('Büyür', true, 'Doğru. ΔxΔp ≥ ħ/2 çarpımı en az sabit kalır.'),
-      sec('Küçülür', false, 'Yanlış. Çarpım sınırlı olduğundan biri küçülünce öbürü büyür.'),
+      sec('Küçülür', false, 'Yanlış. Product (çarpım) sınırlı olduğundan biri küçülünce öbürü büyür.'),
       sec('Değişmez', false, 'Yanlış. ΔxΔp ≥ ħ/2 koşulu bunu zorunlu kılar.')
     ],
     kusurSkin: 'vakans'
@@ -8584,21 +8593,21 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o04 = {
     id: 's08-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_makro', agirlik: 1,
-    soru: 'Bilardo topunda belirsizlik neden fark edilmez?',
+    soru: 'Bilardo topunda uncertainty (belirsizlik) neden fark edilmez?',
     secenekler: [
-      sec('ħ çok küçük, ΔxΔp sınırı ihmal edilebilir', true, 'Doğru. İlke her cisimde geçerli, etkisi görünmez.'),
-      sec('Top belirsizliğe tabi değildir', false, 'Hayır. İlke her cisim için geçerlidir.'),
-      sec('Top bir dalga değildir', false, 'Hayır. Dalga boyu yalnızca ihmal edilecek kadar küçüktür.')
+      sec('ħ çok küçük, ΔxΔp sınırı ihmal edilebilir', true, 'Doğru. Uncertainty principle (belirsizlik ilkesi) her cisimde geçerli, etkisi görünmez.'),
+      sec('Top uncertainty kapsamında değildir', false, 'Hayır. İlke her cisim için geçerlidir.'),
+      sec('Top bir dalga değildir', false, 'Hayır. Wavelength (dalga boyu) yalnızca ihmal edilecek kadar küçüktür.')
     ],
     kusurSkin: 'tane_siniri'
   };
 
   var o05 = {
     id: 's08-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'belirsizlik_dalga', agirlik: 1.5,
-    soru: 'Dalga paketinin konum genişliğini yarıya indirirsen momentum yayılması ne olur?',
+    soru: 'Wave packet (dalga paketi) için position (konum) genişliğini yarıya indirirsen momentum spread (momentum yayılması) ne olur?',
     secenekler: [
       sec('İki katına çıkar', true, 'Doğru. σp = ħ/(2σx).'),
-      sec('Yarıya iner', false, 'Yanlış. Konum daralınca momentum genişler.'),
+      sec('Yarıya iner', false, 'Yanlış. Position daralınca momentum genişler.'),
       sec('Aynı kalır', false, 'Yanlış. İkisi bağlıdır.')
     ],
     sim: {
@@ -8606,7 +8615,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       onceki: { sx: 2 },
       sonraki: { sx: 1 }
     },
-    acik: 'σx 2\'den 1\'e inince σp iki katına çıktı; çarpım ħ/2\'de kaldı.'
+    acik: 'σx 2\'den 1\'e inince σp iki katına çıktı; product (çarpım) ħ/2\'de kaldı.'
   };
 
   Q.data.stations.s08 = {
@@ -8626,40 +8635,40 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         yer: 'Kopenhag', yil: 1927, rivayet: false,
         satirlar: [
           { kim: 'selin', metin: 'Kalibrasyon odası: ölçümü mükemmelleştirmek istiyoruz.' },
-          { kim: 'heis', metin: 'Konum ve momentumu aynı anda keyfi hassas ölçemezsin. Alet yüzünden değil.' },
-          { kim: 'heis', metin: 'Doğa böyle: dalgaysan, keskin konum ve keskin momentum aynı anda olmaz.' }
+          { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas ölçülemez. Alet yüzünden değil.' },
+          { kim: 'heis', metin: 'Doğa böyle: wave (dalga) isen keskin konum ve keskin momentum aynı anda olmaz.' }
         ]
       },
       {
         id: 's08-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'belirsizlik_dalga', agirlik: 1,
-        gorev: 'Konum genişliğini daralt, momentuma bak.',
+        gorev: 'Position width (konum genişliği) daralt, momentuma bak.',
         sim: {
           modul: 'belirsizlik',
           params: { sx: 3 },
           basari: { dar: true }
         },
-        ogrenilen: 'Konum daraldıkça momentum yayılır; çarpım hep en az ħ/2.'
+        ogrenilen: 'Position daraldıkça momentum yayılır; product (çarpım) hep en az ħ/2.'
       },
       o03,
       o04,
       o05,
       {
         id: 's08-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'belirsizlik_alet', agirlik: 1,
-        iddia: 'Belirsizlik, ölçüm aletimizin yeterince hassas olmamasından kaynaklanır.',
-        parcalar: ['Belirsizlik,', 'ölçüm aletimizin yeterince', 'hassas olmamasından kaynaklanır.'],
+        iddia: 'Uncertainty (belirsizlik), ölçüm aletimizin yeterince hassas olmamasından kaynaklanır.',
+        parcalar: ['Uncertainty (belirsizlik),', 'ölçüm aletimizin yeterince', 'hassas olmamasından kaynaklanır.'],
         yanlisParca: 1,
-        duzeltme: 'Belirsizlik alet kusuru değil, dalga doğasının temel sonucudur.'
+        duzeltme: 'Uncertainty (belirsizlik) alet kusuru değil, wave nature (dalga doğası) temel sonucudur.'
       },
       {
         id: 's08-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'belirsizlik_dalga', agirlik: 1,
-        soru: 'Belirsizlik zincirini sıraya diz',
+        soru: 'Uncertainty (belirsizlik) zincirini sıraya diz',
         bloklar: [
-          'Parçacık bir dalga paketidir',
-          'Keskin konum çok dalga boyunun toplamıdır',
-          'Çok dalga boyu geniş momentum demektir',
+          'Parçacık bir wave packet (dalga paketi) olur',
+          'Keskin konum çok wavelength (dalga boyu) toplamıdır',
+          'Çok wavelength geniş momentum demektir',
           'ΔxΔp ≥ ħ/2'
         ],
-        sonuc: 'Dalga paketi, keskin konum, geniş momentum, ΔxΔp ≥ ħ/2.'
+        sonuc: 'Wave packet (dalga paketi), keskin konum, geniş momentum, ΔxΔp ≥ ħ/2.'
       },
       {
         id: 's08-o08', tip: 'patron', baslik: 'Belirsizlik Canavarı', kavram: null, agirlik: 1,
@@ -8668,17 +8677,17 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         fazlar: [
           {
             tip: 'secmeli', kavram: 'eslenik_degisken',
-            soru: 'Konum ve momentum neden aynı anda keyfi hassas ölçülemez?',
+            soru: 'Position (konum) ve momentum neden aynı anda keyfi hassas ölçülemez?',
             secenekler: [
-              sec('Operatörleri değişmez, ortak özdurumları yoktur', true, 'Doğru. [x,p] = iħ ≠ 0.'),
+              sec('Operatörleri commute (değişme) yapmaz, ortak eigenstate (özdurum) yoktur', true, 'Doğru. [x,p] = iħ ≠ 0.'),
               sec('Aletlerimiz yetersizdir', false, 'Hayır. Alet kusuru değil, doğanın yapısı.'),
               sec('Ölçüm parçacığı bozar, tek sebep bu', false, 'Hayır. Ölçüm olmasa da ilke geçerlidir.')
             ],
             alt: {
-              soru: '[x, p] = iħ ne anlama gelir?',
+              soru: '[x, p] = iħ commutator (komütatör) ne anlama gelir?',
               secenekler: [
-                sec('x ve p operatörleri değişmez', true, 'Doğru. Bu yüzden ortak özdurumları yok.'),
-                sec('x ve p eşittir', false, 'Hayır. Bu bir eşitlik değil, değişme bağıntısı.'),
+                sec('x ve p operatörleri commute etmez', true, 'Doğru. Bu yüzden ortak eigenstate yok.'),
+                sec('x ve p eşittir', false, 'Hayır. Bu bir eşitlik değil, commutation relation (değişme bağıntısı).'),
                 sec('p sıfırdır', false, 'Hayır. p sıfır olmak zorunda değil.')
               ]
             }
@@ -8686,38 +8695,38 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           {
             tip: 'acik',
             pdfSoru: 'Explain the uncertainty principle and why it is impossible to simultaneously measure conjugate variables with unlimited precision.',
-            soru: 'Belirsizlik ilkesini açıkla. Eşlenik değişkenler neden aynı anda keyfi hassas ölçülemez?',
+            soru: 'Uncertainty principle (belirsizlik ilkesi) explain (açıkla). Conjugate variables (eşlenik değişkenler) neden aynı anda keyfi hassas ölçülemez?',
             anahtarFikirler: [
               'ΔxΔp ≥ ħ/2: biri keskinleşince öbürü yayılır.',
-              'Dalga paketi: keskin konum çok dalga boyu gerektirir.',
-              'Konum ve momentum operatörleri değişmez ([x,p] = iħ).',
-              'Alet kusuru değil, doğanın (dalga doğasının) temel sınırı.'
+              'Wave packet (dalga paketi): keskin konum çok wavelength (dalga boyu) gerektirir.',
+              'Konum ve momentum operator (operatör) değişmez, yani commute etmez ([x,p] = iħ).',
+              'Alet kusuru değil, doğanın (wave nature, dalga doğası) temel sınırı.'
             ],
             yanlisKavramlar: [
-              'Belirsizlik ölçüm aletinin kusurudur',
+              'Uncertainty ölçüm aletinin kusurudur',
               'Ölçüm parçacığı bozduğu için olur, tek sebep bu'
             ],
             yanlisKavramIds: ['belirsizlik_alet', 'belirsizlik_alet'],
-            idealCevap: 'Belirsizlik ilkesi ΔxΔp ≥ ħ/2 der: biri keskinleşince öbürü yayılır. Sebep dalga doğasıdır; keskin bir konum çok sayıda dalga boyunun toplamını gerektirir, bu da geniş bir momentum dağılımıdır. Konum ve momentum operatörleri değişmediği için ortak özdurumları yoktur. Bu alet kusuru değil, doğanın temel sınırıdır.',
+            idealCevap: 'Uncertainty principle (belirsizlik ilkesi) ΔxΔp ≥ ħ/2 der: biri keskinleşince öbürü yayılır. Sebep wave nature (dalga doğası) olup keskin bir konum çok sayıda wavelength (dalga boyu) toplamını gerektirir, bu da geniş bir momentum distribution (dağılımı) demektir. Position (konum) ve momentum operator (operatör) değişmediği için ortak eigenstate (özdurum) yoktur. Bu alet kusuru değil, doğanın temel sınırıdır.',
             yedekSecmeli: {
-              soru: 'Belirsizlik ilkesi neden vardır?',
+              soru: 'Uncertainty principle (belirsizlik ilkesi) neden vardır?',
               secenekler: [
-                sec('Parçacığın dalga doğasından', true, 'Doğru. Keskin konum geniş momentum demektir.'),
+                sec('Parçacığın wave nature (dalga doğası) özelliğinden', true, 'Doğru. Keskin konum geniş momentum demektir.'),
                 sec('Aletler yetersiz olduğundan', false, 'Yanlış. İdeal alette de geçerli.'),
                 sec('Sıcaklık yüzünden', false, 'Yanlış. Sıcaklıktan bağımsız.'),
                 sec('Sadece elektronda', false, 'Yanlış. Her cisimde geçerli, büyükte ihmal edilir.')
               ]
             },
-            alt: { soru: 'ΔxΔp ≥ ħ/2 neden dalga doğasından kaynaklanır?' }
+            alt: { soru: 'ΔxΔp ≥ ħ/2 neden wave nature (dalga doğası) kaynaklıdır? Explain (açıkla).' }
           },
           {
             tip: 'acik',
             pdfSoru: null,
-            soru: 'Eşlenik değişken nedir? Örnek ver ve günlük hayatta neden görmediğimizi anlat.',
+            soru: 'Conjugate variable (eşlenik değişken) nedir? Define (tanımla), örnek ver ve günlük hayatta neden görmediğimizi explain (açıkla).',
             anahtarFikirler: [
-              'Eşlenik çift: aynı anda keyfi hassas ölçülemeyen iki büyüklük.',
-              'Örnek: konum x ve momentum p.',
-              'Operatörleri değişmediği için ortak özdurumları yoktur.',
+              'Conjugate pair (eşlenik çift): aynı anda keyfi hassas ölçülemeyen iki büyüklük.',
+              'Örnek: position (konum) x ve momentum p.',
+              'Operatörleri commute etmediği için ortak eigenstate (özdurum) yoktur.',
               'Günlük cisimde etki ihmal edilir, çünkü ħ çok küçüktür.'
             ],
             yanlisKavramlar: [
@@ -8725,32 +8734,32 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
               'Yalnızca elektron gibi küçük parçacıklarda geçerlidir'
             ],
             yanlisKavramIds: ['eslenik_degisken', 'belirsizlik_makro'],
-            idealCevap: 'Eşlenik değişkenler, aynı anda keyfi hassas ölçülemeyen büyüklük çiftidir; örneğin konum ve momentum. Operatörleri değişmediği için ortak özdurumları yoktur. Günlük cisimlerde ħ çok küçük olduğundan sınır ihmal edilir.',
+            idealCevap: 'Conjugate variables (eşlenik değişkenler), aynı anda keyfi hassas ölçülemeyen büyüklük çiftidir; örneğin position (konum) ve momentum. Operatörleri commute etmediği için ortak eigenstate (özdurum) yoktur. Günlük cisimlerde ħ çok küçük olduğundan sınır ihmal edilir.',
             yedekSecmeli: {
-              soru: 'Hangisi bir eşlenik çifttir?',
+              soru: 'Hangisi bir conjugate pair (eşlenik çift) olur?',
               secenekler: [
-                sec('Konum ve momentum', true, 'Doğru. Operatörleri değişmez.'),
+                sec('Konum ve momentum', true, 'Doğru. Operatörleri commute etmez.'),
                 sec('Kütle ve hacim', false, 'Yanlış. Bu çift için ilke yok.'),
                 sec('Sıcaklık ve renk', false, 'Yanlış. Eşlenik çift değil.'),
                 sec('Hız ve ivme', false, 'Yanlış. Bu eşlenik çift değil.')
               ]
             },
-            alt: { soru: 'Konum ve momentum neden eşlenik değişken sayılır?' }
+            alt: { soru: 'Position ve momentum neden conjugate variable sayılır? Justify (gerekçelendir).' }
           }
         ]
       },
       {
         id: 's08-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'heis', yil: 1927, tekCumle: 'Konum ve momentumun aynı anda keskin olamayacağını gösterdi.' },
-        ozet: ['ΔxΔp ≥ ħ/2', 'Sebep dalga doğası, alet değil', 'Günlük cisimde etki ihmal edilir'],
+        kart: { id: 'heis', yil: 1927, tekCumle: 'Position (konum) ve momentumun aynı anda keskin olamayacağını gösterdi.' },
+        ozet: ['ΔxΔp ≥ ħ/2', 'Sebep wave nature (dalga doğası), alet değil', 'Günlük cisimde etki ihmal edilir'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Dalga paketi', metin: 'Parçacık, dalga paketi gibi davranır.' },
-        { baslik: 'Keskin konum', metin: 'Konum daralırsa momentum yayılır.' },
-        { baslik: 'Alet değil', metin: 'Belirsizlik ölçüm kusuru değil, doğanın sınırı.' }
+        { baslik: 'Wave packet (dalga paketi)', metin: 'Parçacık, wave packet gibi davranır.' },
+        { baslik: 'Keskin konum', metin: 'Position (konum) daralırsa momentum yayılır.' },
+        { baslik: 'Alet değil', metin: 'Uncertainty (belirsizlik) ölçüm kusuru değil, doğanın sınırı.' }
       ],
       sim: { modul: 'belirsizlik', params: { sx: 3 } }
     },
@@ -8765,19 +8774,19 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's08-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'eslenik_degisken', agirlik: 1,
-        soru: 'Hangi operatör çifti değişmez ve belirsizlik verir?',
+        soru: 'Hangi operator (operatör) çifti commute etmez ve uncertainty (belirsizlik) verir?',
         secenekler: [
           sec('Konum ve momentum', true, 'Doğru. [x,p] = iħ.'),
-          sec('Konum ve konum', false, 'Hayır. Aynı operatör kendisiyle değişir.'),
+          sec('Konum ve konum', false, 'Hayır. Aynı operatör kendisiyle commute eder.'),
           sec('Kütle ve yük', false, 'Hayır. Bunlar sayıdır, operatör değil.')
         ],
         kusurSkin: 'safsizlik'
       },
       {
         id: 's08-t05', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_alet', agirlik: 1,
-        soru: 'Belirsizlik ilkesi neden alet kusuru değildir?',
+        soru: 'Uncertainty principle (belirsizlik ilkesi) neden alet kusuru değildir?',
         secenekler: [
-          sec('İdeal alette de geçerli, dalga doğasının sonucudur', true, 'Doğru. Alet kusuru değil, doğanın sınırı.'),
+          sec('İdeal alette de geçerli, wave nature (dalga doğası) sonucudur', true, 'Doğru. Alet kusuru değil, doğanın sınırı.'),
           sec('Aletler hep mükemmeldir', false, 'Hayır. Mesele aletin kalitesi değil.'),
           sec('Yalnızca sıcaklıkla ilgilidir', false, 'Hayır. Sıcaklıktan bağımsızdır.')
         ],
@@ -9369,6 +9378,342 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   document.addEventListener('keydown', onKey);
   document.addEventListener('visibilitychange', onVis);
+})();
+
+/* 97-tekrar.js (A10) Tekrar Merkezi: Terimler (glossary), Test (quiz), Açıklama kartları, Sınav tarzı.
+ * Ekler: Q.tekrar {open, close, terimler, havuz}. Ana oyun ilerlemesine/voltaja/kısa devreye DOKUNMAZ.
+ * Kayıt: yalnızca localStorage["cip-hatti-tekrar-v1"] (son skor, yanlış sorular), try/catch ile.
+ * Bağımlı (çalışma anında): Q.data.stations.*, Q.ui.options/textbox, Q.claude (isteğe bağlı), Q.util.
+ * Kilit durumundan bağımsız: tüm yüklü istasyonlar tekrar için açıktır. */
+(function(){
+  'use strict';
+
+  var KEY = 'cip-hatti-tekrar-v1';
+  var root = null, body = null, tabsEl = null, aktifSekme = 'terim', onEsc = null;
+
+  /* ---------- kayıt ---------- */
+  function yukle(){
+    try { var r = JSON.parse(localStorage.getItem(KEY)); if (r && typeof r === 'object') return { son: r.son || null, yanlis: Array.isArray(r.yanlis) ? r.yanlis : [] }; } catch (e) { /* bozuk/yok */ }
+    return { son: null, yanlis: [] };
+  }
+  function yaz(k){ try { localStorage.setItem(KEY, JSON.stringify(k)); } catch (e) { /* kapalı */ } }
+
+  /* ---------- yardımcılar ---------- */
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function btn(text, cls, fn){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
+  function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
+  function stAd(id){ var s = Q.data.stations[id]; return id.toUpperCase() + ' · ' + (s && s.ad || id); }
+  function mix(a){ return Q.util && Q.util.shuffle ? Q.util.shuffle(a) : a.slice().sort(function(){ return Math.random() - 0.5; }); }
+
+  /* ---------- terim çıkarma ---------- */
+  var STOP = {}; 've bir ile de da bu şu o en her hiç hic mi ne ya ki ama gibi için icin daha çok cok sadece yalnızca ise olan olarak bunu onu'.split(' ').forEach(function(w){ STOP[w] = 1; });
+  var RE = /(?<![\p{L}'\-])([A-Za-z][A-Za-z'\-]*(?: [A-Za-z][A-Za-z'\-]*){0,3}) \(([^()0-9=+\/]{2,48})\)/gu;
+
+  function metinler(o, out){
+    if (typeof o === 'string') { if (o.indexOf('(') >= 0) out.push(o); }
+    else if (Array.isArray(o)) o.forEach(function(x){ metinler(x, out); });
+    else if (o && typeof o === 'object') Object.keys(o).forEach(function(k){ if (k !== 'sim' && k !== 'params') metinler(o[k], out); });
+    return out;
+  }
+  function temizEn(s, tr){
+    var w = s.split(' '), n = tr.split(',')[0].trim().split(/\s+/).length;
+    while (w.length && (STOP[w[0].toLowerCase()] || w.length > n)) w.shift();
+    if (!w.length) return '';
+    var t = w.join(' ');
+    if (/^[A-Z][a-z]/.test(t) && !/[A-Z]/.test(t.slice(1)) && t.indexOf(' ') < 0) t = t.toLowerCase();
+    return t;
+  }
+  function cikar(metin, sink){
+    RE.lastIndex = 0; var m;
+    while ((m = RE.exec(metin))) {
+      var en = m[1], tr = m[2].trim(), c = /^([A-Za-z][A-Za-z' \-]*), (.+)$/.exec(tr);
+      if (c) { en = c[1]; tr = c[2]; }
+      tr = tr.replace(/\s+/g, ' '); en = temizEn(en, tr); if (/,/.test(tr)) tr = tr.split(',')[0].trim();
+      if (!en || en.length < 3 || tr.length < 2) continue;
+      if (/^(ör|yani|bkz|kısaca)/i.test(tr)) continue;
+      sink(en, tr);
+    }
+  }
+  var CURATED = [
+    ['wave function', 'dalga fonksiyonu'], ['probability density', 'olasılık yoğunluğu'], ['eigenvalue', 'özdeğer'], ['eigenfunction', 'özfonksiyon'],
+    ['potential well', 'potansiyel kuyusu'], ['potential barrier', 'potansiyel bariyeri'], ['tunneling', 'tünelleme'], ['bandgap', 'yasak enerji aralığı'],
+    ['valence band', 'değerlik bandı'], ['conduction band', 'iletim bandı'], ['Fermi level', 'Fermi seviyesi'], ['DOS (density of states)', 'durum yoğunluğu'],
+    ['Miller indices', 'Miller indisleri'], ['unit cell', 'birim hücre'], ['lattice', 'kafes'], ['lattice constant', 'kafes sabiti'], ['crystal structure', 'kristal yapı'],
+    ['basis', 'baz (atom grubu)'], ['primitive cell', 'ilkel hücre'], ['simple cubic (SC)', 'basit kübik'], ['body-centered cubic (BCC)', 'cisim merkezli kübik'],
+    ['face-centered cubic (FCC)', 'yüzey merkezli kübik'], ['diamond structure', 'elmas yapı'], ['coordination number', 'koordinasyon sayısı'],
+    ['packing fraction', 'doluluk oranı'], ['reciprocal lattice', 'ters kafes'], ['crystal plane', 'kristal düzlemi'], ['intercept', 'eksen kesim noktası'],
+    ['single crystal', 'tek kristal'], ['polycrystalline', 'çok kristalli'], ['amorphous', 'amorf (düzensiz)'], ['grain boundary', 'tane sınırı'], ['vacancy', 'boşluk kusuru'],
+    ['dislocation', 'dislokasyon'], ['impurity', 'safsızlık'], ['dopant', 'katkı atomu'], ['blackbody radiation', 'kara cisim ışıması'], ['photoelectric effect', 'fotoelektrik olay'],
+    ['photon', 'foton'], ['work function', 'iş fonksiyonu'], ['threshold frequency', 'eşik frekansı'], ['stopping potential', 'durdurma potansiyeli'], ['quantization', 'nicemleme'],
+    ['de Broglie wavelength', 'de Broglie dalga boyu'], ['wave-particle duality', 'dalga-parçacık ikiliği'], ['uncertainty principle', 'belirsizlik ilkesi'],
+    ['Schrödinger equation', 'Schrödinger denklemi'], ['normalization', 'normalizasyon'], ['expectation value', 'beklenen değer'], ['operator', 'operatör'],
+    ['Pauli exclusion principle', 'Pauli dışlama ilkesi'], ['spin', 'spin'], ['Bohr model', 'Bohr modeli'], ['energy level', 'enerji seviyesi'], ['ground state', 'temel hal'],
+    ['excited state', 'uyarılmış hal'], ['boundary condition', 'sınır koşulu'], ['effective mass', 'etkin kütle'], ['intrinsic semiconductor', 'katkısız yarıiletken'],
+    ['derive', 'türet'], ['calculate', 'hesapla'], ['explain', 'açıkla'], ['sketch', 'çiz'], ['show', 'göster'], ['justify', 'gerekçelendir'],
+    ['compare', 'karşılaştır'], ['define', 'tanımla'], ['state', 'belirt'], ['determine', 'belirle']
+  ];
+  var terimCache = null;
+  function terimler(){
+    if (terimCache && terimCache.n === stIds().length) return terimCache.v;
+    var v = [], gor = {};
+    stIds().forEach(function(id){
+      metinler(Q.data.stations[id], []).forEach(function(t){
+        cikar(t, function(en, tr){
+          var k = en.toLowerCase(); if (gor[k]) return; gor[k] = 1;
+          v.push({ en: en, tr: tr, g: id });
+        });
+      });
+    });
+    CURATED.forEach(function(c){ v.push({ en: c[0], tr: c[1], g: 'temel' }); });
+    var enler = {}; v.forEach(function(t){ enler[t.en.toLowerCase()] = 1; });
+    v = v.filter(function(t){ return t.g === 'temel' || !enler[t.tr.toLowerCase()]; });
+    terimCache = { n: stIds().length, v: v };
+    return v;
+  }
+
+  /* ---------- soru havuzu ---------- */
+  function kopya(sec){ return sec.map(function(s){ return { t: s.t, dogru: !!s.dogru, neden: s.neden || '' }; }); }
+  function havuz(){
+    var out = [], gor = {};
+    function ekle(st, soru, sec, kavram, ek){
+      if (!soru || !sec || sec.length < 2 || gor[soru]) return;
+      if (sec.filter(function(s){ return s.dogru; }).length !== 1) return;
+      gor[soru] = 1; out.push({ st: st, soru: soru, secenekler: kopya(sec), kavram: kavram || null, ek: ek || '' });
+    }
+    stIds().forEach(function(id){
+      var s = Q.data.stations[id];
+      (s.engeller || []).concat(s.tekrarHavuzu || []).forEach(function(e){
+        if (e.tip === 'dusman') ekle(id, e.soru, e.secenekler, e.kavram);
+        else if (e.tip === 'tahmin') ekle(id, e.soru, e.secenekler, e.kavram, e.acik);
+        else if (e.tip === 'tuzak' && e.parcalar && e.parcalar.length > 1) {
+          ekle(id, 'Bu cümlenin hangi parçası yanlış? "' + e.iddia + '"',
+            e.parcalar.map(function(p, i){ return { t: p, dogru: i === e.yanlisParca, neden: e.duzeltme ? 'Doğrusu: ' + e.duzeltme : '' }; }), e.kavram);
+        } else if (e.tip === 'patron') {
+          (e.fazlar || []).forEach(function(f){
+            if (f.tip === 'secmeli') ekle(id, f.soru, f.secenekler, e.kavram);
+            if (f.yedekSecmeli) ekle(id, f.yedekSecmeli.soru, f.yedekSecmeli.secenekler, null);
+          });
+        }
+      });
+    });
+    return out;
+  }
+  function acikSorular(){
+    var out = [];
+    stIds().forEach(function(id){
+      ((Q.data.stations[id].engeller || [])).forEach(function(e){
+        if (e.tip !== 'patron') return;
+        (e.fazlar || []).forEach(function(f){ if (f.tip === 'acik' && f.soru) out.push({ st: id, f: f }); });
+      });
+    });
+    return out;
+  }
+
+  /* ---------- arayüz iskeleti ---------- */
+  function css(){
+    if (document.getElementById('tk-css')) return;
+    var s = el('style'); s.id = 'tk-css';
+    s.textContent = '#tk-root{position:fixed;inset:0;z-index:2000;background:var(--bg);color:var(--ink);display:flex;flex-direction:column;font-family:var(--font-b);padding:12px 16px;gap:10px;box-sizing:border-box}' +
+      '#tk-root h2{margin:0;font-family:var(--font-d);font-size:26px}.tk-top{display:flex;align-items:center;justify-content:space-between;gap:10px}' +
+      '.tk-tabs{display:flex;gap:8px;flex-wrap:wrap}.tk-tabs .btn[aria-selected=true]{background:var(--accent);color:var(--accent-ink)}' +
+      '.tk-body{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:10px}' +
+      '.tk-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.tk-row input[type=search],.tk-row select{background:var(--panel2);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:6px 10px;font:inherit;min-width:200px}' +
+      '.tk-g{margin:8px 0 2px;color:var(--cyan);font-family:var(--font-d);font-size:19px}.tk-t{display:flex;gap:10px;padding:5px 10px;border-bottom:1px dashed rgba(255,255,255,.18);align-items:baseline;flex-wrap:wrap}' +
+      '.tk-t b{min-width:240px}.tk-t .tr{color:var(--muted)}.tk-t .gizli{cursor:pointer;color:var(--cyan);text-decoration:underline}' +
+      '.tk-chip{padding:4px 10px;border:2px solid var(--line);border-radius:99px;cursor:pointer;background:var(--panel2);color:var(--ink);font:inherit;font-size:var(--fs-small)}.tk-chip[aria-pressed=true]{background:var(--sel);border-color:var(--cyan)}' +
+      '.tk-soru{font-size:20px;font-weight:800}.tk-fb{padding:10px 12px;border-radius:8px;border:2px solid var(--line);background:var(--panel2)}.tk-fb.iyi{border-color:var(--lime)}.tk-fb.kotu{border-color:var(--red)}' +
+      '.tk-kart{padding:10px 12px;border:2px solid var(--line);border-radius:8px;background:var(--panel2)}.tk-kart h4{margin:0 0 4px;color:var(--yellow)}.tk-kart p{margin:2px 0}' +
+      '.tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}.tk-muted{color:var(--muted)}';
+    document.head.appendChild(s);
+  }
+  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı']];
+  function ac(){
+    if (root) { git(aktifSekme); return; }
+    css();
+    root = el('div'); root.id = 'tk-root'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-label', 'Tekrar Merkezi');
+    var top = el('div', 'tk-top'); top.appendChild(el('h2', '', 'Tekrar Merkezi'));
+    top.appendChild(btn('Kapat', '', kapat)); root.appendChild(top);
+    tabsEl = el('div', 'tk-tabs'); tabsEl.setAttribute('role', 'tablist');
+    SEKMELER.forEach(function(s){ var b = btn(s[1], '', function(){ git(s[0]); }); b.dataset.sekme = s[0]; b.setAttribute('role', 'tab'); tabsEl.appendChild(b); });
+    root.appendChild(tabsEl);
+    body = el('div', 'tk-body'); root.appendChild(body);
+    document.body.appendChild(root);
+    onEsc = function(e){ if (e.key === 'Escape') kapat(); };
+    document.addEventListener('keydown', onEsc);
+    git('terim');
+  }
+  function kapat(){
+    if (!root) return;
+    document.removeEventListener('keydown', onEsc);
+    if (root.parentNode) root.parentNode.removeChild(root);
+    root = body = tabsEl = null;
+  }
+  function git(s){
+    if (!root) return; aktifSekme = s; body.textContent = '';
+    Array.prototype.forEach.call(tabsEl.children, function(b){ b.setAttribute('aria-selected', b.dataset.sekme === s ? 'true' : 'false'); });
+    if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else sinavSekmesi();
+  }
+
+  /* ---------- 1. terimler ---------- */
+  function terimSekmesi(){
+    var ara = el('input'); ara.type = 'search'; ara.placeholder = 'Terim ara (İngilizce veya Türkçe)'; ara.setAttribute('aria-label', 'Terim ara');
+    var sel = el('select'); sel.setAttribute('aria-label', 'İstasyon filtresi');
+    [['hepsi', 'Tüm istasyonlar'], ['temel', 'Temel liste']].concat(stIds().map(function(id){ return [id, stAd(id)]; })).forEach(function(o){ var op = el('option', '', o[1]); op.value = o[0]; sel.appendChild(op); });
+    var lbl = el('label', 'tk-row'), cb = el('input'); cb.type = 'checkbox'; lbl.appendChild(cb); lbl.appendChild(el('span', '', 'Kendini sına: Türkçeyi gizle'));
+    var sayac = el('span', 'tk-muted'), liste = el('div');
+    var r = el('div', 'tk-row'); r.appendChild(ara); r.appendChild(sel); r.appendChild(lbl); r.appendChild(sayac);
+    body.appendChild(r); body.appendChild(liste);
+    function satir(t){
+      var row = el('div', 'tk-t'); row.appendChild(el('b', '', t.en));
+      if (cb.checked) {
+        var g = el('span', 'tr gizli', 'göster'); g.tabIndex = 0;
+        var goster = function(){ g.textContent = t.tr; g.className = 'tr'; };
+        g.addEventListener('click', goster); g.addEventListener('keydown', function(e){ if (e.key === 'Enter') goster(); });
+        row.appendChild(g);
+      } else row.appendChild(el('span', 'tr', t.tr));
+      return row;
+    }
+    function ciz(){
+      liste.textContent = ''; var q = ara.value.trim().toLowerCase(), son = null, n = 0;
+      terimler().filter(function(t){ return (sel.value === 'hepsi' || t.g === sel.value) && (!q || t.en.toLowerCase().indexOf(q) >= 0 || t.tr.toLowerCase().indexOf(q) >= 0); })
+        .sort(function(a, b){ return a.g === b.g ? a.en.localeCompare(b.en) : ((a.g === 'temel') - (b.g === 'temel')) || (a.g < b.g ? -1 : 1); })
+        .forEach(function(t){
+          if (t.g !== son) { son = t.g; liste.appendChild(el('div', 'tk-g', t.g === 'temel' ? 'Temel terimler' : stAd(t.g))); }
+          liste.appendChild(satir(t)); n++;
+        });
+      sayac.textContent = n + ' terim';
+    }
+    ara.addEventListener('input', ciz); sel.addEventListener('change', ciz); cb.addEventListener('change', ciz); ciz();
+  }
+
+  /* ---------- 2. test ---------- */
+  var secili = {}, sayiSecim = 10;
+  function testKur(){
+    var h = havuz(), k = yukle(), sec = el('div', 'tk-row');
+    if (!Object.keys(secili).length) stIds().forEach(function(id){ secili[id] = true; });
+    stIds().forEach(function(id){
+      var c = el('button', 'tk-chip', stAd(id) + ' (' + h.filter(function(x){ return x.st === id; }).length + ')'); c.type = 'button';
+      c.setAttribute('aria-pressed', secili[id] ? 'true' : 'false');
+      c.addEventListener('click', function(){ secili[id] = !secili[id]; c.setAttribute('aria-pressed', secili[id] ? 'true' : 'false'); ozet(); }); sec.appendChild(c);
+    });
+    var say = el('div', 'tk-row'); say.appendChild(el('span', '', 'Soru sayısı:'));
+    var sb = [];
+    [10, 20, 0].forEach(function(n){
+      var b = el('button', 'tk-chip', n ? String(n) : 'Hepsi'); b.type = 'button'; b.setAttribute('aria-pressed', sayiSecim === n ? 'true' : 'false');
+      b.addEventListener('click', function(){ sayiSecim = n; sb.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); });
+      sb.push(b); say.appendChild(b);
+    });
+    var bilgi = el('div', 'tk-muted'), go = btn('Testi başlat', 'primary', null);
+    function secHavuz(){ return h.filter(function(x){ return secili[x.st]; }); }
+    function ozet(){ var n = secHavuz().length; bilgi.textContent = 'Havuzda ' + n + ' soru var.' + (k.son ? ' Son skor: ' + k.son.skor + '/' + k.son.toplam + '.' : ''); go.disabled = !n; }
+    go.addEventListener('click', function(){ var p = mix(secHavuz()); if (sayiSecim) p = p.slice(0, sayiSecim); basla(p); });
+    body.appendChild(el('div', 'tk-muted', 'Sorular istasyonlardaki düşman, tahmin, tuzak ve patron sorularından gelir. Hasar ya da voltaj yok; oyun ilerlemen değişmez.'));
+    body.appendChild(sec); body.appendChild(say); body.appendChild(bilgi);
+    var ra = el('div', 'tk-row'); ra.appendChild(go);
+    if (k.yanlis.length) ra.appendChild(btn('Kayıtlı yanlışlarım (' + k.yanlis.length + ')', '', function(){ var p = h.filter(function(x){ return k.yanlis.indexOf(x.soru) >= 0; }); if (p.length) basla(mix(p)); }));
+    body.appendChild(ra); ozet();
+  }
+  function basla(sorular){
+    var i = 0, dogru = 0, yanlislar = [], kayit = yukle();
+    function sor(){
+      if (!root) return;
+      body.textContent = '';
+      if (i >= sorular.length) return bitis();
+      var s = sorular[i];
+      body.appendChild(el('div', 'tk-muted', 'Soru ' + (i + 1) + '/' + sorular.length + ' · ' + stAd(s.st)));
+      body.appendChild(el('div', 'tk-soru', s.soru));
+      var host = el('div'); body.appendChild(host);
+      Q.ui.options.ask({ host: host, secenekler: s.secenekler }).then(function(idx){
+        if (!root) return;
+        var ok = s.secenekler[idx].dogru, d = s.secenekler.filter(function(x){ return x.dogru; })[0];
+        var neden = (d.neden || '').replace(/^(Doğru|Hayır|Yanlış)\.\s*/, '') || s.ek;
+        if (ok) dogru++; else yanlislar.push(s);
+        kayit.yanlis = kayit.yanlis.filter(function(q){ return q !== s.soru; }); if (!ok) kayit.yanlis.push(s.soru); yaz(kayit);
+        var fb = el('div', 'tk-fb ' + (ok ? 'iyi' : 'kotu'));
+        fb.textContent = ok ? ('Doğru! ' + (neden ? 'Nedeni: ' + neden : '')) : ('Cevabın yanlış. Doğru seçenek: ' + d.t + '. Nedeni: ' + neden);
+        fb.setAttribute('role', 'status');
+        host.textContent = ''; host.appendChild(fb);
+        var dev = btn(i + 1 >= sorular.length ? 'Sonucu gör' : 'Sonraki soru', 'primary', function(){ i++; sor(); }); host.appendChild(dev);
+        try { dev.focus(); } catch (e) { /* odak yok */ }
+      });
+    }
+    function bitis(){
+      kayit.son = { skor: dogru, toplam: sorular.length, tarih: Date.now() }; yaz(kayit);
+      body.appendChild(el('div', 'tk-soru', 'Skor: ' + dogru + '/' + sorular.length));
+      if (yanlislar.length) {
+        body.appendChild(el('div', 'tk-g', 'Yanlışların'));
+        yanlislar.forEach(function(s){
+          var d = s.secenekler.filter(function(x){ return x.dogru; })[0], c = el('div', 'tk-kart');
+          c.appendChild(el('p', '', s.soru)); c.appendChild(el('p', 'tk-muted', 'Doğru: ' + d.t)); body.appendChild(c);
+        });
+      } else body.appendChild(el('div', 'tk-fb iyi', 'Hepsi doğru. Harika!'));
+      var r = el('div', 'tk-row');
+      if (yanlislar.length) r.appendChild(btn('Yanlışları tekrar et', 'primary', function(){ basla(mix(yanlislar)); }));
+      r.appendChild(btn('Yeni test', '', function(){ git('test'); })); body.appendChild(r);
+    }
+    sor();
+  }
+
+  /* ---------- 3. açıklama kartları ---------- */
+  function kartSekmesi(){
+    var sel = el('select'); sel.setAttribute('aria-label', 'İstasyon');
+    stIds().forEach(function(id){ var o = el('option', '', stAd(id)); o.value = id; sel.appendChild(o); });
+    var grid = el('div', 'tk-grid'), r = el('div', 'tk-row'); r.appendChild(sel); body.appendChild(r); body.appendChild(grid);
+    function kart(b, satirlar){ var c = el('div', 'tk-kart'); c.appendChild(el('h4', '', b)); satirlar.forEach(function(t){ if (t) c.appendChild(el('p', '', t)); }); grid.appendChild(c); }
+    function ciz(){
+      grid.textContent = ''; var s = Q.data.stations[sel.value]; if (!s) return;
+      ((s.temelTur && s.temelTur.kartlar) || []).forEach(function(k){ kart(k.baslik, [k.metin]); });
+      (s.engeller || []).forEach(function(e){
+        if (e.tip === 'kavram') kart('Kavram: ' + (e.baslik || ''), [e.gorev, e.ogrenilen]);
+        else if (e.tip === 'sandik') kart('Sandık' + (e.kart ? ' · ' + e.kart.id + ' (' + e.kart.yil + ')' : ''), [e.kart && e.kart.tekCumle].concat(e.ozet || []));
+        else if (e.tip === 'kopru') kart('Zincir', [e.sonuc]);
+      });
+      if (!grid.children.length) grid.appendChild(el('div', 'tk-muted', 'Bu istasyonda kart yok.'));
+    }
+    sel.addEventListener('change', ciz); ciz();
+  }
+
+  /* ---------- 4. sınav tarzı ---------- */
+  function sinavSekmesi(){
+    var p = acikSorular();
+    if (!p.length) { body.appendChild(el('div', 'tk-muted', 'Açık uçlu soru bulunamadı.')); return; }
+    body.appendChild(el('div', 'tk-muted', 'Bir açık uçlu soru gelir; cevabını kendi cümlelerinle yaz. Claude varsa puanlar, yoksa ideal cevapla kendin karşılaştırırsın.'));
+    var yer = el('div'); body.appendChild(yer);
+    function yeni(){
+      var x = p[Math.floor(Math.random() * p.length)], f = x.f; yer.textContent = '';
+      yer.appendChild(el('div', 'tk-muted', stAd(x.st)));
+      if (f.pdfSoru) yer.appendChild(el('div', 'tk-muted', f.pdfSoru));
+      yer.appendChild(el('div', 'tk-soru', f.soru));
+      var host = el('div'); yer.appendChild(host);
+      Q.ui.textbox.ask({ host: host }).then(function(cevap){
+        if (!root) return; host.textContent = '';
+        var fb = el('div', 'tk-fb'); host.appendChild(fb);
+        fb.appendChild(el('p', '', 'İdeal cevap: ' + f.idealCevap));
+        if (f.anahtarFikirler) fb.appendChild(el('p', 'tk-muted', 'Anahtar fikirler: ' + f.anahtarFikirler.join(' · ')));
+        var son = el('div', 'tk-row'); host.appendChild(son);
+        function bitir(){ son.textContent = ''; son.appendChild(btn('Başka soru', 'primary', yeni)); }
+        function kendin(){
+          if (!cevap) { son.appendChild(el('span', '', 'Bu sefer bilemedin; ideal cevaba bak.')); bitir(); return; }
+          son.appendChild(el('span', '', 'Kendini işaretle:'));
+          son.appendChild(btn('Doğru yazdım', '', function(){ fb.classList.add('iyi'); bitir(); }));
+          son.appendChild(btn('Eksiğim var', '', function(){ fb.classList.add('kotu'); bitir(); }));
+        }
+        if (!cevap || !Q.claude || !Q.claude.grade || !Q.claude.available) return kendin();
+        var bekle = el('p', 'tk-muted', 'Puanlanıyor...'); fb.appendChild(bekle);
+        var zaman = new Promise(function(_, rj){ setTimeout(function(){ rj({ code: 'gecici' }); }, 25000); });
+        Promise.race([Q.claude.available(), zaman]).then(function(a){
+          if (!a || a.backend === 'none') throw { code: 'yok' };
+          return Promise.race([Q.claude.grade({ soru: f.soru, anahtarFikirler: f.anahtarFikirler || [], yanlisKavramlar: f.yanlisKavramlar || [], idealCevap: f.idealCevap, cevap: cevap, eminlik: 1 }), zaman]);
+        }).then(function(pu){
+          bekle.textContent = 'Puanın: %' + pu.dogruluk + (pu.geriBildirim && pu.geriBildirim.length ? ' · ' + pu.geriBildirim.join(' ') : '');
+          fb.classList.add(pu.dogruluk >= 60 ? 'iyi' : 'kotu'); bitir();
+        }, function(){ bekle.textContent = 'Claude şu an yok; kendin işaretle.'; kendin(); });
+      });
+    }
+    yeni();
+  }
+
+  Q.tekrar = { open: ac, close: kapat, terimler: terimler, havuz: havuz };
 })();
 
 /* 99-main.js (A9) — başlatma ve istasyon akışı.
