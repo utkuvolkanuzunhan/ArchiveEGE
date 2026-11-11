@@ -120,7 +120,7 @@
         if (destroyed) return;
         enAltDenendi = true;
         toast('n=1: en alt');
-        info.textContent = 'n=1: ground state (temel hal). Altında level yok.';
+        info.textContent = 'n=1: ground state (temel hal). Altında level (seviye) yok.';
         if (!anim) {
           level = 1; bounce = 1;
           anim = { from: 1, to: 1, t: 0, dur: reduced ? 1 : 1100, kind: 'alt' };
