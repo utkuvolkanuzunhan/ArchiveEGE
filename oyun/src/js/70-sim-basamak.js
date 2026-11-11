@@ -109,9 +109,9 @@
         l.appendChild(s); l.appendChild(inp); l.appendChild(v); bar.appendChild(l);
         return { l: l, s: s, inp: inp, v: v, get: get };
       }
-      var sE = mkSlider('Enerji E', 0.1, 3, 0.05, function(){ return E; }, function(x){ E = x; });
-      var sV = mkSlider('Basamak V₀', 0.2, 3, 0.05, function(){ return V0; }, function(x){ V0 = x; });
-      var sA = mkSlider('Kalınlık a', 0.1, 2, 0.05, function(){ return a; }, function(x){ a = x; });
+      var sE = mkSlider('Energy E (enerji)', 0.1, 3, 0.05, function(){ return E; }, function(x){ E = x; });
+      var sV = mkSlider('Step V₀ (basamak)', 0.2, 3, 0.05, function(){ return V0; }, function(x){ V0 = x; });
+      var sA = mkSlider('Thickness a (kalınlık)', 0.1, 2, 0.05, function(){ return a; }, function(x){ a = x; });
       var info = document.createElement('div');
       info.style.cssText = 'flex:1 1 100%;font:700 16px var(--font-b,Nunito,sans-serif);color:var(--ink,#fff);';
       info.setAttribute('aria-live','polite');
@@ -127,8 +127,8 @@
       function hesap(){ return mod === 'bariyer' ? bariyer(E, V0, a) : basamak(E, V0); }
       function bilgi(h){
         return mod === 'bariyer'
-          ? 'T = ' + fmt(h.T) + ' · R = ' + fmt(h.R) + (E < V0 ? ' · tünelleme' : ' · E > V₀')
-          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ sönümlenir' : ' · E > V₀ ama yansıma var');
+          ? 'T = ' + fmt(h.T) + ' · R = ' + fmt(h.R) + (E < V0 ? ' · tunneling (tünelleme)' : ' · E > V₀')
+          : 'R = ' + fmt(h.R) + ' · T = ' + fmt(h.T) + (E < V0 ? ' · ψ decays (sönümlenir)' : ' · E > V₀ ama yansıma var');
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -214,7 +214,7 @@
 
       function guncelleKontrol(){
         sA.l.style.display = mod === 'bariyer' ? 'flex' : 'none';
-        sV.s.textContent = mod === 'bariyer' ? 'Bariyer V₀' : 'Basamak V₀';
+        sV.s.textContent = mod === 'bariyer' ? 'Barrier V₀ (bariyer)' : 'Step V₀ (basamak)';
         [sE, sV, sA].forEach(function(s){
           s.inp.value = s.get(); s.v.textContent = s.get().toFixed(2) + (s === sA ? ' nm' : ' eV');
         });
@@ -263,7 +263,7 @@
       } else {
         onWin = boyutla; window.addEventListener('resize', onWin);
       }
-      if (api.hint) { try { api.hint(mod === 'bariyer' ? 'Bariyeri kalınlaştır; geçen kısmın nasıl azaldığına bak.' : 'E > V₀ iken bile dalganın yansıdığına bak.'); } catch (e) {} }
+      if (api.hint) { try { api.hint(mod === 'bariyer' ? 'Barrier (bariyer) kalınlığını artır; transmission (geçen kısım) nasıl azalıyor, bak.' : 'E > V₀ iken bile wave (dalga) reflection (yansıma) yapıyor, bak.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {
