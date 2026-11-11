@@ -68,6 +68,7 @@
       msg.setAttribute('aria-live', 'polite');
       msg.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
       root.appendChild(head);
+      root.appendChild(bar); /* Kontrol her ekranda görünür kalsın (1366x768) */
       root.appendChild(poolBox);
       root.appendChild(slotBox);
       if (tamir(ctx)) {
@@ -75,7 +76,6 @@
         ip.style.cssText = 'color:var(--muted);font-size:var(--fs-small);';
         root.appendChild(ip);
       }
-      root.appendChild(bar);
       root.appendChild(msg);
       host.appendChild(root);
 
