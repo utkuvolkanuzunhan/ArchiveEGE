@@ -58,11 +58,11 @@
 
     /* 1) L kaydırıcısı */
     var r1 = row();
-    lab('Kuyu genişliği L', r1);
+    lab('Well width (kuyu genişliği) L', r1);
     var slider = document.createElement('input');
     slider.type = 'range'; slider.min = '1'; slider.max = '10'; slider.step = '0.5'; slider.value = String(L);
     slider.style.cssText = 'flex:1;min-height:40px;accent-color:var(--cyan);';
-    slider.setAttribute('aria-label', 'Kuyu genişliği L (nm)');
+    slider.setAttribute('aria-label', 'Well width (kuyu genişliği) L (nm)');
     r1.appendChild(slider);
     var lVal = document.createElement('span');
     lVal.style.cssText = 'font-family:var(--font-d);min-width:56px;text-align:right;';
@@ -70,10 +70,10 @@
 
     /* 2) n düğmeleri + n=0 dene */
     var r2 = row();
-    lab('Seviye n', r2);
+    lab('Level (seviye) n', r2);
     var nBtns = [1, 2, 3, 4].map(function (k) {
       var b = mkBtn(String(k), 1);
-      b.setAttribute('aria-label', 'Seviye n = ' + k);
+      b.setAttribute('aria-label', 'Level (seviye) n = ' + k);
       on(b, 'click', function () { n = k; shownN = k; flat = false; amp = 1; refresh(); });
       r2.appendChild(b); return b;
     });
@@ -132,7 +132,7 @@
       lVal.textContent = (Math.round(L * 10) / 10) + ' nm';
       nBtns.forEach(function (b, k) { styleBtn(b, !flat && n === k + 1); });
       zeroBtn.style.borderColor = flat ? 'var(--yellow)' : 'var(--line)';
-      modBtn.textContent = mod === 'tel' ? 'Tel ⇄ Kuyu: Tel' : 'Tel ⇄ Kuyu: Kuyu';
+      modBtn.textContent = mod === 'tel' ? 'Wire (Tel) ⇄ Well (Kuyu): Wire' : 'Wire (Tel) ⇄ Well (Kuyu): Well';
       styleBtn(modBtn, false);
       canvas.setAttribute('aria-label', flat ? 'Dalga yok, parçacık yok'
         : (mod === 'tel' ? 'İki ucu sabit tel' : 'Sonsuz kuyu') + ', n = ' + n + ', L = ' + L + ' nm, E' + SUB[n] + ' = ' + fmtE(energy(n, L)));
@@ -236,7 +236,7 @@
     if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(function () { resize(); }); ro.observe(host); }
     else { on(window, 'resize', resize); }
 
-    if (api && api.hint) { api.hint('Kuyuyu daralt, seviyeyi değiştir; enerjiye bak.'); }
+    if (api && api.hint) { api.hint('Well\'i (kuyuyu) daralt, level (seviye) değiştir; energy (enerji) değerine bak.'); }
     resize();
     refresh();
 

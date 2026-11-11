@@ -10,21 +10,21 @@
 
   var o03 = {
     id: 's05-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'psi_olasilik', agirlik: 1,
-    soru: 'Dalga fonksiyonu ψ(x) fiziksel olarak neyi anlatır?',
+    soru: 'Wave function (dalga fonksiyonu) ψ(x) fiziksel olarak neyi anlatır?',
     secenekler: [
-      sec('|ψ(x)|² bulunma olasılık yoğunluğunu verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi olasılıktır.'),
-      sec('Parçacığın gerçek konumunu', false, 'Hayır. ψ konum vermez, olasılık dağılımı verir.'),
-      sec('Parçacığın enerjisini', false, 'Hayır. Enerji denklemin özdeğeridir.')
+      sec('|ψ(x)|² probability density (olasılık yoğunluğu) verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi probability (olasılık) yoğunluğudur.'),
+      sec('Parçacığın gerçek konumunu', false, 'Hayır. ψ konum vermez, probability distribution (olasılık dağılımı) verir.'),
+      sec('Parçacığın enerjisini', false, 'Hayır. Enerji denklemin eigenvalue (özdeğer) değeridir.')
     ],
     kusurSkin: 'vakans'
   };
 
   var o04 = {
     id: 's05-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'schrodinger_girdi_cikti', agirlik: 1,
-    soru: 'Schrödinger denklemine ne verirsin, ne alırsın?',
+    soru: 'Schrödinger equation (Schrödinger denklemi) için ne verirsin, ne alırsın?',
     secenekler: [
-      sec('Potansiyel V(x) ve sınır koşulu ver; ψ, izinli E\'leri al', true, 'Doğru. Girdi V(x) ve sınır koşulu, çıktı ψ ile E.'),
-      sec('ψ ver, potansiyeli al', false, 'Hayır. Potansiyel girdidir, ψ çıktıdır.'),
+      sec('V(x) ve boundary condition (sınır koşulu) ver; ψ ile izinli E al', true, 'Doğru. Girdi V(x) ve boundary condition, çıktı ψ ile E.'),
+      sec('ψ ver, potansiyeli al', false, 'Hayır. Potential girdidir, ψ çıktıdır.'),
       sec('Enerji ver, konumu al', false, 'Hayır. Enerjiler denklemin çıktısıdır.')
     ],
     kusurSkin: 'tane_siniri'
@@ -32,11 +32,11 @@
 
   var o05 = {
     id: 's05-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'kuantalasma_sinir', agirlik: 1.5,
-    soru: 'Kuyu genişliği L yarıya inerse E₁ ne olur?',
+    soru: 'Potential well (potansiyel kuyusu) genişliği L yarıya inerse E₁ ne olur?',
     secenekler: [
       sec('4 katına çıkar', true, 'Doğru. E ∝ 1/L².'),
-      sec('2 katına çıkar', false, 'Yanlış. Enerji L²\'ye ters orantılıdır: 4 kat.'),
-      sec('Değişmez', false, 'Yanlış. Dar kuyuda dalga boyu kısalır, enerji artar.')
+      sec('2 katına çıkar', false, 'Yanlış. Energy (enerji) L²\'ye ters orantılıdır: 4 kat.'),
+      sec('Değişmez', false, 'Yanlış. Dar well\'de wavelength (dalga boyu) kısalır, enerji artar.')
     ],
     sim: {
       modul: 'kuyu',
@@ -52,7 +52,7 @@
     ad: 'Dalga odası',
     makine: 'Dalga odası',
     renk: '#00e5ff',
-    konu: 'Schrödinger denklemi, ψ, sonsuz kuyu, kuantalaşma',
+    konu: 'Schrödinger equation (Schrödinger denklemi), ψ, infinite well (sonsuz kuyu), quantization (kuantalaşma)',
     sinavSorulari: ['S5'],
     sureHedefDk: 24,
     patronId: 'schro',
@@ -63,40 +63,40 @@
         yer: 'Zürih', yil: 1926, rivayet: false,
         satirlar: [
           { kim: 'selin', metin: 'Dalga odası: burada her şey tek bir denkleme bağlı.' },
-          { kim: 'schro', metin: 'Dalga fonksiyonu ψ için bir denklem yazdım. Atomun enerjileri denklemden çıktı.' },
-          { kim: 'schro', metin: 'Enerjileri ben eklemedim. Sınır koşullarından kendiliğinden ortaya çıktılar.' }
+          { kim: 'schro', metin: 'Wave function (dalga fonksiyonu) ψ için bir denklem yazdım. Atomun energy levels (enerji seviyeleri) denklemden çıktı.' },
+          { kim: 'schro', metin: 'Enerjileri ben eklemedim. Boundary conditions (sınır koşulları) yüzünden kendiliğinden ortaya çıktılar.' }
         ]
       },
       {
         id: 's05-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'kuantalasma_sinir', agirlik: 1,
-        gorev: 'Kuyu genişliğini 2\'den 1 nm\'ye indir.',
+        gorev: 'Well (kuyu) genişliğini 2\'den 1 nm\'ye indir.',
         sim: {
           modul: 'kuyu',
           params: { L: 2, n: 1 },
           basari: { yariya: true }
         },
-        ogrenilen: 'Duvarda ψ = 0 olduğundan yalnızca belirli dalga boyları sığar; enerji kuantalanır.'
+        ogrenilen: 'Duvarda ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar; energy quantization (enerji kuantalaşması) oluşur.'
       },
       o03,
       o04,
       o05,
       {
         id: 's05-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
-        iddia: 'Sonsuz kuyudaki parçacığın enerjisi, sıcaklık sıfır olmadığı için sıfırdan büyüktür.',
-        parcalar: ['Sonsuz kuyudaki parçacığın enerjisi,', 'sıcaklık sıfır olmadığı için', 'sıfırdan büyüktür.'],
+        iddia: 'Infinite well (sonsuz kuyu) içindeki parçacığın enerjisi, sıcaklık sıfır olmadığı için sıfırdan büyüktür.',
+        parcalar: ['Infinite well (sonsuz kuyu) içindeki parçacığın enerjisi,', 'sıcaklık sıfır olmadığı için', 'sıfırdan büyüktür.'],
         yanlisParca: 1,
-        duzeltme: 'Sebep sıcaklık değil: sınır koşulu dalganın sığmasını gerektirir. Mutlak sıfırda da E₁ > 0.'
+        duzeltme: 'Sebep sıcaklık değil: boundary condition (sınır koşulu) dalganın sığmasını gerektirir. Mutlak sıfırda da E₁ > 0 (zero-point energy, sıfır noktası enerjisi).'
       },
       {
         id: 's05-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'kuantalasma_sinir', agirlik: 1,
-        soru: 'Kuantalaşma zincirini sıraya diz',
+        soru: 'Quantization (kuantalaşma) zincirini sıraya diz',
         bloklar: [
-          'Duvarlarda ψ sıfır olmak zorundadır',
-          'Kuyuya yalnızca tam sayı yarım dalga sığar',
-          'Dalga boyu λ = 2L/n ile sınırlanır',
-          'Enerji E ∝ n²/L² belirli değerler alır'
+          'Walls (duvarlar) üzerinde ψ sıfır olmak zorundadır',
+          'Well (kuyu) içine yalnızca tam sayı yarım dalga sığar',
+          'Wavelength (dalga boyu) λ = 2L/n ile sınırlanır',
+          'Energy (enerji) E ∝ n²/L² belirli değerler alır'
         ],
-        sonuc: 'Sınır koşulu, sığan dalgalar, kısıtlı λ, kuantalı enerji.'
+        sonuc: 'Boundary condition (sınır koşulu), sığan dalgalar, kısıtlı λ, quantized energy (kuantalı enerji).'
       },
       {
         id: 's05-o08', tip: 'patron', baslik: 'Kuantum Kedisi', kavram: null, agirlik: 1,
@@ -105,89 +105,89 @@
         fazlar: [
           {
             tip: 'secmeli', kavram: 'schrodinger_cokme',
-            soru: 'Zamana bağlı Schrödinger denklemi ψ\'yi nasıl değiştirir?',
+            soru: 'Time-dependent Schrödinger equation (zamana bağlı Schrödinger denklemi) ψ\'yi nasıl değiştirir?',
             secenekler: [
-              sec('Düzgün ve belirlenimci biçimde evriltir', true, 'Doğru. Çökme denklemden değil, ölçümden gelir.'),
-              sec('Ölçüm yapınca çökertir', false, 'Hayır. Çökme ayrı bir postülattır, denklemin işi değil.'),
-              sec('Rastgele değiştirir', false, 'Hayır. Denklem rastgele değil, belirlenimcidir.')
+              sec('Düzgün ve belirlenimci biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postülatından gelir.'),
+              sec('Ölçüm yapınca çökertir', false, 'Hayır. Collapse ayrı bir postülattır, denklemin işi değil.'),
+              sec('Rastgele değiştirir', false, 'Hayır. Denklem rastgele değil, deterministic (belirlenimci) yapıdadır.')
             ],
             alt: {
               soru: 'Ĥψ = Eψ matematiksel olarak nasıl bir problemdir?',
               secenekler: [
-                sec('Özdeğer problemi', true, 'Doğru. İzinli E\'ler özdeğerlerdir.'),
-                sec('Başlangıç değer problemi', false, 'Hayır. Bu zamana bağlı denklem için geçerli.'),
-                sec('Olasılık hesabı', false, 'Hayır. Olasılık |ψ|²\'dir, denklem değil.')
+                sec('Eigenvalue problem (özdeğer problemi)', true, 'Doğru. İzinli E\'ler eigenvalues (özdeğerler) olur.'),
+                sec('Initial value problem (başlangıç değer problemi)', false, 'Hayır. Bu zamana bağlı denklem için geçerli.'),
+                sec('Olasılık hesabı', false, 'Hayır. Probability density |ψ|²\'dir, denklem değil.')
               ]
             }
           },
           {
             tip: 'acik',
             pdfSoru: 'For the given potential below, it is required to calculate the wave function and the allowed energies in electron-volts (eV).',
-            soru: 'Sonsuz kuyuda ψ ve izinli enerjiler nasıl bulunur? Mantığı anlat.',
+            soru: 'Infinite well (sonsuz kuyu) için ψ ve allowed energies (izinli enerjiler) nasıl bulunur? Mantığı explain (açıkla).',
             anahtarFikirler: [
-              'Duvarlarda ψ = 0 sınır koşulu uygulanır.',
-              'Çözüm sinüs dalgasıdır: ψ = √(2/L) sin(nπx/L).',
-              'Yalnızca L = nλ/2 ile sığan dalgalar izinlidir.',
+              'Walls (duvarlar) üzerinde ψ = 0 boundary condition (sınır koşulu) uygulanır.',
+              'Çözüm sinüs dalgasıdır (standing wave, duran dalga): ψ = √(2/L) sin(nπx/L).',
+              'Yalnızca L = nλ/2 ile sığan waves (dalgalar) izinlidir.',
               'Enerji E = n²π²ħ²/(2mL²), elektron için yaklaşık 0,376·n²/L² eV (L nm).'
             ],
             yanlisKavramlar: [
-              'Enerji sıcaklıktan gelir',
-              'Kuantalaşma ölçüm sonucudur'
+              'Energy (enerji) sıcaklıktan gelir',
+              'Quantization (kuantalaşma) ölçüm sonucudur'
             ],
             yanlisKavramIds: ['sifir_noktasi_sicaklik', 'kuantalasma_olcum'],
-            idealCevap: 'Duvarlarda ψ = 0 olmalıdır. Çözüm ψ = √(2/L) sin(nπx/L) sinüs dalgasıdır; yalnızca L = nλ/2 ile sığan dalgalar izinlidir. Bu yüzden enerji E = n²π²ħ²/(2mL²) değerleriyle kuantalanır. n = 0 dalga olmadığı için yoktur, en düşük enerji E₁ > 0\'dır.',
+            idealCevap: 'Duvarlarda ψ = 0 olmalıdır (boundary condition, sınır koşulu). Çözüm ψ = √(2/L) sin(nπx/L) sinüs dalgasıdır; yalnızca L = nλ/2 ile sığan dalgalar izinlidir. Bu yüzden energy (enerji) E = n²π²ħ²/(2mL²) değerleriyle quantized (kuantalı) olur. n = 0 dalga olmadığı için yoktur, en düşük enerji E₁ > 0\'dır (zero-point energy, sıfır noktası enerjisi).',
             yedekSecmeli: {
-              soru: 'Sonsuz kuyuda enerji neden kuantalıdır?',
+              soru: 'Infinite well (sonsuz kuyu) içinde energy (enerji) neden quantized (kuantalı) olur?',
               secenekler: [
-                sec('Duvarlarda ψ = 0 olduğundan yalnızca belirli dalga boyları sığar', true, 'Doğru. Sınır koşulu kuantalaşmayı doğurur.'),
-                sec('Ölçüm enerjiyi ayrıklaştırır', false, 'Yanlış. Kuantalaşma ölçümden önce de vardır.'),
+                sec('Duvarlarda ψ = 0 olduğundan yalnızca belirli wavelengths (dalga boyları) sığar', true, 'Doğru. Boundary condition (sınır koşulu) quantization (kuantalaşma) doğurur.'),
+                sec('Measurement (ölçüm) enerjiyi ayrıklaştırır', false, 'Yanlış. Quantization ölçümden önce de vardır.'),
                 sec('Sıcaklık seviyeleri ayırır', false, 'Yanlış. Sıcaklık sebep değil.'),
-                sec('Bantlar oluşur', false, 'Yanlış. Bantlar çok atomlu katıda oluşur.')
+                sec('Bands (bantlar) oluşur', false, 'Yanlış. Bantlar çok atomlu katıda oluşur.')
               ]
             },
-            alt: { soru: 'Sonsuz kuyuda n = 0 neden yoktur ve bu E₁\'e ne söyler?' }
+            alt: { soru: 'Infinite well (sonsuz kuyu) içinde n = 0 neden yoktur ve bu E₁\'e ne söyler? Justify (gerekçelendir).' }
           },
           {
             tip: 'acik',
             pdfSoru: null,
-            soru: 'Schrödinger denklemi çöker mi? Çökme nedir?',
+            soru: 'Schrödinger equation (Schrödinger denklemi) collapse (çökme) yapar mı? Collapse nedir? Define (tanımla).',
             anahtarFikirler: [
-              'Zamana bağlı denklem ψ\'yi düzgün ve belirlenimci evriltir.',
-              'Çökme ayrı bir postülattır ve ölçümle olur.',
-              'Zamandan bağımsız denklem özdeğer problemidir (Ĥψ = Eψ).',
-              'Girdi V(x) ve sınır koşulu, çıktı ψ ve izinli E\'ler.'
+              'Time-dependent equation (zamana bağlı denklem) ψ\'yi düzgün ve deterministic (belirlenimci) evriltir.',
+              'Collapse (çökme) ayrı bir postülattır ve measurement (ölçüm) ile olur.',
+              'Time-independent equation (zamandan bağımsız denklem) eigenvalue problem (özdeğer problemi) olur (Ĥψ = Eψ).',
+              'Girdi V(x) ve boundary condition, çıktı ψ ve allowed energies (izinli enerjiler).'
             ],
             yanlisKavramlar: [
-              'Schrödinger denklemi çöker',
-              'Denklem yalnızca bir olasılık denklemidir'
+              'Schrödinger equation (Schrödinger denklemi) çöker',
+              'Denklem yalnızca bir probability (olasılık) denklemidir'
             ],
             yanlisKavramIds: ['schrodinger_cokme', 'schrodinger_cokme'],
-            idealCevap: 'Schrödinger denklemi çökmez; ψ\'yi zamanla düzgün ve belirlenimci biçimde evriltir. Çökme ayrı bir postülattır ve yalnızca ölçümle olur. Denklemin girdisi potansiyel V(x) ve sınır koşullarıdır, çıktısı ψ ve izinli E değerleridir.',
+            idealCevap: 'Schrödinger equation (Schrödinger denklemi) çökmez; ψ\'yi zamanla düzgün ve deterministic (belirlenimci) biçimde evriltir. Collapse (çökme) ayrı bir postülattır ve yalnızca measurement (ölçüm) ile olur. Denklemin girdisi potential (potansiyel) V(x) ve boundary conditions (sınır koşulları), çıktısı ψ ve allowed energies (izinli enerjiler) E olur.',
             yedekSecmeli: {
-              soru: 'Çökme ne zaman olur?',
+              soru: 'Collapse (çökme) ne zaman olur?',
               secenekler: [
-                sec('Ölçüm sırasında', true, 'Doğru. Çökme ölçüm postülatıdır.'),
-                sec('Denklem çözülürken', false, 'Yanlış. Denklem çökme üretmez.'),
-                sec('Zaman geçtikçe', false, 'Yanlış. Zamanla evrim düzgündür.'),
+                sec('Measurement (ölçüm) sırasında', true, 'Doğru. Collapse ölçüm postülatıdır.'),
+                sec('Denklem çözülürken', false, 'Yanlış. Denklem collapse üretmez.'),
+                sec('Zaman geçtikçe', false, 'Yanlış. Time evolution (zamanla evrim) düzgündür.'),
                 sec('Sıcaklık artınca', false, 'Yanlış. Sıcaklıkla ilgisi yok.')
               ]
             },
-            alt: { soru: 'Zamana bağlı denklemle çökme arasındaki farkı anlat.' }
+            alt: { soru: 'Time-dependent equation (zamana bağlı denklem) ile collapse (çökme) arasındaki farkı compare (karşılaştır).' }
           }
         ]
       },
       {
         id: 's05-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
-        kart: { id: 'schro', yil: 1926, tekCumle: 'Dalga fonksiyonunun denklemini yazdı; enerjiler kendiliğinden çıktı.' },
-        ozet: ['Girdi: V(x) ve sınır koşulu', 'Sınır koşulu enerjiyi kuantalar', 'En düşük enerji sıfır olamaz'],
+        kart: { id: 'schro', yil: 1926, tekCumle: 'Wave function (dalga fonksiyonu) denklemini yazdı; energy levels (enerji seviyeleri) kendiliğinden çıktı.' },
+        ozet: ['Girdi: V(x) ve boundary condition (sınır koşulu)', 'Boundary condition enerjiyi quantize (kuantalar) eder', 'Lowest energy (en düşük enerji) sıfır olamaz'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'ψ nedir?', metin: '|ψ|² bulunma olasılık yoğunluğudur.' },
-        { baslik: 'Sınır koşulu', metin: 'Duvarda ψ = 0: yalnızca sığan dalgalar izinli.' },
-        { baslik: 'E₁ > 0', metin: 'n = 0 dalga yok demek; en düşük enerji sıfır değil.' }
+        { baslik: 'ψ nedir?', metin: '|ψ|² probability density (olasılık yoğunluğu) olur.' },
+        { baslik: 'Sınır koşulu', metin: 'Boundary condition (sınır koşulu): duvarda ψ = 0, yalnızca sığan dalgalar izinli.' },
+        { baslik: 'E₁ > 0', metin: 'n = 0 dalga yok demek; lowest energy (en düşük enerji) sıfır değil.' }
       ],
       sim: { modul: 'kuyu', params: { L: 2, n: 1 } }
     },
@@ -202,10 +202,10 @@
       },
       {
         id: 's05-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
-        soru: 'Enerji kuantalaşması nereden gelir?',
+        soru: 'Energy quantization (enerji kuantalaşması) nereden gelir?',
         secenekler: [
-          sec('Sınır koşullarından', true, 'Doğru. Yalnızca sığan çözümler izinli.'),
-          sec('Ölçüm sonucundan', false, 'Hayır. Ölçümden önce de enerjiler ayrıktır.'),
+          sec('Boundary conditions (sınır koşulları)', true, 'Doğru. Yalnızca sığan çözümler izinli.'),
+          sec('Measurement (ölçüm) sonucundan', false, 'Hayır. Ölçümden önce de enerjiler ayrıktır.'),
           sec('Sıcaklıktan', false, 'Hayır. Sıcaklık sebep değil.')
         ],
         kusurSkin: 'safsizlik'
