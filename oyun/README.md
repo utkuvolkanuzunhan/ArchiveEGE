@@ -32,5 +32,10 @@ Aygıt Fiziği (kristal yapı, Miller indisleri, kuantum mekaniği, Schrödinger
 3. Orkestratör M1 (oynanabilir dilim) → M2 → M3 sırasıyla ajanları yönetir.
 4. Yarım kalırsa aynı dosyadaki **0.1 Devam komutu**yla başka hesapta sürdür.
 
-## Nasıl çalıştırılır (A9 tamamlar)
-_(A9 paketi: derleme ve açma talimatı buraya eklenecek.)_
+## Nasıl çalıştırılır
+
+1. Derle: `bash oyun/build.sh` (tüm zorunlu dosyalar yoksa hata verir; geliştirme sırasında `bash oyun/build.sh --zorunlu-degil` eksikleri sarı uyarıyla listeler ve geçer). Çıktı: `oyun/dist/oyun.html` (tek dosya, bağımlılık yok).
+2. Oyna: `oyun/dist/oyun.html` dosyasını tarayıcıda aç (yerelde Claude puanlaması için Ayarlar'dan API anahtarı girilebilir; yoksa `yedekSecmeli` ile oynanır).
+3. Veri denetimi: `node oyun/test/veri-dogrula.js` (istasyon verileri şema ve kelime sınırları).
+4. Duman testi: `node oyun/test/smoke.js` (Playwright/Chromium; `dist/oyun.html` ister, ekran görüntüleri `oyun/test/ekran/` altına yazılır).
+5. Birim testleri: `node oyun/test/core.test.js`, `battle.test.js`, `claude.test.js`.
