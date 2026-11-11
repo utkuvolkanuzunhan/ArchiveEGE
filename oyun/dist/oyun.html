@@ -167,10 +167,12 @@ html,body{height:100%;margin:0;overflow:hidden}
 .path-node.simdi{border-color:var(--cyan);background:var(--sel);box-shadow:var(--glow-cyan);transform:scale(1.2)}
 
 /* F4: dock içeriği kaydırmasız sığsın (1366x768 / 1280x720) */
-#dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 96px);overflow:auto;display:flex;align-items:center;justify-content:center}
+#dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 56px);overflow:auto;display:flex;align-items:safe center;justify-content:center}
 #dock .kavram-sim canvas,#dock .kavram-sim svg{max-height:100%;max-width:100%;object-fit:contain}
 #dock .kavram-butonlar{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap}
 @media (max-height:800px){#dock{padding:8px 12px;gap:6px}}
+@media (max-height:800px){#dock .opts{gap:5px}#dock .opt{padding:5px 12px;min-height:38px}}  /* 4 şık + Onayla 1366x768 dock içinde kaydırmasız */
+@media (max-height:1000px){#dock .opt{min-height:34px;padding:4px 12px;gap:8px}#dock .opt .num{width:24px;height:24px}}
 
 /* 30-runway-overlay.css (A4) Yolun üstündeki DOM katmanı: patron paneli, hasar sayıları, afiş, canavar halleri, sarsıntı. */
 #runway-overlay{position:absolute;inset:0;pointer-events:none;z-index:2}
@@ -1226,15 +1228,15 @@ function registerChar(id, spec){
 }
 
 var DEFS = [
-  { id: 'czoch', kisi: 'Jan Czochralski', yil: 1916, canavar: 'Tane Sınırı Canavarı', konu: 'Tek kristal büyütme (CZ)', soru: 'Neden tek kristal istiyorsunuz?', zayif: 'Zayıf noktası: tane sınırı yok, taşıyıcılar saçılmaz.', hair: 'bald', eyes: 2, glasses: true, front: 'crystals' },
-  { id: 'miller', kisi: 'William H. Miller', yil: 1839, canavar: 'Düzlem Canavarı', konu: 'Miller indisleri', soru: 'Kesişimlerim 2, ∞, ∞. Hangi düzlemdeyim?', zayif: 'Zayıf noktası: kesişimin tersini al, kesirleri temizle: (100).', hair: 'sideburn', eyes: 2, back: 'cube', chest: '(hkl)' },
-  { id: 'einstein', kisi: 'Albert Einstein', yil: 1905, canavar: 'Foton Canavarı', konu: 'Fotoelektrik olay', soru: 'Eşiğin altındaki ışığı 10 kat parlattın. Kaç elektron kopar?', zayif: 'Zayıf noktası: tek foton yetmez, şiddet foton sayısını artırır.', hair: 'wild', eyes: 3, mous: 'bushy', rays: true, front: 'bolts' },
-  { id: 'bohr', kisi: 'Niels Bohr', yil: 1913, canavar: 'Yörünge Canavarı', konu: 'Atom spektrumu', soru: 'Elektron neden çekirdeğe düşmüyor?', zayif: 'Zayıf noktası: seviyeler ayrık, en alt seviyenin altı yok.', hair: 'slick', eyes: 2, back: 'orbits' },
-  { id: 'broglie', kisi: 'Louis de Broglie', yil: 1924, canavar: 'Dalga Canavarı', konu: 'Madde dalgası', soru: 'Bilardo topu neden dalga gibi davranmıyor?', zayif: 'Zayıf noktası: λ = h/p, topta λ çok küçük.', hair: 'slick', eyes: 2, mous: 'thin', back: 'wave' },
+  { id: 'czoch', kisi: 'Jan Czochralski', yil: 1916, canavar: 'Grain Boundary (Tane Sınırı) Canavarı', konu: 'Tek kristal büyütme (CZ)', soru: 'Neden tek kristal istiyorsunuz?', zayif: 'Zayıf noktası: tane sınırı yok, taşıyıcılar saçılmaz.', hair: 'bald', eyes: 2, glasses: true, front: 'crystals' },
+  { id: 'miller', kisi: 'William H. Miller', yil: 1839, canavar: 'Plane (Düzlem) Canavarı', konu: 'Miller indisleri', soru: 'Kesişimlerim 2, ∞, ∞. Hangi düzlemdeyim?', zayif: 'Zayıf noktası: kesişimin tersini al, kesirleri temizle: (100).', hair: 'sideburn', eyes: 2, back: 'cube', chest: '(hkl)' },
+  { id: 'einstein', kisi: 'Albert Einstein', yil: 1905, canavar: 'Photon (Foton) Canavarı', konu: 'Fotoelektrik olay', soru: 'Eşiğin altındaki ışığı 10 kat parlattın. Kaç elektron kopar?', zayif: 'Zayıf noktası: tek foton yetmez, şiddet foton sayısını artırır.', hair: 'wild', eyes: 3, mous: 'bushy', rays: true, front: 'bolts' },
+  { id: 'bohr', kisi: 'Niels Bohr', yil: 1913, canavar: 'Orbit (Yörünge) Canavarı', konu: 'Atom spektrumu', soru: 'Elektron neden çekirdeğe düşmüyor?', zayif: 'Zayıf noktası: seviyeler ayrık, en alt seviyenin altı yok.', hair: 'slick', eyes: 2, back: 'orbits' },
+  { id: 'broglie', kisi: 'Louis de Broglie', yil: 1924, canavar: 'Wave (Dalga) Canavarı', konu: 'Madde dalgası', soru: 'Bilardo topu neden dalga gibi davranmıyor?', zayif: 'Zayıf noktası: λ = h/p, topta λ çok küçük.', hair: 'slick', eyes: 2, mous: 'thin', back: 'wave' },
   { id: 'schro', kisi: 'Erwin Schrödinger', yil: 1926, canavar: 'Kuantum Kedisi', konu: 'Schrödinger denklemi', soru: 'Denklem ψ\'yi çökertir mi?', zayif: 'Zayıf noktası: denklem düzgün evriltir, çökme ölçümle olur.', hair: 'side', eyes: 2, glasses: true, closed: true, front: 'ears', chest: 'ψ' },
-  { id: 'born', kisi: 'Max Born', yil: 1926, canavar: 'Olasılık Canavarı', konu: 'Ölçüm ve olasılık yorumu', soru: '|ψ|² neyi verir?', zayif: 'Zayıf noktası: |ψ|² bulunma olasılık yoğunluğudur.', hair: 'side', eyes: 2, glasses: true, front: 'dice', chest: '|ψ|²' },
-  { id: 'heis', kisi: 'Werner Heisenberg', yil: 1927, canavar: 'Belirsizlik Canavarı', konu: 'Belirsizlik ilkesi', soru: 'Konumu keskinleştirirsem momentum ne olur?', zayif: 'Zayıf noktası: yayılır. Alet kusuru değil, dalga doğası.', hair: 'curly', eyes: 2, back: 'ghost', chest: 'ΔxΔp' },
-  { id: 'pauli', kisi: 'Wolfgang Pauli', yil: 1925, canavar: 'Dışlama Canavarı', konu: 'Pauli dışlama ilkesi', soru: 'İki elektron aynı kuantum halinde olabilir mi?', zayif: 'Zayıf noktası: aynı dört kuantum sayısı iki elektronda olamaz.', hair: 'slick', eyes: 2, front: 'boxes', chest: 'n,l,m,s' },
+  { id: 'born', kisi: 'Max Born', yil: 1926, canavar: 'Probability (Olasılık) Canavarı', konu: 'Ölçüm ve olasılık yorumu', soru: '|ψ|² neyi verir?', zayif: 'Zayıf noktası: |ψ|² bulunma olasılık yoğunluğudur.', hair: 'side', eyes: 2, glasses: true, front: 'dice', chest: '|ψ|²' },
+  { id: 'heis', kisi: 'Werner Heisenberg', yil: 1927, canavar: 'Uncertainty (Belirsizlik) Canavarı', konu: 'Belirsizlik ilkesi', soru: 'Konumu keskinleştirirsem momentum ne olur?', zayif: 'Zayıf noktası: yayılır. Alet kusuru değil, dalga doğası.', hair: 'curly', eyes: 2, back: 'ghost', chest: 'ΔxΔp' },
+  { id: 'pauli', kisi: 'Wolfgang Pauli', yil: 1925, canavar: 'Exclusion (Dışlama) Canavarı', konu: 'Pauli dışlama ilkesi', soru: 'İki elektron aynı kuantum halinde olabilir mi?', zayif: 'Zayıf noktası: aynı dört kuantum sayısı iki elektronda olamaz.', hair: 'slick', eyes: 2, front: 'boxes', chest: 'n,l,m,s' },
   { id: 'fermi', kisi: 'Enrico Fermi', yil: 1926, canavar: 'Fermi Canavarı', konu: 'Fermi-Dirac dağılımı', soru: 'Mutlak sıfırda dolu seviyeler nerede biter?', zayif: 'Zayıf noktası: Fermi seviyesinde, basamak gibi.', hair: 'slick', eyes: 2, mous: 'thin', back: 'sigmoid', chest: 'f(E)' },
   { id: 'planck', kisi: 'Max Planck', yil: 1900, canavar: null, konu: 'Kuantum fikri', soru: 'Enerji paket paket verilir.', zayif: null, hair: 'bald', eyes: 2, mous: 'bushy', glasses: true, chest: 'E=hf', cameo: true },
   { id: 'bloch', kisi: 'Felix Bloch', yil: 1928, canavar: null, konu: 'Periyodik yapıda dalga', soru: 'Kristalde dalga periyodik zarf taşır.', zayif: null, hair: 'curly', eyes: 2, back: 'wave', chest: 'ψk', cameo: true }
@@ -1612,6 +1614,19 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       ctx.fillStyle = tok('--yellow'); circle(ctx, 20, -48, 7); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = tok('--ink-dark'); ctx.stroke();
       circle(ctx, 24, -86, 5); ctx.fill(); ctx.stroke();
     },
+    pauli_cift: function(ctx, t){      /* aynı çizgide iki electron */
+      rrect(ctx, -46, -112, 92, 88, 10); inkFill(ctx, '#3a5bff');
+      ctx.strokeStyle = tok('--yellow'); ctx.lineWidth = 5;
+      for (var q = 0; q < 3; q++) { ctx.beginPath(); ctx.moveTo(-34, -94 + q * 26); ctx.lineTo(34, -94 + q * 26); ctx.stroke(); }
+      ctx.fillStyle = '#ffffff';
+      [-12, 12].forEach(function(dx){ circle(ctx, dx, -68, 8); ctx.fill(); ctx.lineWidth = 3; ctx.strokeStyle = tok('--ink-dark'); ctx.stroke(); });
+    },
+    bant_bosluk: function(ctx, t){     /* iki band, arada bandgap */
+      rrect(ctx, -46, -112, 92, 30, 8); inkFill(ctx, '#ff3df0');
+      rrect(ctx, -46, -54, 92, 30, 8); inkFill(ctx, '#00b8d4');
+      ctx.setLineDash([5, 6]); ctx.lineWidth = 3; ctx.strokeStyle = '#39ff88';
+      ctx.beginPath(); ctx.moveTo(-46, -68); ctx.lineTo(46, -68); ctx.stroke(); ctx.setLineDash([]);
+    },
     dislokasyon: function(ctx, t){     /* eğri sıra */
       for (var r = 0; r < 4; r++) for (var c = 0; c < 4; c++) {
         var cx = -39 + c * 26, cy = -102 + r * 26;
@@ -1986,9 +2001,12 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         }
         var b = el('div', 'bubble ' + konum);
         if (o.kim) {
-          var AD = { anlatici: 'Anlatıcı', selin: 'Selin', runner: 'Koşucu', kosucu: 'Koşucu' };
+          var AD = { anlatici: 'Anlatıcı', selin: 'Selin', runner: 'Koşucu', kosucu: 'Koşucu',
+            vakans: 'Vacancy (Boşluk) Kusuru', safsizlik: 'Impurity (Safsızlık) Kusuru', tane_siniri: 'Grain Boundary (Tane Sınırı) Kusuru',
+            dislokasyon: 'Dislocation (Dislokasyon) Kusuru',
+            pauli_cift: 'Defect (kusur) Pauli Çifti', bant_bosluk: 'Defect (kusur) Bandgap Aralığı', dusman: 'Kusur Düşmanı' };
           var ch = Q.data && Q.data.chars && Q.data.chars[o.kim];
-          b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || o.kim));
+          b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || (/^[a-z0-9_]+$/.test(String(o.kim)) ? 'Kusur düşmanı' : o.kim)));
         }
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);
@@ -1999,6 +2017,21 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         Array.prototype.slice.call(layer.querySelectorAll('.bubble.' + konum)).forEach(function(eski){
           if (eski !== b && eski.parentNode) eski.parentNode.removeChild(eski);
         });
+        /* Farklı konumdaki balonlar üst üste binmesin: çakışırsa yeni balon eskinin altına kayar (katman içinde kalır). */
+        (function ayir(){
+          var cp = b.offsetParent || layer, lr = cp.getBoundingClientRect(), br = b.getBoundingClientRect();
+          var digerleri = Array.prototype.slice.call(layer.querySelectorAll('.bubble')).filter(function(x){ return x !== b; });
+          var top = br.top - lr.top, h = br.height, kaydi = false;
+          digerleri.forEach(function(o){
+            var orr = o.getBoundingClientRect();
+            var ot = orr.top - lr.top;
+            if (br.left < orr.right && br.right > orr.left && top < ot + orr.height + 8 && top + h > ot - 8) { top = ot + orr.height + 16; kaydi = true; }
+          });
+          if (kaydi) {
+            var maks = Math.max(0, lr.height - h - 14);
+            b.style.top = Math.min(top, maks) + 'px';
+          }
+        })();
         var bitti = false;
         function bitir(){ if (bitti) return; bitti = true; res(); }
         b.style.pointerEvents = 'auto'; b.style.cursor = 'pointer'; b.title = 'Kapatmak için tıkla';
@@ -2563,7 +2596,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   'use strict';
   var NLER = [1,2,4,8,16,32,64];
   var MALZ = ['iletken','yalitkan','yariiletken'];
-  var AD = { iletken:'İletken', yalitkan:'Yalıtkan', yariiletken:'Yarıiletken' };
+  var AD = { iletken:'Metal (iletken)', yalitkan:'Insulator (yalıtkan)', yariiletken:'Semiconductor (yarıiletken)' };
   var EG = { iletken:0, yalitkan:5, yariiletken:1.1 };
   var W = 2;          /* bant genişliği (eV), N'den bağımsız */
   var EMAX = 2 * W + 5 + 0.6;
@@ -2585,14 +2618,16 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var N0 = params.N != null ? params.N : (b0.N != null ? b0.N : 8);
       var nIdx = NLER.indexOf(N0); if (nIdx < 0) nIdx = 3;
       var mal = MALZ.indexOf(params.malzeme) >= 0 ? params.malzeme : (MALZ.indexOf(b0.malzeme) >= 0 ? b0.malzeme : 'yariiletken');
-      var gezilen = {}; gezilen[mal] = true;
+      var gezilen = {}, doldurulan = {};
+      var doldurmaGerek = !!(params.basari && params.basari.doldurma);
+      if (!doldurmaGerek) gezilen[mal] = true;
       var dolu = 0, hedef = 0, raf = 0, bitti = false, destroyed = false, ro = null, onWin = null;
 
       host.innerHTML = '';
       var wrap = document.createElement('div');
       wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
       var cv = document.createElement('canvas');
-      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.style.cssText = 'display:block;width:100%;height:clamp(150px,19vh,240px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
       cv.setAttribute('role','img');
       var bar = document.createElement('div');
       bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;';
@@ -2610,14 +2645,14 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var nTxt = document.createElement('span');
       var sl = document.createElement('input');
       sl.type = 'range'; sl.min = '0'; sl.max = String(NLER.length - 1); sl.step = '1'; sl.value = String(nIdx);
-      sl.setAttribute('aria-label', 'Atom sayısı N');
+      sl.setAttribute('aria-label', 'Number of atoms (atom sayısı) N');
       sl.style.cssText = 'min-height:40px;width:140px;accent-color:var(--cyan,#00e5ff);';
       nBox.appendChild(nTxt); nBox.appendChild(sl); bar.appendChild(nBox);
       sl.addEventListener('input', function(){
         nIdx = parseInt(sl.value, 10) || 0; dolu = 0; hedef = 0; durdur(); guncelle();
       });
       /* 2) Elektron doldur */
-      var fillBtn = mkBtn('Elektron doldur', function(){ doldur(); });
+      var fillBtn = mkBtn('Fill electrons (elektron doldur)', function(){ doldur(); });
       fillBtn.style.background = 'var(--accent,#ffd23f)'; fillBtn.style.color = 'var(--accent-ink,#0b0620)';
       bar.appendChild(fillBtn);
       /* 3) Malzeme */
@@ -2642,7 +2677,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         try { var v = getComputedStyle(host).getPropertyValue(n).trim(); return v || fb; } catch (e) { return fb; }
       }
       function durdur(){ if (raf) { cancelAnimationFrame(raf); raf = 0; } }
-      function sec(m){ mal = m; gezilen[m] = true; dolu = 0; hedef = 0; durdur(); guncelle(); }
+      function sec(m){ mal = m; if (!doldurmaGerek) gezilen[m] = true; dolu = 0; hedef = 0; durdur(); guncelle(); }
 
       function doldur(){
         var N = NLER[nIdx];
@@ -2655,7 +2690,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           dolu = Math.round(hedef * f);
           ciz();
           if (f < 1) raf = requestAnimationFrame(adim);
-          else { raf = 0; dolu = hedef; guncelle(); }
+          else { raf = 0; dolu = hedef; doldurulan[mal] = true; if (NLER[nIdx] >= 32) gezilen[mal] = true; guncelle(); }
         }
         raf = requestAnimationFrame(adim);
       }
@@ -2674,9 +2709,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var N = NLER[nIdx], eg = EG[mal];
         var s = 'N=' + N + ' · Eg=' + String(eg).replace('.', ',') + ' eV';
         if (dolu > 0 && dolu >= hedef && hedef > 0) {
-          s += mal === 'iletken' ? ' · Bant yarı dolu: elektron akar'
-             : (mal === 'yalitkan' ? ' · Alt bant dolu, aralık büyük: akmaz' : ' · Alt bant dolu, aralık küçük: ısıyla geçer');
-        } else s += ' · ' + (N === 1 ? 'Tek atom: tek seviye' : N + ' çizgi, bir bant gibi');
+          s += mal === 'iletken' ? ' · Half-filled band (yarı dolu bant): akım taşır'
+             : (mal === 'yalitkan' ? ' · Valence band (valans bandı) dolu, bandgap büyük: akım yok' : ' · Valence band dolu, bandgap küçük: ısıyla geçer');
+        } else s += ' · ' + (N === 1 ? 'Tek atom: tek energy level (seviye)' : N + ' çizgi, energy band (bant) gibi');
         return s;
       }
 
@@ -2692,7 +2727,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           mBtn[m].setAttribute('aria-pressed', on ? 'true' : 'false');
         });
         info.textContent = durumMetni();
-        cv.setAttribute('aria-label', 'Enerji bandı: ' + N + ' atom, ' + AD[mal] + ', aralık ' + EG[mal] + ' eV');
+        cv.setAttribute('aria-label', 'Energy band (enerji bandı): ' + N + ' atom, ' + AD[mal] + ', aralık ' + EG[mal] + ' eV');
         ciz();
         kontrolBasari();
       }
@@ -2762,6 +2797,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           }
           kalan -= n2;
         }
+        c.fillStyle = ink; c.textAlign = 'left'; c.font = '700 13px ' + font;
+        c.fillText('valence band', xB0 + 6, Y(W) + 11);
+        c.fillText('conduction band', xB0 + 6, Y(2 * W + eg) + 11);
+        c.font = '700 14px ' + font;
         var gx = xB1 + 22;
         c.textAlign = 'left';
         if (eg > 0) {
@@ -2769,12 +2808,12 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           c.beginPath(); c.moveTo(gx, Y(W)); c.lineTo(gx, Y(W + eg)); c.stroke();
           c.beginPath(); c.moveTo(gx - 5, Y(W) - 6); c.lineTo(gx, Y(W)); c.lineTo(gx + 5, Y(W) - 6); c.stroke();
           c.beginPath(); c.moveTo(gx - 5, Y(W + eg) + 6); c.lineTo(gx, Y(W + eg)); c.lineTo(gx + 5, Y(W + eg) + 6); c.stroke();
-          c.fillText('Eg = ' + String(eg).replace('.', ',') + ' eV', gx + 10, (Y(W) + Y(W + eg)) / 2);
+          c.fillText('bandgap Eg = ' + String(eg).replace('.', ',') + ' eV', gx + 10, (Y(W) + Y(W + eg)) / 2);
         } else {
-          c.fillStyle = lime; c.fillText('Eg = 0', gx + 4, Y(W));
+          c.fillStyle = lime; c.fillText('bandgap Eg = 0', gx + 4, Y(W));
         }
         c.fillStyle = muted; c.textAlign = 'center';
-        c.fillText('1 atom', (xA0 + xA1) / 2, CH - 8);
+        c.fillText('1 atom (atom)', (xA0 + xA1) / 2, CH - 8);
         c.fillText(N + ' atom', (xB0 + xB1) / 2, CH - 8);
       }
 
@@ -2785,7 +2824,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         onWin = boyutla;
         window.addEventListener('resize', onWin);
       }
-      if (api.hint) { try { api.hint('N büyüdükçe çizgiler banda döner; Eg iletkenliği belirler.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('N büyüdükçe çizgiler energy band (bant) olur; bandgap (Eg) iletkenliği belirler.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {
@@ -2799,7 +2838,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         set: function(p){
           if (!p) return;
           if (p.N != null && NLER.indexOf(p.N) >= 0) { nIdx = NLER.indexOf(p.N); dolu = 0; }
-          if (MALZ.indexOf(p.malzeme) >= 0) { mal = p.malzeme; gezilen[mal] = true; dolu = 0; }
+          if (MALZ.indexOf(p.malzeme) >= 0) { mal = p.malzeme; if (!doldurmaGerek) gezilen[mal] = true; dolu = 0; }
           durdur(); guncelle();
         }
       };
@@ -6200,7 +6239,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       poolBox.setAttribute('aria-label', 'Kartlar');
       poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
       var slotBox = el('ol', 'kopru-yuvalar');
-      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none;';
+      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:2px;margin:0;padding:0;list-style:none;';
       var bar = el('div', 'kopru-bar');
       bar.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;position:sticky;bottom:0;z-index:2;padding:4px 0;background:var(--panel,var(--bg,#1a1033));';
       var kontrol = el('button', 'btn primary kopru-kontrol', 'Kontrol');
@@ -6244,7 +6283,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var s = el('button', 'kopru-yuva');
         s.type = 'button';
         s.setAttribute('data-yuva', String(i));
-        s.style.cssText = 'flex:1;min-height:34px;text-align:left;padding:2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
+        s.style.cssText = 'flex:1;min-height:30px;text-align:left;padding:1px 2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
         s.setAttribute('aria-label', 'Yuva ' + (i + 1) + ', boş');
         li.appendChild(no);
         li.appendChild(s);
@@ -6719,7 +6758,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (runway.setObstacleState) safe(function(){ runway.setObstacleState('aktif'); });
         if (runway.say) safe(function(){ runway.say('anlatici', ob.iddia); });
 
-        if (ob.iddia) host.appendChild(mk('div', 'dusman-soru', ob.iddia));
+        var balonVar = !!(runway.say); /* iddia anlatıcı balonunda zaten görünür */
+        if (ob.iddia && !balonVar) host.appendChild(mk('div', 'dusman-soru', ob.iddia));
         host.appendChild(mk('div', 'tuzak-talimat', 'Hatalı parçaya dokun.'));
         var cumle = mk('div', 'tuzak-cumle');
         cumle.setAttribute('role', 'group');
@@ -7121,7 +7161,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function kopya(a){ return a.map(function(s){ return sec(s.t, s.dogru, s.neden); }); }
 
   var o03 = {
-    id: "s01-o03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kati_turleri", agirlik: 1,
+    id: "s01-o03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kati_turleri", agirlik: 1,
     soru: "Amorf (amorphous) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
     secenekler: [
       sec("Evet, crystal (kristal) gibi", false, "Hayır. Long-range order yalnızca crystal (kristal) içinde vardır."),
@@ -7132,7 +7172,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: "s01-o04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "tane_siniri", agirlik: 1,
+    id: "s01-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "tane_siniri", agirlik: 1,
     soru: "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı) nedir?",
     secenekler: [
       sec("İki grain (tane) arasındaki disordered (düzensiz) interface (ara yüz) bölgesi", true, "Doğru. Crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir."),
@@ -7279,7 +7319,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     temelTur: {
       kartlar: [
         { baslik: "Crystal (kristal) nedir?", metin: "Atom (atom) long-range order (uzun menzilli düzen) ile dizilir." },
-        { baslik: "Neden scattering?", metin: "Order (düzen) bozuldukça electron (elektron) daha sık saçılır (scattering)." },
+        { baslik: "Neden scattering (saçılma)?", metin: "Order (düzen) bozuldukça electron (elektron) daha sık saçılır (scattering)." },
         { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt içinden yavaşça çekilir, düzen sürer." }
       ],
       sim: { modul: "kristal_tur", params: { mod: "tur" } }
@@ -7294,12 +7334,12 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         soru: o04.soru, secenekler: kopya(o04.secenekler), kusurSkin: o04.kusurSkin
       },
       {
-        id: "s01-t03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "tane_siniri", agirlik: 1,
+        id: "s01-t03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "tane_siniri", agirlik: 1,
         soru: "Single crystal (tek kristal) yerine polycrystalline (çok kristalli) malzeme kullanırsan mean free path (serbest yol) ne olur?",
         secenekler: kopya(o05secenekler), kusurSkin: "tane_siniri"
       },
       {
-        id: "s01-t04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "cz_tohum", agirlik: 1,
+        id: "s01-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "cz_tohum", agirlik: 1,
         soru: "CZ'de seed crystal (tohum kristal) ne işe yarar?",
         secenekler: [
           sec("Order (düzen) atom üzerine aktarır", true, "Doğru. Solidifying (katılaşan) atom seed crystal (tohum kristal) düzenini sürdürür."),
@@ -7309,7 +7349,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         kusurSkin: "dislokasyon"
       },
       {
-        id: "s01-t05", tip: "dusman", baslik: "Kusur düşmanı", kavram: "kristal_neden", agirlik: 1,
+        id: "s01-t05", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kristal_neden", agirlik: 1,
         soru: "Chip (çip) için neden single crystal silicon (tek kristal silisyum) kullanılır?",
         secenekler: [
           sec("electron (elektron) akışı ordered (düzenli) dizilimde öngörülebilir olur", true, "Doğru. Ordered lattice (düzenli kafes) electron (elektron) rastgele saçmaz."),
@@ -7327,7 +7367,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function kopya(x){ return s(x.t, x.dogru, x.neden); }
 
   var o03 = {
-    id: "s02-o03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "atom_sayisi", agirlik: 1,
+    id: "s02-o03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "atom_sayisi", agirlik: 1,
     soru: "bcc unit cell (birim hücre) başına kaç atom (atom) düşer? Calculate (hesapla).",
     secenekler: [
       s("1", false, "Hayır. 1 atom per unit cell (hücre başına atom) simple cubic (basit kübik, sc) lattice (kafes) içindir."),
@@ -7338,7 +7378,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: "s02-o04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "birim_hucre", agirlik: 1,
+    id: "s02-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
     soru: "diamond structure (elmas yapı) içinde her atom (atom) için nearest neighbor (en yakın komşu) sayısı kaçtır?",
     secenekler: [
       s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 neighbors (komşu) ile."),
@@ -7376,7 +7416,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         yer: "Cambridge", yil: 1839, rivayet: false,
         satirlar: [
           { kim: "selin", metin: "1848'de Bravais: atoms (atomlar) yalnızca 14 lattice (kafes) türünde dizilir. 1913'te Bragg'lar X-ray (X-ışını) ile gördü." },
-          { kim: "selin", metin: "Kübik hücre: sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
+          { kim: "selin", metin: "Cubic unit cell (kübik birim hücre): sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
@@ -7400,8 +7440,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           "Parentheses (parantez) içine yaz: (hkl)"
         ],
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
-      { id: "s02-o08", tip: "patron", baslik: "Düzlem Canavarı", kavram: null, agirlik: 1,
-        canavar: "miller", canavarAd: "Düzlem Canavarı",
+      { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,
+        canavar: "miller", canavarAd: "Plane (Düzlem) Canavarı",
         giris: "Hangi düzlemdeyim? Bil bakalım, yoksa seni yanlış açıdan keserim!",
         fazlar: [
           { tip: "secmeli", kavram: "miller_duzlem",
@@ -7482,13 +7522,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       sim: { modul: "miller", params: { c: [1, 1, 1] } }
     },
     tekrarHavuzu: [
-      { id: "s02-t01", tip: "dusman", baslik: "Kusur düşmanı", kavram: "atom_sayisi", agirlik: 1,
+      { id: "s02-t01", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "atom_sayisi", agirlik: 1,
         soru: o03.soru, secenekler: o03.secenekler.map(kopya), kusurSkin: "vakans" },
-      { id: "s02-t02", tip: "dusman", baslik: "Kusur düşmanı", kavram: "birim_hucre", agirlik: 1,
+      { id: "s02-t02", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
         soru: o04.soru, secenekler: o04.secenekler.map(kopya), kusurSkin: "safsizlik" },
-      { id: "s02-t03", tip: "dusman", baslik: "Kusur düşmanı", kavram: "miller_duzlem", agirlik: 1,
+      { id: "s02-t03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_duzlem", agirlik: 1,
         soru: o05.soru, secenekler: o05.secenekler.map(kopya), kusurSkin: "vakans" },
-      { id: "s02-t04", tip: "dusman", baslik: "Kusur düşmanı", kavram: "miller_yon", agirlik: 1,
+      { id: "s02-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_yon", agirlik: 1,
         soru: "[100] direction (yön) hangi axis (eksen) için parallel (paralel) olur?",
         secenekler: [
           s("x axis (x ekseni)", true, "Doğru. [100] = (1,0,0) vector (vektör), x direction (yön)."),
@@ -7511,7 +7551,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's03-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'karacisim_felaket', agirlik: 1,
+    id: 's03-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'karacisim_felaket', agirlik: 1,
     soru: 'Ultraviolet catastrophe (mor ötesi felaketi), classical theory (klasik teori) neyi yanlış öngörmesidir?',
     secenekler: [
       sec('Kısa wavelength (dalga boyu) değerinde infinite energy (sonsuz enerji)', true, 'Doğru. Classical theory (klasik teori) yüksek frequency (frekans) değerinde energy (enerji) değerini sonsuz buluyordu.'),
@@ -7522,7 +7562,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: 's03-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'planck_paket', agirlik: 1,
+    id: 's03-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'planck_paket', agirlik: 1,
     soru: 'Planck\'a göre bir photon (foton) energy (enerji) değeri neye bağlıdır?',
     secenekler: [
       sec('Frequency (frekans) değerine (E = hf)', true, 'Doğru. Yüksek frequency (frekans), büyük paket.'),
@@ -7601,8 +7641,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: 'Photon energy (foton enerjisi) frequency (frekans) ile belirlenir, threshold (eşik) aşılırsa electron (elektron) kopar, intensity (şiddet) sayıyı artırır.'
       },
       {
-        id: 's03-o08', tip: 'patron', baslik: 'Foton Canavarı', kavram: null, agirlik: 1,
-        canavar: 'einstein', canavarAd: 'Foton Canavarı',
+        id: 's03-o08', tip: 'patron', baslik: 'Photon (Foton) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'einstein', canavarAd: 'Photon (Foton) Canavarı',
         giris: 'Ben photon (foton) canavarıyım! Brightness (parlaklık) artırsam da seni threshold (eşik) değerinden geçirmem.',
         fazlar: [
           {
@@ -7697,13 +7737,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       Object.assign({}, o03, { id: 's03-t01' }),
       Object.assign({}, o04, { id: 's03-t02' }),
       {
-        id: 's03-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'fotoelektrik_siddet', agirlik: 1,
+        id: 's03-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'fotoelektrik_siddet', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's03-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantum_rastgele_sanisi', agirlik: 1,
+        id: 's03-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kuantum_rastgele_sanisi', agirlik: 1,
         soru: 'Quantum randomness (kuantum rastgeleliği) neden bilgi eksikliği değildir? Explain (açıkla).',
         secenekler: [
           sec('Doğanın fundamental (temel) yapısıdır, daha çok information (bilgi) ile ortadan kalkmaz', true, 'Doğru. Standart yorumda probability (olasılık) temeldir.'),
@@ -7726,7 +7766,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's04-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ayrik_spektrum', agirlik: 1,
+    id: 's04-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'ayrik_spektrum', agirlik: 1,
     soru: 'Hydrogen atom (hidrojen atomu) neden yalnızca belirli renklerde ışır?',
     secenekler: [
       sec('Energy levels (enerji seviyeleri) ayrık, geçiş farkı kadar photon (foton) çıkar', true, 'Doğru. Her renk bir energy level (enerji seviyesi) farkına karşılık gelir.'),
@@ -7737,7 +7777,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: 's04-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'debroglie_dalga', agirlik: 1,
+    id: 's04-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'debroglie_dalga', agirlik: 1,
     soru: 'Bilardo topu neden wave (dalga) gibi davranmıyor?',
     secenekler: [
       sec('Wavelength (dalga boyu) (h/p) çok küçük kalıyor', true, 'Doğru. Büyük momentum (momentum), ihmal edilecek kadar küçük wavelength (dalga boyu).'),
@@ -7816,8 +7856,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), alt sınır, stable atom (kararlı atom).'
       },
       {
-        id: 's04-o08', tip: 'patron', baslik: 'Yörünge Canavarı', kavram: null, agirlik: 1,
-        canavar: 'bohr', canavarAd: 'Yörünge Canavarı',
+        id: 's04-o08', tip: 'patron', baslik: 'Orbit (Yörünge) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'bohr', canavarAd: 'Orbit (Yörünge) Canavarı',
         giris: 'Electronunu (elektron) nucleus (çekirdek) içine düşüreceğim! Düşemez diyorsan justify (gerekçelendir).',
         fazlar: [
           {
@@ -7858,7 +7898,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
               secenekler: [
                 sec('Ground state (temel hal) altı yok, electron (elektron) düşemez', true, 'Doğru. Confined wave (hapsolmuş dalga) için lower energy limit (alt enerji sınırı) var.'),
                 sec('Electron nucleus (çekirdek) tarafından itilir', false, 'Yanlış. Nucleus (çekirdek) electron (elektron) çeker.'),
-                sec('Atom çok cold (soğuk) olduğu için', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
+                sec('Because the atom is too cold (atom çok soğuk olduğu için)', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
                 sec('Electron (elektron) aslında durur', false, 'Yanlış. Electron durmaz, lowest energy (en düşük enerji) wave state (dalga durumu) içindedir.')
               ]
             },
@@ -7912,13 +7952,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       Object.assign({}, o03, { id: 's04-t01' }),
       Object.assign({}, o04, { id: 's04-t02' }),
       {
-        id: 's04-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'atom_kararlilik', agirlik: 1,
+        id: 's04-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'atom_kararlilik', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's04-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
+        id: 's04-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'sifir_noktasi_sicaklik', agirlik: 1,
         soru: 'Confined particle (hapsolmuş parçacık) için lowest energy (en düşük enerji) neden sıfır değildir?',
         secenekler: [
           sec('Boundary condition (sınır koşulu) dalganın sığmasını gerektirir', true, 'Doğru. Temperature (sıcaklık) değil, boundary condition (sınır koşulu) sebep.'),
@@ -7942,7 +7982,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's05-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'psi_olasilik', agirlik: 1,
+    id: 's05-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'psi_olasilik', agirlik: 1,
     soru: 'Wave function (dalga fonksiyonu) ψ(x) fiziksel olarak neyi anlatır?',
     secenekler: [
       sec('|ψ(x)|² probability density (olasılık yoğunluğu) verir', true, 'Doğru. ψ\'nin kendisi ölçülemez, karesi probability (olasılık) yoğunluğudur.'),
@@ -7953,7 +7993,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: 's05-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'schrodinger_girdi_cikti', agirlik: 1,
+    id: 's05-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'schrodinger_girdi_cikti', agirlik: 1,
     soru: 'Schrödinger equation (Schrödinger denklemi) için ne verirsin, ne alırsın?',
     secenekler: [
       sec('V(x) ve boundary condition (sınır koşulu) ver; ψ ile izinli E al', true, 'Doğru. Girdi V(x) ve boundary condition, çıktı ψ ile E.'),
@@ -7976,7 +8016,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       onceki: { L: 2, n: 1 },
       sonraki: { L: 1, n: 1 }
     },
-    acik: 'E ∝ 1/L²: L yarıya inince enerji dört katına çıkar.'
+    acik: 'E ∝ 1/L²: L yarıya inince energy (enerji) dört katına çıkar.'
   };
 
   Q.data.stations.s05 = {
@@ -8032,8 +8072,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: 'Boundary condition (sınır koşulu), sığan dalgalar, kısıtlı λ, quantized energy (kuantalı enerji).'
       },
       {
-        id: 's05-o08', tip: 'patron', baslik: 'Kuantum Kedisi', kavram: null, agirlik: 1,
-        canavar: 'schro', canavarAd: 'Kuantum Kedisi',
+        id: 's05-o08', tip: 'patron', baslik: 'Quantum (Kuantum) Kedisi', kavram: null, agirlik: 1,
+        canavar: 'schro', canavarAd: 'Quantum (Kuantum) Kedisi',
         giris: 'Miyav! Sıfır energy (enerji) ile kutuya sığacağımı mı sandın?',
         fazlar: [
           {
@@ -8119,7 +8159,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     temelTur: {
       kartlar: [
         { baslik: 'ψ nedir?', metin: '|ψ|² probability density (olasılık yoğunluğu) olur.' },
-        { baslik: 'Sınır koşulu', metin: 'Boundary condition (sınır koşulu): duvarda ψ = 0, yalnızca sığan dalgalar izinli.' },
+        { baslik: 'Boundary condition (sınır koşulu)', metin: 'Boundary condition (sınır koşulu): duvarda ψ = 0, yalnızca sığan dalgalar izinli.' },
         { baslik: 'E₁ > 0', metin: 'n = 0 dalga yok demek; lowest energy (en düşük enerji) sıfır değil.' }
       ],
       sim: { modul: 'kuyu', params: { L: 2, n: 1 } }
@@ -8128,13 +8168,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       Object.assign({}, o03, { id: 's05-t01' }),
       Object.assign({}, o04, { id: 's05-t02' }),
       {
-        id: 's05-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_sinir', agirlik: 1,
+        id: 's05-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kuantalasma_sinir', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's05-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
+        id: 's05-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kuantalasma_olcum', agirlik: 1,
         soru: 'Energy quantization (enerji kuantalaşması) nereden gelir?',
         secenekler: [
           sec('Boundary conditions (sınır koşulları)', true, 'Doğru. Yalnızca sığan solutions (çözümler) izinli.'),
@@ -8157,7 +8197,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's06-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'basamak_yansima', agirlik: 1,
+    id: 's06-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'basamak_yansima', agirlik: 1,
     soru: 'E > V₀ iken particle (parçacık) için step (basamak) potential (potansiyel) değerinden reflection (yansıma) olasılığı nedir?',
     secenekler: [
       sec('Zero (sıfır) değerinden büyük, wave (dalga) kısmen yansır', true, 'Doğru. k₁ ≠ k₂ olduğundan reflection (yansıma) vardır.'),
@@ -8168,7 +8208,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: 's06-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bariyer_sonumlenme', agirlik: 1,
+    id: 's06-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bariyer_sonumlenme', agirlik: 1,
     soru: 'E < V₀ iken wave function (dalga fonksiyonu) ψ, barrier (bariyer) içinde ne yapar?',
     secenekler: [
       sec('Exponentially decays (üstel olarak sönümlenir) ama sıfır olmaz', true, 'Doğru. Forbidden region (yasak bölge) içinde wave (dalga) oscillate (salınım) yapmaz, decays (sönümlenir).'),
@@ -8247,8 +8287,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: 'Her region (bölge) için ψ, boundary condition (sınır koşulu) olarak süreklilik, coefficients (katsayılar), R ve T.'
       },
       {
-        id: 's06-o08', tip: 'patron', baslik: 'Dalga Canavarı', kavram: null, agirlik: 1,
-        canavar: 'broglie', canavarAd: 'Dalga Canavarı',
+        id: 's06-o08', tip: 'patron', baslik: 'Wave (Dalga) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'broglie', canavarAd: 'Wave (Dalga) Canavarı',
         giris: 'Ben wave (dalga)! Wall (duvar) üzerine çarparım, bazen içinden geçerim.',
         fazlar: [
           {
@@ -8343,13 +8383,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       Object.assign({}, o03, { id: 's06-t01' }),
       Object.assign({}, o04, { id: 's06-t02' }),
       {
-        id: 's06-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'tunelleme_kalinlik', agirlik: 1,
+        id: 's06-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'tunelleme_kalinlik', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's06-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'dalga_surekli', agirlik: 1,
+        id: 's06-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'dalga_surekli', agirlik: 1,
         soru: 'Boundary (sınır) noktasında neden ψ ve ψ\' continuous (sürekli) olmalıdır?',
         secenekler: [
           sec('Equation (denklem) second derivative (ikinci türev) içerir', true, 'Doğru. Discontinuity (süreksizlik) equation (denklem) tarafından sağlanmaz.'),
@@ -8372,7 +8412,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's07-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
+    id: 's07-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
     soru: 'Bir measurement (ölçüm) hangi değerleri verebilir?',
     secenekler: [
       sec('Yalnızca operator (operatör) eigenvalue (özdeğer) değerlerini', true, 'Doğru. Her measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini verir.'),
@@ -8383,7 +8423,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: 's07-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
+    id: 's07-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
     soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma probability (olasılık) değeri nedir?',
     secenekler: [
       sec('|c₁|²', true, 'Doğru. Probability (olasılık) coefficient (katsayı) karesidir.'),
@@ -8462,8 +8502,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: 'Superposition (süperpozisyon), probabilistic (olasılıklı) result (sonuç), collapse (çökme), deterministic (belirlenimci) evolution (evrim).'
       },
       {
-        id: 's07-o08', tip: 'patron', baslik: 'Olasılık Canavarı', kavram: null, agirlik: 1,
-        canavar: 'born', canavarAd: 'Olasılık Canavarı',
+        id: 's07-o08', tip: 'patron', baslik: 'Probability (Olasılık) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'born', canavarAd: 'Probability (Olasılık) Canavarı',
         giris: 'Zar atıyorum! Ama kurallarım var. Probability (olasılık) |c|².',
         fazlar: [
           {
@@ -8525,7 +8565,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
               'Collapse (çökme) Schrödinger equation (denklem) kaynaklıdır'
             ],
             yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
-            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder; hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
+            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder; hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
             yedekSecmeli: {
               soru: 'Eigenstate (özdurum) olmayan state (durumda) measurement (ölçüm) sonrası ne olur?',
               secenekler: [
@@ -8558,13 +8598,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       Object.assign({}, o03, { id: 's07-t01' }),
       Object.assign({}, o04, { id: 's07-t02' }),
       {
-        id: 's07-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olcum_cokme', agirlik: 1,
+        id: 's07-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'olcum_cokme', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's07-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
+        id: 's07-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
         soru: 'Measurement (ölçüm) arasında ψ nasıl evolve (evrilir)?',
         secenekler: [
           sec('Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde', true, 'Doğru. Randomness (rastgelelik) yalnızca measurement (ölçüm) sırasında ortaya çıkar.'),
@@ -8587,7 +8627,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's08-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
+    id: 's08-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
     soru: 'Δx küçülürse Δp (momentum) ne olur?',
     secenekler: [
       sec('Büyür (increases)', true, 'Doğru. ΔxΔp ≥ ħ/2 product (çarpım) en az sabit kalır.'),
@@ -8598,7 +8638,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   };
 
   var o04 = {
-    id: 's08-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_makro', agirlik: 1,
+    id: 's08-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_makro', agirlik: 1,
     soru: 'Bilardo topunda uncertainty (belirsizlik) neden fark edilmez?',
     secenekler: [
       sec('ħ çok küçük, ΔxΔp limit (sınır) ihmal edilebilir', true, 'Doğru. Uncertainty principle (belirsizlik ilkesi) her cisimde geçerli, etkisi görünmez.'),
@@ -8641,7 +8681,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         yer: 'Kopenhag', yil: 1927, rivayet: false,
         satirlar: [
           { kim: 'selin', metin: 'Calibration (kalibrasyon) odası: measurement (ölçüm) mükemmelleştirmek istiyoruz.' },
-          { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas measure (ölçülemez). Instrument (alet) yüzünden değil.' },
+          { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas ölçülemez. Sebep instrument (alet) değil.' },
           { kim: 'heis', metin: 'Doğa böyle: wave (dalga) isen keskin konum ve keskin momentum aynı anda olmaz.' }
         ]
       },
@@ -8677,8 +8717,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: 'Wave packet (dalga paketi), sharp position (keskin konum), broad momentum (geniş momentum), ΔxΔp ≥ ħ/2.'
       },
       {
-        id: 's08-o08', tip: 'patron', baslik: 'Belirsizlik Canavarı', kavram: null, agirlik: 1,
-        canavar: 'heis', canavarAd: 'Belirsizlik Canavarı',
+        id: 's08-o08', tip: 'patron', baslik: 'Uncertainty (Belirsizlik) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'heis', canavarAd: 'Uncertainty (Belirsizlik) Canavarı',
         giris: 'Neredeyim? Ne kadar hızlıyım? İkisini birden bilemezsin!',
         fazlar: [
           {
@@ -8742,7 +8782,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             yanlisKavramIds: ['eslenik_degisken', 'belirsizlik_makro'],
             idealCevap: 'Conjugate variables (eşlenik değişkenler), aynı anda keyfi hassas ölçülemeyen büyüklük çiftidir; örneğin position (konum) ve momentum. Operator (operatör) commute (değişme) etmediği için ortak eigenstate (özdurum) yoktur. Günlük cisimlerde ħ çok küçük olduğundan limit (sınır) ihmal edilir.',
             yedekSecmeli: {
-              soru: 'Hangisi bir conjugate pair (eşlenik çift) olur?',
+              soru: 'Hangisi bir conjugate pair (eşlenik çift) oluşturur?',
               secenekler: [
                 sec('Position (konum) ve momentum', true, 'Doğru. Operator (operatör) commute (değişme) etmez.'),
                 sec('Mass (kütle) ve volume (hacim)', false, 'Yanlış. Bu çift için principle (ilke) yok.'),
@@ -8773,13 +8813,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       Object.assign({}, o03, { id: 's08-t01' }),
       Object.assign({}, o04, { id: 's08-t02' }),
       {
-        id: 's08-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
+        id: 's08-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's08-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'eslenik_degisken', agirlik: 1,
+        id: 's08-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'eslenik_degisken', agirlik: 1,
         soru: 'Hangi operator (operatör) çifti commute etmez ve uncertainty (belirsizlik) verir?',
         secenekler: [
           sec('Position (konum) ve momentum', true, 'Doğru. [x,p] = iħ.'),
@@ -8789,7 +8829,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         kusurSkin: 'safsizlik'
       },
       {
-        id: 's08-t05', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'belirsizlik_alet', agirlik: 1,
+        id: 's08-t05', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_alet', agirlik: 1,
         soru: 'Uncertainty principle (belirsizlik ilkesi) neden alet kusuru değildir?',
         secenekler: [
           sec('Ideal instrument (alet) için de geçerli, wave nature (dalga doğası) sonucudur', true, 'Doğru. Instrument (alet) kusuru değil, doğanın limit (sınırı).'),
@@ -8812,41 +8852,41 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function sec(t, dogru, neden){ return { t: t, dogru: dogru, neden: neden }; }
 
   var o03 = {
-    id: 's09-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'pauli_dislama', agirlik: 1,
+    id: 's09-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'pauli_dislama', agirlik: 1,
     soru: 'Pauli exclusion principle (Pauli dışlama ilkesi): bir energy level (enerji seviyesi) en çok kaç electron (elektron) alır?',
     secenekler: [
-      sec('İki electron (elektron), zıt spin (spin)', true, 'Doğru. Aynı quantum state (kuantum durumu) iki electron (elektron) paylaşamaz.'),
+      sec('İki electron (elektron), zıt spin (spin)', true, 'Doğru. İki electron (elektron) aynı quantum state (kuantum durumu) paylaşamaz; zıt spin (spin) iki ayrı durum verir, seviyeye iki electron (elektron) sığar.'),
       sec('Sınırsız electron (elektron)', false, 'Yanlış. Pauli exclusion principle (Pauli dışlama ilkesi) bunu yasaklar.'),
       sec('Yalnızca bir electron (elektron), spin (spin) fark etmez', false, 'Yanlış. Zıt spin (spin) ile iki electron (elektron) sığar.')
     ],
-    kusurSkin: 'vakans'
+    kusurSkin: 'pauli_cift'
   };
 
   var o04 = {
-    id: 's09-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bant_aralik', agirlik: 1,
+    id: 's09-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bant_aralik', agirlik: 1,
     soru: 'Insulator (yalıtkan) neden akım taşımaz?',
     secenekler: [
       sec('Valence band (valans bandı) dolu, bandgap (yasak enerji aralığı) büyük', true, 'Doğru. Electron (elektron) boş seviyeye çıkamaz.'),
       sec('Atom (atom) hiç electron (elektron) içermez', false, 'Hayır. Electron (elektron) vardır, ama hareket edemez.'),
       sec('Conduction band (iletim bandı) yarı doludur', false, 'Hayır. Yarı dolu band (bant) metal (metal) özelliğidir.')
     ],
-    kusurSkin: 'tane_siniri'
+    kusurSkin: 'bant_bosluk'
   };
 
   var o05 = {
     id: 's09-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'bant_yarilma', agirlik: 1.5,
     soru: 'N atom (atom) yaklaşınca her atomic energy level (atomik enerji seviyesi) ne olur?',
     secenekler: [
-      sec('N yakın energy level (enerji seviyesine) yarılır', true, 'Doğru. N seviye, birleşip energy band (enerji bandı) olur.'),
-      sec('Tek seviye olarak kalır', false, 'Yanlış. Atomlar etkileşince seviye yarılır.'),
-      sec('Seviye sayısı N kat azalır', false, 'Yanlış. Seviye sayısı N kat artar.')
+      sec('N yakın energy level (enerji seviyesine) yarılır', true, 'Doğru. N energy level (enerji seviyesi), birleşip energy band (enerji bandı) olur.'),
+      sec('Tek energy level (enerji seviyesi) olarak kalır', false, 'Yanlış. Atomlar etkileşince energy level (enerji seviyesi) yarılır.'),
+      sec('Energy level (enerji seviyesi) sayısı N kat azalır', false, 'Yanlış. Energy level (enerji seviyesi) sayısı N kat artar.')
     ],
     sim: {
       modul: 'bant',
       onceki: { N: 1 },
       sonraki: { N: 32 }
     },
-    acik: 'N 1\'den 32\'ye çıkınca tek seviye 32 çizgiye yarıldı; çizgiler band (bant) oluşturdu.'
+    acik: 'N 1\'den 32\'ye çıkınca tek energy level (enerji seviyesi) 32 çizgiye yarıldı; çizgiler band (bant) oluşturdu.'
   };
 
   Q.data.stations.s09 = {
@@ -8865,18 +8905,18 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         id: 's09-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Zürih', yil: 1928, rivayet: false,
         satirlar: [
-          { kim: 'selin', metin: 'Bant testi: bir atomun seviyeleri var, katıda ne olur?' },
-          { kim: 'pauli', metin: 'Atomlar yan yana gelince energy level (enerji seviyesi) yarılır. Yeter ki electron (elektron) sığsın.' },
-          { kim: 'pauli', metin: 'Her seviyede en çok iki electron (elektron). Dolu band (bant) akım taşımaz.' }
+          { kim: 'selin', metin: 'Tek atomda energy level (enerji seviyesi) belli. Atomlar bir araya gelince solid (katı) içinde ne olur?' },
+          { kim: 'pauli', metin: 'Her energy level N seviyeye yarılır, seviyeler birleşip energy band (enerji bandı) olur. Pauli: seviyeye en çok iki electron (elektron) sığar.' },
+          { kim: 'pauli', metin: 'Dolu valence band (valans bandı) akım taşımaz; üstteki conduction band (iletim bandı) ile arasında bandgap (yasak enerji aralığı) var.' }
         ]
       },
       {
         id: 's09-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bant_yarilma', agirlik: 1,
-        gorev: 'N atom (atom) sayısını 32 yap, üç malzemeyi gez.',
+        gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {
           modul: 'bant',
           params: { N: 2, malzeme: 'yariiletken' },
-          basari: { N: 32, malzemeler: 3 }
+          basari: { N: 32, malzemeler: 3, doldurma: true }
         },
         ogrenilen: 'N atom (atom) N seviye verir; bandgap (yasak enerji aralığı) ve doluluk malzemeyi belirler.'
       },
@@ -8888,22 +8928,22 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         iddia: 'Tek infinite well (sonsuz kuyu) içinde energy bands (enerji bantları) oluşur.',
         parcalar: ['Tek infinite well (sonsuz kuyu)', 'içinde energy bands (enerji bantları)', 'oluşur.'],
         yanlisParca: 0,
-        duzeltme: 'Bands (bantlar) çok atomlu solid (katı) içinde oluşur; tek kuyuda discrete levels (kesikli seviyeler) vardır.'
+        duzeltme: 'Bands (bantlar) çok atomlu solid (katı) içinde oluşur; tek infinite well (sonsuz kuyu) içinde discrete levels (kesikli seviyeler) vardır.'
       },
       {
         id: 's09-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'bant_yarilma', agirlik: 1,
         soru: 'Band (bant) oluşum zincirini sıraya diz',
         bloklar: [
           'N atom (atom) bir araya gelir',
-          'Her energy level (enerji seviyesi) N seviyeye yarılır',
-          'Seviyeler birleşip energy band (enerji bandı) olur',
-          'Bandgap (yasak enerji aralığı) bantları ayırır'
+          'Her energy level (enerji seviyesi) N yakın çizgiye yarılır',
+          'Energy level (enerji seviyesi) çizgileri birleşip energy band (enerji bandı) olur',
+          'Bandgap (yasak enerji aralığı) energy band (enerji bandı) gruplarını ayırır'
         ],
-        sonuc: 'N atom (atom), N seviye, energy bands (enerji bantları), aralarında bandgap (yasak enerji aralığı).'
+        sonuc: 'N atom (atom), N energy level (enerji seviyesi), energy bands (enerji bantları), aralarında bandgap (yasak enerji aralığı).'
       },
       {
-        id: 's09-o08', tip: 'patron', baslik: 'Dışlama Canavarı', kavram: null, agirlik: 1,
-        canavar: 'pauli', canavarAd: 'Dışlama Canavarı',
+        id: 's09-o08', tip: 'patron', baslik: 'Exclusion (Dışlama) Canavarı', kavram: null, agirlik: 1,
+        canavar: 'pauli', canavarAd: 'Exclusion (Dışlama) Canavarı',
         giris: 'Aynı yere iki kişi sığmaz! Elektronlar da öyle!',
         fazlar: [
           {
@@ -8911,7 +8951,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             soru: 'Metal (metal), insulator (yalıtkan) ve semiconductor (yarıiletken) arasındaki fark nedir?',
             secenekler: [
               sec('Band (bant) doluluğu ve bandgap (yasak enerji aralığı)', true, 'Doğru. Yarı dolu band (bant) metal (metal) verir.'),
-              sec('Probability (olasılık) farkı', false, 'Hayır. Fark olasılık değil, band (bant) yapısıdır.'),
+              sec('Probability (olasılık) farkı', false, 'Hayır. Fark probability (olasılık) değil, band (bant) yapısıdır.'),
               sec('Atom (atom) sayısı farkı', false, 'Hayır. Hepsi çok atomlu solid (katı) içindedir.')
             ],
             alt: {
@@ -8930,7 +8970,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             anahtarFikirler: [
               'N atom (atom) yaklaşınca her seviye N seviyeye yarılır, band (bant) olur.',
               'Pauli exclusion principle (Pauli dışlama ilkesi): seviye başına iki electron (elektron).',
-              'Periodic potential (periyodik potansiyel): Bloch teoremi izinli ve yasak enerji verir.',
+              'Periodic potential (periyodik potansiyel): Bloch teoremi allowed energy band (izinli enerji bandı) ve bandgap (yasak enerji aralığı) verir.',
               'Doluluk ve bandgap (yasak enerji aralığı) metal (metal), insulator (yalıtkan), semiconductor (yarıiletken) ayırır.'
             ],
             yanlisKavramlar: [
@@ -8945,7 +8985,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
                 sec('Çok atomun energy level (enerji seviyesi) yarılması', true, 'Doğru. N atom (atom) N seviye verir.'),
                 sec('Tek atomun sınır koşulundan', false, 'Yanlış. Tek atomda discrete levels (kesikli seviyeler) vardır.'),
                 sec('Electron (elektron) sayısı azalınca', false, 'Yanlış. Neden atomların etkileşmesidir.'),
-                sec('Temperature (sıcaklık) artınca', false, 'Yanlış. Band (bant) yapısı kristal periodicity (periyodikliği) sonucudur.')
+                sec('Temperature (sıcaklık) artınca', false, 'Yanlış. Band (bant) yapısı crystal (kristal) periodicity (periyodikliği) sonucudur.')
               ]
             },
             alt: { soru: 'Periodic potential (periyodik potansiyel) neden energy bands (enerji bantları) verir? Explain (açıkla).' }
@@ -8989,7 +9029,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     temelTur: {
       kartlar: [
         { baslik: 'Level splitting (seviye yarılması)', metin: 'N atom (atom) her seviyeyi N çizgiye yarar.' },
-        { baslik: 'Pauli (Pauli)', metin: 'Her energy level (enerji seviyesi) iki electron (elektron) alır.' },
+        { baslik: 'Pauli exclusion (Pauli dışlama)', metin: 'Her energy level (enerji seviyesi) iki electron (elektron) alır.' },
         { baslik: 'Bandgap (yasak enerji aralığı)', metin: 'Doluluk ve aralık metal (metal), insulator (yalıtkan), semiconductor (yarıiletken) ayırır.' }
       ],
       sim: { modul: 'bant', params: { N: 8, malzeme: 'yariiletken' } }
@@ -8998,23 +9038,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       Object.assign({}, o03, { id: 's09-t01' }),
       Object.assign({}, o04, { id: 's09-t02' }),
       {
-        id: 's09-t03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bant_yarilma', agirlik: 1,
+        id: 's09-t03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bant_yarilma', agirlik: 1,
         soru: o05.soru,
         secenekler: o05.secenekler,
         kusurSkin: 'vakans'
       },
       {
-        id: 's09-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'iletken_olasilik', agirlik: 1,
+        id: 's09-t04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'iletken_olasilik', agirlik: 1,
         soru: 'Conductor (iletken) ve insulator (yalıtkan) farkı neden kaynaklanır?',
         secenekler: [
-          sec('Band (bant) doluluğu ve bandgap (yasak enerji aralığı)', true, 'Doğru. Olasılık farkı değil, band (bant) yapısı.'),
+          sec('Band (bant) doluluğu ve bandgap (yasak enerji aralığı)', true, 'Doğru. Probability (olasılık) farkı değil, band (bant) yapısı.'),
           sec('Probability (olasılık) farkı', false, 'Hayır. Fark band (bant) yapısındadır.'),
           sec('Atom (atom) rengi', false, 'Hayır. Renk belirleyici değildir.')
         ],
         kusurSkin: 'safsizlik'
       },
       {
-        id: 's09-t05', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'kristal_pahali', agirlik: 1,
+        id: 's09-t05', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'kristal_pahali', agirlik: 1,
         soru: 'Crystal (kristal) neden tercih edilir?',
         secenekler: [
           sec('Periodicity (periyodiklik) öngörülebilir energy bands (enerji bantları) verir', true, 'Doğru. Pahalı olduğu için değil.'),
@@ -9024,7 +9064,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         kusurSkin: 'dislokasyon'
       },
       {
-        id: 's09-t06', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'bant_sonsuz_kuyu', agirlik: 1,
+        id: 's09-t06', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'bant_sonsuz_kuyu', agirlik: 1,
         soru: 'Energy bands (enerji bantları) nerede oluşur?',
         secenekler: [
           sec('Çok atomlu solid (katı) içinde', true, 'Doğru. Tek kuyuda discrete levels (kesikli seviyeler) vardır.'),
@@ -9347,6 +9387,105 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
 
   Array.prototype.push.apply(Q.data.sinav.mcq, mcq);
   Array.prototype.push.apply(Q.data.sinav.klasik, klasik);
+})();
+
+/* 93-data-sinav-3.js (A13) Mock exam verisi: s09 (Band test) + s01-s04/s07 ek sorular + SEÇKİ işaretleri. TAMAMEN İngilizce.
+ * 91/92 dosyalarından sonra yüklenir (alfabetik). Seçki = tahmin: bkz. oyun/denetim/SECKI.md */
+(function(){
+  'use strict';
+  var S = Q.data.sinav = Q.data.sinav || { mcq: [], klasik: [] };
+  var n = 1;
+  function M(id, st, q, c, w, ex){
+    var pos = n++ % 4, opts = w.slice(); opts.splice(pos, 0, c);
+    S.mcq.push({ id: id, station: st, q: q, options: opts, answer: pos, explanation: ex });
+  }
+  function K(id, st, concept, question, modelAnswer, keyPoints){
+    S.klasik.push({ id: id, station: st, question: question, modelAnswer: modelAnswer, keyPoints: keyPoints, concept: concept });
+  }
+
+  /* ---- s01 ek ---- */
+  M('sv-s01-m9', 's01', 'Which statement distinguishes a single crystal from a polycrystalline solid?', 'A single crystal has long-range order throughout; a polycrystal consists of many small crystal grains separated by grain boundaries', ['A single crystal has no periodic arrangement; a polycrystal is perfectly periodic', 'A single crystal contains only one atom; a polycrystal contains many atoms', 'A single crystal has short-range order only; a polycrystal has no order at all'], 'In a single crystal the same lattice continues over the whole sample. A polycrystal is a patchwork of small crystallites with different orientations; the grain boundaries scatter carriers.');
+  M('sv-s01-m10', 's01', 'GaAs crystallises in the zincblende structure. How does it compare with the diamond structure?', 'It has the same FCC-based arrangement, but the two atoms of the basis are different (Ga and As)', ['It is a BCC lattice with a one-atom basis', 'It is a simple cubic lattice of Ga atoms only', 'It has a coordination number of 8 instead of 4'], 'Zincblende is the diamond arrangement with two different atoms on the two interpenetrating FCC sublattices. Each atom still has 4 nearest neighbours.');
+  K('sv-s01-k4', 's01', 'crystalline solids in industry', 'Explain why crystalline solids are used in the semiconductor industry, and why polycrystalline or amorphous solids are less suitable.',
+    'In a crystal the periodic arrangement of atoms creates a periodic potential, which gives well-defined energy bands and a well-defined bandgap. Electrical properties therefore can be predicted, reproduced and controlled by doping. In polycrystalline solids, grain boundaries scatter or trap carriers; in amorphous solids, dangling bonds and missing long-range order smear the band edges and add defect states. Carrier mobility and lifetime drop and device properties vary from sample to sample, so reproducible devices are difficult.',
+    ['Periodic potential gives well-defined bands and bandgap', 'Predictable, reproducible properties; control by doping', 'Grain boundaries scatter or trap carriers', 'Amorphous: dangling bonds, no long-range order']);
+
+  /* ---- s02 ek ---- */
+  M('sv-s02-m9', 's02', 'What does the notation {100} denote in a cubic crystal?', 'The family of planes equivalent by cubic symmetry: (100), (010), (001) and their negatives', ['A single plane parallel to the x axis', 'The direction normal to the (100) plane', 'A family of directions equivalent to [100]'], 'Curly braces {hkl} mean the set of all planes related by the crystal symmetry. Round brackets denote one plane, square brackets one direction and angle brackets a family of directions.');
+  M('sv-s02-m10', 's02', 'A plane cuts the x axis at a, the y axis at −a and is parallel to the z axis. Determine its Miller indices.', '(1 1̄ 0)', ['(1 1 0)', '(1̄ 1̄ 0)', '(1 1̄ 1)'], 'Intercepts: 1, −1, ∞. Reciprocals: 1, −1, 0. The negative index is written with a bar: (1 1̄ 0).');
+  K('sv-s02-k4', 's02', 'single crystal growth', 'Explain the main reason for growing a single-crystal silicon ingot by the Czochralski method instead of using polycrystalline silicon.',
+    'In the Czochralski method a seed crystal is dipped into molten silicon and slowly pulled up while rotating, so the melt solidifies with the same crystal order as the seed. The result is one continuous lattice without grain boundaries. Grain boundaries scatter carriers and act as recombination centres, which lowers mobility and carrier lifetime and makes the properties differ from one device to another. A single crystal guarantees the same well-defined band structure over the whole wafer, so devices are uniform and reproducible.',
+    ['Seed crystal dipped in melt, pulled while rotating', 'Seed continues its crystal order: no grain boundaries', 'Grain boundaries lower mobility and lifetime', 'Uniform, reproducible band structure over the wafer']);
+
+  /* ---- s03 / s04 ek ---- */
+  K('sv-s03-k4', 's03', 'why quantum mechanics', 'Explain why quantum mechanics was needed. Describe three failures of classical physics and the successes of quantum theory that resolved them.',
+    'Classical physics failed in several experiments. Blackbody radiation: the Rayleigh-Jeans law predicts infinite energy at high frequency (ultraviolet catastrophe), while Planck\'s hypothesis E = hf removes it. Photoelectric effect: classical waves predict that intensity controls electron energy and that no threshold exists, but experiments show a threshold frequency and K_max = hf − φ, explained by Einstein\'s photons. Atomic spectra: classical theory predicts a continuous spectrum and a collapsing atom, while atoms show discrete lines explained by quantised energy levels. Quantum theory also explains the stability of atoms, the periodic table and the electrical properties of solids.',
+    ['Blackbody: ultraviolet catastrophe, Planck E = hf', 'Photoelectric: threshold frequency, photons', 'Discrete atomic spectra and atomic stability', 'Quantum theory explains atoms and solids']);
+  K('sv-s04-k4', 's04', 'hydrogen atom stability', 'Explain why the hydrogen atom is stable according to quantum mechanics, while classical physics predicts that the electron would spiral into the nucleus.',
+    'Classically, an orbiting electron accelerates and should radiate electromagnetic energy, so it would lose energy and fall into the nucleus within about 10^-11 s. In quantum mechanics the electron is a confined wave. Confining it to a smaller region increases its momentum spread and therefore its kinetic energy (uncertainty principle, E ~ ħ²/2mr²), while the Coulomb attraction lowers the potential energy as r decreases. The total energy has a minimum at a finite radius, the Bohr radius, so the lowest state has a non-zero size and energy −13.6 eV. There is no lower state to fall into, so the atom is stable.',
+    ['Classical: accelerating charge radiates and collapses', 'Electron is a confined wave', 'Confinement raises kinetic energy (uncertainty)', 'Energy minimum at finite radius: no lower state']);
+
+  /* ---- s07 ek ---- */
+  K('sv-s07-k5', 's07', 'postulates of quantum mechanics', 'State the main principles (postulates) of quantum mechanics.',
+    '(1) The state of a system is described by a wave function ψ, and |ψ|² is the probability density. (2) Every measurable quantity (observable) is represented by a Hermitian operator. (3) A measurement can only give one of the eigenvalues of the operator. (4) If ψ = Σ cₙφₙ, where φₙ are eigenfunctions, the probability of obtaining the eigenvalue aₙ is |cₙ|², and after the measurement the state becomes φₙ. (5) Between measurements the wave function evolves in time according to the Schrödinger equation.',
+    ['State described by ψ, |ψ|² probability density', 'Observables are Hermitian operators', 'Results are eigenvalues; probability |cₙ|²', 'Time evolution by Schrödinger equation']);
+  K('sv-s07-k6', 's07', 'measurement of a non-eigenstate', 'A system is not in an eigenstate of the observable being measured. According to the postulates of quantum mechanics, what happens when the measurement is made? What happens if the measurement is repeated immediately?',
+    'If the system is not in an eigenstate, it is in a superposition ψ = Σ cₙφₙ of eigenstates of the operator. The measurement gives one of the eigenvalues aₙ, and the outcome cannot be predicted: the probability of aₙ is |cₙ|². Immediately after the measurement the wave function collapses to the corresponding eigenstate φₙ. If the measurement is repeated immediately, it gives the same eigenvalue with probability 1. The collapse is caused by the measurement, not by the Schrödinger equation, which evolves the wave function smoothly and deterministically between measurements.',
+    ['Superposition of eigenstates ψ = Σ cₙφₙ', 'Result is one eigenvalue with probability |cₙ|²', 'Collapse to the eigenstate φₙ', 'Repeated measurement gives the same result']);
+
+  /* ---- s09 Band test ---- */
+  M('sv-s09-m1', 's09', 'N identical atoms are brought close together to form a crystal. What happens to each atomic energy level?', 'It splits into N closely spaced levels that form an energy band', ['It stays as a single level', 'It splits into exactly two levels', 'It disappears because electrons become free'], 'The wave functions of neighbouring atoms overlap. Because the Pauli exclusion principle forbids identical states, each level splits into N slightly different levels; for N ~ 10^22 they form a quasi-continuous band.');
+  M('sv-s09-m2', 's09', 'Why does an insulator not conduct current?', 'Its valence band is full and the bandgap is large, so electrons cannot reach empty states', ['It contains no electrons', 'Its conduction band is half filled', 'Its atoms are too heavy to move'], 'A full band offers no empty states for electrons to move into, and the large gap prevents thermal excitation to the next band. A half-filled band would be a metal.');
+  M('sv-s09-m3', 's09', 'Which band picture describes a metal?', 'A partially filled band, so electrons can move into nearby empty states', ['A completely full valence band separated by a large gap', 'A completely empty valence band', 'Two full bands with no gap between them'], 'In a metal the highest occupied band is only partly filled (or overlaps another band), so a small field can shift electrons into empty states.');
+  M('sv-s09-m4', 's09', 'According to the Pauli exclusion principle, how many electrons can occupy one energy level (including spin)?', '2', ['1', '4', 'Any number'], 'No two electrons can share the same set of quantum numbers. A level holds two electrons of opposite spin.');
+  M('sv-s09-m5', 's09', 'The bandgap is best defined as:', 'The range of energies between the top of the valence band and the bottom of the conduction band where no allowed states exist', ['The spacing between two neighbouring levels inside one band', 'The width of the valence band', 'The energy needed to ionise a single atom'], 'Inside the bandgap there are no allowed electron states in a perfect crystal.');
+  M('sv-s09-m6', 's09', 'A crystal contains N atoms, each contributing one s level. Including spin, how many electron states does the resulting s band hold?', '2N', ['N', 'N/2', '4N'], 'N atoms give N orbital levels in the band, and each holds two electrons of opposite spin, so 2N states.');
+  M('sv-s09-m7', 's09', 'What mainly distinguishes a semiconductor from an insulator?', 'A smaller bandgap, so thermal energy can excite some electrons into the conduction band', ['A half-filled valence band', 'A larger number of atoms per unit volume', 'The absence of a periodic lattice'], 'Silicon has Eg ≈ 1.1 eV, so a few carriers are excited at room temperature; in a wide-gap insulator almost none are.');
+  M('sv-s09-m8', 's09', 'Why do energy bands form in a crystal, but not in a single isolated infinite well?', 'Bands need many coupled atoms (a periodic potential); a single well has only discrete levels', ['A single well has no boundary conditions', 'A single well has too much energy', 'Bands form only at high temperature'], 'An isolated well gives discrete levels from its boundary conditions. Coupling many wells splits each level into N levels, forming a band.');
+  M('sv-s09-m9', 's09', 'When the atoms in a crystal are moved closer together, the width of an energy band:', 'increases, because the overlap of neighbouring wave functions increases', ['decreases, because the levels merge into one', 'stays the same', 'becomes zero'], 'Stronger overlap means stronger splitting, so the band is wider. When atoms are far apart the levels return to the sharp atomic levels.');
+  M('sv-s09-m10', 's09', 'Why can a completely filled band not carry a net current?', 'There are no empty states available, so an electric field cannot change the electron distribution', ['Filled bands contain no electrons', 'Electrons in a full band are not charged', 'The Pauli principle forces all electrons to have zero velocity'], 'Every state is occupied, so an applied field cannot shift electrons to new states; for every electron with velocity v there is one with −v.');
+  K('sv-s09-k1', 's09', 'energy bands', 'Explain why the allowed energies of electrons in a periodic structure (a crystal) form bands.',
+    'An isolated atom has discrete energy levels. When N atoms are brought together, the electron wave functions overlap and the atoms interact. The Pauli exclusion principle forbids two electrons from having the same state, so each atomic level must split into N slightly different levels. For N ~ 10^22 the spacing between these levels is far below kT, so they form an almost continuous energy band. Between the bands there are energies with no allowed states: the bandgap. The periodic potential of the lattice (Bloch theorem) produces the same allowed and forbidden energy regions.',
+    ['Isolated atom: discrete levels', 'Overlap + Pauli: each level splits into N levels', 'N ~ 10^22: quasi-continuous band', 'Forbidden region between bands: bandgap']);
+  K('sv-s09-k2', 's09', 'metal insulator semiconductor', 'Compare metals, insulators and semiconductors using their band structure.',
+    'In a metal the highest occupied band is partly filled (or overlaps the next band), so electrons can easily move into nearby empty states and conduct. In an insulator the valence band is completely full and the bandgap to the empty conduction band is large (several eV), so electrons cannot be excited and no current flows. A semiconductor has the same band filling as an insulator at 0 K, but the bandgap is small (about 1 eV), so thermal energy excites some electrons into the conduction band and leaves holes, and doping can control the carrier density. The difference is therefore band filling and bandgap size, not the number of atoms.',
+    ['Metal: partly filled band', 'Insulator: full valence band, large gap', 'Semiconductor: small gap, thermal excitation', 'Difference is filling and gap size']);
+  K('sv-s09-k3', 's09', 'Pauli and filled bands', 'State the Pauli exclusion principle and use it to explain why a completely filled band carries no current.',
+    'The Pauli exclusion principle says that no two electrons can occupy the same quantum state; an energy level can hold at most two electrons, with opposite spin. In a completely filled band all states are occupied. An applied electric field would have to move electrons into slightly different states, but there are no empty states available, so the distribution of electrons does not change. For every electron moving with velocity v there is another moving with −v, so the net current is zero. Only a partly filled band, or electrons excited across the gap, can conduct.',
+    ['No two electrons in the same state', 'At most two electrons per level (spin)', 'Full band: no empty states to move into', 'Net current zero; partly filled band conducts']);
+  K('sv-s09-k4', 's09', 'level spacing in a band', 'Estimate the level spacing inside an energy band of width 5 eV formed from 5 × 10^22 atoms, and compare it with kT at 300 K (kT ≈ 0.026 eV). What does this show?',
+    'The band contains about N = 5 × 10^22 levels spread over 5 eV, so the average spacing is ΔE ≈ 5 eV / (5 × 10^22) = 1 × 10^-22 eV. This is about 10^20 times smaller than kT ≈ 0.026 eV at 300 K. Thermal energy can therefore move an electron between neighbouring levels with no noticeable cost, and the levels behave as a continuum. This is why a macroscopic crystal is described by continuous bands rather than by individual levels.',
+    ['Spacing = band width / N', 'ΔE ≈ 10^-22 eV', 'Much smaller than kT = 0.026 eV', 'Levels act as a continuum']);
+
+  /* ---- SEÇKİ: çıkma olasılığı en yüksek 50 MCQ + 20 klasik (TAHMİN, bkz. SECKI.md) ---- */
+  var SECKI_MCQ = [
+    'sv-s01-m1','sv-s01-m2','sv-s01-m3','sv-s01-m4','sv-s01-m5','sv-s01-m6','sv-s01-m7','sv-s01-m8','sv-s01-m9','sv-s01-m10',
+    'sv-s02-m1','sv-s02-m2','sv-s02-m3','sv-s02-m4','sv-s02-m5','sv-s02-m6','sv-s02-m7','sv-s02-m8','sv-s02-m9','sv-s02-m10',
+    'sv-s03-m1','sv-s03-m2','sv-s03-m3','sv-s03-m5','sv-s03-m7',
+    'sv-s04-m1','sv-s04-m2','sv-s04-m3','sv-s04-m6',
+    's05-m1','s05-m2','s05-m3','s05-m6','s05-m8','s05-m10',
+    's06-m1','s06-m2','s06-m3','s06-m6','s06-m10',
+    's07-m1','s07-m3','s07-m4','s07-m5','s07-m10',
+    's08-m1','s08-m6','s08-m9',
+    'sv-s09-m1','sv-s09-m2'
+  ];
+  var SECKI_KLASIK = [
+    'sv-s01-k4','sv-s01-k3','sv-s01-k1',
+    'sv-s02-k4','sv-s02-k1',
+    'sv-s03-k4','sv-s03-k1',
+    'sv-s04-k4','sv-s04-k1',
+    's05-k1','s05-k3','s05-k4',
+    's06-k3',
+    'sv-s07-k5','sv-s07-k6','s07-k3',
+    's08-k1','s08-k3',
+    'sv-s09-k1','sv-s09-k2'
+  ];
+  function isaretle(dizi, idler){
+    var map = {}; dizi.forEach(function(x){ map[x.id] = x; });
+    idler.forEach(function(id){ if (map[id]) map[id].secki = true; });
+  }
+  isaretle(S.mcq, SECKI_MCQ);
+  isaretle(S.klasik, SECKI_KLASIK);
 })();
 
 /* 95-runner-b.js (A2) Koşu motoru yardımcıları: sahte çizim (Q.art yoksa), yol üstü DOM katmanları
@@ -10269,7 +10408,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   }
 
   /* ---------- 5. Deneme sınavı (Mock exam) ---------- */
-  var denemeTok = 0, denemeTimer = null, denemeAyar = { sure: true, anlik: true };
+  var denemeTok = 0, denemeTimer = null, denemeAyar = { sure: true, anlik: true, kume: 'secki' };
   function denemeDurdur(){ if (denemeTimer) { clearInterval(denemeTimer); denemeTimer = null; } }
   function sinavVeri(){ var d = Q.data && Q.data.sinav || {}; return { mcq: d.mcq || [], klasik: d.klasik || [] }; }
   function trMi(t){ return /[çğıöşüÇĞİÖŞÜ]/.test(t) || /(^|\s)(ve|bir|için|çünkü|olur|ile|değil|olarak)(\s|[.,]|$)/i.test(t); }
@@ -10277,10 +10416,14 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
 
   function denemeSekmesi(){
     var v = sinavVeri(), k = yukle();
-    var nm = Math.min(50, v.mcq.length), nk = Math.min(20, v.klasik.length);
+    var sm = v.mcq.filter(function(x){ return x.secki; }), sk = v.klasik.filter(function(x){ return x.secki; });
+    var kume = (denemeAyar.kume === 'tum' || !sm.length) ? 'tum' : 'secki';
+    var hm = kume === 'secki' ? sm : v.mcq, hk = kume === 'secki' ? sk : v.klasik;
+    var nm = Math.min(50, hm.length), nk = Math.min(20, hk.length);
     body.appendChild(el('div', 'tk-muted', 'Gerçek sınav gibi: tüm sorular İngilizce, istasyonlar karışık. Önce çoktan seçmeli (MCQ), sonra klasik (yazılı) sorular. Cevaplarını İngilizce yaz; terim bilmiyorsan sınav sonundaki terim listesine bak.'));
     var kutu = el('div', 'tk-kart'); kutu.appendChild(el('h4', '', 'Bu sınavda'));
     kutu.appendChild(el('p', '', nm + ' çoktan seçmeli + ' + nk + ' klasik soru' + ((nm < 50 || nk < 20) ? ' (havuzda şimdilik bu kadar var; hedef 50 + 20)' : '') + '.'));
+    if (kume === 'secki') kutu.appendChild(el('p', 'tk-muted', 'Seçki: çıkma olasılığı en yüksek olduğu tahmin edilen sorular (örnek sınav, öncelikli konular, zayıf noktalar). Bu bir tahmindir, gerçek soruları bilmiyoruz. Havuzda toplam ' + v.mcq.length + ' MCQ + ' + v.klasik.length + ' klasik var.'));
     if (k.sinav && k.sinav.son) { var o = k.sinav.son; kutu.appendChild(el('p', 'tk-muted', 'Son deneme: MCQ ' + o.mcq[0] + '/' + o.mcq[1] + ', klasik ' + o.klasik[0] + '/' + o.klasik[1] + ' puan' + (o.sure ? ', süre ' + mmss(o.sure) : '') + '.')); }
     body.appendChild(kutu);
     function secenek(ad, anahtar, a, b){
@@ -10293,9 +10436,19 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       });
       body.appendChild(r);
     }
+    if (sm.length) {
+      var rk = el('div', 'tk-row'); rk.appendChild(el('span', '', 'Soru kümesi:'));
+      var kb = [];
+      [['secki', 'Seçki (' + sm.length + ' + ' + sk.length + ')'], ['tum', 'Tüm havuz']].forEach(function(o){
+        var c = el('button', 'tk-chip', o[1]); c.type = 'button'; c.setAttribute('aria-pressed', kume === o[0] ? 'true' : 'false');
+        c.addEventListener('click', function(){ denemeAyar.kume = o[0]; git('deneme'); });
+        kb.push(c); rk.appendChild(c);
+      });
+      body.appendChild(rk);
+    }
     secenek('Süre sayacı:', 'sure', 'Açık', 'Kapalı');
     secenek('MCQ geri bildirimi:', 'anlik', 'Her sorudan sonra', 'Sınav sonunda toplu');
-    var go = btn('Sınavı başlat', 'primary', function(){ denemeBasla(mix(v.mcq).slice(0, 50), mix(v.klasik).slice(0, 20)); });
+    var go = btn('Sınavı başlat', 'primary', function(){ denemeBasla(mix(hm).slice(0, 50), mix(hk).slice(0, 20)); });
     if (!nm && !nk) { go.disabled = true; body.appendChild(el('div', 'tk-fb kotu', 'Sınav sorusu bulunamadı.')); }
     var r = el('div', 'tk-row'); r.appendChild(go); body.appendChild(r);
   }
