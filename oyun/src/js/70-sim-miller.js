@@ -75,7 +75,7 @@
     host.appendChild(wrap);
 
     var stepEls = [];
-    var stepNames = mod === 'yon' ? ['Vektör', 'Böl', 'Tam sayı', 'Sonuç'] : ['Kesişim', 'Ters', 'Tam sayı', 'Sonuç'];
+    var stepNames = mod === 'yon' ? ['Vector (vektör)', 'Divide (böl)', 'Integers (tam sayı)', 'Result (sonuç)'] : ['Intercept (kesişim)', 'Reciprocal (ters)', 'Integers (tam sayı)', 'Result (sonuç)'];
     stepNames.forEach(function (nm) {
       var d = document.createElement('div');
       d.style.cssText = 'background:var(--panel2);border:2px solid var(--line);border-radius:var(--rs);padding:4px 2px;min-width:0;';
@@ -113,7 +113,7 @@
           row.appendChild(lab);
           var bs = OPTS.map(function (o) {
             var b = mkBtn(o === INF ? '∞' : String(o));
-            b.setAttribute('aria-label', AX[ax] + ' ekseni kesişimi ' + (o === INF ? 'sonsuz' : o));
+            b.setAttribute('aria-label', AX[ax] + ' axis intercept (ekseni kesişimi) ' + (o === INF ? 'sonsuz' : o));
             on(b, 'click', function () { setC(ax, o); });
             row.appendChild(b); return b;
           });
@@ -127,7 +127,7 @@
         (function (ax) {
           var s = document.createElement('select');
           s.style.cssText = 'min-height:40px;flex:1;border:2px solid var(--line);border-radius:var(--rs);background:var(--panel2);color:var(--ink);font-family:var(--font-d);font-size:17px;';
-          s.setAttribute('aria-label', 'Vektör bileşeni ' + ['u', 'v', 'w'][ax]);
+          s.setAttribute('aria-label', 'Vector component (vektör bileşeni) ' + ['u', 'v', 'w'][ax]);
           for (var q = -2; q <= 2; q++) {
             var o = document.createElement('option'); o.value = q; o.textContent = ['u', 'v', 'w'][ax] + ' = ' + num(q); s.appendChild(o);
           }
@@ -177,7 +177,7 @@
         if (r) {
           var ln = Math.sqrt(r[0] * r[0] + r[1] * r[1] + r[2] * r[2]);
           dline.textContent = 'Uzunluk = a·√(u²+v²+w²) = ' + ln.toFixed(2) + ' a';
-        } else { dline.textContent = 'Sıfır vektör yön belirtmez'; }
+        } else { dline.textContent = 'Zero vector (sıfır vektör) yön belirtmez'; }
       }
       canvas.setAttribute('aria-label', mod === 'duzlem'
         ? 'Düzlem ' + (r ? fmtCompact(r, '(', ')') : 'yok') : 'Yön ' + (r ? fmtCompact(r, '[', ']') : 'yok'));
@@ -336,7 +336,7 @@
     else { on(window, 'resize', resize); }
 
     if (api && api.hint) {
-      api.hint(mod === 'yon' ? 'Vektörü seç, en küçük tam sayılara indir.' : 'Kesişimin tersini al, kesirleri temizle.');
+      api.hint(mod === 'yon' ? 'Vector (vektörü) seç, en küçük integers (tam sayılara) indir.' : 'Intercept (kesişim) için reciprocal (ters) al, fractions (kesirleri) temizle.');
     }
     resize();
     refresh();

@@ -116,9 +116,9 @@
         sayGrp.style.display = sayModu ? 'flex' : 'none';
         val.textContent = String(tahmin);
         if (sayModu) info.textContent = sonuc || 'Atoms per unit cell (hücre başına atom): ?';
-        else info.textContent = 'Atoms per unit cell (hücre başına atom): ' + DOGRU[tur] + ' (' + kirilim(tur) + ') · Doluluk %' + DOLULUK[tur] +
-          (tur === 'elmas' ? ' · Her atomun 4 komşusu var' : '');
-        cv.setAttribute('aria-label', 'Kafes: ' + tur + ', hücre başına ' + (sayModu ? 'bilinmeyen' : DOGRU[tur]) + ' atom');
+        else info.textContent = 'Atoms per unit cell (hücre başına atom): ' + DOGRU[tur] + ' (' + kirilim(tur) + ') · Packing fraction (doluluk) %' + DOLULUK[tur] +
+          (tur === 'elmas' ? ' · 4 nearest neighbors (en yakın komşu) per atom' : '');
+        cv.setAttribute('aria-label', 'Lattice (kafes): ' + tur + ', atoms per unit cell (hücre başına) ' + (sayModu ? 'bilinmeyen' : DOGRU[tur]) + ' atom');
         ciz();
       }
 
@@ -134,7 +134,7 @@
             }
           }
         } else {
-          sonuc = 'Yanlış. Köşe 1/8, yüz 1/2, içerideki atom tam sayılır.';
+          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (içerideki) atom tam sayılır.';
         }
         guncelle();
       }
@@ -222,7 +222,7 @@
         onWin = boyutla;
         window.addEventListener('resize', onWin);
       }
-      if (api.hint) { try { api.hint('Köşe, yüz ve içerideki atomların paylarını topla.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Corner (köşe), face (yüz) ve body (iç) atomların paylarını topla.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {
