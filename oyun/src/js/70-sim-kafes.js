@@ -118,14 +118,14 @@
         if (sayModu) info.textContent = sonuc || 'Atoms per unit cell (hücre başına atom): ?';
         else info.textContent = 'Atoms per unit cell (hücre başına atom): ' + DOGRU[tur] + ' (' + kirilim(tur) + ') · Packing fraction (doluluk) %' + DOLULUK[tur] +
           (tur === 'elmas' ? ' · 4 nearest neighbors (en yakın komşu) per atom' : '');
-        cv.setAttribute('aria-label', 'Lattice (kafes): ' + tur + ', atoms per unit cell (hücre başına) ' + (sayModu ? 'unknown (bilinmeyen)' : DOGRU[tur]) + ' atom');
+        cv.setAttribute('aria-label', 'Lattice (kafes): ' + tur + ', atoms per unit cell (hücre başına) ' + (sayModu ? 'unknown (bilinmeyen)' : DOGRU[tur]) + ' atoms (atom)');
         ciz();
       }
 
       function kontrolEt(){
         var d = DOGRU[tur];
         if (tahmin === d) {
-          sonuc = 'Doğru: ' + d + ' atom. ' + kirilim(tur);
+          sonuc = 'Doğru: ' + d + ' atoms (atom). ' + kirilim(tur);
           if (params.basari && params.basari.say && !bitti) {
             var h = params.basari.say;
             if ((!h.tur || h.tur === tur) && (h.atom == null || h.atom === d)) {
@@ -134,7 +134,7 @@
             }
           }
         } else {
-          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (iç) 1 atom sayılır.';
+          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (iç) atom (atom) tam sayılır.';
         }
         guncelle();
       }
@@ -212,7 +212,7 @@
         c.fillStyle = yel;
         var fs = Math.round(Math.min(44, H * 0.18));
         c.font = '400 ' + fs + 'px ' + col('--font-d','Impact, sans-serif');
-        c.fillText((sayModu ? '?' : String(DOGRU[tur])) + ' atom', lx, Math.min(H - fs * 0.6, ly + 3 * lh + fs * 0.6));
+        c.fillText((sayModu ? '?' : String(DOGRU[tur])) + ' atoms', lx, Math.min(H - fs * 0.6, ly + 3 * lh + fs * 0.6));
       }
 
       if (typeof ResizeObserver !== 'undefined') {
@@ -222,7 +222,7 @@
         onWin = boyutla;
         window.addEventListener('resize', onWin);
       }
-      if (api.hint) { try { api.hint('Corner (köşe), face (yüz) ve body (iç) atomların paylarını topla.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Corner (köşe), face (yüz) ve body (iç) atom (atom) paylarını topla.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {

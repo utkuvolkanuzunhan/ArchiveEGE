@@ -113,7 +113,7 @@
           row.appendChild(lab);
           var bs = OPTS.map(function (o) {
             var b = mkBtn(o === INF ? '∞' : String(o));
-            b.setAttribute('aria-label', AX[ax] + ' axis intercept (ekseni kesişimi) ' + (o === INF ? 'infinite (sonsuz)' : o));
+            b.setAttribute('aria-label', AX[ax] + ' axis (eksen) intercept (kesişim) ' + (o === INF ? 'infinite (sonsuz)' : o));
             on(b, 'click', function () { setC(ax, o); });
             row.appendChild(b); return b;
           });
@@ -167,7 +167,7 @@
         if (r) {
           var s2 = r[0] * r[0] + r[1] * r[1] + r[2] * r[2];
           dline.textContent = 'd = a / √(h²+k²+l²) = a / √' + s2 + ' = ' + (1 / Math.sqrt(s2)).toFixed(2) + ' a';
-        } else { dline.textContent = 'All three axis (eksen) cannot be ∞'; }
+        } else { dline.textContent = 'All three axes (eksen) cannot be ∞'; }
       } else {
         var g = vec.reduce(function (a, t) { return gcd(a, t); }, 0);
         setStep(0, fmtNums(vec));
@@ -177,7 +177,7 @@
         if (r) {
           var ln = Math.sqrt(r[0] * r[0] + r[1] * r[1] + r[2] * r[2]);
           dline.textContent = 'Uzunluk = a·√(u²+v²+w²) = ' + ln.toFixed(2) + ' a';
-        } else { dline.textContent = 'Zero vector (sıfır vektör) yön belirtmez'; }
+        } else { dline.textContent = 'Zero vector (sıfır vektör) does not define a direction (yön)'; }
       }
       canvas.setAttribute('aria-label', mod === 'duzlem'
         ? 'Plane (düzlem) ' + (r ? fmtCompact(r, '(', ')') : 'yok') : 'Direction (yön) ' + (r ? fmtCompact(r, '[', ']') : 'yok'));
@@ -336,7 +336,7 @@
     else { on(window, 'resize', resize); }
 
     if (api && api.hint) {
-      api.hint(mod === 'yon' ? 'Vector (vektörü) seç, en küçük integers (tam sayılara) indir.' : 'Intercept (kesişim) için reciprocal (ters) al, fractions (kesirleri) temizle.');
+      api.hint(mod === 'yon' ? 'Vector (vektör) seç, en küçük integers (tam sayılar) değerine indir.' : 'Intercept (kesişim) için reciprocal (ters) al, fractions (kesirleri) temizle.');
     }
     resize();
     refresh();

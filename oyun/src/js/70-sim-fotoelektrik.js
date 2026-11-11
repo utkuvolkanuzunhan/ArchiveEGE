@@ -173,7 +173,7 @@
       if (typeof ResizeObserver !== 'undefined') { ro = new ResizeObserver(resize); ro.observe(host); }
       else window.addEventListener('resize', resize);
 
-      if (api.hint) api.hint('Işığın rengi elektronun enerjisini belirler, şiddet sadece sayısını.');
+      if (api.hint) api.hint('Işığın frequency (frekans) değeri electron (elektron) energy (enerji) değerini belirler, intensity (şiddet) yalnızca electron sayısını.');
       syncUI(); resize();
       var k, q;
       for (k = 0; k < 8; k++) photons.push({ x: 0.05 + k * 0.05, y: 14 + (k * 37) % 90 });

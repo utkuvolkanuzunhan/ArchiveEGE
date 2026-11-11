@@ -126,7 +126,7 @@
       ctx.font = '13px ' + fb;
       ctx.fillText('Wavelength (nm)', L + pw/2, Hh-1);
       ctx.save(); ctx.translate(11, Tp+ph/2); ctx.rotate(-Math.PI/2);
-      ctx.textBaseline = 'top'; ctx.fillText('Intensity', 0, -4); ctx.restore();
+      ctx.textBaseline = 'top'; ctx.fillText('Intensity (şiddet)', 0, -4); ctx.restore();
 
       var pk = planckPeak(T), n = Math.max(60, Math.round(pw/2));
       ctx.beginPath(); ctx.moveTo(X(LMIN), Y(0));
@@ -184,7 +184,7 @@
     function onInput(){ stopAnim(); T = clampT(+sl.value); updateUI(); draw(); checkSuccess(); }
     function onToggle(){
       klasik = !klasik; updateUI(); draw();
-      if (klasik && api && api.hint) api.hint('Klasik eğri kısa dalgada sonsuza gider.');
+      if (klasik && api && api.hint) api.hint('Classical curve (klasik eğri) kısa wavelength (dalga boyu) değerinde sonsuza gider.');
       checkSuccess();
     }
     sl.addEventListener('input', onInput);
@@ -212,7 +212,7 @@
 
     updateUI();
     resize();
-    if (api && api.hint) api.hint('Sıcaklığı değiştir, klasik eğriyle kıyasla.');
+    if (api && api.hint) api.hint('Temperature (sıcaklık) değiştir, classical curve (klasik eğri) ile compare (karşılaştır).');
 
     return {
       destroy: function(){
