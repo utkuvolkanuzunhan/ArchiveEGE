@@ -98,6 +98,7 @@
           ? 'Doğru tahmin. ' + (ob.acik || '')
           : 'Yanlış. Doğrusu: ' + ob.secenekler[dIdx].t + '. ' + (ob.acik || '');
         await run(ctx, 'anim', dogru ? 'atla' : 'dus');
+        Array.prototype.forEach.call(simHost.querySelectorAll('button, input'), function(b){ b.disabled = true; b.style.display = 'none'; });
         await devam(host);
 
         return { dogru: dogru, eminlik: em, kavram: ob.kavram || null,

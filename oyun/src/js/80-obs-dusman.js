@@ -77,6 +77,8 @@
         var kutu = mk('div', 'aciklama ' + (dogru ? 'iyi' : 'kotu'), metin);
         kutu.setAttribute('role', 'status');
         host.appendChild(kutu);
+        confHost.style.display = 'none';
+        Array.prototype.forEach.call(confHost.querySelectorAll('button'), function(b){ b.disabled = true; });
         await waitContinue(host);
         return { dogru: dogru, eminlik: em, kavram: ob.kavram || null,
                  agirlik: ob.agirlik || 1, notlar: sec.neden || '' };

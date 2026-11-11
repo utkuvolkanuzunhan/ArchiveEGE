@@ -81,5 +81,17 @@ t('save: yaz/oku, export/import, reset', function(){
   var ref = Q.state; Q.save.reset();
   assert.strictEqual(Q.state, ref);
 });
+t('save: import/export kayıpsız ve alan doğrulama', function(){
+  var Q = H.loadCore({ localStorage: H.memStorage() }).Q;
+  Q.state.ekAlan = { x: 1 }; Q.state.ayarlar.yeniAyar = 'a';
+  Q.state.ilerleme.s01 = { tamam: true };
+  var a = Q.save.exportText();
+  assert.ok(Q.save.importText(a));
+  assert.strictEqual(Q.save.exportText(), a);
+  var o = JSON.parse(a); o.ayarlar.hiz = 99; o.voltaj = -50; o.ilerleme.s01.tamam = 'x';
+  assert.ok(Q.save.importText(JSON.stringify(o)));
+  assert.strictEqual(Q.state.ayarlar.hiz, 1); assert.strictEqual(Q.state.voltaj, 0);
+  assert.strictEqual(typeof Q.state.ilerleme.s01.tamam, 'boolean');
+});
 process.stdout.write('core.test: ' + n + ' test geçti\n');
 process.exit(0);

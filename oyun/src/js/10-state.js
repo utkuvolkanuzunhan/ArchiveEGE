@@ -46,7 +46,18 @@
       Object.keys(d.ayarlar).forEach(function(k){
         if (typeof src.ayarlar[k] === typeof d.ayarlar[k]) s.ayarlar[k] = src.ayarlar[k];
       });
+      Object.keys(src.ayarlar).forEach(function(k){ if (!(k in d.ayarlar)) s.ayarlar[k] = src.ayarlar[k]; });
     }
+    if (typeof s.ayarlar.hiz !== 'number' || !isFinite(s.ayarlar.hiz) || s.ayarlar.hiz < 0.25 || s.ayarlar.hiz > 3) s.ayarlar.hiz = 1.0;
+    if (isObj(s.ilerleme)) {
+      Object.keys(s.ilerleme).forEach(function(id){
+        var e = s.ilerleme[id];
+        if (!isObj(e)) { delete s.ilerleme[id]; return; }
+        if ('tamam' in e && typeof e.tamam !== 'boolean') e.tamam = !!e.tamam && e.tamam !== 'x' && e.tamam !== 'false';
+      });
+    }
+    /* bilinmeyen üst düzey alanlar (başka modüllerin eklediği) kayıpsız taşınır */
+    Object.keys(src).forEach(function(k){ if (!(k in d)) s[k] = src[k]; });
   }
   function valid(o){
     return isObj(o) && typeof o.v === 'number' && o.v >= 1 && isObj(o.ilerleme) && Array.isArray(o.hataDefteri) &&

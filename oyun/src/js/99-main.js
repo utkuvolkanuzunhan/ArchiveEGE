@@ -107,6 +107,7 @@
         console.error('Veri doğrulama (' + stationId + '): ' + hata.join('; '));
         if (Q.ui && Q.ui.toast) Q.ui.toast('Bu istasyonun verisinde sorun var; yine de deniyoruz.', { tur: 'kotu', ms: 3500 });
       }
+      try { if (Q.ui && Q.ui.modal) Q.ui.modal.close(); } catch (e) { /* modal yok */ }
       var p;
       try { p = Promise.resolve(orijinal.call(Q.runner, stationId, fromIndex || 0)); }
       catch (e) { console.error(e); p = Promise.resolve('cikis'); }
