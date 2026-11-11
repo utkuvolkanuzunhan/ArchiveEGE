@@ -73,7 +73,7 @@
         if (dogru) {
           metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + temizNeden(sec.neden);
         } else {
-          metin = 'Yanlış. ' + (dogruSec ? temizNeden(dogruSec.neden) : '');
+          metin = 'Yanlış. ' + (sec.neden ? temizNeden(sec.neden) + ' ' : '') + (dogruSec ? 'Doğrusu: ' + temizNeden(dogruSec.neden) : '');
         }
         var kutu = mk('div', 'aciklama ' + (dogru ? 'iyi' : 'kotu'), metin);
         kutu.setAttribute('role', 'status');
