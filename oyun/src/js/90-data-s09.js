@@ -11,7 +11,7 @@
     id: 's09-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'pauli_dislama', agirlik: 1,
     soru: 'Pauli exclusion principle (Pauli dışlama ilkesi): bir energy level (enerji seviyesi) en çok kaç electron (elektron) alır?',
     secenekler: [
-      sec('İki electron (elektron), zıt spin (spin)', true, 'Doğru. Aynı quantum state (kuantum durumu) iki electron (elektron) paylaşamaz.'),
+      sec('İki electron (elektron), zıt spin (spin)', true, 'Doğru. İki electron (elektron) aynı quantum state (kuantum durumu) paylaşamaz; zıt spin (spin) iki ayrı durum verir, seviyeye iki electron (elektron) sığar.'),
       sec('Sınırsız electron (elektron)', false, 'Yanlış. Pauli exclusion principle (Pauli dışlama ilkesi) bunu yasaklar.'),
       sec('Yalnızca bir electron (elektron), spin (spin) fark etmez', false, 'Yanlış. Zıt spin (spin) ile iki electron (elektron) sığar.')
     ],
@@ -61,9 +61,9 @@
         id: 's09-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Zürih', yil: 1928, rivayet: false,
         satirlar: [
-          { kim: 'selin', metin: 'Bant testi: bir atomun seviyeleri var, katıda ne olur?' },
-          { kim: 'pauli', metin: 'Atomlar yan yana gelince energy level (enerji seviyesi) yarılır. Yeter ki electron (elektron) sığsın.' },
-          { kim: 'pauli', metin: 'Her seviyede en çok iki electron (elektron). Dolu band (bant) akım taşımaz.' }
+          { kim: 'selin', metin: 'Tek atomda energy level (enerji seviyesi) belli. Atomlar bir araya gelince solid (katı) içinde ne olur?' },
+          { kim: 'pauli', metin: 'Her energy level N seviyeye yarılır, seviyeler birleşip energy band (enerji bandı) olur. Pauli: seviyeye en çok iki electron (elektron) sığar.' },
+          { kim: 'pauli', metin: 'Dolu valence band (valans bandı) akım taşımaz; üstteki conduction band (iletim bandı) ile arasında bandgap (yasak enerji aralığı) var.' }
         ]
       },
       {

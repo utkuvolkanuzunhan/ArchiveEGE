@@ -4,7 +4,7 @@
   'use strict';
   var NLER = [1,2,4,8,16,32,64];
   var MALZ = ['iletken','yalitkan','yariiletken'];
-  var AD = { iletken:'İletken', yalitkan:'Yalıtkan', yariiletken:'Yarıiletken' };
+  var AD = { iletken:'Metal (iletken)', yalitkan:'Insulator (yalıtkan)', yariiletken:'Semiconductor (yarıiletken)' };
   var EG = { iletken:0, yalitkan:5, yariiletken:1.1 };
   var W = 2;          /* bant genişliği (eV), N'den bağımsız */
   var EMAX = 2 * W + 5 + 0.6;
@@ -33,7 +33,7 @@
       var wrap = document.createElement('div');
       wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;width:100%;';
       var cv = document.createElement('canvas');
-      cv.style.cssText = 'display:block;width:100%;height:clamp(180px,22vh,260px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
+      cv.style.cssText = 'display:block;width:100%;height:clamp(150px,19vh,240px);background:var(--track,#0b0620);border:3px solid var(--line,#f4f0ff);border-radius:10px;';
       cv.setAttribute('role','img');
       var bar = document.createElement('div');
       bar.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;align-items:center;';
@@ -51,14 +51,14 @@
       var nTxt = document.createElement('span');
       var sl = document.createElement('input');
       sl.type = 'range'; sl.min = '0'; sl.max = String(NLER.length - 1); sl.step = '1'; sl.value = String(nIdx);
-      sl.setAttribute('aria-label', 'Atom sayısı N');
+      sl.setAttribute('aria-label', 'Number of atoms (atom sayısı) N');
       sl.style.cssText = 'min-height:40px;width:140px;accent-color:var(--cyan,#00e5ff);';
       nBox.appendChild(nTxt); nBox.appendChild(sl); bar.appendChild(nBox);
       sl.addEventListener('input', function(){
         nIdx = parseInt(sl.value, 10) || 0; dolu = 0; hedef = 0; durdur(); guncelle();
       });
       /* 2) Elektron doldur */
-      var fillBtn = mkBtn('Elektron doldur', function(){ doldur(); });
+      var fillBtn = mkBtn('Fill electrons (elektron doldur)', function(){ doldur(); });
       fillBtn.style.background = 'var(--accent,#ffd23f)'; fillBtn.style.color = 'var(--accent-ink,#0b0620)';
       bar.appendChild(fillBtn);
       /* 3) Malzeme */
@@ -115,9 +115,9 @@
         var N = NLER[nIdx], eg = EG[mal];
         var s = 'N=' + N + ' · Eg=' + String(eg).replace('.', ',') + ' eV';
         if (dolu > 0 && dolu >= hedef && hedef > 0) {
-          s += mal === 'iletken' ? ' · Bant yarı dolu: elektron akar'
-             : (mal === 'yalitkan' ? ' · Alt bant dolu, aralık büyük: akmaz' : ' · Alt bant dolu, aralık küçük: ısıyla geçer');
-        } else s += ' · ' + (N === 1 ? 'Tek atom: tek seviye' : N + ' çizgi, bir bant gibi');
+          s += mal === 'iletken' ? ' · Half-filled band (yarı dolu bant): akım taşır'
+             : (mal === 'yalitkan' ? ' · Valence band (valans bandı) dolu, bandgap büyük: akım yok' : ' · Valence band dolu, bandgap küçük: ısıyla geçer');
+        } else s += ' · ' + (N === 1 ? 'Tek atom: tek energy level (seviye)' : N + ' çizgi, energy band (bant) gibi');
         return s;
       }
 
@@ -133,7 +133,7 @@
           mBtn[m].setAttribute('aria-pressed', on ? 'true' : 'false');
         });
         info.textContent = durumMetni();
-        cv.setAttribute('aria-label', 'Enerji bandı: ' + N + ' atom, ' + AD[mal] + ', aralık ' + EG[mal] + ' eV');
+        cv.setAttribute('aria-label', 'Energy band (enerji bandı): ' + N + ' atom, ' + AD[mal] + ', aralık ' + EG[mal] + ' eV');
         ciz();
         kontrolBasari();
       }
@@ -203,6 +203,10 @@
           }
           kalan -= n2;
         }
+        c.fillStyle = ink; c.textAlign = 'left'; c.font = '700 13px ' + font;
+        c.fillText('valence band', xB0 + 6, Y(W) + 11);
+        c.fillText('conduction band', xB0 + 6, Y(2 * W + eg) + 11);
+        c.font = '700 14px ' + font;
         var gx = xB1 + 22;
         c.textAlign = 'left';
         if (eg > 0) {
@@ -210,12 +214,12 @@
           c.beginPath(); c.moveTo(gx, Y(W)); c.lineTo(gx, Y(W + eg)); c.stroke();
           c.beginPath(); c.moveTo(gx - 5, Y(W) - 6); c.lineTo(gx, Y(W)); c.lineTo(gx + 5, Y(W) - 6); c.stroke();
           c.beginPath(); c.moveTo(gx - 5, Y(W + eg) + 6); c.lineTo(gx, Y(W + eg)); c.lineTo(gx + 5, Y(W + eg) + 6); c.stroke();
-          c.fillText('Eg = ' + String(eg).replace('.', ',') + ' eV', gx + 10, (Y(W) + Y(W + eg)) / 2);
+          c.fillText('bandgap Eg = ' + String(eg).replace('.', ',') + ' eV', gx + 10, (Y(W) + Y(W + eg)) / 2);
         } else {
-          c.fillStyle = lime; c.fillText('Eg = 0', gx + 4, Y(W));
+          c.fillStyle = lime; c.fillText('bandgap Eg = 0', gx + 4, Y(W));
         }
         c.fillStyle = muted; c.textAlign = 'center';
-        c.fillText('1 atom', (xA0 + xA1) / 2, CH - 8);
+        c.fillText('1 atom (atom)', (xA0 + xA1) / 2, CH - 8);
         c.fillText(N + ' atom', (xB0 + xB1) / 2, CH - 8);
       }
 
@@ -226,7 +230,7 @@
         onWin = boyutla;
         window.addEventListener('resize', onWin);
       }
-      if (api.hint) { try { api.hint('N büyüdükçe çizgiler banda döner; Eg iletkenliği belirler.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('N büyüdükçe çizgiler energy band (bant) olur; bandgap (Eg) iletkenliği belirler.'); } catch (e) {} }
       boyutla(); guncelle();
 
       return {
