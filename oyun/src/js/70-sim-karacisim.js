@@ -124,7 +124,7 @@
       ctx.beginPath(); ctx.moveTo(L, Tp); ctx.lineTo(L, Tp+ph); ctx.lineTo(L+pw, Tp+ph); ctx.stroke();
       ctx.fillStyle = cMuted; ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
       ctx.font = '13px ' + fb;
-      ctx.fillText('Wavelength (nm)', L + pw/2, Hh-1);
+      ctx.fillText('Wavelength (dalga boyu, nm)', L + pw/2, Hh-1);
       ctx.save(); ctx.translate(11, Tp+ph/2); ctx.rotate(-Math.PI/2);
       ctx.textBaseline = 'top'; ctx.fillText('Intensity (şiddet)', 0, -4); ctx.restore();
 
@@ -153,7 +153,7 @@
       ctx.fillStyle = cYellow; ctx.beginPath(); ctx.arc(X(lm), Y(1), 4.5, 0, 7); ctx.fill();
       ctx.font = '700 14px ' + fb; ctx.textBaseline = 'top'; ctx.textAlign = 'left';
       ctx.fillStyle = cCyan; ctx.fillText('— Planck', L+8, Tp+4);
-      if (klasik){ ctx.fillStyle = cRed; ctx.fillText('- - Classical', L+8, Tp+22); }
+      if (klasik){ ctx.fillStyle = cRed; ctx.fillText('- - Classical (klasik)', L+8, Tp+22); }
       ctx.fillStyle = cYellow;
       ctx.fillText('λmax = ' + Math.round(lm) + ' nm', Math.max(L+8, Math.min(X(lm)+10, L+pw-125)), Tp+ph*0.7);
       var sw = 34, sx = L+pw-sw-6, sy = Tp+6;

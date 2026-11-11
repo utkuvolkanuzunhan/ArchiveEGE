@@ -81,6 +81,7 @@
         kutu.setAttribute('role', 'status');
         host.appendChild(kutu);
         confHost.style.display = 'none';
+        safe(function(){ var on = optHost.querySelector('.opt-onay'); if (on) on.style.display = 'none'; });
         Array.prototype.forEach.call(confHost.querySelectorAll('button'), function(b){ b.disabled = true; });
         safe(function(){ Array.prototype.forEach.call(optHost.querySelectorAll('.opt'), function(b){
           var oi = +b.dataset.i; b.disabled = true;

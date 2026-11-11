@@ -66,8 +66,8 @@
 
       function syncUI(){
         fIn.value = st.f; iIn.value = st.I; mSel.value = st.metal;
-        fC.s.textContent = 'Frequency ' + st.f.toFixed(1) + '×10¹⁴ Hz';
-        iC.s.textContent = 'Intensity ' + Math.round(st.I);
+        fC.s.textContent = 'Frequency (frekans) ' + st.f.toFixed(1) + '×10¹⁴ Hz';
+        iC.s.textContent = 'Intensity (şiddet) ' + Math.round(st.I);
       }
 
       function resize(){
@@ -99,9 +99,9 @@
         ctx.beginPath(); ctx.arc(14, mid, 12 + st.I, 0, 6.2832); ctx.fill();
         ctx.globalAlpha = 1;
         ctx.strokeStyle = ink; ctx.lineWidth = 2; ctx.stroke();
-        ctx.fillStyle = mut; ctx.fillRect(plateX, top + 6, 10, bot - top - 12);
+        ctx.fillStyle = mut; ctx.fillRect(plateX, top + 16, 10, bot - top - 22);
         ctx.fillStyle = ink; ctx.font = '700 13px sans-serif'; ctx.textAlign = 'center';
-        ctx.fillText(st.metal, plateX + 5, top + 4);
+        ctx.fillText(st.metal, plateX + 5, top + 12);
         ctx.strokeStyle = cy; ctx.lineWidth = 3;
         ctx.beginPath(); ctx.moveTo(colX, top + 6); ctx.lineTo(colX, bot - 6); ctx.stroke();
         ctx.fillStyle = yel;
@@ -111,11 +111,13 @@
         ctx.fillStyle = mut; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
         ctx.fillText('hf = ' + c.e.toFixed(2) + ' eV  |  φ = ' + c.phi.toFixed(1) + ' eV', W * 0.5, Hh - 46);
         var gy = Hh - 40, gw = (W - 24) / 2;
-        box(8, gy, gw, 34, 'Electrons/s', String(c.n), c.ok ? cy : mut);
-        box(16 + gw, gy, gw, 34, 'Kinetic energy (eV)', c.K.toFixed(2), c.ok ? yel : mut);
+        box(8, gy, gw, 34, 'Electron (elektron)/s', String(c.n), c.ok ? cy : mut);
+        box(16 + gw, gy, gw, 34, 'Kinetic energy (kinetik enerji), eV', c.K.toFixed(2), c.ok ? yel : mut);
         function box(x, y, w, h, lab, val, col){
           ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.strokeRect(x, y, w, h);
-          ctx.fillStyle = mut; ctx.font = '12px sans-serif'; ctx.textAlign = 'left';
+          ctx.fillStyle = mut; ctx.textAlign = 'left';
+          var fs = 12; ctx.font = fs + 'px sans-serif';
+          while (fs > 8 && ctx.measureText(lab).width > w - 10) { fs--; ctx.font = fs + 'px sans-serif'; }
           ctx.fillText(lab, x + 6, y + 13);
           ctx.fillStyle = ink; ctx.font = '700 16px sans-serif';
           ctx.fillText(val, x + 6, y + 29);

@@ -21,7 +21,7 @@
 
   var o04 = {
     id: 's03-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'planck_paket', agirlik: 1,
-    soru: 'Planck\'a göre bir light (ışık) paketinin (photon, foton) energy (enerji) değeri neye bağlıdır?',
+    soru: 'Planck\'a göre bir photon (foton) energy (enerji) değeri neye bağlıdır?',
     secenekler: [
       sec('Frequency (frekans) değerine (E = hf)', true, 'Doğru. Yüksek frequency (frekans), büyük paket.'),
       sec('Intensity (şiddet) değerine', false, 'Hayır. Intensity (şiddet) paket sayısını belirler.'),
