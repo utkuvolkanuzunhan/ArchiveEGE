@@ -55,7 +55,9 @@
         }
         var b = el('div', 'bubble ' + konum);
         if (o.kim) {
-          var AD = { anlatici: 'Anlatıcı', selin: 'Selin', runner: 'Koşucu', kosucu: 'Koşucu' };
+          var AD = { anlatici: 'Anlatıcı', selin: 'Selin', runner: 'Koşucu', kosucu: 'Koşucu',
+            vakans: 'Vacancy (Boşluk) Kusuru', safsizlik: 'Impurity (Safsızlık) Kusuru', tane_siniri: 'Grain Boundary (Tane Sınırı) Kusuru',
+            dislokasyon: 'Dislocation (Dislokasyon) Kusuru', dusman: 'Kusur Düşmanı' };
           var ch = Q.data && Q.data.chars && Q.data.chars[o.kim];
           b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || o.kim));
         }
