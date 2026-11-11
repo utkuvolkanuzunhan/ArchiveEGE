@@ -140,7 +140,7 @@
               secenekler: [
                 sec('Ground state (temel hal) altı yok, electron (elektron) düşemez', true, 'Doğru. Confined wave (hapsolmuş dalga) için lower energy limit (alt enerji sınırı) var.'),
                 sec('Electron nucleus (çekirdek) tarafından itilir', false, 'Yanlış. Nucleus (çekirdek) electron (elektron) çeker.'),
-                sec('Atom çok cold (soğuk) olduğu için', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
+                sec('Because the atom is too cold (atom çok soğuk olduğu için)', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
                 sec('Electron (elektron) aslında durur', false, 'Yanlış. Electron durmaz, lowest energy (en düşük enerji) wave state (dalga durumu) içindedir.')
               ]
             },
