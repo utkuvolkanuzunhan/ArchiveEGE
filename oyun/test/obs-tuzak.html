@@ -1,0 +1,17 @@
+<!doctype html>
+<meta charset="utf-8"><title>obs-tuzak</title>
+<body style="background:#16143a;color:#fff;font:18px sans-serif;padding:16px">
+<div id="host"></div><pre id="out"></pre>
+<script src="../src/js/00-q.js"></script>
+<script>
+Q.ui.confidence={ask:function(o){return new Promise(function(r){['Bilmiyorum','Emin değilim','Eminim'].forEach(function(t,i){var b=document.createElement('button');b.className='cbtn';b.textContent=t;b.onclick=function(){r(i)};o.host.appendChild(b);});});}};
+Q.ui.toast=function(){};
+window.__anim=[];
+var ctx={stationId:'s03',host:document.getElementById('host'),runway:{anim:function(n){__anim.push(n);return Promise.resolve();},say:function(){return Promise.resolve();},setObstacleState:function(){}},ui:Q.ui,state:{ayarlar:{}}};
+</script>
+<script src="../src/js/80-obs-tuzak.js"></script>
+<script>
+var ob={id:'s03-o06',tip:'tuzak',baslik:'Tuzak',kavram:'fotoelektrik_siddet',agirlik:1,iddia:'Işığı parlak yapınca eşik altında da elektron kopar',parcalar:['Işığı parlak yapınca','eşik altında da','elektron kopar'],yanlisParca:1,duzeltme:'Şiddet foton sayısını artırır, enerjisini değil.'};
+window.__sonuc=null;
+Q.obs.handlers['tuzak'].enter(ob,ctx).then(function(s){window.__sonuc=s;document.getElementById('out').textContent=JSON.stringify(s);});
+</script>
