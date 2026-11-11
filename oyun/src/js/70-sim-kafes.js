@@ -134,7 +134,7 @@
             }
           }
         } else {
-          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (iç) atom (atom) tam sayılır.';
+          sonuc = 'Yanlış. Corner (köşe) 1/8, face (yüz) 1/2, body (iç) 1 atom (atom) sayılır.';
         }
         guncelle();
       }
