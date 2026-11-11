@@ -1,5 +1,6 @@
 /* 20-components.css (A4) Bileşenler: panel, düğme, seçenek, eminlik, balon, kart, toast, modal, voltaj, engel şeridi. */
 .panel{background:var(--panel);border:var(--bw) solid var(--line);border-radius:var(--r);padding:16px;box-shadow:var(--shadow);min-width:0}
+.btn[hidden],button[hidden],p[hidden]{display:none!important}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:8px 20px;border-radius:var(--rs);
   border:var(--bw) solid var(--line);background:var(--panel2);color:var(--ink);font-weight:800;font-size:var(--fs-body)}
 .btn.primary{background:var(--yellow);color:var(--ink-dark);border-color:var(--ink-dark);box-shadow:4px 4px 0 var(--magenta)}

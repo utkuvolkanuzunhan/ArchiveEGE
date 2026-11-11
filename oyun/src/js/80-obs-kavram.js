@@ -69,7 +69,10 @@
           hint: function(m){ if (typeof m === 'string' && m) sonHint = m; },
           onFail: function(){}
         };
-        simObj = Q.sim.mount(ob.sim && ob.sim.modul, simHost, ob.sim && ob.sim.params, api);
+        var simPrm = {}, simSrc = (ob.sim && ob.sim.params) || {};
+        Object.keys(simSrc).forEach(function(k){ simPrm[k] = simSrc[k]; });
+        if (ob.sim && ob.sim.basari && simPrm.basari == null) simPrm.basari = ob.sim.basari; /* basari veride sim.basari altinda */
+        simObj = Q.sim.mount(ob.sim && ob.sim.modul, simHost, simPrm, api);
 
         var ipBtn = btn('İpucu'); ipBtn.hidden = true;
         var gecBtn = btn('Geç'); gecBtn.hidden = true;
