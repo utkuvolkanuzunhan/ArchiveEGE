@@ -54,7 +54,11 @@
           if (bb) { bb.textContent = o.metin || ''; }
         }
         var b = el('div', 'bubble ' + konum);
-        if (o.kim) b.appendChild(el('span', 'kim', o.kim));
+        if (o.kim) {
+          var AD = { anlatici: 'Anlatıcı', selin: 'Selin', runner: 'Koşucu', kosucu: 'Koşucu' };
+          var ch = Q.data && Q.data.chars && Q.data.chars[o.kim];
+          b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || o.kim));
+        }
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);
         var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;

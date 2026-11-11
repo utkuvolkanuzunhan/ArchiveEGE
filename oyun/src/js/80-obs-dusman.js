@@ -66,13 +66,14 @@
 
         if (runway.anim) safe(function(){ runway.anim(dogru ? 'saldir' : 'sendele'); });
 
+        var temizNeden = function(s){ return String(s || '').replace(/^(Doğru|Yanlış|Hayır)\.\s*/, ''); };
         var dogruSec = null;
         for (var i = 0; i < secs.length; i++) if (secs[i].dogru) dogruSec = secs[i];
         var metin;
         if (dogru) {
-          metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + (sec.neden || '');
+          metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + temizNeden(sec.neden);
         } else {
-          metin = 'Yanlış. ' + (dogruSec ? dogruSec.neden : '');
+          metin = 'Yanlış. ' + (dogruSec ? temizNeden(dogruSec.neden) : '');
         }
         var kutu = mk('div', 'aciklama ' + (dogru ? 'iyi' : 'kotu'), metin);
         kutu.setAttribute('role', 'status');

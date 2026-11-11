@@ -1981,7 +1981,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           if (bb) { bb.textContent = o.metin || ''; }
         }
         var b = el('div', 'bubble ' + konum);
-        if (o.kim) b.appendChild(el('span', 'kim', o.kim));
+        if (o.kim) {
+          var AD = { anlatici: 'Anlatıcı', selin: 'Selin', runner: 'Koşucu', kosucu: 'Koşucu' };
+          var ch = Q.data && Q.data.chars && Q.data.chars[o.kim];
+          b.appendChild(el('span', 'kim', AD[o.kim] || (ch && (ch.kisi || ch.canavar)) || o.kim));
+        }
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);
         var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;
@@ -5847,13 +5851,14 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
         if (runway.anim) safe(function(){ runway.anim(dogru ? 'saldir' : 'sendele'); });
 
+        var temizNeden = function(s){ return String(s || '').replace(/^(Doğru|Yanlış|Hayır)\.\s*/, ''); };
         var dogruSec = null;
         for (var i = 0; i < secs.length; i++) if (secs[i].dogru) dogruSec = secs[i];
         var metin;
         if (dogru) {
-          metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + (sec.neden || '');
+          metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + temizNeden(sec.neden);
         } else {
-          metin = 'Yanlış. ' + (dogruSec ? dogruSec.neden : '');
+          metin = 'Yanlış. ' + (dogruSec ? temizNeden(dogruSec.neden) : '');
         }
         var kutu = mk('div', 'aciklama ' + (dogru ? 'iyi' : 'kotu'), metin);
         kutu.setAttribute('role', 'status');
@@ -6880,11 +6885,12 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     }
     async function secmeliAciklama(area, r){
       area.textContent = '';
-      var neden = (r.secilen && r.secilen.neden) || '';
+      var temiz = function(s){ return String(s || '').replace(/^(Doğru|Yanlış|Hayır)\.\s*/, ''); };
+      var neden = temiz(r.secilen && r.secilen.neden);
       if (r.dogru) {
         area.appendChild(box((r.eminlik === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + neden, 'iyi'));
       } else {
-        area.appendChild(box('Yanlış. ' + ((r.dogruSecenek && r.dogruSecenek.neden) || ''), 'kotu'));
+        area.appendChild(box('Yanlış. ' + temiz(r.dogruSecenek && r.dogruSecenek.neden), 'kotu'));
         if (neden) hint(area, 'Seçtiğin: ' + neden);
       }
       await waitContinue(area);
