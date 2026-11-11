@@ -66,14 +66,16 @@
 
         if (runway.anim) safe(function(){ runway.anim(dogru ? 'saldir' : 'sendele'); });
 
-        var temizNeden = function(s){ return String(s || '').replace(/^(Doğru|Yanlış|Hayır)\.\s*/, ''); };
+        var temizNeden = function(s){ return String(s || '').replace(/^((Doğru|Yanlış|Hayır|Evet)\.\s*)+/, ''); };
         var dogruSec = null;
         for (var i = 0; i < secs.length; i++) if (secs[i].dogru) dogruSec = secs[i];
         var metin;
         if (dogru) {
           metin = (em === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + temizNeden(sec.neden);
         } else {
-          metin = 'Yanlış. ' + (sec.neden ? temizNeden(sec.neden) + ' ' : '') + (dogruSec ? 'Doğrusu: ' + temizNeden(dogruSec.neden) : '');
+          metin = (em === 0 ? 'Bilmiyorum dedin, sorun değil. ' : 'Cevabın yanlış. ') +
+            (dogruSec ? 'Doğru seçenek: ' + dogruSec.t + '. ' + temizNeden(dogruSec.neden) : '') +
+            (sec.t ? ' Senin seçtiğin: ' + sec.t + (sec.neden ? ' (' + temizNeden(sec.neden) + ')' : '') : '');
         }
         var kutu = mk('div', 'aciklama ' + (dogru ? 'iyi' : 'kotu'), metin);
         kutu.setAttribute('role', 'status');

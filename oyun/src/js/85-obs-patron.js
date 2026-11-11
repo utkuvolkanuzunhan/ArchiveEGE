@@ -140,13 +140,15 @@
     }
     async function secmeliAciklama(area, r){
       area.textContent = '';
-      var temiz = function(s){ return String(s || '').replace(/^(Doğru|Yanlış|Hayır)\.\s*/, ''); };
+      var temiz = function(s){ return String(s || '').replace(/^((Doğru|Yanlış|Hayır|Evet)\.\s*)+/, ''); };
       var neden = temiz(r.secilen && r.secilen.neden);
       if (r.dogru) {
         area.appendChild(box((r.eminlik === 0 ? 'İçgüdün iyi. Gerekçe: ' : 'Doğru. ') + neden, 'iyi'));
       } else {
-        area.appendChild(box('Yanlış. ' + temiz(r.dogruSecenek && r.dogruSecenek.neden), 'kotu'));
-        if (neden) hint(area, 'Seçtiğin: ' + neden);
+        var ds = r.dogruSecenek || {}, ss = r.secilen || {};
+        area.appendChild(box((r.eminlik === 0 ? 'Bilmiyorum dedin, sorun değil. ' : 'Cevabın yanlış. ') +
+          (ds.t ? 'Doğru seçenek: ' + ds.t + '. ' : '') + temiz(ds.neden), 'kotu'));
+        if (ss.t) hint(area, 'Senin seçtiğin: ' + ss.t + (neden ? ' (' + neden + ')' : ''));
       }
       await waitContinue(area);
     }

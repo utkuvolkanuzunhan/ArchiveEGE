@@ -129,12 +129,18 @@
       var host = hostOf(o.host), list = o.secenekler || [];
       var order = U.shuffle(list.map(function(_, i){ return i; }));
       return new Promise(function(res){
-        var wrap = el('div', 'opts'), done = false, btns = [];
-        function finish(orig, b){
-          if (done) return; done = true;
+        var wrap = el('div', 'opts'), done = false, btns = [], picked = -1;
+        var ok = el('button', 'btn primary opt-onay'); ok.type = 'button'; ok.textContent = 'Onayla'; ok.disabled = true;
+        function pick(pos){
+          if (done) return; picked = pos;
+          btns.forEach(function(x, j){ x.setAttribute('aria-pressed', j === pos ? 'true' : 'false'); x.classList.toggle('sec', j === pos); });
+          ok.disabled = false;
+        }
+        function confirm(){
+          if (done || picked < 0) return; done = true;
           document.removeEventListener('keydown', onkey, true);
-          b.setAttribute('aria-pressed', 'true');
-          res(orig);
+          ok.disabled = true;
+          res(order[picked]);
         }
         order.forEach(function(orig, pos){
           var b = el('button', 'opt'); b.type = 'button';
@@ -142,16 +148,19 @@
           b.appendChild(el('span', 't', list[orig].t));
           b.setAttribute('aria-pressed', 'false');
           b.dataset.i = String(orig);
-          b.addEventListener('click', function(){ finish(orig, b); });
+          b.addEventListener('click', function(){ pick(pos); });
           wrap.appendChild(b); btns.push(b);
         });
+        ok.addEventListener('click', confirm);
         function onkey(ev){
           if (typing(ev) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
+          if (ev.key === 'Enter') { ev.preventDefault(); confirm(); return; }
           var i = '123456789'.indexOf(ev.key);
           if (ev.key.length !== 1 || i < 0 || i >= btns.length) return;
-          ev.preventDefault(); finish(order[i], btns[i]);
+          ev.preventDefault(); pick(i);
         }
         document.addEventListener('keydown', onkey, true);
+        wrap.appendChild(ok);
         host.appendChild(wrap);
       });
     }
