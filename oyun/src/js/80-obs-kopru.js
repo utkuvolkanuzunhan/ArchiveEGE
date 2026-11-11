@@ -50,14 +50,14 @@
       for (i = 0; i < n; i++) slots.push(null);
 
       var root = el('div', 'kopru');
-      root.style.cssText = 'display:flex;flex-direction:column;gap:10px;';
+      root.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
       var head = el('div', 'kopru-soru', ob.soru || 'Zinciri sıraya diz');
-      head.style.cssText = 'font-family:var(--font-d);font-size:20px;';
+      head.style.cssText = 'font-family:var(--font-d);font-size:18px;';
       var poolBox = el('div', 'kopru-havuz');
       poolBox.setAttribute('aria-label', 'Kartlar');
-      poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;min-height:48px;';
+      poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
       var slotBox = el('ol', 'kopru-yuvalar');
-      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none;';
+      slotBox.style.cssText = 'display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none;';
       var bar = el('div', 'kopru-bar');
       bar.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;';
       var kontrol = el('button', 'btn primary kopru-kontrol', 'Kontrol');
@@ -89,6 +89,7 @@
         c.style.touchAction = 'none';
         c.style.cursor = 'grab';
         c.style.userSelect = 'none';
+        c.style.minHeight = '36px'; c.style.padding = '4px 12px';
         cardEls[i] = c;
       }
 
@@ -100,7 +101,7 @@
         var s = el('button', 'kopru-yuva');
         s.type = 'button';
         s.setAttribute('data-yuva', String(i));
-        s.style.cssText = 'flex:1;min-height:44px;text-align:left;padding:4px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
+        s.style.cssText = 'flex:1;min-height:40px;text-align:left;padding:2px;border:2px dashed var(--line);border-radius:var(--rs);background:transparent;color:var(--ink);font:inherit;font-size:var(--fs-body);cursor:pointer;';
         s.setAttribute('aria-label', 'Yuva ' + (i + 1) + ', boş');
         li.appendChild(no);
         li.appendChild(s);
