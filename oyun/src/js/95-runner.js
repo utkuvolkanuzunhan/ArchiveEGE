@@ -244,7 +244,13 @@
     var h = Q.obs.handlers && Q.obs.handlers[ob.tip], sonuc = null;
     if (!h || typeof h.enter !== 'function') { toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: '' }; r.skipApply = true; }
     else {
-      try { sonuc = await h.enter(ob, ctx); } catch (e) { console.error('obs:' + ob.tip, e); toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, agirlik: 0, notlar: '' }; r.skipApply = true; }  // 6
+      try {
+        var skipP = new Promise(function(res){ r.skipRes = res; if (r.skipReq) res('atla'); });
+        var hp = Promise.resolve(h.enter(ob, ctx));
+        sonuc = await Promise.race([hp, skipP]);
+        r.skipRes = null; r.skipReq = false;
+        if (sonuc === 'atla') { try { B().hideBoss(); } catch (e) {} sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: 'atlandi' }; r.skipApply = true; toast('Engel atlandı', 'iyi'); }
+      } catch (e) { console.error('obs:' + ob.tip, e); toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, agirlik: 0, notlar: '' }; r.skipApply = true; }  // 6
     }
     if (!alive(r)) return;
     sonuc = sonuc || { dogru: true, eminlik: 1, agirlik: 1 };
@@ -304,6 +310,7 @@
     closeMenu = B().openMenu(container, {
       devam: function(){ R.resume(); },
       ayarlar: function(){ try { if (Q.settings && Q.settings.open) Q.settings.open(); } catch (e) { console.error(e); } },
+      atla: function(){ R.skip(); },
       cik: function(){ R.resume(); abort('cikis'); }
     });
   }
@@ -380,6 +387,13 @@
     if (!run) return;
     if (closeMenu) { closeMenu(); closeMenu = null; }
     paused = true; last = null;
+  };
+  R.skip = function(){
+    var r = run; if (!r) return false;
+    if (closeMenu) { closeMenu(); closeMenu = null; }
+    paused = false; last = null;
+    r.skipReq = true; if (r.skipRes) r.skipRes('atla');
+    return true;
   };
   R.abort = function(){ if (run) abort('cikis'); };
   R.pause = function(){ if (run && !closeMenu) openPauseMenu(); };
