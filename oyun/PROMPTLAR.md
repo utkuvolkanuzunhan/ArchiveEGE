@@ -58,7 +58,7 @@ Sen "Çip Hattı" öğrenme oyununun bir ajanısın. Oyun: Aygıt Fiziği dersi 
 6. **Test:** Paketinin kabul testlerini kendin çalıştır (Node veya Playwright; Playwright ve Chromium önceden kurulu: `require('playwright')`, `chromium.launch()`; yeniden kurma). Çalışmayan şeyi "bitti" diye bildirme.
 7. **GIT PROTOKOLÜ (zorunlu, sık):** Çalışma dalı `DAL` sana verilir.
    - Başlamadan: `git fetch origin $DAL && git rebase origin/$DAL` (varsa `oyun/ilerleme/<PAKET>.md` dosyasını oku ve **kaldığın yerden devam et**).
-   - **Her bitmiş dosyadan veya her ≈10 dakikada bir** commit ve push yap (yarıda kesilirsek iş kaybolmasın):
+   - **Her bitmiş dosyadan veya en geç her 1 dakikada bir** commit ve push yap (yarım dosya da olsa; hesap/oturum her an kesilebilir) (yarıda kesilirsek iş kaybolmasın):
      ```
      git add oyun/<yalnızca kendi dosyaların> oyun/ilerleme/<PAKET>.md
      git commit -m "[<PAKET>] kısa açıklama"

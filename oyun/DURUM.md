@@ -14,26 +14,26 @@
 |---|---|---|---|---|---|---|
 | A1 | Çekirdek | low | M1 | bitti | ffdedc5 | 7 birim test geçti, 2026-11-11 |
 | A2 | Koşu motoru | medium | M1 | calisiyor | | dalga 1 başladı |
-| A3 | Savaş | low | M1 | calisiyor | | dalga 1 başladı |
+| A3 | Savaş | low | M1 | bitti | 079a355 | 7 test geçti; Q.ui entegrasyonu A9 tarayıcı testinde denenecek |
 | A4 | Arayüz | medium | M1 | calisiyor | | dalga 1 başladı |
-| A5a | Karakter çizimi | low | M1 | bekliyor | | |
+| A5a | Karakter çizimi | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | A5b | Koşucu/engel/dünya | medium | M1 | calisiyor | | dalga 1 başladı |
-| A6 | Claude istemcisi | medium | M1 | calisiyor | | dalga 1 başladı |
-| A8 | Ayarlar ve harita | medium | M1 | calisiyor | | dalga 1 başladı |
-| A9 | Ana akış/derleme/test | medium | M1 | bekliyor | | |
-| H1 | hikaye + sandık | low | M1 | bekliyor | | |
-| H2 | düşman + tuzak | low | M1 | bekliyor | | |
-| H3 | kavram + tahmin | medium | M1 | bekliyor | | |
-| H4 | köprü | medium | M1 | bekliyor | | |
+| A6 | Claude istemcisi | medium | M1 | bitti | 7acd258 | 11 test geçti |
+| A8 | Ayarlar ve harita | medium | M1 | bitti | 71cd0a7 | 6 kabul testi geçti (stub Q.ui); A4 CSS: #modal-layer z-index > 20 gerekli; A9 açılışta Q.settings.openMap() çağırmalı |
+| A9 | Ana akış/derleme/test | medium | M1 | calisiyor | | erken başlatıldı (hız önceliği) |
+| H1 | hikaye + sandık | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| H2 | düşman + tuzak | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| H3 | kavram + tahmin | medium | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| H4 | köprü | medium | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | H5 | patron | medium | M1 | calisiyor | | dalga 1 başladı |
 | S1 | sim kristal_tur | medium | M1 | calisiyor | | dalga 1 başladı |
-| S3 | sim kafes | low | M1 | bekliyor | | |
-| S4 | sim miller | low | M1 | bekliyor | | |
-| S5 | sim karacisim | medium | M1 | bekliyor | | |
-| S6 | sim fotoelektrik | low | M1 | bekliyor | | |
-| E1 | veri s01 | low | M1 | bekliyor | | |
-| E2 | veri s02 | low | M1 | bekliyor | | |
-| E3 | veri s03 | low | M1 | bekliyor | | |
+| S3 | sim kafes | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| S4 | sim miller | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| S5 | sim karacisim | medium | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| S6 | sim fotoelektrik | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| E1 | veri s01 | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| E2 | veri s02 | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
+| E3 | veri s03 | low | M1 | calisiyor | | dalga 2, sınır kaldırıldı |
 | S2 | sim czochralski | medium | M2 | bekliyor | | |
 | S7 | sim bohr | medium | M2 | bekliyor | | |
 | S8 | sim kuyu | low | M2 | bekliyor | | |
@@ -69,3 +69,4 @@ _(orta/düşük bulgular buraya)_
 
 ## Notlar
 _(orkestratör kararları, kota/yarım kalan işler)_
+- 2026-11-11: Kullanıcı isteğiyle 8 ajan sınırı kaldırıldı (hız önceliği). Denetim aşama sonu yerine ajan bitince hafif (node --check + paket testi); tek D1 A9 derlemesinden sonra.
