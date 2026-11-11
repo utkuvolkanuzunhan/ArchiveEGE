@@ -31,7 +31,7 @@
       var cv = document.createElement('canvas');
       cv.style.cssText = 'width:100%;display:block;border-radius:8px';
       cv.setAttribute('role', 'img');
-      cv.setAttribute('aria-label', 'Gauss dalga paketi ve momentum dağılımı');
+      cv.setAttribute('aria-label', 'Gaussian wave packet (dalga paketi) and momentum distribution (dağılım)');
       var ctl = document.createElement('div');
       ctl.style.cssText = 'display:flex;flex-wrap:wrap;gap:10px;align-items:center';
       var lab = document.createElement('label');
@@ -104,14 +104,14 @@
         var pw = W - 16, strip = 22;
         var avail = Hh - strip - 4;
         var ph = st.eslenik ? avail / 2 : avail;
-        panel(8, 2, pw, ph, c.sx, 8, cy, '|ψ(x)|²  konum', 'x (nm)', 'σx = ' + c.sx.toFixed(1) + ' nm');
-        if (st.eslenik) panel(8, 2 + ph, pw, ph, c.sp, 12, mg, '|φ(p)|²  momentum', 'p (10⁻²⁶ kg·m/s)', 'σp = ' + c.sp.toFixed(1) + ' ×10⁻²⁶');
+        panel(8, 2, pw, ph, c.sx, 8, cy, '|ψ(x)|²  position (konum)', 'x (nm)', 'σx = ' + c.sx.toFixed(1) + ' nm');
+        if (st.eslenik) panel(8, 2 + ph, pw, ph, c.sp, 12, mg, '|φ(p)|²  momentum (momentum)', 'p (10⁻²⁶ kg·m/s)', 'σp = ' + c.sp.toFixed(1) + ' ×10⁻²⁶');
         var gy = Hh - strip;
         ctx.strokeStyle = yel; ctx.lineWidth = 2; ctx.strokeRect(8, gy, pw, strip - 3);
         ctx.fillStyle = ink; ctx.font = '700 13px sans-serif'; ctx.textAlign = 'left';
         ctx.fillText('σx·σp = ħ/2', 14, gy + 14);
         ctx.fillStyle = mut; ctx.font = '11px sans-serif'; ctx.textAlign = 'right';
-        ctx.fillText('Alet kusuru değil', 8 + pw - 6, gy + 14);
+        ctx.fillText('Not instrument (alet) error', 8 + pw - 6, gy + 14);
       }
 
       function check(){

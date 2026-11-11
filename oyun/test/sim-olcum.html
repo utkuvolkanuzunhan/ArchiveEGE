@@ -24,6 +24,6 @@ window.sim=Q.sim.mount('olcum',host,{c1sq:parseFloat(q.get('c1sq')||'0.7'),basar
 document.getElementById('basari').onclick=function(){
   var b=[].slice.call(host.querySelectorAll('button'));
   function t(x){return b.filter(function(e){return e.textContent===x})[0];}
-  t('Ölç').click(); t('Tekrar ölç').click();
+  t('Measure (ölç)').click(); t('Tekrar measure (ölç)').click();
 };
 </script></body></html>

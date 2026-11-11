@@ -44,9 +44,9 @@
       var slV = document.createElement('span'); slV.style.cssText = 'min-width:40px;color:var(--yellow,#ffd23f);';
       lab.appendChild(labT); lab.appendChild(sl); lab.appendChild(slV);
       bar.appendChild(lab);
-      var bOlc = mkBtn('Ölç', function(){ hazirla(); olc(true); });
+      var bOlc = mkBtn('Measure (ölç)', function(){ hazirla(); olc(true); });
       var bTek = mkBtn('Tekrar measure (ölç)', tekrarOlc);
-      var bYuz = mkBtn('100 kez', yuzKez);
+      var bYuz = mkBtn('100 times (kez)', yuzKez);
       bOlc.style.background = 'var(--accent,#ffd23f)'; bOlc.style.color = 'var(--accent-ink,#0b0620)';
       bar.appendChild(bOlc); bar.appendChild(bTek); bar.appendChild(bYuz);
       var info = document.createElement('div');
@@ -76,11 +76,11 @@
         var s = Math.random() < c1sq ? 1 : 2;
         collapsed = s; anim = 0;
         kaydet(s);
-        sonMetin = 'Collapse (çökme): sonuç ' + s;
+        sonMetin = 'Collapse (çökme): result (sonuç) ' + s;
         guncelle();
       }
       function tekrarOlc(){
-        if (!collapsed) { sonMetin = 'Önce bir kez ölç.'; guncelle(); return; }
+        if (!collapsed) { sonMetin = 'Önce bir kez measure (ölç).'; guncelle(); return; }
         kaydet(collapsed);
         tekrarYapti = true;
         sonMetin = 'Tekrar: yine ' + collapsed + '. Collapsed state (çökmüş durum) değişmez.';
@@ -91,7 +91,7 @@
         for (i = 0; i < 100; i++) kaydet(Math.random() < c1sq ? 1 : 2);
         hazirla();
         yuzYapti = true;
-        sonMetin = '100 taze hazırlık: toplam ' + sayac[0] + ' kez 1, ' + sayac[1] + ' kez 2.';
+        sonMetin = '100 fresh preparation (taze hazırlık): total (toplam) ' + sayac[0] + ' kez 1, ' + sayac[1] + ' kez 2.';
         guncelle(); bildir();
       }
       sl.addEventListener('input', function(){
@@ -104,7 +104,7 @@
         slV.textContent = c1sq.toFixed(2);
         bTek.disabled = !collapsed; bTek.style.opacity = collapsed ? '1' : '0.5';
         info.textContent = sonMetin || ('|c₁|² = ' + c1sq.toFixed(2) + ', |c₂|² = ' + (1 - c1sq).toFixed(2));
-        cv.setAttribute('aria-label', collapsed ? 'Durum ' + collapsed + '. özdurumda çöktü' : 'Superposition (süperpozisyon): ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
+        cv.setAttribute('aria-label', collapsed ? 'State (durum) ' + collapsed + '. eigenstate (özdurum) içinde collapsed (çöktü)' : 'Superposition (süperpozisyon): ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -156,9 +156,9 @@
         c.textAlign = 'left';
         if (collapsed) {
           c.fillStyle = yel; c.font = '400 ' + Math.round(Math.min(34, H * 0.14)) + 'px ' + col('--font-d', 'Impact, sans-serif');
-          c.fillText('ÇÖKTÜ', W * 0.64, H * 0.12);
+          c.fillText('COLLAPSED (ÇÖKTÜ)', W * 0.64, H * 0.12);
         } else {
-          c.fillStyle = muted; c.font = '700 16px ' + fb; c.fillText('süperpozisyon', W * 0.64, H * 0.12);
+          c.fillStyle = muted; c.font = '700 16px ' + fb; c.fillText('superposition (süperpozisyon)', W * 0.64, H * 0.12);
         }
         /* histogram (sağ) */
         var tot = sayac[0] + sayac[1], hx = W * 0.64, hw = W * 0.3, hb = ust - 6;
@@ -178,7 +178,7 @@
           else c.strokeRect(sx + i * sw + 0.5, sy + 0.5, sw - 4, sw - 1);
         }
         c.fillStyle = muted; c.textAlign = 'left'; c.font = '600 16px ' + fb;
-        c.fillText('son 20 ölçüm', sx, sy - 12);
+        c.fillText('last 20 measurement (ölçüm)', sx, sy - 12);
       }
       function dongu(now){
         raf = 0;
@@ -190,7 +190,7 @@
       if (typeof ResizeObserver !== 'undefined') {
         ro = new ResizeObserver(boyutla); ro.observe(cv);
       } else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Measure (ölç), sonra tekrar ölç: collapsed state (çökmüş durum) değişmez.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Measure (ölç), sonra tekrar measure (ölç): collapsed state (çökmüş durum) değişmez.'); } catch (e) {} }
       t0 = performance.now();
       guncelle(); boyutla();
       if (params.olcTekrar) { olc(); tmo = setTimeout(function(){ tmo = 0; if (!destroyed) tekrarOlc(); }, 600); }
