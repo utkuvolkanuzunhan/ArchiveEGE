@@ -12,21 +12,21 @@
 
 | ID | Ad | Efor | Aşama | Durum | Commit | Not |
 |---|---|---|---|---|---|---|
-| A1 | Çekirdek | low | M1 | calisiyor | | başladı 2026-11-11 |
-| A2 | Koşu motoru | medium | M1 | bekliyor | | |
-| A3 | Savaş | low | M1 | bekliyor | | |
-| A4 | Arayüz | medium | M1 | bekliyor | | |
+| A1 | Çekirdek | low | M1 | bitti | ffdedc5 | 7 birim test geçti, 2026-11-11 |
+| A2 | Koşu motoru | medium | M1 | calisiyor | | dalga 1 başladı |
+| A3 | Savaş | low | M1 | calisiyor | | dalga 1 başladı |
+| A4 | Arayüz | medium | M1 | calisiyor | | dalga 1 başladı |
 | A5a | Karakter çizimi | low | M1 | bekliyor | | |
-| A5b | Koşucu/engel/dünya | medium | M1 | bekliyor | | |
-| A6 | Claude istemcisi | medium | M1 | bekliyor | | |
-| A8 | Ayarlar ve harita | medium | M1 | bekliyor | | |
+| A5b | Koşucu/engel/dünya | medium | M1 | calisiyor | | dalga 1 başladı |
+| A6 | Claude istemcisi | medium | M1 | calisiyor | | dalga 1 başladı |
+| A8 | Ayarlar ve harita | medium | M1 | calisiyor | | dalga 1 başladı |
 | A9 | Ana akış/derleme/test | medium | M1 | bekliyor | | |
 | H1 | hikaye + sandık | low | M1 | bekliyor | | |
 | H2 | düşman + tuzak | low | M1 | bekliyor | | |
 | H3 | kavram + tahmin | medium | M1 | bekliyor | | |
 | H4 | köprü | medium | M1 | bekliyor | | |
-| H5 | patron | medium | M1 | bekliyor | | |
-| S1 | sim kristal_tur | medium | M1 | bekliyor | | |
+| H5 | patron | medium | M1 | calisiyor | | dalga 1 başladı |
+| S1 | sim kristal_tur | medium | M1 | calisiyor | | dalga 1 başladı |
 | S3 | sim kafes | low | M1 | bekliyor | | |
 | S4 | sim miller | low | M1 | bekliyor | | |
 | S5 | sim karacisim | medium | M1 | bekliyor | | |
