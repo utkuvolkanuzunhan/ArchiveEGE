@@ -237,7 +237,13 @@
       var area = newArea();
       head(area, i, n, no);
       var alt = faz.alt || {}, r;
+      function soruKutusu(m){
+        var q = el('div', 'p5-soru', m);
+        q.style.cssText = 'font-weight:800;font-size:17px;line-height:1.35;margin:0 0 8px;color:var(--ink,#fff)';
+        area.appendChild(q);
+      }
       if (faz.tip === 'secmeli') {
+        soruKutusu(no === 2 && alt.soru ? alt.soru : faz.soru);
         say(no === 2 && alt.soru ? alt.soru : faz.soru);
         r = await secmeliSor(area, no === 2 && alt.secenekler ? alt.secenekler : faz.secenekler, faz, true);
         uygula(sonucOf(r));
@@ -245,6 +251,7 @@
         return r;
       }
       var sm = no === 2 && alt.soru ? alt.soru : faz.soru;
+      soruKutusu(sm);
       say(sm);
       var a = await acikSor(area, sm, faz, no);
       if (a.kind === 'bos') {
@@ -260,6 +267,7 @@
         if (!y) { r = { dogru: false, eminlik: a.eminlik, kavram: kavramOf(faz), notlar: 'yedek yok' }; uygula(sonucOf(r)); return r; }
         area.textContent = '';
         head(area, i, n, no);
+        soruKutusu(y.soru);
         say(y.soru);
         hint(area, 'Claude yok, çoktan seçmeli soru:');
         r = await secmeliSor(area, y.secenekler, faz, false, a.eminlik);

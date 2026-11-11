@@ -62,7 +62,7 @@
         b.appendChild(el('span', 'metin', o.metin || ''));
         layer.appendChild(b);
         var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;
-        var ms = o.ms == null ? Math.min(20000, Math.max(7000, 3000 + kelime * 600)) : o.ms;
+        var ms = o.ms == null ? Math.min(9000, Math.max(2500, 1500 + kelime * 280)) : o.ms;
         /* Baloncuk süre dolunca KAYBOLMAZ: yalnızca tıklanınca, aynı konumdan yeni baloncuk gelince
          * ya da bubble.clear() (engel bitişi) ile kapanır. Süre yalnızca söz (promise) için okuma payıdır. */
         Array.prototype.slice.call(layer.querySelectorAll('.bubble.' + konum)).forEach(function(eski){
