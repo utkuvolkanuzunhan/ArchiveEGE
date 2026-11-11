@@ -81,5 +81,5 @@ _(orkestratör kararları, kota/yarım kalan işler)_
 ## DEVAM NOTU (2026-11-11, oturum sonu; limit nedeniyle yeni ajan açılmadı)
 Ayrıntılı devam promptu: `oyun/DEVAM.md`. Özet:
 - BİTTİ: runner'a 'Bu engeli atla' (R.skip), 'Önceki engele dön', 'İstasyonun başına dön' (Esc menüsü); seçenek önce seçilir + Onayla; sade Türkçe yanlış-cevap geri bildirimi; patron sorusu dock'ta kalıcı; terim dili (DIL-1, şıklar dahil) s01-s08 iki tur; Tekrar Merkezi (97-tekrar.js: terimler, test, kartlar, sınav tarzı, deneme sınavı); sınav havuzu 72 MCQ + 28 klasik (91/92-data-sinav-*.js).
-- ÇALIŞIRKEN KESİLEN (sonuçları dalda olabilir, kontrol et): E9 (istasyon 09 bant testi: oyun/istasyonlar/09-bant-testi.md + 90-data-s09.js), s02-B, s02-C, s03-A, s03-B, s03-C oynama denetimleri.
+- ÇALIŞIRKEN KESİLEN (sonuçları dalda olabilir, kontrol et): s02-B, s02-C, s03-A, s03-B, s03-C oynama denetimleri.
 - AÇIK: s04-s08 parçalı oynama denetimleri (yalnızca s05-A, s06-A, s08-B kısmen yapıldı); S9 başarı yolu s06'da etkilenmiyor (T:[1e-3,1] a=1.5 sınır erişilemez, ama s06 verisi kullanmıyor); köprüde Kontrol düğmesi 1366x768'de alt kenara yakın; D2 son dil denetimi (karışık ifadeler: 'Atom çok cold (soğuk)' gibi); SECKİ (50 MCQ + 20 klasik, çıkma olasılığına göre) yapılmadı; s10 (Fermi/drift) ve S13: kullanıcı 'derste işlendi mi' sorusuna cevap vermedi; A7 final, A5c ses.
