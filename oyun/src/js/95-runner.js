@@ -250,7 +250,7 @@
     sonuc = sonuc || { dogru: true, eminlik: 1, agirlik: 1 };
     if (ob.tip !== 'patron' && !r.skipApply) { try { if (Q.battle && Q.battle.apply) Q.battle.apply(sonuc); } catch (e) { console.error(e); } }  // 7
     r.skipApply = false;
-    try { if (Q.ui && Q.ui.dock) Q.ui.dock.clear(); } catch (e) { console.error(e); }  // 8
+    try { if (Q.ui && Q.ui.dock) Q.ui.dock.clear(); if (Q.ui && Q.ui.bubble && Q.ui.bubble.clear) Q.ui.bubble.clear(); } catch (e) { console.error(e); }  // 8
     if (Q.state.voltaj <= 0) { await kisaDevre(r); return; }  // 9
     var ok = ob.tip === 'patron' || sonuc.dogru !== false;
     var an = ok ? OK_ANIM[ob.tip] : BAD_ANIM[ob.tip];

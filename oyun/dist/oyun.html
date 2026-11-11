@@ -1968,11 +1968,16 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         layer.appendChild(b);
         var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;
         var ms = o.ms == null ? Math.min(20000, Math.max(7000, 3000 + kelime * 600)) : o.ms;
+        /* Baloncuk süre dolunca KAYBOLMAZ: yalnızca tıklanınca, aynı konumdan yeni baloncuk gelince
+         * ya da bubble.clear() (engel bitişi) ile kapanır. Süre yalnızca söz (promise) için okuma payıdır. */
+        Array.prototype.slice.call(layer.querySelectorAll('.bubble.' + konum)).forEach(function(eski){
+          if (eski !== b && eski.parentNode) eski.parentNode.removeChild(eski);
+        });
         var bitti = false;
-        function kapat(){ if (bitti) return; bitti = true; if (b.parentNode) b.parentNode.removeChild(b); res(); }
+        function bitir(){ if (bitti) return; bitti = true; res(); }
         b.style.pointerEvents = 'auto'; b.style.cursor = 'pointer'; b.title = 'Kapatmak için tıkla';
-        b.addEventListener('click', kapat);
-        bubbleTimers.push(setTimeout(kapat, ms));
+        b.addEventListener('click', function(){ if (b.parentNode) b.parentNode.removeChild(b); bitir(); });
+        bubbleTimers.push(setTimeout(bitir, ms));
       });
     },
     clear: function(){
@@ -6319,7 +6324,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     sonuc = sonuc || { dogru: true, eminlik: 1, agirlik: 1 };
     if (ob.tip !== 'patron' && !r.skipApply) { try { if (Q.battle && Q.battle.apply) Q.battle.apply(sonuc); } catch (e) { console.error(e); } }  // 7
     r.skipApply = false;
-    try { if (Q.ui && Q.ui.dock) Q.ui.dock.clear(); } catch (e) { console.error(e); }  // 8
+    try { if (Q.ui && Q.ui.dock) Q.ui.dock.clear(); if (Q.ui && Q.ui.bubble && Q.ui.bubble.clear) Q.ui.bubble.clear(); } catch (e) { console.error(e); }  // 8
     if (Q.state.voltaj <= 0) { await kisaDevre(r); return; }  // 9
     var ok = ob.tip === 'patron' || sonuc.dogru !== false;
     var an = ok ? OK_ANIM[ob.tip] : BAD_ANIM[ob.tip];

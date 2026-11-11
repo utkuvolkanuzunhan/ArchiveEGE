@@ -59,11 +59,16 @@
         layer.appendChild(b);
         var kelime = String(o.metin || '').split(/\s+/).filter(Boolean).length;
         var ms = o.ms == null ? Math.min(20000, Math.max(7000, 3000 + kelime * 600)) : o.ms;
+        /* Baloncuk süre dolunca KAYBOLMAZ: yalnızca tıklanınca, aynı konumdan yeni baloncuk gelince
+         * ya da bubble.clear() (engel bitişi) ile kapanır. Süre yalnızca söz (promise) için okuma payıdır. */
+        Array.prototype.slice.call(layer.querySelectorAll('.bubble.' + konum)).forEach(function(eski){
+          if (eski !== b && eski.parentNode) eski.parentNode.removeChild(eski);
+        });
         var bitti = false;
-        function kapat(){ if (bitti) return; bitti = true; if (b.parentNode) b.parentNode.removeChild(b); res(); }
+        function bitir(){ if (bitti) return; bitti = true; res(); }
         b.style.pointerEvents = 'auto'; b.style.cursor = 'pointer'; b.title = 'Kapatmak için tıkla';
-        b.addEventListener('click', kapat);
-        bubbleTimers.push(setTimeout(kapat, ms));
+        b.addEventListener('click', function(){ if (b.parentNode) b.parentNode.removeChild(b); bitir(); });
+        bubbleTimers.push(setTimeout(bitir, ms));
       });
     },
     clear: function(){
