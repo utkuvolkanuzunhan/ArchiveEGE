@@ -9758,6 +9758,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     }
     if (!alive(r)) return;
     sonuc = sonuc || { dogru: true, eminlik: 1, agirlik: 1 };
+    if (sonuc && typeof sonuc === 'object' && !sonuc.engel && ob.id) sonuc.engel = ob.id;
     if (ob.tip !== 'patron' && !r.skipApply) { try { if (Q.battle && Q.battle.apply) Q.battle.apply(sonuc); } catch (e) { console.error(e); } }  // 7
     r.skipApply = false;
     try { if (Q.ui && Q.ui.dock) Q.ui.dock.clear(); if (Q.ui && Q.ui.bubble && Q.ui.bubble.clear) Q.ui.bubble.clear(); } catch (e) { console.error(e); }  // 8
