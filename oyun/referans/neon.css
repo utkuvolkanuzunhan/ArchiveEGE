@@ -1,0 +1,29 @@
+/* Koyu neon bilim kurgu: lacivert zemin, camgöbeği ve macenta ışıma, ızgara zemin ve tarama çizgileri. Tek bir bilinçli koyu görünüm. */
+:root{
+  --bg:#070a14;--panel:#0d1326;--panel2:#121a33;--ink:#e8f0ff;--muted:#8d9ac2;--line:#2a3a72;
+  --accent:#00e5ff;--accent2:#ff3df0;--accent-ink:#001318;--good:#39ff88;--bad:#ff4d6d;--track:#080c1b;
+  --sel:#0b2a3a;--sel-ink:#e8f0ff;--bubble:#101a38;--bubble-ink:#e8f0ff;--bubble-line:#00e5ff;
+  --bw:1px;--r:12px;--rs:8px;--shadow:0 0 28px rgba(0,229,255,.10);--glow:0 0 16px rgba(0,229,255,.45);
+  --font-d:'Chakra Petch','Trebuchet MS',system-ui,sans-serif;--font-b:'Rajdhani','Segoe UI',system-ui,sans-serif;--h-ls:.02em;
+  --sky:#070a14;--ground:#00e5ff;--grid:rgba(0,229,255,.18);--runner:#00e5ff;--foe:#ff3df0;
+  --m-aura:rgba(255,61,240,.07);--m-line:#00e5ff;--m-line2:#ff3df0;--m-lw:3;--m-lw2:1.6;--m-lws:2.6;--m-dash:4 6;
+  --m-ray:rgba(255,230,0,.2);--m-rayl:#ffe600;--m-body:#0d1326;--m-collar:#0b1020;--m-hair:#0d1326;--m-skin:#0b1020;
+  --m-eye:#ffffff;--m-pupil:#ff3df0;--m-mous:#0d1326;--m-mouth:#1a0820;--m-acc:rgba(0,229,255,.22);--m-label:#00e5ff;
+  color-scheme:dark;
+}
+body{font-size:18px;background:radial-gradient(900px 420px at 80% -8%,#1d1458 0,transparent 62%),radial-gradient(700px 360px at 0% 30%,#06323f 0,transparent 60%),var(--bg)}
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:50;background:repeating-linear-gradient(0deg,rgba(255,255,255,.028) 0 1px,transparent 1px 3px)}
+h1{color:#fff;text-shadow:0 0 18px var(--accent)}
+.eyebrow{color:var(--accent2);text-shadow:0 0 10px var(--accent2)}
+h2{color:var(--accent);text-shadow:0 0 10px rgba(0,229,255,.5);text-transform:uppercase;font-size:17px;letter-spacing:.08em}
+.panel{box-shadow:var(--shadow),inset 0 0 0 1px rgba(0,229,255,.06)}
+.track i{box-shadow:0 0 12px currentColor}
+.you i{background:linear-gradient(90deg,#14c46a,var(--good));color:var(--good)}
+.foe i{background:linear-gradient(90deg,#c8123a,var(--bad));color:var(--bad)}
+.go{text-transform:uppercase;letter-spacing:.1em;font-family:var(--font-d)}
+.mon{filter:drop-shadow(0 0 8px rgba(0,229,255,.55)) drop-shadow(0 0 20px rgba(255,61,240,.35))}
+.th .mon{filter:drop-shadow(0 0 4px rgba(0,229,255,.5))}
+.bubble{box-shadow:0 0 18px rgba(0,229,255,.3)}
+.dmg{text-shadow:0 0 16px currentColor}
+.foe-panel{background:radial-gradient(circle at 50% 70%,rgba(255,61,240,.12),transparent 60%),var(--panel)}
+.tile.built{box-shadow:0 0 10px rgba(57,255,136,.3)}

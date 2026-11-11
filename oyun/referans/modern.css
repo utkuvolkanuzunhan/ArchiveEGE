@@ -1,0 +1,31 @@
+/* Sade modern: silikon mavisi zemin, bakır vurgu, ince çizgiler, bol boşluk. Açık ve koyu tema. */
+:root{
+  --bg:#f3f5f8;--panel:#ffffff;--panel2:#f3f6f9;--ink:#16202b;--muted:#5b6978;--line:#d9e0e8;
+  --accent:#b4531c;--accent2:#35566f;--accent-ink:#ffffff;--good:#1c7a4c;--bad:#b3261e;--track:#e3ecf3;
+  --sel:#f7e8de;--sel-ink:#16202b;--bubble:#f3f6f9;--bubble-ink:#16202b;--bubble-line:#c9d3de;
+  --bw:1px;--r:12px;--rs:8px;--shadow:0 1px 2px rgba(22,32,43,.06);--glow:none;
+  --font-d:'Space Grotesk','Segoe UI',system-ui,sans-serif;--font-b:'Inter','Segoe UI',system-ui,sans-serif;--h-ls:0;
+  --sky:#eef3f8;--ground:#35566f;--grid:none;--runner:#35566f;--foe:#b4531c;
+  --m-aura:#e3ecf3;--m-line:#35566f;--m-line2:#5d7a93;--m-lw:2;--m-lw2:0;--m-lws:1.8;--m-dash:none;
+  --m-ray:#f7e8de;--m-rayl:#d9a888;--m-body:#35566f;--m-collar:#e3ecf3;--m-hair:#c9d3de;--m-skin:#ecd0b6;
+  --m-eye:#ffffff;--m-pupil:#16202b;--m-mous:#a3afbb;--m-mouth:#8a3a24;--m-acc:#f7e8de;--m-label:#ffffff;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#11171d;--panel:#192129;--panel2:#1f2933;--ink:#e8edf2;--muted:#93a2b1;--line:#2c3844;
+  --accent:#ea8b55;--accent2:#8fb4d3;--accent-ink:#1c1108;--good:#5fd092;--bad:#ff8a80;--track:#243140;
+  --sel:#3a2517;--sel-ink:#e8edf2;--bubble:#1f2933;--bubble-ink:#e8edf2;--bubble-line:#34424f;
+  --shadow:none;--sky:#1d2833;--ground:#8fb4d3;--runner:#8fb4d3;--foe:#ea8b55;
+  --m-aura:#1e2b38;--m-line:#8fb4d3;--m-line2:#6f90ac;--m-ray:#3a2517;--m-rayl:#7a4a2d;--m-body:#4a7396;--m-collar:#1e2b38;
+  --m-hair:#aeb9c6;--m-skin:#dfbfa3;--m-mous:#8c98a5;--m-acc:#3a2517;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#11171d;--panel:#192129;--panel2:#1f2933;--ink:#e8edf2;--muted:#93a2b1;--line:#2c3844;
+  --accent:#ea8b55;--accent2:#8fb4d3;--accent-ink:#1c1108;--good:#5fd092;--bad:#ff8a80;--track:#243140;
+  --sel:#3a2517;--sel-ink:#e8edf2;--bubble:#1f2933;--bubble-ink:#e8edf2;--bubble-line:#34424f;
+  --shadow:none;--sky:#1d2833;--ground:#8fb4d3;--runner:#8fb4d3;--foe:#ea8b55;
+  --m-aura:#1e2b38;--m-line:#8fb4d3;--m-line2:#6f90ac;--m-ray:#3a2517;--m-rayl:#7a4a2d;--m-body:#4a7396;--m-collar:#1e2b38;
+  --m-hair:#aeb9c6;--m-skin:#dfbfa3;--m-mous:#8c98a5;--m-acc:#3a2517;color-scheme:dark}
+h1,h2,h3{font-weight:700}
+.eyebrow{color:var(--accent)}
+.you i{background:var(--good)} .foe i{background:var(--bad)}
+.opt[aria-pressed=true],.cbtn[aria-pressed=true],.th[aria-pressed=true]{box-shadow:inset 0 0 0 1px var(--accent)}
+.foe-panel{background:linear-gradient(180deg,var(--panel2),var(--panel))}
