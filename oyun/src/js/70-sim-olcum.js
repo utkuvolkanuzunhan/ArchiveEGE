@@ -45,7 +45,7 @@
       lab.appendChild(labT); lab.appendChild(sl); lab.appendChild(slV);
       bar.appendChild(lab);
       var bOlc = mkBtn('Ölç', function(){ hazirla(); olc(true); });
-      var bTek = mkBtn('Tekrar ölç', tekrarOlc);
+      var bTek = mkBtn('Tekrar measure (ölç)', tekrarOlc);
       var bYuz = mkBtn('100 kez', yuzKez);
       bOlc.style.background = 'var(--accent,#ffd23f)'; bOlc.style.color = 'var(--accent-ink,#0b0620)';
       bar.appendChild(bOlc); bar.appendChild(bTek); bar.appendChild(bYuz);
@@ -76,14 +76,14 @@
         var s = Math.random() < c1sq ? 1 : 2;
         collapsed = s; anim = 0;
         kaydet(s);
-        sonMetin = 'ÇÖKTÜ: sonuç ' + s;
+        sonMetin = 'Collapse (çökme): sonuç ' + s;
         guncelle();
       }
       function tekrarOlc(){
         if (!collapsed) { sonMetin = 'Önce bir kez ölç.'; guncelle(); return; }
         kaydet(collapsed);
         tekrarYapti = true;
-        sonMetin = 'Tekrar: yine ' + collapsed + '. Çökmüş durum değişmez.';
+        sonMetin = 'Tekrar: yine ' + collapsed + '. Collapsed state (çökmüş durum) değişmez.';
         guncelle(); bildir();
       }
       function yuzKez(){
@@ -104,7 +104,7 @@
         slV.textContent = c1sq.toFixed(2);
         bTek.disabled = !collapsed; bTek.style.opacity = collapsed ? '1' : '0.5';
         info.textContent = sonMetin || ('|c₁|² = ' + c1sq.toFixed(2) + ', |c₂|² = ' + (1 - c1sq).toFixed(2));
-        cv.setAttribute('aria-label', collapsed ? 'Durum ' + collapsed + '. özdurumda çöktü' : 'Süperpozisyon: ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
+        cv.setAttribute('aria-label', collapsed ? 'Durum ' + collapsed + '. özdurumda çöktü' : 'Superposition (süperpozisyon): ' + c1sq.toFixed(2) + ' ve ' + (1 - c1sq).toFixed(2));
       }
 
       var W = 0, H = 0, dpr = 1;
@@ -190,7 +190,7 @@
       if (typeof ResizeObserver !== 'undefined') {
         ro = new ResizeObserver(boyutla); ro.observe(cv);
       } else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Ölç, sonra tekrar ölç: çökmüş durum değişmez.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('Measure (ölç), sonra tekrar ölç: collapsed state (çökmüş durum) değişmez.'); } catch (e) {} }
       t0 = performance.now();
       guncelle(); boyutla();
       if (params.olcTekrar) { olc(); tmo = setTimeout(function(){ tmo = 0; if (!destroyed) tekrarOlc(); }, 600); }

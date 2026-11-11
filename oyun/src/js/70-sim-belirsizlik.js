@@ -50,8 +50,8 @@
 
       function syncUI(){
         sIn.value = st.sx;
-        labS.textContent = 'Konum genişliği σx = ' + st.sx.toFixed(1) + ' nm';
-        tg.textContent = 'Eşlenik: ' + (st.eslenik ? 'açık' : 'kapalı');
+        labS.textContent = 'Position width (konum genişliği) σx = ' + st.sx.toFixed(1) + ' nm';
+        tg.textContent = 'Conjugate (eşlenik): ' + (st.eslenik ? 'açık' : 'kapalı');
         tg.setAttribute('aria-pressed', st.eslenik ? 'true' : 'false');
       }
       function resize(){

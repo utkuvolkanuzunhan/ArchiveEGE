@@ -9,21 +9,21 @@
 
   var o03 = {
     id: 's07-o03', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'ozdeger_olcum', agirlik: 1,
-    soru: 'Bir ölçüm hangi değerleri verebilir?',
+    soru: 'Bir measurement (ölçüm) hangi değerleri verebilir?',
     secenekler: [
-      sec('Yalnızca operatörün özdeğerlerini', true, 'Doğru. Her ölçüm özdeğerlerden birini verir.'),
-      sec('Herhangi bir değeri', false, 'Hayır. Yalnızca özdeğerler çıkabilir.'),
-      sec('Özdeğerlerin ortalamasını', false, 'Hayır. Tek ölçümde ortalama değil, bir özdeğer çıkar.')
+      sec('Yalnızca operatörün eigenvalue (özdeğer) değerlerini', true, 'Doğru. Her ölçüm eigenvalue değerlerinden birini verir.'),
+      sec('Herhangi bir değeri', false, 'Hayır. Yalnızca eigenvalue (özdeğer) çıkabilir.'),
+      sec('Eigenvalue ortalamasını', false, 'Hayır. Tek ölçümde ortalama değil, bir eigenvalue çıkar.')
     ],
     kusurSkin: 'vakans'
   };
 
   var o04 = {
     id: 's07-o04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'olasilik_katsayi', agirlik: 1,
-    soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma olasılığı nedir?',
+    soru: 'ψ = c₁φ₁ + c₂φ₂ iken sonucun φ₁ çıkma probability (olasılık) değeri nedir?',
     secenekler: [
-      sec('|c₁|²', true, 'Doğru. Olasılık katsayının karesidir.'),
-      sec('c₁', false, 'Hayır. Olasılık katsayının kendisi değil karesidir.'),
+      sec('|c₁|²', true, 'Doğru. Probability (olasılık) katsayının karesidir.'),
+      sec('c₁', false, 'Hayır. Probability katsayının kendisi değil karesidir.'),
       sec('c₁ + c₂', false, 'Hayır. Katsayılar toplanmaz; her sonucun olasılığı kendi karesidir.')
     ],
     kusurSkin: 'tane_siniri'
@@ -31,18 +31,18 @@
 
   var o05 = {
     id: 's07-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'olcum_cokme', agirlik: 1.5,
-    soru: 'Çöktükten sonra aynı büyüklüğü hemen tekrar ölçersen ne olur?',
+    soru: 'Collapse (çökme) sonrası aynı büyüklüğü hemen tekrar ölçersen ne olur?',
     secenekler: [
-      sec('Aynı sonuç çıkar', true, 'Doğru. ψ artık özdurumda, sonuç değişmez.'),
-      sec('Yeni rastgele sonuç', false, 'Yanlış. Çöken durum özdurumdur, sonuç aynı kalır.'),
-      sec('İki sonucun ortalaması', false, 'Yanlış. Tek ölçüm bir özdeğer verir.')
+      sec('Aynı sonuç çıkar', true, 'Doğru. ψ artık eigenstate (özdurum) içinde, sonuç değişmez.'),
+      sec('Yeni rastgele sonuç', false, 'Yanlış. Çöken durum eigenstate olur, sonuç aynı kalır.'),
+      sec('İki sonucun ortalaması', false, 'Yanlış. Tek ölçüm bir eigenvalue verir.')
     ],
     sim: {
       modul: 'olcum',
       onceki: { c1sq: 0.3 },
       sonraki: { c1sq: 0.3, olcTekrar: true }
     },
-    acik: 'Çöktükten sonra ψ özdurumdur; tekrar ölçüm aynı sonucu verir.'
+    acik: 'Collapse sonrası ψ eigenstate (özdurum) olur; tekrar ölçüm aynı sonucu verir.'
   };
 
   Q.data.stations.s07 = {
@@ -62,40 +62,40 @@
         yer: 'Göttingen', yil: 1926, rivayet: false,
         satirlar: [
           { kim: 'selin', metin: 'Ölçüm laboratuvarı: bakınca ne oluyor?' },
-          { kim: 'born', metin: 'ψ\'nin karesini olasılık olarak yorumladım. Ölçümde sonuç kesin değil, olasılıkla çıkar.' },
-          { kim: 'selin', metin: 'Kuantumun kuralları beş postülat. Ölçüm üçüncü ve dördüncüde.' }
+          { kim: 'born', metin: 'ψ\'nin karesini probability (olasılık) olarak yorumladım. Measurement (ölçüm) sonucu kesin değil, olasılıkla çıkar.' },
+          { kim: 'selin', metin: 'Kuantumun kuralları beş postulate (postülat). Ölçüm üçüncü ve dördüncüde.' }
         ]
       },
       {
         id: 's07-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'olcum_cokme', agirlik: 1,
-        gorev: 'Ölç, sonra tekrar ölç: sonuç ne?',
+        gorev: 'Measure (ölç), sonra tekrar ölç: sonuç ne?',
         sim: {
           modul: 'olcum',
           params: { c1sq: 0.3 },
           basari: { tekrarAyni: true }
         },
-        ogrenilen: 'Ölçüm ψ\'yi sonuca çökertir; hemen tekrar ölçersen aynı sonucu alırsın.'
+        ogrenilen: 'Measurement (ölçüm) ψ\'yi sonuca collapse (çökertir) eder; hemen tekrar ölçersen aynı sonucu alırsın.'
       },
       o03,
       o04,
       o05,
       {
         id: 's07-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'schrodinger_cokme', agirlik: 1,
-        iddia: 'Schrödinger denklemi ψ\'yi ölçüm anında çökertir.',
-        parcalar: ['Schrödinger denklemi', 'ψ\'yi ölçüm anında', 'çökertir.'],
+        iddia: 'Schrödinger denklemi ψ\'yi ölçüm anında collapse (çökme) ettirir.',
+        parcalar: ['Schrödinger denklemi', 'ψ\'yi ölçüm anında', 'collapse (çökme) ettirir.'],
         yanlisParca: 0,
-        duzeltme: 'Denklem ψ\'yi düzgün evriltir. Çökme ayrı postülattır ve yalnızca ölçümle olur.'
+        duzeltme: 'Denklem ψ\'yi düzgün evriltir. Collapse (çökme) ayrı postulate (postülat) olup yalnızca ölçümle olur.'
       },
       {
         id: 's07-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'evrim_belirlenimci', agirlik: 1,
         soru: 'Ölçüm döngüsünü sıraya diz',
         bloklar: [
-          'Sistem özdurumların süperpozisyonundadır',
-          'Ölçüm bir özdeğeri |c|² olasılıkla verir',
-          'ψ o özdurumuna çöker',
+          'Sistem eigenstate (özdurum) superposition (süperpozisyon) içindedir',
+          'Ölçüm bir eigenvalue (özdeğer) değerini |c|² olasılıkla verir',
+          'ψ o eigenstate durumuna collapse (çöker) eder',
           'Sonra denklem ψ\'yi yeniden evriltir'
         ],
-        sonuc: 'Süperpozisyon, olasılıklı sonuç, çökme, belirlenimci evrim.'
+        sonuc: 'Superposition (süperpozisyon), olasılıklı sonuç, collapse (çökme), deterministic (belirlenimci) evrim.'
       },
       {
         id: 's07-o08', tip: 'patron', baslik: 'Olasılık Canavarı', kavram: null, agirlik: 1,
@@ -104,17 +104,17 @@
         fazlar: [
           {
             tip: 'secmeli', kavram: 'olcum_cokme',
-            soru: 'Ölçümden önce sistem özdurumda değilse ne vardır?',
+            soru: 'Ölçümden önce sistem eigenstate (özdurum) içinde değilse ne vardır?',
             secenekler: [
-              sec('Özdurumların süperpozisyonu', true, 'Doğru. ψ = Σ cₙφₙ.'),
+              sec('Eigenstate (özdurum) superposition (süperpozisyonu)', true, 'Doğru. ψ = Σ cₙφₙ.'),
               sec('Gizli ama belirli bir değer', false, 'Hayır. Standart yorumda ölçümden önce belirli değer yoktur.'),
               sec('Sıfır enerji', false, 'Hayır. Enerji sıfır olmak zorunda değil.')
             ],
             alt: {
               soru: 'Hangi büyüklük bir ölçüm sonucu olabilir?',
               secenekler: [
-                sec('Operatörün özdeğeri', true, 'Doğru. Ölçüm özdeğer verir.'),
-                sec('Herhangi bir sayı', false, 'Hayır. Yalnızca özdeğerler.'),
+                sec('Operatörün eigenvalue (özdeğer) değeri', true, 'Doğru. Ölçüm eigenvalue verir.'),
+                sec('Herhangi bir sayı', false, 'Hayır. Yalnızca eigenvalue.'),
                 sec('ψ\'nin kendisi', false, 'Hayır. ψ doğrudan ölçülmez.')
               ]
             }
@@ -122,71 +122,71 @@
           {
             tip: 'acik',
             pdfSoru: 'Explain the principles of quantum mechanics.',
-            soru: 'Kuantum mekaniğinin ilkelerini (postülatlarını) açıkla.',
+            soru: 'Quantum mechanics (kuantum mekaniği) postulate (postülat) ilkelerini explain (açıkla).',
             anahtarFikirler: [
-              'Durum ψ ile tarif edilir, |ψ|² olasılık yoğunluğudur.',
-              'Her gözlenebilir bir operatöre karşılık gelir.',
-              'Ölçüm yalnızca özdeğer verir, durum özdurumuna çöker.',
-              'Zaman evrimi Schrödinger denklemiyle belirlenimcidir.'
+              'State (durum) ψ ile tarif edilir, |ψ|² probability density (olasılık yoğunluğu) olur.',
+              'Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir.',
+              'Ölçüm yalnızca eigenvalue (özdeğer) verir, durum eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Time evolution (zaman evrimi) Schrödinger denklemiyle deterministic (belirlenimci) olur.'
             ],
             yanlisKavramlar: [
               'Kuantum mekaniği her şeyi rastgele yapar',
               'Ölçümde ψ hiç değişmez'
             ],
             yanlisKavramIds: ['evrim_belirlenimci', 'olcum_cokme'],
-            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² olasılık yoğunluğudur. Her gözlenebilir bir operatörle temsil edilir. Ölçüm yalnızca operatörün özdeğerlerinden birini verir ve durum o özdurumuna çöker. Ölçümler arasında ψ, Schrödinger denklemiyle belirlenimci biçimde evrilir.',
+            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker) eder. Ölçümler arasında ψ, Schrödinger denklemiyle deterministic (belirlenimci) biçimde evrilir.',
             yedekSecmeli: {
-              soru: 'Hangisi kuantum postülatlarından biridir?',
+              soru: 'Hangisi kuantum postulate (postülat) ilkelerinden biridir?',
               secenekler: [
-                sec('Her gözlenebilir bir operatöre karşılık gelir', true, 'Doğru. Bu ikinci postülat.'),
-                sec('Ölçüm ψ\'yi değiştirmez', false, 'Yanlış. Ölçüm ψ\'yi özdurumuna çökertir.'),
-                sec('Enerji her değeri alır', false, 'Yanlış. Yalnızca özdeğerler.'),
-                sec('Denklem rastgele evrilir', false, 'Yanlış. Evrim belirlenimcidir.')
+                sec('Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir', true, 'Doğru. Bu ikinci postulate.'),
+                sec('Ölçüm ψ\'yi değiştirmez', false, 'Yanlış. Ölçüm ψ\'yi eigenstate durumuna collapse ettirir.'),
+                sec('Enerji her değeri alır', false, 'Yanlış. Yalnızca eigenvalue.'),
+                sec('Denklem rastgele evrilir', false, 'Yanlış. Evrim deterministic (belirlenimci) olur.')
               ]
             },
-            alt: { soru: 'Postülatların ölçümle ilgili olanlarını anlat.' }
+            alt: { soru: 'Postulate (postülat) ilkelerinin measurement (ölçüm) ile ilgili olanlarını explain (açıkla).' }
           },
           {
             tip: 'acik',
             pdfSoru: 'The third postulate of quantum mechanics concerns measurement; explain how the system changes its state if its current state is not an eigenstate of the observable being measured.',
-            soru: '3. postülat: durum özdurum değilse ölçümde sistem nasıl değişir?',
+            soru: '3. postulate (postülat): durum eigenstate (özdurum) değilse ölçümde sistem nasıl değişir? Explain (açıkla).',
             anahtarFikirler: [
-              'Durum özdurumların süperpozisyonudur: ψ = Σ cₙφₙ.',
-              'Ölçüm özdeğerlerden birini |cₙ|² olasılıkla verir.',
-              'Ölçümden sonra ψ ölçülen özdurumuna çöker.',
+              'State superposition (süperpozisyon) olarak eigenstate (özdurum) toplamıdır: ψ = Σ cₙφₙ.',
+              'Ölçüm eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir.',
+              'Ölçümden sonra ψ ölçülen eigenstate durumuna collapse (çöker) eder.',
               'Hemen tekrar ölçüm aynı sonucu verir.'
             ],
             yanlisKavramlar: [
-              'Ölçüm özdeğerlerin ortalamasını verir',
-              'Çökme Schrödinger denkleminden gelir'
+              'Ölçüm eigenvalue ortalamasını verir',
+              'Collapse Schrödinger denkleminden gelir'
             ],
             yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
-            idealCevap: 'Durum özdurum değilse özdurumların süperpozisyonudur: ψ = Σ cₙφₙ. Ölçüm özdeğerlerden birini |cₙ|² olasılıkla verir. Ölçümden sonra durum ölçülen özdurumuna çöker; hemen tekrar ölçüm aynı sonucu verir.',
+            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² olasılıkla verir. Ölçümden sonra durum ölçülen eigenstate durumuna collapse (çöker) eder; hemen tekrar ölçüm aynı sonucu verir.',
             yedekSecmeli: {
-              soru: 'Özdurum olmayan durumda ölçümden sonra ne olur?',
+              soru: 'Eigenstate (özdurum) olmayan durumda ölçümden sonra ne olur?',
               secenekler: [
-                sec('Durum ölçülen özdurumuna çöker', true, 'Doğru. Sonuç olasılıkla belirlenir.'),
+                sec('Durum ölçülen eigenstate durumuna collapse (çöker) eder', true, 'Doğru. Sonuç olasılıkla belirlenir.'),
                 sec('Durum hiç değişmez', false, 'Yanlış. Ölçüm durumu değiştirir.'),
-                sec('Durum ortalama özdurumda olur', false, 'Yanlış. Ortalama özdurum diye bir şey yok.'),
-                sec('Sistem yok olur', false, 'Yanlış. Sistem özdurumda kalır.')
+                sec('Durum ortalama eigenstate içinde olur', false, 'Yanlış. Ortalama eigenstate diye bir şey yok.'),
+                sec('Sistem yok olur', false, 'Yanlış. Sistem eigenstate içinde kalır.')
               ]
             },
-            alt: { soru: 'Ölçüm sonucu hangi olasılıkla çıkar ve ölçümden sonra ψ ne olur?' }
+            alt: { soru: 'Measurement (ölçüm) sonucu hangi probability (olasılık) ile çıkar ve ölçümden sonra ψ ne olur? Explain (açıkla).' }
           }
         ]
       },
       {
         id: 's07-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin olasılık olduğunu söyledi.' },
-        ozet: ['Ölçüm özdeğer verir, |c|² olasılıkla', 'Ölçümde ψ özdurumuna çöker', 'Denklem belirlenimci, çökme ölçümle'],
+        ozet: ['Ölçüm eigenvalue (özdeğer) verir, |c|² olasılıkla', 'Ölçümde ψ eigenstate (özdurum) durumuna collapse (çöker) eder', 'Denklem deterministic (belirlenimci), collapse ölçümle'],
         kontrolNoktasi: true
       }
     ],
     temelTur: {
       kartlar: [
-        { baslik: 'Süperpozisyon', metin: 'Ölçümden önce durum özdurumların toplamı olabilir.' },
-        { baslik: 'Ölçüm', metin: 'Bir özdeğer çıkar, olasılığı |c|².' },
-        { baslik: 'Çökme', metin: 'Ölçümden sonra ψ o özdurumdadır.' }
+        { baslik: 'Superposition (süperpozisyon)', metin: 'Ölçümden önce durum eigenstate (özdurum) toplamı olabilir.' },
+        { baslik: 'Measurement (ölçüm)', metin: 'Bir eigenvalue (özdeğer) çıkar, olasılığı |c|².' },
+        { baslik: 'Collapse (çökme)', metin: 'Ölçümden sonra ψ o eigenstate (özdurum) içindedir.' }
       ],
       sim: { modul: 'olcum', params: { c1sq: 0.3 } }
     },
@@ -201,9 +201,9 @@
       },
       {
         id: 's07-t04', tip: 'dusman', baslik: 'Kusur düşmanı', kavram: 'evrim_belirlenimci', agirlik: 1,
-        soru: 'Ölçümler arasında ψ nasıl evrilir?',
+        soru: 'Ölçümler arasında ψ nasıl evolve (evrilir)?',
         secenekler: [
-          sec('Schrödinger denklemiyle belirlenimci biçimde', true, 'Doğru. Rastgelelik yalnızca ölçümde ortaya çıkar.'),
+          sec('Schrödinger denklemiyle deterministic (belirlenimci) biçimde', true, 'Doğru. Rastgelelik yalnızca ölçümde ortaya çıkar.'),
           sec('Rastgele', false, 'Hayır. Evrim düzgündür.'),
           sec('Hiç evrilmez', false, 'Hayır. Zamanla evrilir.')
         ],
