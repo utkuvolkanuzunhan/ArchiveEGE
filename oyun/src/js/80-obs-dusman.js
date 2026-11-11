@@ -82,6 +82,10 @@
         host.appendChild(kutu);
         confHost.style.display = 'none';
         Array.prototype.forEach.call(confHost.querySelectorAll('button'), function(b){ b.disabled = true; });
+        safe(function(){ Array.prototype.forEach.call(optHost.querySelectorAll('.opt'), function(b){
+          var oi = +b.dataset.i; b.disabled = true;
+          if (secs[oi] && secs[oi].dogru) b.classList.add('dogru'); else if (oi === idx) b.classList.add('yanlis');
+        }); });
         await waitContinue(host);
         return { dogru: dogru, eminlik: em, kavram: ob.kavram || null,
                  agirlik: ob.agirlik || 1, notlar: sec.neden || '' };
