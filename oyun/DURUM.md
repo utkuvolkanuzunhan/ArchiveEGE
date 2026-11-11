@@ -46,7 +46,7 @@
 | E6 | veri s06 | low | M2 | bitti | | |
 | E7 | veri s07 | low | M2 | bitti | | |
 | E8 | veri s08 | low | M2 | bitti | | |
-| E9 | veri s09 | low | M3 | bekliyor | | istasyon dosyası henüz yok olabilir |
+| E9 | veri s09 | low | M3 | bitti | | |
 | E10 | veri s10 | low | M3 | bekliyor | | istasyon dosyası henüz yok olabilir |
 | S13 | sim fermi | low | M3 | bekliyor | | |
 | A7 | Final Sınav Günü | medium | M3 | bekliyor | | |
