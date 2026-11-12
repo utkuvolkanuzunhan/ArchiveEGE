@@ -273,9 +273,9 @@
   G('bel-v', 's08', true, 'belirsizlik', 'sinav', 2, 'Uncertainty principle: velocity of a confined electron',
     'An electron is confined to a region of size Δx = 0.1 nm (atomic size). Using the uncertainty principle, calculate the minimum uncertainty in its momentum and in its velocity (give Δv in km/s).',
     ['Δx = 0,1 nm', 'ħ = 1,055×10^{-34} J·s', 'm = 9,109×10^{-31} kg'],
-    [S('Momentum belirsizliği', 'ΔxΔp ≥ ħ/2. Δx = 0,1 nm = 10^{-10} m.', 'Δp ≥ ħ/(2Δx) = 5,273×10^{-25} kg·m/s', N('Δp kaç ×10^{-25} kg·m/s?', 5.273, '×10^{-25} kg·m/s')),
-     S('Hız belirsizliği', 'Δv = Δp/m.', 'Δv ≥ 5,273×10^{-25} / 9,109×10^{-31} = 5,79×10^{5} m/s = 579 km/s')],
-    { deger: 578.8, birim: 'km/s', metin: 'Δp ≥ 5.27×10^{-25} kg·m/s, Δv ≥ 579 km/s' },
+    [S('Momentum belirsizliği', 'ΔxΔp ≥ ħ/2. Δx = 0,1 nm = 10^{-10} m.', 'Δp ≥ ħ/(2Δx) = 5,275×10^{-25} kg·m/s', N('Δp kaç ×10^{-25} kg·m/s?', 5.275, '×10^{-25} kg·m/s')),
+     S('Hız belirsizliği', 'Δv = Δp/m.', 'Δv ≥ 5,275×10^{-25} / 9,109×10^{-31} = 5,79×10^{5} m/s = 579 km/s')],
+    { deger: 579.1, birim: 'km/s', metin: 'Δp ≥ 5.28×10^{-25} kg·m/s, Δv ≥ 579 km/s' },
     'ħ/2 mi ħ mi? Sınavda ΔxΔp ≥ ħ/2 yaz. Birim: nm → m. Belirsizlik ölçü aletinin kusuru değil, dalga doğasının sonucudur.');
 
   G('bel-t', 's08', true, 'belirsizlik', 'alistirma', 2, 'Energy-time uncertainty',
@@ -284,7 +284,7 @@
     [S('İlke', 'Enerji ve zaman eşlenik değişkenler gibi davranır.', 'ΔE·Δt ≥ ħ/2', C('Kısa yaşam süresi → çizgi genişliği?', 'daha geniş', ['daha dar', 'değişmez'])),
      S('Sayı', 'ħ = 6,582×10^{-16} eV·s kullan.', 'ΔE ≥ ħ/(2Δt) = 6,582×10^{-16}/(2×10^{-9}) = 3,29×10^{-7} eV = 0,329 μeV')],
     { deger: 0.3291, birim: 'μeV', metin: 'ΔE ≈ 0.33 μeV' },
-    'ΔE–Δt için Δt "ölçüm süresi/ömür" anlamında; dikkatli ifade et. Birim dönüşümü: 10^{-7} eV = 0,1 μeV.');
+    'Burada Δt, durumun ömrüdür (ölçüm süresi değil). Birim dönüşümü: 10^{-7} eV = 0,1 μeV.');
 
   /* ================= s09 · Bantlar ================= */
   G('bant-si', 's09', true, 'bant', 'sinav', 1, 'Absorption edge of silicon',

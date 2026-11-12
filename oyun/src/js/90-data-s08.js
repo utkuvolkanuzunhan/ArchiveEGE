@@ -81,19 +81,19 @@
         onBilgi: [
           { baslik: "Uncertainty (belirsizlik), wave packet", madde: [
             "Wave packet (dalga paketi): konumu sınırlı dalga; keskin konum için çok farklı wavelength (dalga boyu) toplanır.",
-            "Çok wavelength (dalga boyu) geniş momentum (p = h/λ) demektir; Δx ve Δp bu yüzden bağlıdır.",
+            "Çok wavelength (dalga boyu) geniş momentum demektir: p = h/λ = ħk, k = 2π/λ wavenumber (dalga sayısı). Bu yüzden Δx Δk ≥ 1/2 ve Δp = ħΔk.",
             "Δx, Δp: konum ve momentumun spread (yayılma) değeri; σx, σp aynı fikrin standart sapmasıdır.",
             "ħ = h/2π ≈ 1,05×10⁻³⁴ J·s: çok küçük sabit; ilke her cisimde geçerli ama büyükte görünmez." ] },
           { baslik: "ΔxΔp ≥ ħ/2 ilişkisi", madde: [
             "Formül: ΔxΔp ≥ ħ/2 (birim J·s). Çarpımın alt sınırı vardır; ikisi birden sıfıra gitmez.",
             "Gaussian wave packet (Gauss dalga paketi) sınıra eşit olur: σxσp = ħ/2 (minimum uncertainty, en az belirsizlik).",
-            "Instrument (alet) hatası değildir: ideal aletle de geçerli, çünkü sebep wave nature (dalga doğası).",
-            "Sık karışan nokta: ilke ölçümün parçacığı bozmasından ibaret değildir; ölçüm yapılmasa da geçerlidir." ] },
+            "Sık karışan nokta: ilke alet hatası ya da ölçümün parçacığı bozması değildir; ideal aletle ve ölçüm yapılmasa da geçerlidir, sebep wave nature (dalga doğası).",
+            "Hapsolma: L boyuna sıkışan parçacıkta Δp ≳ ħ/(2L), kinetik enerji yaklaşık ħ²/(8mL²) olur: zero-point energy (sıfır noktası enerjisi), L küçüldükçe artar." ] },
           { baslik: "Conjugate variable (eşlenik değişken)", madde: [
             "Conjugate variables (eşlenik değişkenler): operator'leri commute (değişme) etmeyen çift; örnek x ve p.",
-            "Commutator (komütatör): [x,p] = xp − px = iħ ≠ 0; sıfır olsaydı ortak eigenstate (özdurum) olurdu.",
-            "Ortak eigenstate (özdurum) yoksa iki büyüklük birden keskin değerli olamaz.",
-            "Sık karışan nokta: her büyüklük çifti belirsizlik vermez; kütle ve yük gibi sayılar operator (operatör) değildir." ] },
+            "Commutator (komütatör): [x,p] = xp − px = iħ ≠ 0. Ortak eigenstate (özdurum) yoktur, bu yüzden iki büyüklük birden keskin olamaz.",
+            "Sık karışan nokta: her çift belirsizlik vermez; x ve p_y commute (değişme) eder, kütle ve yük sayıdır.",
+            "Energy (enerji) ve zaman için ΔE Δt ≥ ħ/2: Δt durumun ömrüdür. Kısa ömürlü durumun enerjisi geniş yayılır, sonsuz ömürlü durumunki keskindir." ] },
           { baslik: "Nasıl yapılır: Δp bulmak", madde: [
             "Adımlar: (1) Δx'i metreye çevir (1 nm = 10⁻⁹ m); (2) Δp ≥ ħ/(2Δx) yaz; (3) sayıyı koy.",
             "Örnek: Δx = 2 nm = 2×10⁻⁹ m ise Δp ≥ 1,05×10⁻³⁴ / (4×10⁻⁹) ≈ 2,6×10⁻²⁶ kg·m/s.",

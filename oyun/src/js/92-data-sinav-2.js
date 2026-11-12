@@ -201,7 +201,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     ['Δx Δp ≥ ħ/2','Wave packet needs many wavelengths: Δk ≥ 1/(2Δx)','x and p are conjugate (non-commuting)','Property of the state, not of instruments']),
   K('s08-k2','s08','belirsizlik',
     'Calculate the minimum velocity uncertainty of (a) an electron confined to Δx = 0.10 nm and (b) a 0.145 kg baseball located to within 1.0 mm. Compare and explain why (b) is not observed in daily life.',
-    '(a) Δp ≥ ħ/(2Δx) = 1.055×10⁻³⁴/(2 × 1.0×10⁻¹⁰) = 5.3×10⁻²⁵ kg·m/s, so Δv = Δp/m = 5.3×10⁻²⁵/9.11×10⁻³¹ ≈ 5.8×10⁵ m/s. (b) Δv ≥ ħ/(2mΔx) = 1.055×10⁻³⁴/(2 × 0.145 × 1.0×10⁻³) ≈ 3.6×10⁻³¹ m/s. The electron value is a large fraction of atomic speeds (about 10⁶ m/s), so uncertainty is essential for atomic physics. The baseball value is about 10³¹ times smaller than anything measurable, because ħ is tiny compared with the product m·Δx of macroscopic bodies.',
+    '(a) Δp ≥ ħ/(2Δx) = 1.055×10⁻³⁴/(2 × 1.0×10⁻¹⁰) = 5.3×10⁻²⁵ kg·m/s, so Δv = Δp/m = 5.3×10⁻²⁵/9.11×10⁻³¹ ≈ 5.8×10⁵ m/s. (b) Δv ≥ ħ/(2mΔx) = 1.055×10⁻³⁴/(2 × 0.145 × 1.0×10⁻³) ≈ 3.6×10⁻³¹ m/s. The electron value is a large fraction of atomic speeds (about 10⁶ m/s), so uncertainty is essential for atomic physics. The baseball value is far below anything measurable, because ħ is tiny compared with the product m·Δx of macroscopic bodies.',
     ['Δp ≥ ħ/(2Δx) then Δv = Δp/m','Electron: Δv ≈ 5.8 × 10⁵ m/s','Baseball: Δv ≈ 3.6 × 10⁻³¹ m/s','ħ is tiny, so effects are negligible for large m']),
   K('s08-k3','s08','belirsizlik',
     'Use the uncertainty principle to estimate the minimum kinetic energy of a particle of mass m confined to a region of size L. Evaluate it for an electron with L = 0.10 nm and comment on the result.',
