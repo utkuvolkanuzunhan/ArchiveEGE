@@ -61,6 +61,8 @@
         var bekle = sure.tahminBekle != null ? sure.tahminBekle : 1500;
 
         var soru = U.el('p', 'tahmin-soru'); soru.textContent = ob.soru || '';
+        /* kaydırılabilir panelde soru hep görünsün (sim aşamasında ilk satır kırpılmasın) */
+        soru.style.cssText = 'position:sticky;top:0;z-index:2;background:var(--panel);margin:0 0 6px;padding:2px 0';
         var opsHost = U.el('div', 'tahmin-secenek');
         var ipucu = U.el('p', 'tahmin-ipucu');
         host.appendChild(soru); host.appendChild(opsHost); host.appendChild(ipucu);

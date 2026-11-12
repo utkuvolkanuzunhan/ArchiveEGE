@@ -20,6 +20,8 @@
   function logn(EF, T){ return Math.log(NC) / Math.LN10 - (EG - EF) / (KB * T * Math.LN10); }
   function logp(EF, T){ return Math.log(NV) / Math.LN10 - EF / (KB * T * Math.LN10); }
   function ussu(x){ return '10^' + (Math.round(x * 10) / 10).toFixed(1).replace('-', '−'); }
+  /* n/p: 1 cm⁻³'ten az taşıyıcı fiziksel olarak ≈ 0; üssü parantezde göster (öğrenciyi yanıltmasın) */
+  function yogun(x){ return x < 0 ? '≈ 0 (' + ussu(x) + ')' : '= ' + ussu(x); }
   function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
 
   var impl = {
@@ -30,7 +32,7 @@
       var T = clamp(+pick('T', 300), TMIN, TMAX);
       var EF = clamp(+pick('EF', EG / 2), 0, EG);
       var Ef = clamp(+pick('E', 0), 0, EMAXF);
-      var T0goruldu = false, bitti = false, destroyed = false, raf = 0, ro = null, onWin = null, tw = 0, lastT = 0;
+      var T0goruldu = false, Egoruldu = false, bitti = false, destroyed = false, raf = 0, ro = null, onWin = null, tw = 0, lastT = 0;
       var parts = [], i;
       for (i = 0; i < NP; i++) parts.push({ x: Math.random(), y: Math.random(), u: Math.random() });
 
@@ -78,16 +80,18 @@
         sE.t.textContent = 'E = ' + Math.round(Ef) + ' V/cm';
         if (!tw) { sT.s.value = String(T); sF.s.value = String(EF); sE.s.value = String(Ef); }
         var ln = logn(EF, T), lp = logp(EF, T), vd = MUN * Ef;
-        info.textContent = 'f(E_F) = ½ · n = ' + ussu(ln) + ' · p = ' + ussu(lp) + ' cm⁻³ · np = nᵢ² = ' + ussu(ln + lp)
+        info.textContent = 'f(E_F) = ½ · n ' + yogun(ln) + ' · p ' + yogun(lp) + ' cm⁻³ · np = nᵢ² ' + yogun(ln + lp)
           + ' · drift v_d = μ E = ' + (vd >= 1e5 ? (vd / 1e5).toFixed(1).replace('.', ',') + '×10⁵' : Math.round(vd)) + ' cm/s';
         cv.setAttribute('aria-label', 'Fermi-Dirac f(E) (Fermi-Dirac dağılımı) T=' + Math.round(T) + ' K, E_F=' + EF.toFixed(2) + ' eV, E=' + Math.round(Ef) + ' V/cm');
         if (T <= 60) T0goruldu = true;
+        if (Ef > 0) Egoruldu = true;
         ciz();
         kontrolBasari();
       }
       function kontrolBasari(){
         if (bitti || !params.basari) return;
         if (params.basari.T0 && !T0goruldu) return;
+        if (params.basari.E && !Egoruldu) return;
         bitti = true;
         try { if (api.done) api.done({ basari: true, olcum: { T: T, EF: EF, E: Ef } }); } catch (e) {}
       }

@@ -1,4 +1,4 @@
-/* 96-final.js (A7) Final "Sınav Günü": 10 tek soruluk kapı, sonda Sınav Raporu.
+/* 96-final.js (A7) Final "Sınav Günü": 11 tek soruluk kapı (s01-s10), sonda Sınav Raporu.
  * Ekler: Q.final {start, acik, hazirla, rapor, son}. Bağımlı (çalışma anında): Q.data.stations.s01..s09, Q.data.sinav,
  * Q.runner, Q.obs, Q.ui, Q.claude, Q.settings. Sınav dili İngilizce (DIL-1); arayüz Türkçe.
  * Kalıcı ilerlemeye DOKUNMAZ: 'final' istasyonu yalnızca çalışma anında Q.data.stations içinde bulunur, bitince silinir;
@@ -46,6 +46,14 @@
     var l = ((Q.data.sinav && Q.data.sinav.mcq) || []).filter(function(m){ return m.station === stId; });
     return l.length ? l[n % l.length] : null;
   }
+  /* s10 patron fazlarında pdfSoru yok: klasik (kavramsal) İngilizce sorular, faz sırasıyla; yalnızca ilki (toplam 11 kapı) */
+  var S10_EK = [
+    { soru: 'State the Fermi-Dirac distribution f(E). What is f at E = E_F, and how does the curve change as the temperature falls toward 0 K?',
+      anahtarFikirler: ['f(E) = 1/(1+exp((E−E_F)/kT)) is the occupation probability of a state.', 'At E = E_F, f = 1/2 at any temperature.', 'At T = 0 K, f is a step function: filled below E_F, empty above.', 'As T rises the transition region around E_F widens (about kT).'],
+      yanlisKavramlar: ['f(E_F) equals 1 at every temperature', 'Raising the temperature makes the curve steeper'],
+      yanlisKavramIds: ['fermi_hep_dolu', 'fermi_dagilim'],
+      idealCevap: 'The Fermi-Dirac distribution f(E) = 1/(1+exp((E−E_F)/kT)) gives the probability that a state at energy E is occupied. At E = E_F it equals 1/2 for any T. At T = 0 K it is a step function (1 below E_F, 0 above); as T increases the transition region of width about kT broadens and some electrons occupy states above E_F.' }
+  ];
   function hazirla(){
     var engeller = [], n = 0, ilk = null;
     stIds().forEach(function(id){
@@ -53,8 +61,12 @@
       ilk = ilk || st;
       (st.engeller || []).forEach(function(e){
         if (e.tip !== 'patron') return;
+        var ek = 0;
         (e.fazlar || []).forEach(function(f){
-          if (f.tip !== 'acik' || !f.pdfSoru) return;
+          if (f.tip !== 'acik') return;
+          var x = f.pdfSoru ? null : (id === 's10' ? S10_EK[ek++] : null);
+          if (!f.pdfSoru && !x) return;
+          if (x) f = { kavram: f.kavram, pdfSoru: x.soru, anahtarFikirler: x.anahtarFikirler, yanlisKavramlar: x.yanlisKavramlar, yanlisKavramIds: x.yanlisKavramIds, idealCevap: x.idealCevap };
           n++;
           var soru = f.pdfSoru;
           if (NOTLAR[id]) soru += ' (In this final, explain the reasoning and method step by step; the final number is not required.)';
@@ -72,7 +84,7 @@
     if (!engeller.length) return null;
     engeller.forEach(function(e){ e.toplam = engeller.length; e.giris = 'Soru ' + e.no + '/' + engeller.length + '. Süre yok, sakin ol.'; });
     return {
-      id: 'final', sira: 0, ad: 'Sınav Günü', konu: 'Final: 10 soru, süre baskısı yok.', renk: (ilk && ilk.renk) || '#ffd166',
+      id: 'final', sira: 0, ad: 'Sınav Günü', konu: 'Final: ' + engeller.length + ' soru, süre baskısı yok.', renk: (ilk && ilk.renk) || '#ffd166',
       sureHedefDk: 30, patronId: engeller[0].canavar, temelTur: null, tekrarHavuzu: [], kavramlar: [], engeller: engeller
     };
   }

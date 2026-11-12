@@ -40,7 +40,7 @@ async function ac(mod){
 
 async function kos(mod){
   var o = await ac(mod), page = o.page, sorular = 0;
-  for (var guard = 0; guard < 600 && sorular < 10; guard++) {
+  for (var guard = 0; guard < 600 && sorular < 11; guard++) {
     await bekle(250);
     var ta = page.locator('textarea').first();
     if (!(await ta.count()) || !(await ta.isVisible())) continue;
@@ -62,18 +62,18 @@ async function kos(mod){
     }
     await page.locator('.fn-area button', { hasText: 'Devam' }).first().click({ timeout: 8000 });
   }
-  ok(sorular === 10, mod + ': 10 soru soruldu (' + sorular + ')');
-  await page.locator('.fn-rapor').waitFor({ timeout: 20000 });
+  ok(sorular === 11, mod + ': 11 soru soruldu (' + sorular + ')');
+  try { await page.locator('.fn-rapor').waitFor({ timeout: 20000 }); } catch (e) { await page.screenshot({ path: '/tmp/claude-0/-home-user-ArchiveEGE/b16f30a3-8095-5197-ba7e-cfcb84bd94e4/scratchpad/f.png' }); throw e; }
   await page.screenshot({ path: path.join(EKRAN, 'final-rapor-' + mod + '.png') });
   var rap = await page.evaluate(function(){
     var s = Q.final.son();
     return { n: s.sorular.length, ort: s.sorular.map(function(r){ return r.dogruluk; }), modlar: s.sorular.map(function(r){ return r.mod; }),
       cubuk: document.querySelectorAll('.fn-cubuk').length, istFinal: !!Q.data.stations.final, ilFinal: !!Q.state.ilerleme.final };
   });
-  ok(rap.n === 10 && rap.cubuk === 10, mod + ': rapor 10 çubuk');
+  ok(rap.n === 11 && rap.cubuk === 11, mod + ': rapor 11 çubuk');
   ok(!rap.istFinal && !rap.ilFinal, mod + ': final istasyonu/ilerleme kaydı temizlendi');
   if (mod === 'claude') ok(rap.ort.every(function(x){ return x === 95; }), mod + ': hep %95');
-  if (mod === 'karma') ok(rap.ort.filter(function(x){ return x === 95; }).length === 5 && rap.ort.filter(function(x){ return x === 20; }).length === 5, mod + ': 5 iyi 5 kötü');
+  if (mod === 'karma') ok(rap.ort.filter(function(x){ return x === 95; }).length === 5 && rap.ort.filter(function(x){ return x === 20; }).length === 6, mod + ': 5 iyi 6 kötü');
   if (mod === 'mcq') ok(rap.modlar.every(function(x){ return x === 'mcq'; }) && rap.ort.filter(function(x){ return x === 100; }).length === 5, mod + ': yedek MCQ, 5 doğru');
   var tt = page.locator('button', { hasText: 'Temel tura git' }).first();
   if (await tt.count()) {

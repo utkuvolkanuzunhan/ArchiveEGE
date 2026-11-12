@@ -14,8 +14,7 @@
       sec('f(E_F) = 1/2', true, 'Doğru. E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.'),
       sec('f(E_F) = 1', false, 'Yanlış. Olasılık 1 olsaydı seviye her zaman dolu olurdu.'),
       sec('f(E_F) = 0', false, 'Yanlış. Seviye E_F üstünde bile kısmen doludur.')
-    ],
-    kusurSkin: 'bant_bosluk'
+    ]
   };
 
   var o04 = {
@@ -92,11 +91,11 @@
             "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); electron (elektron) ve hole (delik) katkıları toplanır.",
             "Sık karışan nokta: drift, alan etkisiyle olur; diffusion (difüzyon) ise konsantrasyon farkıyla olur." ] }
         ],
-        gorev: 'T\'yi 50 K\'e indir; Fermi eğrisinin basamağa dönüşünü gör.',
+        gorev: 'T\'yi 50 K\'e indir (Fermi eğrisi basamağa döner), sonra alan E\'yi artır (drift hızı v_d = μE).',
         sim: {
           modul: 'fermi',
           params: { T: 300, E: 0 },
-          basari: { T0: true }
+          basari: { T0: true, E: true }
         },
         ogrenilen: 'T düşünce f(E) basamağa yaklaşır; E_F\'de f = 1/2 kalır. Alan E, carrier (taşıyıcı) hızını v_d = μE yapar.'
       },
