@@ -28,3 +28,6 @@ Tüm doğru şıklar tek ve doğru. Tarihçe: Planck 1900 Berlin, Hertz 1887, Ei
 
 ## Oynanis (1366x768, hikayeAtla kapali)
 hikaye, 3 onBilgi karti, karacisim sim (5000 K), o03 ve o04 gercek oyuncu gibi oynandi: tasma/takilma/konsol hatasi yok. Playwright surucusu yavas oldugu icin zaman asimina ugradi; o05..patron ve sandik bu turda yeniden oynanmadi (hesap engeli s03 hesap-engel.test.js ile gecti). Onceki BUG-s03-*.md turlari o05-patron akisini kapsiyor.
+
+## Açık maddelerin çözümü (ACIK-ICERIK-A turu)
+- Wien kayması, stopping potential ve anlık emisyon kavram kapısına 4. sayfa olarak eklendi. Doğru şık sırası: işlem gerekmedi.

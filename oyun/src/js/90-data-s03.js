@@ -101,7 +101,12 @@
             "E = hf; h = 6,626×10⁻³⁴ J·s, f hertz (Hz), E joule (J) veya eV. Threshold frequency (eşik frekansı): f₀ = φ/h.",
             "Maximum kinetic energy (en büyük kinetik enerji): K = hf − φ. Eşik üstünde frequency arttıkça K büyür; sayıyı intensity belirler.",
             "Karışan: wavelength (dalga boyu) kısaldıkça frequency (frekans) ve photon energy (foton enerjisi) artar; λf = c.",
-            "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] }
+            "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] },
+          { baslik: "Wien kayması, durdurma voltajı", madde: [
+            "Blackbody (kara cisim) ısınınca ışık yayar. Sıcaklık T arttıkça eğrinin tepesi kısa wavelength (dalga boyu) tarafına kayar: λ_max·T = sabit (Wien yasası).",
+            "Stopping potential (durdurma potansiyeli) V₀: en hızlı electron (elektron) bile durur; eV₀ = K_max. Örnek: K_max = 0,8 eV ise V₀ = 0,8 V.",
+            "Photoelectric effect (fotoelektrik olay) anlıktır: eşik üstünde ışık gelir gelmez electron (elektron) çıkar, gözle görülür gecikme olmaz.",
+            "Klasik dalga teorisi gecikme ve şiddete bağlı K öngörürdü; deney bunu çürüttü." ] }
         ],
         gorev: 'Temperature (sıcaklık) değerini 5000 K yap, classical curve (klasik eğri) açık kalsın.',
         tanitim: "Yatay eksen wavelength (dalga boyu), dikey eksen yayılan intensity (şiddet). Temperature (sıcaklık) çubuğu Planck eğrisini değiştirir; Classical curve (klasik eğri) düğmesi klasik tahmini açıp kapatır. Kısa wavelength (dalga boyu) tarafına bak.",

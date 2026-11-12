@@ -83,11 +83,11 @@
         kisa: 'Tünel istasyonu',
         rol: 'Elektron dalgasının ince bir bariyerin içine sızıp karşıya geçebildiğini gösterir.',
         neden: 'Elektron ince bir duvarı aşar gibi geçebilir; transistörde ve flash bellekte bu hem işe yarar hem sızıntı yapar.',
-        bagliKavramlar: ['Tunneling (tünelleme)', 'Barrier (bariyer)', 'Reflection (yansıma)', 'Transmission (geçirme)'],
+        bagliKavramlar: ['Tunneling (tünelleme)', 'Barrier (bariyer)', 'Reflection (yansıma)', 'Transmission (geçiş)'],
         miniSoru: {
           soru: 'Barrier (bariyer) kalınlaştıkça tunneling (tünelleme) olasılığına ne olur?',
           secenekler: [
-            s('Üstel olarak azalır, çünkü ψ bariyerin içinde sönümlenir', true, 'Transmission (geçirme) kalınlıkla üstel düşer.'),
+            s('Üstel olarak azalır, çünkü ψ bariyerin içinde sönümlenir', true, 'Transmission (geçiş) kalınlıkla üstel düşer.'),
             s('Değişmez', false, 'Kalınlık sönümlenme mesafesini doğrudan etkiler.'),
             s('Artar, çünkü daha çok yüzey vardır', false, 'Kalınlık arttıkça geçiş zorlaşır.')
           ]

@@ -22,3 +22,6 @@ Playwright 1366x768, hikayeAtla KAPALI: hikaye, bilgi kartları, kavram sim, o03
 | Review kartında ("Temelden bir daha") "KISA DEVRE!" rozeti kart metninin ortasını örtüyor (voltaj 0 sonrası). | `60-battle.js` / review katmanı | Rozeti kartın dışına taşı ya da gösterim bitince kaldır | orta |
 | Kavram sim'i (L: 2 -> 1) ile o05 tahmin sorusu (L yarıya inerse E₁?) aynı deney; cevap kavram kapısında görüldü. Kart "L yarıya inerse etkisi büyüktür" ifadesi belirsiz. | `90-data-s05.js` o02/o05 | Tahmini farklı değişkene çevir (L = 2 -> 2/3 gibi ya da n = 1 -> 2) | orta (pedagojik, karar gerekli) |
 | Hesap görevi formül satırında üç boşluklu ayraç tek boşluğa çöküyor ("I: V = 0 II: V = V0 ... III: V = 0") | `87-data-hesap.js` q5-bolgeler adım 1 | Ayracı "; " yap ya da arayüzde pre-wrap kullan | düşük |
+
+## Açık maddelerin çözümü (ACIK-ICERIK-A turu)
+- Tahmin sorusu n = 1 -> 3 (E 9 katı) yapıldı; kart belirsizliği netleştirildi. Sim dock taşması, KISA DEVRE rozeti, q5-bolgeler ayraç: kod/UI işi, açık.

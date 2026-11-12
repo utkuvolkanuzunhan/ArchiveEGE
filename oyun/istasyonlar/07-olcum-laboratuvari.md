@@ -42,13 +42,13 @@
   3. "c₁ + c₂" · yanlış · neden: "Hayır. Katsayılar toplanmaz; her sonucun olasılığı kendi karesidir."
 
 ### o05 · tahmin · "Tahmin çukuru" · kavram `olcum_cokme` · agirlik 1.5
-- `soru`: "Çöktükten sonra aynı büyüklüğü hemen tekrar ölçersen ne olur?"
+- `soru`: "|c₁|² = 0,3 olan aynı ψ durumu 100 kez taze hazırlanıp her seferinde bir kez ölçülürse sonuçlar nasıl dağılır?"
 - seçenekler:
-  1. "Aynı sonuç çıkar" · **DOĞRU** · neden: "Doğru. ψ artık özdurumda, sonuç değişmez."
-  2. "Yeni rastgele sonuç" · yanlış · neden: "Yanlış. Çöken durum özdurumdur, sonuç aynı kalır."
-  3. "İki sonucun ortalaması" · yanlış · neden: "Yanlış. Tek ölçüm bir özdeğer verir."
-- `sim`: modul `olcum`, onceki `{c1sq:0.3}`, sonraki `{c1sq:0.3, olcTekrar:true}`
-- `acik`: "Çöktükten sonra ψ özdurumdur; tekrar ölçüm aynı sonucu verir."
+  1. "Yaklaşık 30 kez φ₁, 70 kez φ₂; her tek sonuç rastgele" · **DOĞRU**
+  2. "Her seferinde ortalama değer çıkar" · yanlış
+  3. "Hepsi φ₁ çıkar" · yanlış
+- `sim`: modul `olcum`, onceki `{c1sq:0.3}`, sonraki `{c1sq:0.3}` (kavram sim'indeki ölç-tekrar ölç deneyinden farklı: tahmin 100 taze ölçüm dağılımı)
+- `acik`: "Taze hazırlanan her ψ için sonuç şansla seçilir, ağırlığı |c|² belirler."
 
 ### o06 · tuzak · "Yanılgı tuzağı" · kavram `schrodinger_cokme`
 - `iddia`: "Schrödinger denklemi ψ'yi ölçüm anında çökertir."

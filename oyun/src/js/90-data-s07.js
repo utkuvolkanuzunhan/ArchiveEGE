@@ -33,19 +33,19 @@
 
   var o05 = {
     id: 's07-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'olcum_cokme', agirlik: 1.5,
-    soru: 'Collapse (çökme) sonrası aynı büyüklüğü hemen tekrar measure (ölçersen) ne olur?',
+    soru: '|c₁|² = 0,3 olan aynı ψ durumu 100 kez taze hazırlanıp her seferinde bir kez measure (ölçülürse) sonuçlar nasıl dağılır?',
     secenekler: [
-      sec('Aynı result (sonuç) çıkar', true, 'Doğru. ψ artık eigenstate (özdurum) içinde, result (sonuç) değişmez.'),
-      sec('Yeni random (rastgele) result (sonuç)', false, 'Yanlış. Collapse (çökme) sonrası state (durum) eigenstate (özdurum) olur, result (sonuç) aynı kalır.'),
-      sec('İki result (sonuç) average (ortalama) değeri', false, 'Yanlış. Tek measurement (ölçüm) bir eigenvalue (özdeğer) verir.')
+      sec('Yaklaşık 30 kez φ₁, 70 kez φ₂', true, 'Doğru. Her tek measurement (ölçüm) bir eigenvalue (özdeğer) verir; sıklıklar |c|² değerlerine yaklaşır (0,3 ve 0,7).'),
+      sec('Hep average (ortalama) değer çıkar', false, 'Yanlış. Tek measurement (ölçüm) average (ortalama) değeri vermez; yalnız bir eigenvalue (özdeğer) görülür.'),
+      sec('Hepsi aynı eigenstate (özdurum) çıkar', false, 'Yanlış. Seçim rastgeledir; φ₂ olasılığı 0,7 olduğu için yaklaşık 70 kez çıkar.')
     ],
     sim: {
       modul: 'olcum',
       onceki: { c1sq: 0.3 },
-      sonraki: { c1sq: 0.3, olcTekrar: true }
+      sonraki: { c1sq: 0.3 }
     },
-    ipucu: 'Çökmeden sonra ψ hangi durumdadır? "Measurement (ölçüm), collapse (çökme)" kartına bak.',
-    acik: 'Collapse (çökme) sonrası ψ eigenstate (özdurum) olur; tekrar measurement (ölçüm) aynı result (sonuç) verir.'
+    ipucu: 'Olasılık c₁ mi, c₁² mi? "Nasıl yapılır: |c|² ile olasılık" kartına bak.',
+    acik: 'Taze hazırlanan her ψ için sonuç şansla seçilir ve ağırlığı |c|² belirler: 100 ölçümde yaklaşık 30 kez φ₁, 70 kez φ₂.'
   };
 
   Q.data.stations.s07 = {
@@ -160,7 +160,7 @@
             secenekler: [
               sec('Eigenstate (özdurum) superposition (süperpozisyon) hâli', true, 'Doğru. ψ = Σ cₙφₙ.'),
               sec('Hidden (gizli) ama belirli bir value (değer)', false, 'Hayır. Standart yorumda measurement (ölçüm) öncesi belirli value (değer) yoktur.'),
-              sec('Zero energy (sıfır enerji)', false, 'Hayır. Energy (enerji) sıfır olmak zorunda değil.')
+              sec('Energy (enerji) her zaman tek ve kesin bir value (değer) taşır', false, 'Hayır. Superposition (süperpozisyon) durumunda energy (enerji) ölçüm öncesi kesin değildir; sonuç olasılıkla belirlenir.')
             ],
             alt: {
               soru: 'Hangi büyüklük bir measurement (ölçüm) result (sonuç) olabilir?',

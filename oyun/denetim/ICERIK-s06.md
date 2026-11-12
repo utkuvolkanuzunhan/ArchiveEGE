@@ -23,3 +23,6 @@ Hikaye + 3 onBilgi sayfası, kavram (sim sarmalandı), o03/o04 düşman, o05 tah
 | Fabrika metni "Transmission (geçirme)" kullanıyor, istasyon verisi "transmission (geçiş)" | 88-data-fabrika.js s06.bagliKavramlar | "Transmission (geçiş)" yap (başka istasyonun dosyası/ortak veri olduğu için dokunulmadı) | düşük |
 | Hesap görevi tunel-1nm hiçbir engelde kullanılmıyor (yalnız alıştırma havuzunda) | 87-data-hesap.js | bilgi amaçlı, sorun değil | düşük |
 | Tuzak iddiasında "quantum fiziğinde de" parçası da tartışılabilir | o06 | parça 2 seçildi; öğretmen onayı iyi olur | düşük |
+
+## Açık maddelerin çözümü (ACIK-ICERIK-A turu)
+- Fabrika "Transmission (geçirme)" -> "(geçiş)" yapıldı. tunel-1nm: bilgi amaçlı. Tuzak parçası DEĞİŞTİRİLMEDİ; kullanıcı teyit etsin.

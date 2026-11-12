@@ -34,19 +34,19 @@
 
   var o05 = {
     id: 's05-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'kuantalasma_sinir', agirlik: 1.5,
-    soru: 'Potential well (potansiyel kuyusu) genişliği L yarıya inerse E₁ ne olur?',
+    soru: 'L sabitken electron (elektron) n = 1 seviyesinden n = 3 seviyesine çıkarsa energy (enerji) ne olur?',
     secenekler: [
-      sec('4 katına çıkar', true, 'Doğru. E ∝ 1/L².'),
-      sec('2 katına çıkar', false, 'Yanlış. Energy (enerji) L²\'ye ters orantılıdır: 4 kat.'),
-      sec('Değişmez', false, 'Yanlış. Dar well (kuyu) içinde wavelength (dalga boyu) kısalır, energy (enerji) artar.')
+      sec('E₃ = 9·E₁ olur (9 katına çıkar)', true, 'Doğru. E ∝ n², dolayısıyla n = 3 için 3² = 9.'),
+      sec('E₃ = 3·E₁ olur (3 katına çıkar)', false, 'Yanlış. Energy (enerji) n ile değil n²\'ye orantılıdır: 9 kat.'),
+      sec('Değişmez, çünkü L aynı', false, 'Yanlış. Üst seviyede wavelength (dalga boyu) kısalır ve energy (enerji) artar.')
     ],
     sim: {
       modul: 'kuyu',
       onceki: { L: 2, n: 1 },
-      sonraki: { L: 1, n: 1 }
+      sonraki: { L: 2, n: 3 }
     },
-    ipucu: 'E_yeni / E_eski = (L_eski / L_yeni)²: "Nasıl yapılır: L değişince E" kartına bak.',
-    acik: 'E ∝ 1/L²: L yarıya inince energy (enerji) dört katına çıkar.'
+    ipucu: 'E ∝ n²/L²: L sabit kalınca yalnız n²\'nin oranına bak ("Infinite well, quantization" kartı).',
+    acik: 'E = n²π²ħ²/(2mL²): L aynıyken E ∝ n²; n 1\'den 3\'e çıkınca energy (enerji) 9 katına çıkar.'
   };
 
   Q.data.stations.s05 = {
@@ -92,7 +92,7 @@
           { baslik: "Infinite well (sonsuz kuyu), quantization", madde: [
             "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
             "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
-            "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L yarıya inerse etkisi büyüktür.",
+            "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L küçülürse ya da n büyürse energy (enerji) artar.",
             "n = 0 dalga yok demektir; en düşük E₁ > 0 olur: zero-point energy (sıfır noktası enerjisi), sınır koşulundan gelir." ] },
           { baslik: "Nasıl yapılır: L değişince E", madde: [
             "Adım 1: E ∝ 1/L² olduğundan E_yeni / E_eski = (L_eski / L_yeni)² yaz. n aynı kalır.",

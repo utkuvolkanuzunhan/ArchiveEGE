@@ -42,13 +42,13 @@
   3. "Enerji ver, konumu al" · yanlış · neden: "Hayır. Enerjiler denklemin çıktısıdır."
 
 ### o05 · tahmin · "Tahmin çukuru" · kavram `kuantalasma_sinir` · agirlik 1.5
-- `soru`: "Kuyu genişliği L yarıya inerse E₁ ne olur?"
+- `soru`: "L sabitken elektron n = 1 seviyesinden n = 3 seviyesine çıkarsa enerji ne olur?"
 - seçenekler:
-  1. "4 katına çıkar" · **DOĞRU** · neden: "Doğru. E ∝ 1/L²."
-  2. "2 katına çıkar" · yanlış · neden: "Yanlış. Enerji L²'ye ters orantılıdır: 4 kat."
-  3. "Değişmez" · yanlış · neden: "Yanlış. Dar kuyuda dalga boyu kısalır, enerji artar."
-- `sim`: modul `kuyu`, onceki `{L:2, n:1}`, sonraki `{L:1, n:1}`
-- `acik`: "E ∝ 1/L²: L yarıya inince enerji dört katına çıkar."
+  1. "E₃ = 9·E₁ olur (9 katına çıkar)" · **DOĞRU** · E ∝ n²
+  2. "E₃ = 3·E₁ olur" · yanlış
+  3. "Değişmez, çünkü L aynı" · yanlış
+- `sim`: modul `kuyu`, onceki `{L:2, n:1}`, sonraki `{L:2, n:3}` (kavram sim'i L değişimiydi; tahmin n değişimi)
+- `acik`: "L aynıyken E ∝ n²; n 1'den 3'e çıkınca enerji 9 katına çıkar."
 
 ### o06 · tuzak · "Yanılgı tuzağı" · kavram `sifir_noktasi_sicaklik`
 - `iddia`: "Sonsuz kuyudaki parçacığın enerjisi, sıcaklık sıfır olmadığı için sıfırdan büyüktür."

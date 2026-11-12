@@ -18,3 +18,6 @@ Playwright ile tam oyun testi bu ortamda yapılmadı (yalnız statik inceleme + 
 | Kavram sim'i (c1sq 0,3, ölç-tekrar ölç) ile o05 tahmin sorusu aynı deney; cevap kapıda görülüyor. | `90-data-s07.js` o02/o05 | Tahmini farklı soruya çevir (ör. ikinci ölçümde öteki sonuç olasılığı) | orta (pedagojik karar) |
 | Hikaye "ölçüm üçüncü ve dördüncüde" postülat numarası kursa bağlı (k5 listesinde 3 ve 4 ölçüm; tutarlı) ama başka kaynaklarda farklı numaralanabilir. | `90-data-s07.js` o01 | Gerekirse "ölçüm postülatları" de | düşük |
 | Faz 1 yanlış şıkkı "Zero energy" zayıf çeldirici. | `90-data-s07.js` o08 faz 1 | "Enerji değeri her zaman kesin" gibi gerçek yanılgı | düşük |
+
+## Açık maddelerin çözümü (ACIK-ICERIK-A turu)
+- Tahmin sorusu 100 taze ölçüm dağılımı yapıldı; "Zero energy" çeldiricisi değiştirildi. Komütatör sorusu, stationary state anlatımı ve postülat numarası DEĞİŞTİRİLMEDİ; kullanıcı teyit etsin.
