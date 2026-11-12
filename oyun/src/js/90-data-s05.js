@@ -16,6 +16,7 @@
       sec('Parçacığın gerçek position (konum) değerini', false, 'Hayır. ψ position (konum) vermez, probability distribution (olasılık dağılımı) verir.'),
       sec('Parçacığın energy (enerji) değerini', false, 'Hayır. Energy (enerji) denklemin eigenvalue (özdeğer) değeridir.')
     ],
+    ipucu: '|ψ|² neyi verir? Önceki "Wave function" kartına bak.',
     kusurSkin: 'vakans'
   };
 
@@ -27,6 +28,7 @@
       sec('ψ ver, potential (potansiyel) al', false, 'Hayır. Potential (potansiyel) girdidir, ψ çıktıdır.'),
       sec('Energy (enerji) ver, position (konum) al', false, 'Hayır. Energies (enerjiler) denklemin çıktısıdır.')
     ],
+    ipucu: 'Girdi ile çıktıyı ayır: "Schrödinger equation" kartına bak.',
     kusurSkin: 'tane_siniri'
   };
 
@@ -43,6 +45,7 @@
       onceki: { L: 2, n: 1 },
       sonraki: { L: 1, n: 1 }
     },
+    ipucu: 'E_yeni / E_eski = (L_eski / L_yeni)²: "Nasıl yapılır: L değişince E" kartına bak.',
     acik: 'E ∝ 1/L²: L yarıya inince energy (enerji) dört katına çıkar.'
   };
 
@@ -90,9 +93,20 @@
             "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
             "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
             "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L yarıya inerse etkisi büyüktür.",
-            "n = 0 dalga yok demektir; en düşük E₁ > 0 olur: zero-point energy (sıfır noktası enerjisi), sınır koşulundan gelir." ] }
+            "n = 0 dalga yok demektir; en düşük E₁ > 0 olur: zero-point energy (sıfır noktası enerjisi), sınır koşulundan gelir." ] },
+          { baslik: "Nasıl yapılır: L değişince E", madde: [
+            "Adım 1: E ∝ 1/L² olduğundan E_yeni / E_eski = (L_eski / L_yeni)² yaz. n aynı kalır.",
+            "Adım 2: L oranını bul, sonra karesini al. L küçülürse energy (enerji) büyür, L büyürse küçülür.",
+            "Örnek: L 6 nm'den 2 nm'ye iner. Oran 6/2 = 3, E_yeni = 3² = 9 katına çıkar.",
+            "Tersi örnek: L 2 nm'den 6 nm'ye çıkarsa oran 1/3 olur ve E 9 kat azalır." ] },
+          { baslik: "Nasıl yapılır: ψ ve izinli E", madde: [
+            "Adımlar: (1) duvarlarda ψ = 0 yaz; (2) sığan dalgayı λ = 2L/n ile bul; (3) E = 0,376·n²/L² eV formülüne n ve L'yi koy (electron, L nm).",
+            "Örnek: L = 0,5 nm, n = 2. ψ = √(2/0,5)·sin(2πx/0,5) = 2·sin(4πx) ve E = 0,376·4/0,25 ≈ 6,02 eV.",
+            "Zincir sırası nedensellik sırasıdır: önce kural, sonra o kurala uyan dalgalar, sonra bu dalgaların λ'sı, en son E.",
+            "Temperature (sıcaklık) hiçbir adımda yer almaz; bu yüzden absolute zero (mutlak sıfır) noktasında bile E₁ > 0 kalır." ] }
         ],
-        gorev: 'Well (kuyu) genişliğini 2\'den 1 nm\'ye indir.',
+        tanitim: "L kaydırıcısı kuyunun genişliğini nm olarak değiştirir. Level (seviye) n düğmeleri 1-4 arası dalga seçer; sağ üstte E değeri görünür. n = 0 dene düğmesi düz çizgi gösterir. Wire (Tel) ⇄ Well (Kuyu) yalnızca görünümü değiştirir.",
+        gorev: 'L kaydırıcısıyla well (kuyu) genişliğini 2\'den 1 nm\'ye indir.',
         sim: {
           modul: 'kuyu',
           params: { L: 2, n: 1 },
@@ -108,6 +122,7 @@
         iddia: 'Infinite well (sonsuz kuyu) içindeki particle (parçacık) energy (enerji) değeri, temperature (sıcaklık) sıfır olmadığı için sıfırdan büyüktür.',
         parcalar: ['Infinite well (sonsuz kuyu) içindeki particle (parçacık) energy (enerji) değeri,', 'temperature (sıcaklık) sıfır olmadığı için', 'sıfırdan büyüktür.'],
         yanlisParca: 1,
+        ipucu: 'Hangi adımda temperature (sıcaklık) var? "Nasıl yapılır: ψ ve izinli E" kartına bak.',
         duzeltme: 'Sebep temperature (sıcaklık) değil: boundary condition (sınır koşulu) dalganın sığmasını gerektirir. Absolute zero (mutlak sıfır) noktasında da E₁ > 0 (zero-point energy, sıfır noktası enerjisi).'
       },
       {
@@ -119,6 +134,7 @@
           'Wavelength (dalga boyu) λ = 2L/n ile sınırlanır',
           'Energy (enerji) E ∝ n²/L² belirli değerler alır'
         ],
+        ipucu: 'Her adım bir öncekinin sonucudur: önce kuralı, sonra sonucunu bul. "Nasıl yapılır: ψ ve izinli E" kartına bak.',
         sonuc: 'Boundary condition (sınır koşulu), sığan dalgalar, kısıtlı λ, quantized energy (kuantalı enerji).'
       },
       {

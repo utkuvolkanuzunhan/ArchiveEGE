@@ -66,7 +66,7 @@ function engel(d, st, e, i) {
   if (sim && sim.modul && MODULLER.indexOf(sim.modul) < 0) hata(d, a + '.sim.modul', 'bilinmeyen modül "' + sim.modul + '"');
   if (e.onBilgi !== undefined) {
     if (['hikaye', 'kavram'].indexOf(e.tip) < 0) hata(d, a + '.onBilgi', 'yalnızca hikaye/kavram engelinde olur');
-    else if (!Array.isArray(e.onBilgi) || e.onBilgi.length < 1 || e.onBilgi.length > 3) hata(d, a + '.onBilgi', '1-3 sayfa olmalı');
+    else if (!Array.isArray(e.onBilgi) || e.onBilgi.length < 1 || e.onBilgi.length > 6) hata(d, a + '.onBilgi', '1-6 sayfa olmalı');
     else e.onBilgi.forEach(function (p, j) {
       var b = a + '.onBilgi[' + j + ']';
       sinir(d, b + '.baslik', p && p.baslik, 6);

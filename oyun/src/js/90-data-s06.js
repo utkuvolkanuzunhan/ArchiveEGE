@@ -15,6 +15,7 @@
       sec('Zero (sıfır), classical physics (klasik fizik) gibi', false, 'Hayır. Classical (klasik) modelde sıfır, wave mechanics (dalga mekaniği) içinde değil.'),
       sec('One hundred percent (yüzde yüz)', false, 'Hayır. E > V₀ ise bir kısmı transmitted (geçer).')
     ],
+    ipucu: 'k₁ ≠ k₂ ise r ≠ 0. "Nasıl yapılır: step\'te R ve T" kartına bak.',
     kusurSkin: 'vakans'
   };
 
@@ -26,6 +27,7 @@
       sec('Suddenly (aniden) sıfır olur', false, 'Hayır. ψ ve derivative (türev) continuous (sürekli) olmalıdır, aniden sıfır olamaz.'),
       sec('Oscillation (salınım) devam eder', false, 'Hayır. Forbidden region (yasak bölge) içinde wave (dalga) oscillate (salınım) yapmaz.')
     ],
+    ipucu: '"Continuity ve forbidden region" kartında ψ\'nin bariyer içindeki davranışına bak.',
     kusurSkin: 'tane_siniri'
   };
 
@@ -42,6 +44,7 @@
       onceki: { mod: 'bariyer', E: 2, V0: 4, a: 0.3 },
       sonraki: { mod: 'bariyer', E: 2, V0: 4, a: 1.5 }
     },
+    ipucu: 'T ∝ e^(−2κa): "Nasıl yapılır: bariyerde T" kartındaki örneğe bak.',
     acik: 'Thickness (kalınlık) 0,3\'ten 1,5 nm\'ye çıkınca transmission (geçiş) olasılığı yaklaşık 35 milyon kat düşüyor.'
   };
 
@@ -99,9 +102,20 @@
             "Barrier (bariyer): V₀ yüksekliğinde, a kalınlığında engel; E < V₀ olsa bile öbür yanda ψ sıfır değildir.",
             "Tunneling (tünelleme): ψ'nin sönümlenip karşı tarafa ulaşması; parçacık engelin üstünden zıplamaz.",
             "T ∝ e^(−2κa), κ=√(2m(V₀−E))/ħ: thickness (kalınlık) a arttıkça T exponential (üstel) azalır.",
-            "Sık karışan nokta: tunneling sırasında parçacık energy (enerji) kaybetmez, yalnızca olasılık küçülür." ] }
+            "Sık karışan nokta: tunneling sırasında parçacık energy (enerji) kaybetmez, yalnızca olasılık küçülür." ] },
+          { baslik: "Nasıl yapılır: step'te R ve T", madde: [
+            "Sıra: her region (bölge) için ψ yaz, x = 0'da süreklilik koy, r ve t'yi çöz, sonra R = r², T = 1 − R al.",
+            "Örnek: k₁ = 2, k₂ = 1 nm⁻¹ ise r = (2−1)/(2+1) = 1/3, R = 1/9, T = 8/9.",
+            "Enerjiyle örnek: E = 2 eV, V₀ = 1 eV. k₂/k₁ = √(1−V₀/E) = 0,707; r ≈ 0,172; R ≈ 0,029.",
+            "E, V₀'a yaklaştıkça k₂ küçülür, k₁'den uzaklaşır ve R artar; E ≫ V₀ iken R küçüktür." ] },
+          { baslik: "Nasıl yapılır: bariyerde T", madde: [
+            "Adımlar: (1) κ = √(2m(V₀−E))/ħ bul; (2) T ∝ e^(−2κa) yaz; (3) farklı a değerlerinde T'yi oranla.",
+            "Örnek: V₀−E = 1 eV ise κ ≈ 5,12 nm⁻¹ (electron, elektron). a = 0,2 nm için e^(−2κa) ≈ 0,13.",
+            "Aynı örnekte a = 0,6 nm için e^(−2κa) ≈ 0,0021. Kalınlık 3 kat olunca T yaklaşık 60 kat düştü.",
+            "Azalma lineer değil üsteldir: a her 0,1 nm arttığında T sabit bir çarpanla (burada yaklaşık 0,36) küçülür." ] }
         ],
-        gorev: 'Energy (enerji) step (basamak) yüksekliğinden büyük kalsın; R\'yi 0,1-0,2 yap.',
+        tanitim: "Sarı çizgi E, mor basamak V₀; kaydırıcılar bunları oynatır. Alttaki yazı R (reflection, yansıma) ve T değerini verir.",
+        gorev: 'E\'yi V₀\'a yaklaştırarak R\'yi 0,1-0,2 yap; E > V₀ kalsın.',
         sim: {
           modul: 'basamak',
           params: { mod: 'basamak', V0: 1.0, E: 3.0 },
@@ -117,6 +131,7 @@
         iddia: 'Energy (enerji) değeri barrier (bariyer) height (yükseklik) değerinden düşük particle (parçacık), quantum (kuantum) fiziğinde de kesinlikle geçemez.',
         parcalar: ['Energy (enerji) değeri barrier (bariyer) height (yükseklik) değerinden düşük particle (parçacık),', 'quantum (kuantum) fiziğinde de', 'kesinlikle geçemez.'],
         yanlisParca: 2,
+        ipucu: 'ψ bariyer içinde hangi davranışı gösterir? "Continuity ve forbidden region" kartına bak.',
         duzeltme: 'Quantum (kuantum) fiziğinde ψ barrier (bariyer) içinde decays (sönümlenir) ama sıfır olmaz; ince barrier (bariyer) içinde tunneling (tünelleme) olasılığı vardır.'
       },
       {
@@ -128,6 +143,7 @@
           'Continuity (süreklilik) coefficients (katsayıları) (r, t) belirler',
           'R=|r|² ve T=1−R (reflection, transmission)'
         ],
+        ipucu: 'Önce bilinmeyenleri tanımla, sonra bağla, sonra çöz, en son olasılığa çevir. "Nasıl yapılır: step\'te R ve T" kartına bak.',
         sonuc: 'Her region (bölge) için ψ, boundary condition (sınır koşulu) olarak süreklilik, coefficients (katsayılar), R ve T.'
       },
       {
