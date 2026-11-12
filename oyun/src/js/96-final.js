@@ -130,7 +130,7 @@
       var q = el('div', 'fn-soru', ob.soru);
       q.style.cssText = 'font-weight:800;font-size:17px;line-height:1.35;margin:0 0 8px';
       a.appendChild(q);
-      if (ob.sekil && Q.gercekSinav && Q.gercekSinav.sekilEl) { var sk = Q.gercekSinav.sekilEl(ob.sekil); if (sk) { sk.style.maxWidth = '420px'; a.appendChild(sk); } }
+      if (ob.sekil && Q.gercekSinav && Q.gercekSinav.sekilEl) { var sk = Q.gercekSinav.sekilEl(ob.sekil); if (sk) { sk.style.maxWidth = '440px'; sk.style.padding = '0 6px'; var sv = sk.querySelector('svg'); if (sv) sv.style.maxHeight = '125px'; a.appendChild(sk); } }
       return a;
     }
     function bekle(area, etiket){
@@ -187,7 +187,7 @@
         area.appendChild(it);
         var tb = el('div', 'fn-tb');
         it.appendChild(tb);
-        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: 5, deger: cevap });
+        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: ob.sekil ? 2 : 5, deger: cevap });
         if (v == null || !String(v).trim() || /^\s*(bilmiyorum|i don'?t know)\s*\.?\s*$/i.test(String(v))) {
           rec.mod = 'bos'; rec.dogruluk = 0; rec.eminlik = 0; rec.eksik = ob.anahtarFikirler.slice();
           area.textContent = '';
