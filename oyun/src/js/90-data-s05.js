@@ -80,12 +80,12 @@
           { baslik: "Wave function (dalga fonksiyonu) ψ", madde: [
             "ψ(x): parçacığı anlatan wave function (dalga fonksiyonu); kendisi doğrudan ölçülemez.",
             "|ψ(x)|² = probability density (olasılık yoğunluğu): parçacığın x civarında bulunma olasılığı.",
-            "ψ konum ya da enerji değeri vermez; yalnızca olasılık dağılımını taşır." ] },
+            "ψ position (konum) ya da energy (enerji) değeri vermez; yalnızca probability distribution (olasılık dağılımı) taşır." ] },
           { baslik: "Schrödinger equation (denklemi)", madde: [
             "Girdi: potential (potansiyel) V(x) ve boundary condition (sınır koşulu). Çıktı: ψ ve izinli E değerleri.",
             "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi).",
             "Time-dependent (zamana bağlı) hâli ψ'yi zamanla düzgün ve deterministic (belirlenimci) evriltir.",
-            "Collapse (çökme) denklemin parçası değildir; ölçüm postülatı ayrıdır ve sonraki istasyonda gelir." ] },
+            "Collapse (çökme) denklemin parçası değildir; measurement postulate (ölçüm postülatı) ayrıdır ve ilerleyen istasyonlarda gelir." ] },
           { baslik: "Infinite well (sonsuz kuyu), quantization", madde: [
             "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
             "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
@@ -131,7 +131,7 @@
             soru: 'Time-dependent Schrödinger equation (zamana bağlı Schrödinger denklemi) ψ\'yi nasıl değiştirir?',
             secenekler: [
               sec('Smooth and deterministic (düzgün ve belirlenimci) biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postulate (postülat) ile gelir.'),
-              sec('Measurement (ölçüm) yapınca collapse (çökme) olur', false, 'Hayır. Collapse (çökme) ayrı bir postulate (postülat), denklemin işi değil.'),
+              sec('Her adımda ψ\'yi collapse (çökme) ile bir değere indirir', false, 'Hayır. Collapse (çökme) ayrı bir measurement postulate (ölçüm postülatı); denklemin evrimi onu içermez.'),
               sec('Randomly (rastgele) değiştirir', false, 'Hayır. Denklem random (rastgele) değil, deterministic (belirlenimci) yapıdadır.')
             ],
             alt: {
@@ -184,7 +184,7 @@
               'Schrödinger equation (Schrödinger denklemi) çöker',
               'Equation (denklem) yalnızca bir probability (olasılık) denklemidir'
             ],
-            yanlisKavramIds: ['schrodinger_cokme', 'schrodinger_cokme'],
+            yanlisKavramIds: ['schrodinger_cokme', 'psi_olasilik'],
             idealCevap: 'Schrödinger equation (Schrödinger denklemi) çökmez; ψ\'yi zamanla düzgün ve deterministic (belirlenimci) biçimde evriltir. Collapse (çökme) ayrı bir postulate (postülat) ve yalnızca measurement (ölçüm) ile olur. Denklemin girdisi potential (potansiyel) V(x) ve boundary conditions (sınır koşulları), çıktısı ψ ve allowed energies (izinli enerjiler) E olur.',
             yedekSecmeli: {
               soru: 'Collapse (çökme) ne zaman olur?',
