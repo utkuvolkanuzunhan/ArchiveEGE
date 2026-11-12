@@ -209,7 +209,7 @@
       if (typeof ResizeObserver !== 'undefined') {
         ro = new ResizeObserver(boyutla); ro.observe(cv);
       } else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Low T: f(E) becomes a step (basamak); np = nᵢ² does not depend on E_F.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('T düşünce f(E) step function (basamak fonksiyonu) olur; np = nᵢ² çarpımı E_F konumuna bağlı değildir.'); } catch (e) {} }
       boyutla(); guncelle();
       raf = requestAnimationFrame(anim);
 

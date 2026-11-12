@@ -1,0 +1,17 @@
+# BUG-FINAL-s10 (Paketleme bonus / Fermi, son sürüm öncesi oyuncu denetimi)
+
+Yöntem: Playwright 1366x768, hikayeAtla kapalı, kilitler kapalı (istasyon10 açık, s01-s09 Q.state ile tamam). Oynanan: hikaye (3 satır + bilgi kartı), 7 bilgi kartı (3 kavram + 4 Nasıl yapılır), kavram sim'i (T=50 K ve E artırma gerçekten slider ile), 2 düşman (yanlış + doğru, 'Cevabın yanlış. Doğru seçenek: ...' biçimi tamam), tahmin (doğru ve yanlış, sim 300->600 K animasyonu), tuzak (yanlış parça), köprü (ters sıra, 'Neden' açıklamaları), patron (doğru yol: 3 faz, Claude kapalı -> yedek çoktan seçmeli; yanlış yol: ikinci şans, voltaj 0 = KISA DEVRE, 'Temelden bir daha' 3 kart + sim, istasyon başa dönüyor), hesap engeli (örnek paneli adım adım, 1. adım yanlış sonra doğru, 2. adım yanlış 'Doğru: 3,868', 3. adım, sonuç, Çözdüm), sandık (kart "fermi", 'Yeni makine kuruldu: Paketleme', Kayıt alındı), istasyon sonu, haritaya dönüş, yenileme (ilerleme.s10.tamam, kartlar=[fermi], fabrika.kurulu=[s10] korundu; istasyon ortasında yenileme aktif.index=4 saklıyor, harita açılıyor). Konsol/sayfa hatası yok. Soru/balon görev bitene kadar ekranda; seçenek -> Onayla -> eminlik akışı çalışıyor.
+
+Fizik/sayı kontrolü (hepsi doğru): kT(300 K)=25,85 meV; (E-E_F)/kT=3,868; f=0,0205; 50 meV örneği x=1,934, f=0,126; 0,06 eV/500 K örneği f≈0,20; -0,05 eV/300 K f≈0,87; 600 K'de 0,1 eV f≈0,13; 600->150 K kT 51,7->12,9 meV; np=nᵢ² örneği (10¹⁰, 10¹⁴ -> 10⁶); v_d=500·20=10⁴ cm/s; J=1,6 A/cm²; sim v_d(E=80)=1,1×10⁵ cm/s (μ=1350).
+
+Kavramlar sorulmadan önce öğretiliyor: Fermi-Dirac f(E), E_F ve f(E_F)=1/2, step function, nᵢ/np=nᵢ², drift/mobility/J, saçılma, zincir sırası. Öğretilmemiş terim bulunmadı.
+
+| sorun | konum | önem | düzeltildi mi |
+|---|---|---|---|
+| Sim'in alt ipucu (api.hint) tam İngilizce cümleydi ("Low T: f(E) becomes a step..."), diğer simlerdeki "Türkçe + English (Türkçe)" kuralına aykırı; "Temelden bir daha" sim'inde görünüyordu | oyun/src/js/70-sim-fermi.js | orta | evet (Türkçeye çevrildi: "T düşünce f(E) step function (basamak fonksiyonu) olur; np = nᵢ² çarpımı E_F konumuna bağlı değildir.") |
+| Final sınavında açık uçlu cevap kutusu 1366x768'de çok yüksekti (rows:7); "Bilmiyorum/Gönder" düğmeleri ve 0/1500 sayacı alt kenardan taşıp yarım görünüyordu (iç kaydırmayla erişiliyor). s10 bitince (diğer istasyonlar tamamsa) final otomatik açıldığı için bu ekrana s10 sonunda varılıyor | oyun/src/js/96-final.js | orta | evet (rows 7 -> 5) |
+| Tahmin seçeneği "Artar (increases): f ≈ 0,02 -> 0,13" doğru cevabın sayısal sonucunu seçenek metninde veriyor (tahmin önceden sezdirilmiş oluyor); diğer iki seçenek sayı içermiyor | oyun/src/js/90-data-s10.js (s10-o05) | düşük | hayır (içerik/pedagoji kararı; kullanıcı teyit etsin: sayılar seçenekten çıkarılıp yalnızca sim sonrası açıklamada kalabilir) |
+| Hesap sonuç kutusunda "f ≈ 0.0205 (2%)" ondalık nokta, adımlarda virgül ("0,0205") | oyun/src/js/87-data-hesap.js (fd-100meV sonuc.metin) | düşük | hayır (sınav cevabı biçimi, tüm görevlerde ortak) |
+| Fermi sim'inde "E_F" etiketi ve "Eg = 1,1 eV" yazısı bant çizgisine biraz binişiyor; alt durum satırı ve slider etiketleri küçük punto | oyun/src/js/70-sim-fermi.js | düşük | hayır (okunuyor, kozmetik) |
+| Patron adı balonda "Enrico Fermi", başlıkta "Fermi Canavarı" (BUG-s10-C'de de not edilmişti) | veri | düşük | hayır |
+| PATRON tabelası oyuncu karakterin üstüne biniyor (patron ekranlarında) | oyun/src/js/42-art-world.js | düşük | hayır (kozmetik) |

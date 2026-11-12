@@ -187,7 +187,7 @@
         area.appendChild(it);
         var tb = el('div', 'fn-tb');
         it.appendChild(tb);
-        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: 7, deger: cevap });
+        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: 5, deger: cevap });
         if (v == null || !String(v).trim() || /^\s*(bilmiyorum|i don'?t know)\s*\.?\s*$/i.test(String(v))) {
           rec.mod = 'bos'; rec.dogruluk = 0; rec.eminlik = 0; rec.eksik = ob.anahtarFikirler.slice();
           area.textContent = '';
