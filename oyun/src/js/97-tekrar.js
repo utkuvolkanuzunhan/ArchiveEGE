@@ -104,7 +104,7 @@
         });
       });
     });
-    CURATED.forEach(function(c){ v.push({ en: c[0], tr: c[1], g: 'temel' }); });
+    CURATED.forEach(function(c){ var k = c[0].toLowerCase(); if (gor[k]) return; gor[k] = 1; v.push({ en: c[0], tr: c[1], g: 'temel' }); });
     var enler = {}; v.forEach(function(t){ enler[t.en.toLowerCase()] = 1; });
     v = v.filter(function(t){ return t.g === 'temel' || !enler[t.tr.toLowerCase()]; });
     terimCache = { n: stIds().length, v: v };

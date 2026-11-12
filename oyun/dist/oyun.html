@@ -343,18 +343,6 @@ html,body{height:100%;margin:0;overflow:hidden}
 .fb-kutlama b{font-family:var(--font-d);font-size:20px;color:var(--lime)}
 .fb-konfeti{position:absolute;top:-10px;width:8px;height:12px;border-radius:2px;animation:fb-dus 2.4s ease-in 2}
 @keyframes fb-dus{to{transform:translateY(90px) rotate(240deg);opacity:0}}
-#a8-station-panel .fb-p-baslik{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-#a8-station-panel h3,#a8-station-panel h4{margin:6px 0}
-.fb-chip-tamam{border-color:var(--lime);color:var(--lime)}
-.fb-chip-sirada{border-color:var(--cyan);color:var(--cyan)}
-.fb-madde{margin:6px 0 10px;padding-left:20px;display:grid;gap:6px}
-.fb-kav{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:top}
-.fb-kav .chip{white-space:normal}
-.fb-mini{margin-top:12px;padding:10px 12px;border:2px dashed var(--line);border-radius:var(--rs);background:var(--panel2)}
-.fb-mini .opts{margin:8px 0}
-.fb-geri.iyi{color:var(--lime)}
-.fb-geri.kotu{color:#ffb3c1}
-@media (max-height:800px){.fb-mini .opt{padding:6px 12px;min-height:38px}}
 @media (prefers-reduced-motion:reduce){.fb-akis,.fb-kirik,.fb-pervane,.fb-duman,.fb-konfeti,.fb-sirada .fb-kutu{animation:none}}
 
 /* harita ekranı: tam ekran yerleşim (>=900px: üst çubuk + sol şema/kartlar + sağ panel; altında tek sütun) */
@@ -368,7 +356,7 @@ html,body{height:100%;margin:0;overflow:hidden}
 .fb-svg{max-width:1400px;margin:0 auto}
 @media (min-width:900px){
   .fm-box{display:grid!important;grid-template-rows:auto minmax(0,1fr);overflow:hidden!important}
-  .fm-govde.a8-ana-yan{min-height:0;height:100%;align-items:stretch;grid-template-columns:minmax(0,1fr) minmax(300px,360px)}
+  .fm-govde.a8-ana-yan{min-height:0;height:100%;align-items:stretch;grid-template-columns:minmax(0,1fr) clamp(360px,28vw,460px)}
   .fm-govde .a8-ana{overflow:auto;min-height:0;padding-right:8px}
   .fm-govde .a8-yan{position:static;max-height:none;height:100%;overflow:auto}
   .fb-svg{min-width:900px}
@@ -377,6 +365,68 @@ html,body{height:100%;margin:0;overflow:hidden}
   .fm-baslik{font-size:22px}
   .fm-nav .btn{flex:1 1 auto}
 }
+
+/* ---- bölüm paneli (okunabilir tasarım): bant + başlık + rozet + kartlar + yapışkan alt şerit ---- */
+#a8-station-panel{padding:0!important;overflow:visible}
+.fb-p{display:flex;flex-direction:column;min-width:0;font-size:17px;line-height:1.6;--fb-renk:var(--cyan)}
+.fb-p-govde{min-width:0}
+.fb-bant{height:84px;border-radius:calc(var(--r) - 3px) calc(var(--r) - 3px) 0 0;overflow:hidden;border-bottom:4px solid var(--fb-renk);background:linear-gradient(135deg,color-mix(in srgb,var(--fb-renk) 55%,#0b0620),color-mix(in srgb,var(--fb-renk) 18%,#1a0f3d))}
+.fb-p-kilitli .fb-bant,.fb-p-acik .fb-bant{filter:saturate(.55) brightness(.9)}
+.fb-bant-svg{display:block;width:100%;height:100%}
+.fb-bant-no{font-family:var(--font-d);font-size:46px}
+.fb-p-ic{display:flex;flex-direction:column;gap:12px;padding:14px 16px 16px}
+.fb-p-ad{margin:0;font-family:var(--font-d);font-size:24px;line-height:1.25;font-weight:400;overflow-wrap:anywhere}
+.fb-p-ad:focus{outline:none}
+.fb-p-ad:focus-visible{outline:3px solid var(--cyan);outline-offset:3px;border-radius:4px}
+.fb-p-rozet{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-top:-4px}
+.fb-durum{display:inline-flex;align-items:center;gap:7px;padding:3px 14px;border-radius:99px;font-size:16px;font-weight:900;border:2px solid var(--ink-dark);line-height:1.4}
+.fb-durum::before{content:"";width:10px;height:10px;border-radius:50%;background:currentColor;box-shadow:0 0 0 2px rgba(11,6,32,.35)}
+.fb-durum-tamam{background:var(--lime);color:#06361b}
+.fb-durum-sirada{background:var(--cyan);color:#06303a}
+.fb-durum-kilitli{background:#d9d3f2;color:#2a2150}
+.fb-durum-acik{background:var(--yellow);color:#3a2d00}
+.fb-p-sira{color:var(--muted);font-size:15px;font-weight:800}
+.fb-kart{margin:0;padding:12px 14px 14px;border:2px solid color-mix(in srgb,var(--line) 28%,transparent);border-left:6px solid var(--fb-renk);border-radius:var(--rs);background:var(--panel2)}
+.fb-kart p{margin:0;font-size:17px;line-height:1.6;color:var(--ink)}
+.fb-kart-bas{display:flex;align-items:center;gap:8px;margin:0 0 6px;font-family:var(--font-b);font-size:15px;font-weight:900;letter-spacing:.4px;text-transform:uppercase;color:var(--yellow)}
+.fb-kart-ikon{flex:0 0 auto;display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--fb-renk);color:var(--ink-dark)}
+.fb-ikon{width:17px;height:17px;display:block}
+.fb-kav{display:flex;flex-wrap:wrap;gap:8px}
+.fb-kav .chip{white-space:normal;font-size:15px;line-height:1.35;padding:4px 12px;border-width:2px;color:var(--ink)}
+.fb-sure{display:flex;align-items:center;gap:8px;margin:0;color:var(--muted);font-size:16px;font-weight:800}
+.fb-mini{margin-top:2px;border-style:dashed;border-left-style:solid}
+.fb-mini-soru{font-weight:800}
+.fb-mini .opts{margin:10px 0}
+.fb-mini .opt{font-size:16px;line-height:1.45;padding:10px 12px;min-height:46px}
+.fb-mini .btn{width:100%}
+.fb-geri{margin-top:10px;font-size:16px;line-height:1.55;font-weight:700}
+.fb-geri:empty{display:none}
+.fb-geri.iyi{color:var(--lime)}
+.fb-geri.kotu{color:#ffc2cd}
+.fb-geri .btn{margin-top:8px}
+.fb-atla{border:2px solid color-mix(in srgb,var(--line) 28%,transparent);border-radius:var(--rs);background:var(--panel)}
+.fb-atla summary{cursor:pointer;padding:10px 14px;font-weight:800;font-size:16px;color:var(--muted);border-radius:var(--rs)}
+.fb-atla summary:focus-visible{outline:3px solid var(--cyan);outline-offset:2px}
+.fb-atla-liste{display:flex;flex-wrap:wrap;gap:8px;list-style:none;margin:0;padding:4px 14px 14px}
+.fb-atla-liste .btn{min-height:40px;padding:4px 12px;font-size:15px}
+.fb-alt{position:sticky;bottom:0;z-index:2;display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:12px 16px 10px;background:var(--panel);border-top:3px solid var(--fb-renk);border-radius:0 0 calc(var(--r) - 3px) calc(var(--r) - 3px);box-shadow:0 -10px 14px -6px rgba(11,6,32,.7)}
+.fb-eylem{width:100%;min-height:56px;font-size:20px;font-family:var(--font-d);letter-spacing:.4px}
+.fb-eylem::after{content:"\2192";margin-left:6px}
+.fb-alt .fb-kapat{display:flex;justify-content:center}
+.fb-alt .fb-kapat .btn{min-height:36px;padding:2px 14px;font-size:15px;border-width:2px;background:transparent;box-shadow:none;color:var(--muted)}
+.fb-kilit{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border:2px dashed #9a93bd;border-radius:var(--rs);background:var(--panel2)}
+.fb-kilit p{font-size:17px;font-weight:800;line-height:1.45;color:var(--ink)}
+.fb-kilit-bar{height:10px;border-radius:99px;background:var(--track);border:2px solid #9a93bd;overflow:hidden}
+.fb-kilit-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--lime))}
+.fb-kilit-not{font-size:15px;font-weight:700;color:var(--muted)}
+@media (max-width:899px){
+  .a8-yan{max-height:82vh}
+  .fb-bant{height:60px}
+  .fb-bant-no{font-size:38px}
+  .fb-alt{bottom:-12px;margin-bottom:-12px;padding-bottom:12px}
+  .fb-p-ad{font-size:22px}
+}
+@media (max-height:800px) and (min-width:900px){.fb-bant{height:64px}.fb-p-ic{gap:10px}}
 
 </style>
 <div id="app">
@@ -1195,7 +1245,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     }
     if (durum === 'tamam') { var du = sv('g', { class: 'fb-duman' }, m); sv('circle', { cx: 16, cy: 0, r: 3, fill: '#c4b9ec' }, du); }
   }
-  var DURUM_AD = { tamam: 'çalışıyor', sirada: 'sıradaki', kilitli: 'bozuk · kilitli', acik: 'bozuk' };
+  var DURUM_AD = { tamam: 'Çalışıyor', sirada: 'Sıradaki', kilitli: 'Kilitli', acik: 'Bozuk' };
 
   function dugum(g, o){
     var d = o.durum, p = o.pos;
@@ -1279,11 +1329,25 @@ html,body{height:100%;margin:0;overflow:hidden}
       F.panel(panel, s, ctx, function(){ sec(s); });
       if (!ctx.panel) { try { panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) { /* eski tarayıcı */ } }
     }
+    if (F._esc && doc()) { document.removeEventListener('keydown', F._esc, true); document.removeEventListener('focusin', F._fin, true); }
+    var panelde = false;
+    F._fin = function(e){ panelde = panel.contains(e.target); };
+    document.addEventListener('focusin', F._fin, true);
+    F._esc = function(e){
+      if (e.key !== 'Escape' || !panelde) return;
+      var cur = Object.keys(nodes).filter(function(k){ return nodes[k].classList.contains('fb-sec'); })[0];
+      if (cur) setTimeout(function(){ try { if (panel.style.display === 'none') { nodes[cur].classList.remove('fb-sec'); nodes[cur].focus(); } } catch (x) { /* düğüm yok */ } }, 0);
+    };
+    document.addEventListener('keydown', F._esc, true);
     st.forEach(function(s){
       var n = nodes[s.id];
       n.addEventListener('click', function(){ sec(s); });
       n.addEventListener('keydown', function(e){
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sec(s); return; }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault(); sec(s);
+          var hh = panel.querySelector('.fb-p-ad'); if (hh) { try { hh.focus({ preventScroll: true }); } catch (x) { /* odak yok */ } }
+          return;
+        }
         var k = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
         if (!k) return;
         e.preventDefault();
@@ -1300,48 +1364,100 @@ html,body{height:100%;margin:0;overflow:hidden}
   };
 
   /* ---------- bölüm paneli ---------- */
+  var PANEL_AD = { tamam: 'Çalışıyor', sirada: 'Sıradaki', kilitli: 'Kilitli', acik: 'Onarılabilir' };
+  var IKON = {
+    yapar: ['M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z', 'M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1'],
+    neden: ['M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1', 'M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1'],
+    kavram: ['M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z', 'M7.5 7.5h.01'],
+    sure: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 7v5l3 2'],
+    soru: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7', 'M12 17h.01']
+  };
+  function ikon(ad){
+    var svg = sv('svg', { viewBox: '0 0 24 24', class: 'fb-ikon', 'aria-hidden': 'true', focusable: 'false', fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    IKON[ad].forEach(function(d){ sv('path', { d: d }, svg); });
+    return svg;
+  }
+  function kart(cls, ikonAd, baslik){
+    var k = el('section', 'fb-kart ' + cls);
+    var h = el('h4', 'fb-kart-bas'); var ib = el('span', 'fb-kart-ikon'); ib.appendChild(ikon(ikonAd)); h.appendChild(ib); h.appendChild(el('span', '', baslik));
+    k.appendChild(h); return k;
+  }
+  function bant(s, d){
+    var renk = s.renk || '#00e5ff';
+    var b = el('div', 'fb-bant'); b.style.setProperty('--fb-renk', renk);
+    var svg = sv('svg', { viewBox: '0 0 480 84', class: 'fb-bant-svg', 'aria-hidden': 'true', focusable: 'false', preserveAspectRatio: 'xMidYMid meet' });
+    sv('line', { x1: 0, y1: 62, x2: 480, y2: 62, stroke: '#0b0620', 'stroke-width': 14 }, svg);
+    sv('line', { x1: 0, y1: 62, x2: 480, y2: 62, stroke: d === 'tamam' ? renk : '#6d6590', 'stroke-width': 8 }, svg);
+    if (d === 'tamam') sv('line', { x1: 0, y1: 62, x2: 480, y2: 62, stroke: '#fff', 'stroke-width': 2, 'stroke-dasharray': '6 14', class: 'fb-akis' }, svg);
+    var g = sv('g', {}, svg);
+    g.setAttribute('transform', 'translate(209,12) scale(1.35)'); makine(g, renk, d, 0, 0);
+    sv('text', { x: 24, y: 58, class: 'fb-bant-no', fill: '#ffffff', opacity: .9 }, svg).textContent = String(s.sira);
+    b.appendChild(svg);
+    return b;
+  }
   F.panel = function(panel, s, ctx, yenile){
     panel.textContent = ''; panel.style.display = '';
-    if (ctx.ust) panel.appendChild(ctx.ust());
     var vd = veri(s.id) || {}, d = ctx.durum(s), tamam = d === 'tamam', acik = ctx.acik(s);
-    var hd = el('div', 'fb-p-baslik');
-    hd.appendChild(el('h3', '', s.sira + '. ' + s.ad));
-    var ch = el('span', 'chip fb-chip-' + d, DURUM_AD[d]); hd.appendChild(ch);
-    panel.appendChild(hd);
-    var ul = el('ul', 'fb-madde');
-    function li(b, t){ var x = el('li'); x.appendChild(el('b', '', b + ' ')); x.appendChild(document.createTextNode(t)); ul.appendChild(x); return x; }
-    li('Ne işe yarar:', vd.rol || s.konu);
-    if (vd.neden) li('Çipte neden gerekli:', vd.neden);
+    var kok = el('div', 'fb-p fb-p-' + d); kok.style.setProperty('--fb-renk', s.renk || '#00e5ff');
+    var govde = el('div', 'fb-p-govde');
+    govde.appendChild(bant(s, d));
+    var ic = el('div', 'fb-p-ic');
+    var h3 = el('h3', 'fb-p-ad', s.ad); h3.tabIndex = -1; ic.appendChild(h3);
+    var rozetSatir = el('div', 'fb-p-rozet');
+    rozetSatir.appendChild(el('span', 'fb-durum fb-durum-' + d, PANEL_AD[d]));
+    rozetSatir.appendChild(el('span', 'fb-p-sira', 'Bölüm ' + s.sira + ' / ' + ctx.st.length));
+    ic.appendChild(rozetSatir);
+    var k1 = kart('fb-k-yapar', 'yapar', 'Ne yapar'); k1.appendChild(el('p', '', vd.rol || s.konu)); ic.appendChild(k1);
+    if (vd.neden) { var k2 = kart('fb-k-neden', 'neden', 'Çipte neden gerekli'); k2.appendChild(el('p', '', vd.neden)); ic.appendChild(k2); }
     if (vd.bagliKavramlar && vd.bagliKavramlar.length) {
-      var kx = li('Kavramlar:', '');
-      var cl = el('span', 'fb-kav'); vd.bagliKavramlar.forEach(function(t){ cl.appendChild(el('span', 'chip', t)); }); kx.appendChild(cl);
+      var k3 = kart('fb-k-kavram', 'kavram', 'Kavramlar'); var cl = el('div', 'fb-kav');
+      vd.bagliKavramlar.forEach(function(t){ cl.appendChild(el('span', 'chip', t)); });
+      k3.appendChild(cl); ic.appendChild(k3);
     }
-    if (s.sure) li('Süre hedefi:', s.sure + ' dk');
-    panel.appendChild(ul);
-    if (!acik) { panel.appendChild(el('p', 'fb-kilit', 'Bu bölüm kilitli. Önce hattaki önceki bölümü onar.')); return; }
+    if (s.sure) {
+      var su = el('p', 'fb-sure'); var si = el('span', 'fb-kart-ikon'); si.appendChild(ikon('sure')); su.appendChild(si);
+      su.appendChild(el('span', '', 'Süre hedefi: yaklaşık ' + s.sure + ' dk')); ic.appendChild(su);
+    }
     var p = ctx.prog(s.id);
-    var row = el('div', 'fb-p-satir');
-    var b = el('button', 'btn primary', tamam ? 'Yeniden oyna' : (p.enSon ? 'Onar (devam et)' : 'Onar')); b.type = 'button';
-    b.addEventListener('click', function(){ ctx.baslat(s, p.enSon || 0); });
-    row.appendChild(b);
-    panel.appendChild(row);
-    if (tamam && vd.miniSoru) miniSoru(panel, s, vd.miniSoru);
-    if (s.engeller && s.engeller.length) {
-      panel.appendChild(el('h4', '', 'İstediğin engele atla'));
-      var l = el('ol'); l.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0';
+    if (acik && tamam && vd.miniSoru) miniSoru(ic, s, vd.miniSoru);
+    if (acik && s.engeller && s.engeller.length) {
+      var det = el('details', 'fb-atla');
+      det.appendChild(el('summary', '', 'İstediğin engele atla'));
+      var l = el('ol', 'fb-atla-liste');
       s.engeller.forEach(function(ob, i){
         var x = el('li'); var eb = el('button', 'btn', (i + 1) + '. ' + (ob.baslik || ob.tip)); eb.type = 'button';
         eb.addEventListener('click', function(){ ctx.engelAtla(s, ob, i); });
         x.appendChild(eb); l.appendChild(x);
       });
-      panel.appendChild(l);
+      det.appendChild(l); ic.appendChild(det);
     }
+    govde.appendChild(ic);
+    kok.appendChild(govde);
+    /* yapışkan alt şerit: birincil eylem büyük, Kapat küçük */
+    var alt = el('div', 'fb-alt');
+    if (acik) {
+      var b = el('button', 'btn primary fb-eylem', tamam ? 'Yeniden oyna' : (p.enSon ? 'Devam et' : 'Onar')); b.type = 'button';
+      b.addEventListener('click', function(){ ctx.baslat(s, p.enSon || 0); });
+      alt.appendChild(b);
+    } else {
+      var i0 = ctx.st.indexOf(s), once = ctx.st[i0 - 1];
+      var ip = el('div', 'fb-kilit'); ip.setAttribute('role', 'note');
+      ip.appendChild(el('p', '', 'Önce önceki bölümü onar: ' + (once ? once.ad : '')));
+      var oz = F.ozet(ctx.st, ctx.tamam);
+      var pb = el('div', 'fb-kilit-bar'); var pd = el('i'); pd.style.width = oz.yuzde + '%'; pb.appendChild(pd); ip.appendChild(pb);
+      ip.appendChild(el('span', 'fb-kilit-not', 'Hat ilerlemesi: ' + oz.tamam + '/' + oz.toplam + ' bölüm onarıldı'));
+      alt.appendChild(ip);
+    }
+    if (ctx.ust) { var ub = ctx.ust(); ub.classList.add('fb-kapat'); alt.appendChild(ub); }
+    kok.appendChild(alt);
+    panel.appendChild(kok);
   };
 
   function miniSoru(panel, s, q){
     var kayit = mini()[s.id] || null;
-    var box = el('div', 'fb-mini'); box.dataset.mini = s.id;
-    box.appendChild(el('h4', '', 'Bu bölümü neden kurduk?'));
+    var box = el('div', 'fb-kart fb-mini'); box.dataset.mini = s.id;
+    var mh = el('h4', 'fb-kart-bas'); var mi = el('span', 'fb-kart-ikon'); mi.appendChild(ikon('soru')); mh.appendChild(mi); mh.appendChild(el('span', '', 'Bu bölümü neden kurduk?'));
+    box.appendChild(mh);
     box.appendChild(el('p', 'fb-mini-soru', q.soru));
     var seciliIdx = -1, bitti = false;
     var opts = el('div', 'opts'), btns = [];
@@ -9221,41 +9337,41 @@ Q.art.PORTRE_IDS = Object.keys(P);
     istasyonlar: {
       s01: {
         kisa: 'Kristal fırını',
-        rol: 'Ham kumdan çıkan silicon (silisyum) eriyiğini Czochralski yöntemiyle tek bir single crystal (tek kristal) külçeye çevirir.',
-        neden: 'Çip, atomları kusursuz dizilmiş tek kristal ister. Grain boundary (tane sınırı) taşıyıcıları saçar ve aygıtı bozar.',
-        bagliKavramlar: ['Amorphous (amorf) / polycrystalline (çok kristalli) / single crystal (tek kristal)', 'Grain boundary (tane sınırı)', 'Czochralski growth (Czochralski büyütme) ve seed (tohum)'],
+        rol: 'Erimiş silicon (silisyum), tek parça kusursuz bir kristal külçeye çevrilir.',
+        neden: 'Çip kusursuz sıralı atomlar ister; bozuk dizilim, kalabalık yolda trafik sıkışması gibi elektronu yavaşlatır.',
+        bagliKavramlar: ['Single crystal (tek kristal)', 'Grain boundary (tane sınırı)', 'Czochralski growth (Czochralski büyütme)', 'Seed (tohum)'],
         miniSoru: {
           soru: 'Fırında neden single crystal (tek kristal) silicon (silisyum) üretiyoruz?',
           secenekler: [
-            s('Çünkü tek kristalde grain boundary (tane sınırı) yoktur ve periyodik düzen tüm parçada sürer', true, 'Düzen bozulmadığı için elektronlar öngörülebilir davranır.'),
-            s('Çünkü amorphous (amorf) silicon (silisyum) daha pahalıdır', false, 'Neden fiyat değil, long-range order (uzun menzilli düzen) gereksinimidir.'),
-            s('Çünkü tek kristal ışık yaymaz', false, 'Seçim, ışıkla değil kristal düzeniyle ilgilidir.')
+            s('Tek kristalde grain boundary (tane sınırı) yoktur; düzen tüm parçada sürer', true, 'Düzen bozulmadığı için elektronlar öngörülebilir davranır.'),
+            s('Amorphous (amorf) silicon (silisyum) daha pahalıdır', false, 'Neden fiyat değil, long-range order (uzun menzilli düzen) gereksinimidir.'),
+            s('Tek kristal ışık yaymaz', false, 'Seçim, ışıkla değil kristal düzeniyle ilgilidir.')
           ]
         }
       },
       s02: {
         kisa: 'Kesim testeresi',
-        rol: 'Külçeyi belirli bir crystal plane (kristal düzlemi) boyunca dilimleyip wafer (dilim) üretir. Düzlem Miller indices (Miller indisleri) ile adlandırılır.',
-        neden: 'Yüzeyin atom dizilimi düzleme göre değişir. Aynı malzeme (100) ve (111) dilimlerinde farklı davranır, o yüzden doğru düzlemi seçmek gerekir.',
-        bagliKavramlar: ['Lattice (kafes) ve unit cell (birim hücre)', 'Miller indices (Miller indisleri) ve reciprocal (ters) alma', 'Atoms per unit cell (birim hücredeki atom sayısı)'],
+        rol: 'Külçe ince dilimlere kesilir; her dilim bir wafer (dilim) olur.',
+        neden: 'Kristal ekmek gibi dilimlenir; hangi düzlemden kestiğin, yüzeydeki atom dizilimini belirler.',
+        bagliKavramlar: ['Lattice (kafes)', 'Unit cell (birim hücre)', 'Miller indices (Miller indisleri)', 'Crystal plane (kristal düzlemi)'],
         miniSoru: {
           soru: 'Wafer (dilim) neden rastgele değil, belirli bir crystal plane (kristal düzlemi) boyunca kesilir?',
           secenekler: [
-            s('Çünkü yüzeydeki atom dizilimi ve yoğunluğu düzleme bağlıdır, aygıt özellikleri de buna bağlıdır', true, 'Düzlem, Miller indices (Miller indisleri) ile belirlenir.'),
-            s('Çünkü her düzlemde atom sayısı aynıdır', false, 'Planar density (düzlemsel yoğunluk) düzleme göre değişir.'),
-            s('Çünkü Miller indices (Miller indisleri) wafer (dilim) kalınlığını belirler', false, 'Miller indices (Miller indisleri) yönelimi verir, kalınlığı vermez.')
+            s('Yüzeydeki atom dizilimi düzleme bağlıdır; aygıt özellikleri de buna bağlıdır', true, 'Düzlem, Miller indices (Miller indisleri) ile belirlenir.'),
+            s('Her düzlemde atom sayısı aynıdır', false, 'Planar density (düzlemsel yoğunluk) düzleme göre değişir.'),
+            s('Miller indices (Miller indisleri) dilim kalınlığını belirler', false, 'Miller indices (Miller indisleri) yönelimi verir, kalınlığı vermez.')
           ]
         }
       },
       s03: {
         kisa: 'Işık-test odası',
-        rol: 'Klasik fiziğin neden yetmediğini gösterir: blackbody (kara cisim) ışıması ve photoelectric effect (fotoelektrik olay) ışığın energy quanta (enerji paketleri) halinde olduğunu kanıtlar.',
-        neden: 'Çipin içi klasik fizikle açıklanamaz. Foton paketleri fikri, elektronun enerjisinin de ayrık olduğu kuantum dünyasına giriş kapısıdır.',
-        bagliKavramlar: ['Blackbody radiation (kara cisim ışıması) ve ultraviolet catastrophe (mor ötesi felaket)', 'Photon (foton) ve E = hν', 'Photoelectric effect (fotoelektrik olay) ve threshold frequency (eşik frekansı)'],
+        rol: 'Işığın enerjisinin photon (foton) denen paketlerle geldiğini deneylerle gösterir.',
+        neden: 'Enerji rampa değil merdiven gibidir: basamak basamak. Çipin kuantum fiziği bu fikirle başlar.',
+        bagliKavramlar: ['Photon (foton)', 'Photoelectric effect (fotoelektrik olay)', 'Blackbody radiation (kara cisim ışıması)', 'Threshold frequency (eşik frekansı)'],
         miniSoru: {
           soru: 'Photoelectric effect (fotoelektrik olay) deneyi ışığı hakkında neyi gösterir?',
           secenekler: [
-            s('Işık enerjisi photon (foton) paketleri halindedir, eşik frekansının altında yoğunluk artsa da elektron kopmaz', true, 'Elektronu koparan şey frekanstır, intensity (şiddet) değil.'),
+            s('Işık photon (foton) paketleridir; eşik frekansının altında, şiddet artsa da elektron kopmaz', true, 'Elektronu koparan şey frekanstır, intensity (şiddet) değil.'),
             s('Işığın şiddeti artınca eşik frekansı düşer', false, 'Threshold frequency (eşik frekansı) metale bağlıdır, şiddete bağlı değildir.'),
             s('Işık yalnızca klasik bir dalgadır', false, 'Klasik dalga resmi bu deneyi açıklayamaz.')
           ]
@@ -9263,13 +9379,13 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s04: {
         kisa: 'Atom mikroskobu',
-        rol: 'Hydrogen atom (hidrojen atomu) kararlılığını ve discrete energy levels (ayrık enerji seviyelerini) inceler. Matter wave (madde dalgası) fikri burada gelir.',
-        neden: 'Çipteki elektronlar atomlara bağlıdır. Seviyelerin ayrık olması, sonraki bölümlerde kuyu ve bantların temelini kurar.',
-        bagliKavramlar: ['Bohr model (Bohr modeli) ve quantized energy levels (kuantalı enerji seviyeleri)', 'Atomic spectrum (atom spektrumu)', 'de Broglie wavelength (de Broglie dalga boyu)', 'Zero-point energy (sıfır noktası enerjisi)'],
+        rol: 'Hydrogen atom (hidrojen atomu) içindeki elektronun yalnızca belirli enerjilerde durabildiğini gösterir.',
+        neden: 'Elektron bir apartmanda yalnızca belirli katlarda durabilir; çipin enerji bantları bu katlardan doğar.',
+        bagliKavramlar: ['Bohr model (Bohr modeli)', 'Energy level (enerji seviyesi)', 'Atomic spectrum (atom spektrumu)', 'de Broglie wavelength (de Broglie dalga boyu)'],
         miniSoru: {
           soru: 'Atomun discrete spectrum (ayrık spektrumu) neyi gösterir?',
           secenekler: [
-            s('Elektron yalnızca belirli energy levels (enerji seviyelerinde) bulunabilir, atlarken ayrık enerjili photon (foton) yayar', true, 'Bohr bu fikri 1913\'te ortaya koydu.'),
+            s('Elektron yalnızca belirli energy levels (enerji seviyelerinde) bulunur; atlarken photon (foton) yayar', true, 'Bohr bu fikri 1913\'te ortaya koydu.'),
             s('Elektron her enerjiyi alabilir', false, 'Bu klasik beklentidir, spektrum çizgili olduğu için çürür.'),
             s('Çekirdek ışık yayar', false, 'Çizgiler elektron geçişlerinden gelir.')
           ]
@@ -9277,9 +9393,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s05: {
         kisa: 'Dalga odası',
-        rol: 'Schrödinger equation (Schrödinger denklemi) ile wave function (dalga fonksiyonu) ψ\'yi bulur. Infinite well (sonsuz kuyu) örneğinde energy quantization (enerji kuantalaşması) kendiliğinden çıkar.',
-        neden: 'Çipteki elektron bir dalgadır. Kuyu modeli, kristal içindeki elektronu anlamanın en sade örneğidir.',
-        bagliKavramlar: ['Wave function (dalga fonksiyonu) ψ ve probability density (olasılık yoğunluğu) |ψ|²', 'Boundary conditions (sınır koşulları) ve quantization (kuantalaşma)', 'Zero-point energy (sıfır noktası enerjisi)', 'Schrödinger equation (Schrödinger denklemi) ve collapse (çökme) farkı'],
+        rol: 'Elektronu dalga olarak ele alır; kuyuya hapsolunca enerjisi yalnızca belirli değerler alır.',
+        neden: 'Gitar teli gibi: iki ucu tutulu tel belirli notaları çalar, kuyudaki elektron belirli enerjileri alır.',
+        bagliKavramlar: ['Wave function (dalga fonksiyonu)', 'Schrödinger equation (Schrödinger denklemi)', 'Infinite well (sonsuz kuyu)', 'Boundary conditions (sınır koşulları)'],
         miniSoru: {
           soru: 'Infinite well (sonsuz kuyu) içinde energy quantization (enerji kuantalaşması) nereden gelir?',
           secenekler: [
@@ -9291,9 +9407,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s06: {
         kisa: 'Tünel istasyonu',
-        rol: 'Step potential (basamak potansiyeli) ve barrier (bariyer) karşısında wave function (dalga fonksiyonu) yansır, geçer ve tunneling (tünelleme) ile bariyerin içine sızar.',
-        neden: 'Transistör kapılarında ve flash bellekte elektronlar ince bariyerlerden tünelleyerek geçer. Hem hizmet eder hem sızıntı yapar.',
-        bagliKavramlar: ['Reflection (yansıma) ve transmission (geçirme)', 'Evanescent wave (sönümlenen dalga)', 'Tunneling (tünelleme) ve barrier width (bariyer kalınlığı)', 'Continuity of ψ (ψ\'nin sürekliliği)'],
+        rol: 'Elektron dalgasının ince bir bariyerin içine sızıp karşıya geçebildiğini gösterir.',
+        neden: 'Elektron ince bir duvarı aşar gibi geçebilir; transistörde ve flash bellekte bu hem işe yarar hem sızıntı yapar.',
+        bagliKavramlar: ['Tunneling (tünelleme)', 'Barrier (bariyer)', 'Reflection (yansıma)', 'Transmission (geçirme)'],
         miniSoru: {
           soru: 'Barrier (bariyer) kalınlaştıkça tunneling (tünelleme) olasılığına ne olur?',
           secenekler: [
@@ -9305,9 +9421,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s07: {
         kisa: 'Ölçüm lab.',
-        rol: 'Quantum mechanics\'in postulates (postülatlarını) ve measurement (ölçümü) işler. Ölçüm sonucu eigenvalue (özdeğer) olur ve state collapse (hâl çökmesi) yaşanır.',
-        neden: 'Çipin okuma ve yazma işlemleri ölçümdür. Ölçümün durumu nasıl değiştirdiğini bilmeden sonuçlar yanlış okunur.',
-        bagliKavramlar: ['Postulates (postülatlar) ve operator (işlemci)', 'Eigenvalue (özdeğer) ve eigenstate (özdurum)', 'Measurement collapse (ölçümle çökme)', 'Born rule (Born kuralı) ve probability (olasılık)'],
+        rol: 'Bir ölçüm yapınca kuantum durumuna ne olduğunu ve hangi değerlerin çıkabileceğini öğretir.',
+        neden: 'Kuantum dünyasında okumak durumu değiştirir; ölçümü doğru yorumlamazsan sonucu yanlış anlarsın.',
+        bagliKavramlar: ['Measurement (ölçüm)', 'Eigenvalue (özdeğer)', 'Collapse (çökme)', 'Born rule (Born kuralı)'],
         miniSoru: {
           soru: 'Collapse (çökme) neden olur?',
           secenekler: [
@@ -9319,27 +9435,27 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s08: {
         kisa: 'Kalibrasyon',
-        rol: 'Uncertainty principle (belirsizlik ilkesi) ile conjugate variables (eşlenik değişkenler) arasındaki sınırı gösterir. Konum ne kadar bilinirse momentum o kadar belirsizleşir.',
-        neden: 'Çipin küçülmesinin sınırı budur. Elektronu çok dar bir bölgeye hapsetmek momentumunu ve enerjisini büyütür.',
-        bagliKavramlar: ['Uncertainty principle (belirsizlik ilkesi) Δx Δp ≥ ħ/2', 'Conjugate variables (eşlenik değişkenler)', 'Zero-point energy (sıfır noktası enerjisi)', 'Wave packet (dalga paketi)'],
+        rol: 'Konum ile momentum (momentum) aynı anda keskin bilinemez; aralarında bir sınır vardır.',
+        neden: 'Elektronu ne kadar dar sıkıştırırsan o kadar hızlı kıpırdar; bu, çip küçülmesinin sınırlarından biridir.',
+        bagliKavramlar: ['Uncertainty principle (belirsizlik ilkesi)', 'Conjugate variables (eşlenik değişkenler)', 'Zero-point energy (sıfır noktası enerjisi)'],
         miniSoru: {
           soru: 'Uncertainty principle (belirsizlik ilkesi) neden bir ölçüm aleti hatası değildir?',
           secenekler: [
-            s('Çünkü dalga doğasından gelir, conjugate variables (eşlenik değişkenler) aynı anda keskin olamaz', true, 'Daha iyi alet bu sınırı kaldırmaz.'),
-            s('Çünkü aletler yeterince hassas değildir', false, 'Sınır, ideal aletle bile geçerlidir.'),
-            s('Çünkü yalnızca makroskopik cisimlerde görülür', false, 'Etki makroskopik cisimlerde sadece çok küçüktür.')
+            s('Dalga doğasından gelir; conjugate variables (eşlenik değişkenler) aynı anda keskin olamaz', true, 'Daha iyi alet bu sınırı kaldırmaz.'),
+            s('Aletler yeterince hassas değildir', false, 'Sınır, ideal aletle bile geçerlidir.'),
+            s('Yalnızca makroskopik cisimlerde görülür', false, 'Etki makroskopik cisimlerde sadece çok küçüktür.')
           ]
         }
       },
       s09: {
         kisa: 'Bant testi',
-        rol: 'Periodic structure (periyodik yapı) içinde atom seviyelerinin yarılıp energy bands (enerji bantlarına) dönüşmesini ve band gap (bant aralığını) gösterir.',
-        neden: 'Bir malzemenin metal, semiconductor (yarıiletken) ya da insulator (yalıtkan) olması bant yapısına bağlıdır. Çipin tüm çalışma ilkesi buradadır.',
-        bagliKavramlar: ['Energy bands (enerji bantları) ve band gap (bant aralığı)', 'Pauli exclusion principle (Pauli dışlama ilkesi)', 'Valence band (değerlik bandı) ve conduction band (iletim bandı)', 'Metal (metal) / semiconductor (yarıiletken) / insulator (yalıtkan)'],
+        rol: 'Çok atom yan yana gelince enerji seviyeleri bantlara dönüşür; aralarında band gap (bant aralığı) kalır.',
+        neden: 'Malzemenin metal, semiconductor (yarıiletken) ya da insulator (yalıtkan) olması bant yapısına bağlıdır.',
+        bagliKavramlar: ['Energy band (enerji bandı)', 'Band gap (bant aralığı)', 'Valence band (değerlik bandı)', 'Conduction band (iletim bandı)'],
         miniSoru: {
           soru: 'Bir kristalde energy bands (enerji bantları) neden oluşur?',
           secenekler: [
-            s('Çok sayıda atomun seviyeleri birbirine yaklaşır, Pauli exclusion principle (Pauli dışlama ilkesi) yüzünden yarılıp banda dönüşür', true, 'Yarılan seviyeler pratikte sürekli bir bant gibi görünür.'),
+            s('Atom seviyeleri Pauli exclusion principle (Pauli dışlama ilkesi) yüzünden yarılır ve banda dönüşür', true, 'Yarılan seviyeler pratikte sürekli bir bant gibi görünür.'),
             s('Elektronlar atomlardan tamamen ayrılır', false, 'Elektronlar kristale aittir ama bantlar seviyelerin yarılmasından gelir.'),
             s('Kristal sıcaklığı bandı yaratır', false, 'Bant yapısı periyodik yapıdan gelir, sıcaklıktan değil.')
           ]
@@ -9347,9 +9463,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s10: {
         kisa: 'Paketleme',
-        rol: 'Carriers (taşıyıcılar), Fermi level (Fermi seviyesi) ve drift (sürüklenme) ile bantların çipte akıma nasıl dönüştüğünü gösterir.',
-        neden: 'Bant yapısı elektrik alanıyla birleşince akım oluşur. Çipin sonunda "çalışıyor" demek bu akım demektir.',
-        bagliKavramlar: ['Fermi level (Fermi seviyesi) ve Fermi-Dirac distribution (Fermi-Dirac dağılımı)', 'n-type / p-type carriers (n / p tipi taşıyıcılar)', 'Drift velocity (sürüklenme hızı)'],
+        rol: 'Bantlardaki carrier (taşıyıcı) elektrik alanıyla nasıl akıma dönüşür, onu gösterir.',
+        neden: 'Nehre eğim verince su akar; elektrik alanı verince taşıyıcılar akar ve çip çalışır.',
+        bagliKavramlar: ['Carrier (taşıyıcı)', 'Fermi level (Fermi seviyesi)', 'Drift velocity (sürüklenme hızı)', 'Fermi-Dirac distribution (Fermi-Dirac dağılımı)'],
         miniSoru: {
           soru: 'Fermi level (Fermi seviyesi) neyi belirtir?',
           secenekler: [
@@ -10333,9 +10449,20 @@ Q.art.PORTRE_IDS = Object.keys(P);
       {
         id: 's04-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Kopenhag', yil: 1913, rivayet: false,
+        onBilgi: [
+          { baslik: "Bohr modeli ve enerji", madde: [
+            "Bohr postulates (Bohr varsayımları): electron (elektron) belirli stationary orbits (durağan yörüngeler) üzerinde ışıma yapmadan döner; angular momentum (açısal momentum) L = nħ.",
+            "de Broglie bakışı: orbit (yörünge) çevresine tam sayı wave (dalga) sığmalı, 2πr = nλ; buradan mvr = nħ çıkar.",
+            "Ionisation energy (iyonlaşma enerjisi): electron (elektron) n=1'den sonsuza çıkarmak için gereken energy (enerji); hidrojende 13,6 eV.",
+            "Foton dalga boyu λ = hc/ΔE ile bulunur; hc ≈ 1240 eV·nm. Bohr radius (Bohr yarıçapı) a₀ ≈ 0,053 nm." ] },
+          { baslik: "Sıkışma ve denge", madde: [
+            "Electron (elektron) daha küçük bölgeye sıkışırsa Δx azalır, Δp büyür; momentum (momentum) büyüyünce kinetic energy (kinetik enerji) de büyür.",
+            "Coulomb attraction (Coulomb çekimi) r küçüldükçe potential energy (potansiyel enerji) değerini düşürür.",
+            "Kinetik ve potansiyel katkıların toplamı sonlu bir r değerinde minimum olabilir; bu denge yarıçapı Bohr radius (Bohr yarıçapı) ile aynı büyüklüktedir." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Atom mikroskobu bir electron (elektron) arıyor. O neden nucleus (çekirdek) içine düşmüyor?' },
-          { kim: 'bohr', metin: 'Electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir. Levels arası atlarken photon (foton) yayar.' },
+          { kim: 'bohr', metin: 'Electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir. Levels (seviyeler) arasında atlarken photon (foton) yayar.' },
           { kim: 'anlatici', metin: 'On bir yıl sonra de Broglie ekledi: electron (elektron) da wave (dalga), orbit (yörünge) üzerine tam sayı wave (dalga) sığar.' }
         ]
       },
@@ -10382,21 +10509,21 @@ Q.art.PORTRE_IDS = Object.keys(P);
         bloklar: [
           'Electron (elektron) confined wave (hapsolmuş dalga) olarak davranır',
           'Yalnızca belirli wavelengths (dalga boyları) sığar',
-          'Ground state (temel hal) enerjisi sıfır değildir',
+          'Hapsolmuş wave (dalga) kinetic energy (kinetik enerji) sıfır olamaz',
           'Electron (elektron) daha aşağı düşemez, atom stable (kararlı)'
         ],
-        sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), alt sınır, stable atom (kararlı atom).'
+        sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), lower limit (alt sınır), stable atom (kararlı atom).'
       },
       {
         id: 's04-o08', tip: 'patron', baslik: 'Orbit (Yörünge) Canavarı', kavram: null, agirlik: 1,
         canavar: 'bohr', canavarAd: 'Orbit (Yörünge) Canavarı',
-        giris: 'Electronunu (elektron) nucleus (çekirdek) içine düşüreceğim! Düşemez diyorsan justify (gerekçelendir).',
+        giris: 'Electron (elektron) nucleus (çekirdek) içine düşecek, hemen göreceksin! Düşemez diyorsan justify (gerekçelendir).',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'atom_kararlilik',
-            soru: 'Atomun ground state (temel hal) enerjisi neden vardır?',
+            soru: 'Atom için neden bir lowest energy level (en düşük enerji seviyesi) vardır?',
             secenekler: [
-              sec('Electron wave (elektron dalgası) nucleus (çekirdek) çevresinde sığar, lower limit (alt sınır) oluşur', true, 'Doğru. Confined wave (hapsolmuş dalga) enerjisi sıfır olamaz.'),
+              sec('Electron wave (elektron dalgası) nucleus (çekirdek) çevresinde sığar, lower limit (alt sınır) oluşur', true, 'Doğru. Confined wave (hapsolmuş dalga) kinetic energy (kinetik enerji) sıfır olamaz.'),
               sec('Nucleus (çekirdek) electron (elektron) iter', false, 'Hayır. Nucleus (çekirdek) electron (elektron) çeker.'),
               sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Sebep temperature (sıcaklık) değil, wave nature (dalga doğası).')
             ],
@@ -10405,7 +10532,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
               secenekler: [
                 sec('Artar', true, 'Doğru. Position (konum) daralır, momentum (momentum) ve kinetic energy (kinetik enerji) büyür.'),
                 sec('Azalır', false, 'Hayır. Dar alanda wavelength (dalga boyu) kısalır, energy (enerji) artar.'),
-                sec('Değişmez', false, 'Hayır. Uncertainty principle (belirsizlik ilkesi) sıkıştırmayı sınırlar.')
+                sec('Değişmez', false, 'Hayır. Uncertainty principle (belirsizlik ilkesi): Δx küçülünce Δp büyür.')
               ]
             }
           },
@@ -10416,21 +10543,21 @@ Q.art.PORTRE_IDS = Object.keys(P);
             anahtarFikirler: [
               'Klasikte radiation (ışıma) yapan electron (elektron) nucleus (çekirdek) içine düşmeliydi.',
               'Quantum (kuantum) teoride electron (elektron) confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık).',
-              'Ground state (temel hal) energy (enerji) sıfır değildir, altına inilemez.',
-              'Nucleus (çekirdek) içine sıkışmak kinetic energy (kinetik enerji) artırır (uncertainty principle, belirsizlik ilkesi), denge oluşur.'
+              'Ground state (temel hal) altına inilemez; confined wave (hapsolmuş dalga) kinetic energy (kinetik enerji) sıfır olamaz.',
+              'Nucleus (çekirdek) içine sıkışmak kinetic energy (kinetik enerji) değerini artırır (uncertainty principle, belirsizlik ilkesi), denge oluşur.'
             ],
             yanlisKavramlar: [
               'Electron (elektron) nucleus (çekirdek) tarafından itildiği için düşmez',
               'Atom temperature (sıcaklık) yüzünden kararlıdır'
             ],
             yanlisKavramIds: ['atom_kararlilik', 'sifir_noktasi_sicaklik'],
-            idealCevap: 'Klasik fizikte orbit (yörünge) üzerindeki electron (elektron) radiation (ışıma) yapıp energy (enerji) kaybeder ve nucleus (çekirdek) içine düşerdi. Quantum (kuantum) teoride electron confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık) ve ground state (temel hal) enerjisi sıfır değildir. Nucleus içine daha çok sıkışmak kinetic energy (kinetik enerji) artırdığından electron bir denge durumunda kalır.',
+            idealCevap: 'Klasik fizikte orbit (yörünge) üzerindeki electron (elektron) radiation (ışıma) yapıp energy (enerji) kaybeder ve nucleus (çekirdek) içine düşerdi. Quantum (kuantum) teoride electron confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık) ve ground state (temel hal) altında level yoktur. Nucleus içine daha çok sıkışmak kinetic energy (kinetik enerji) değerini artırdığından electron bir denge durumunda kalır.',
             yedekSecmeli: {
               soru: 'H atom (H atomu) neden stable (kararlı)?',
               secenekler: [
                 sec('Ground state (temel hal) altı yok, electron (elektron) düşemez', true, 'Doğru. Confined wave (hapsolmuş dalga) için lower energy limit (alt enerji sınırı) var.'),
                 sec('Electron nucleus (çekirdek) tarafından itilir', false, 'Yanlış. Nucleus (çekirdek) electron (elektron) çeker.'),
-                sec('Because the atom is too cold (atom çok soğuk olduğu için)', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
+                sec('Atom çok soğuk olduğu için', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
                 sec('Electron (elektron) aslında durur', false, 'Yanlış. Electron durmaz, lowest energy (en düşük enerji) wave state (dalga durumu) içindedir.')
               ]
             },
@@ -10458,7 +10585,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
                 sec('Momentum (momentum), λ = h/p', true, 'Doğru. Momentum (momentum) büyüdükçe λ küçülür.'),
                 sec('Color (renk)', false, 'Yanlış. Color (renk) bu kavramla ilgisiz.'),
                 sec('Volume (hacim)', false, 'Yanlış. Volume (hacim) λ\'yı belirlemez.'),
-                sec('Yalnızca temperature (sıcaklık)', false, 'Yanlış. Doğrudan momentum (momentum) bağlıdır.')
+                sec('Yalnızca temperature (sıcaklık)', false, 'Yanlış. Doğrudan momentum (momentum) değerine bağlıdır.')
               ]
             },
             alt: { soru: 'Electron diffraction (elektron kırınımı) deneyi neyi kanıtlar? Justify (gerekçelendir).' }
@@ -10494,7 +10621,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
         soru: 'Confined particle (hapsolmuş parçacık) için lowest energy (en düşük enerji) neden sıfır değildir?',
         secenekler: [
           sec('Boundary condition (sınır koşulu) dalganın sığmasını gerektirir', true, 'Doğru. Temperature (sıcaklık) değil, boundary condition (sınır koşulu) sebep.'),
-          sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Absolute zero (mutlak sıfır) da E₁ > 0.'),
+          sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Absolute zero (mutlak sıfır) sıcaklığında da E₁ > 0.'),
           sec('Measurement (ölçüm) energy (enerji) ekler', false, 'Hayır. Measurement (ölçüm) olmasa da lower energy (alt enerji) vardır.')
         ],
         kusurSkin: 'tane_siniri'
@@ -12064,7 +12191,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   M('sv-s04-m3', 's04', 'Calculate the energy of the photon emitted in the hydrogen transition n = 3 → n = 2.', '1.89 eV', ['3.40 eV', '10.2 eV', '0.66 eV'], 'ΔE = 13.6 (1/4 − 1/9) = 13.6 × 5/36 ≈ 1.89 eV (red light, about 656 nm).');
   M('sv-s04-m4', 's04', 'Bohr\'s quantisation condition states that the electron angular momentum is:', 'L = nħ', ['L = n/ħ', 'L = ħ/n', 'L = nħ^2'], 'Bohr allowed only orbits where L = m v r = nħ, n = 1, 2, 3...');
   M('sv-s04-m5', 's04', 'Calculate the de Broglie wavelength of an electron accelerated through 100 V (use λ ≈ 1.226 nm / √V).', '0.123 nm', ['1.23 nm', '0.0123 nm', '0.50 nm'], 'λ = 1.226 / √100 = 0.1226 nm, comparable to atomic spacings, which is why electrons diffract from crystals.');
-  M('sv-s04-m6', 's04', 'Why do atoms emit discrete line spectra?', 'Electrons can only occupy discrete energy levels, so transitions release photons of fixed energy', ['Electrons orbit at any radius and radiate at fixed times', 'The nucleus emits photons at fixed frequencies', 'Photons are absorbed by the electron cloud as a continuum'], 'Each transition satisfies hf = E_i − E_f, and only certain energies exist, so only certain frequencies appear.');
+  M('sv-s04-m6', 's04', 'Why do atoms emit discrete line spectra?', 'Only discrete energy levels exist, so photons have fixed energies', ['Electrons orbit at any radius and radiate at fixed times', 'The nucleus emits photons at fixed frequencies', 'Photons are absorbed by the electron cloud as a continuum'], 'Each transition satisfies hf = E_i − E_f, and only certain energies exist, so only certain frequencies appear.');
   M('sv-s04-m7', 's04', 'What is the ionisation energy of hydrogen in its ground state?', '13.6 eV', ['3.4 eV', '1.51 eV', '27.2 eV'], 'It is the energy needed to take the electron from n = 1 (E = −13.6 eV) to E = 0 at infinity.');
   M('sv-s04-m8', 's04', 'The momentum of a particle is doubled. What happens to its de Broglie wavelength?', 'It is halved', ['It is doubled', 'It is unchanged', 'It is quartered'], 'λ = h/p, so λ is inversely proportional to p.');
   K('sv-s04-k1', 's04', 'Bohr postulates', 'State the postulates of the Bohr model of hydrogen and justify why it was introduced despite classical physics predicting that an orbiting electron should radiate.',
@@ -13593,7 +13720,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
         });
       });
     });
-    CURATED.forEach(function(c){ v.push({ en: c[0], tr: c[1], g: 'temel' }); });
+    CURATED.forEach(function(c){ var k = c[0].toLowerCase(); if (gor[k]) return; gor[k] = 1; v.push({ en: c[0], tr: c[1], g: 'temel' }); });
     var enler = {}; v.forEach(function(t){ enler[t.en.toLowerCase()] = 1; });
     v = v.filter(function(t){ return t.g === 'temel' || !enler[t.tr.toLowerCase()]; });
     terimCache = { n: stIds().length, v: v };
