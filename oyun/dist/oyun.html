@@ -73,6 +73,8 @@ html,body{height:100%;margin:0;overflow:hidden}
 #modal-layer[hidden]{display:none}
 #toast-layer{position:fixed;left:50%;bottom:calc(clamp(300px,44vh,346px) + 24px);transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
 @media (max-width:1250px){#hud-voltaj{grid-template-columns:auto 100px 36px}#hud-claude{display:none}}
+@media (max-width:1250px){#hud-path{gap:5px}}
+@media (max-width:900px){#topbar{gap:8px}#hud-station{font-size:16px;flex:0 1 220px}#hud-path{gap:3px;flex:0 0 auto}#hud-path .path-node{width:16px;height:16px}#hud-path .path-node svg{width:9px;height:9px}#hud-voltaj{grid-template-columns:auto 64px 30px;gap:6px}#hud-timer{display:none}}  /* 700x800: üst şerit taşmasın */
 @media (max-height:800px){#runway{min-height:0}}  /* 1100x700: 56vh+dock+şerit taşardı; yol kalan alanı alır */
 #dock:empty::before{content:"Engele yaklaşınca görev burada açılır.";margin:auto;color:var(--muted);font-weight:800;font-size:var(--fs-small)}
 
@@ -125,6 +127,7 @@ html,body{height:100%;margin:0;overflow:hidden}
 #bubble-layer .bubble.canavar::after{left:auto;right:24px}
 #bubble-layer .bubble.anlatici{left:50%;top:8%;max-width:46%;animation:popc .5s ease-out both}
 #bubble-layer .bubble.anlatici::after{left:calc(50% - 9px)}
+@media (max-width:900px){#bubble-layer .bubble{padding:8px 12px;font-size:15px;max-width:66%}#bubble-layer .bubble.runner{left:3%;top:6%}#bubble-layer .bubble.canavar{right:3%;top:42%}#bubble-layer .bubble.anlatici{max-width:84%;top:5%}}  /* 700x800: baloncuk yol sahnesinde kırpılmasın */
 @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
 @keyframes popc{from{transform:translateX(-50%) scale(.7);opacity:0}to{transform:translateX(-50%);opacity:1}}
 #bubble-layer .bubble.anlatici{transform:translateX(-50%)}
@@ -148,6 +151,7 @@ html,body{height:100%;margin:0;overflow:hidden}
 
 /* toast */
 .toast{pointer-events:auto;padding:10px 18px;border-radius:var(--r);border:var(--bw) solid var(--line);background:var(--panel2);font-weight:800;box-shadow:var(--shadow-sm);animation:pop .3s ease-out both}
+.toast.ust{position:fixed;top:78px;left:0;right:0;margin:0 auto;width:max-content;max-width:90vw;pointer-events:none;z-index:70}  /* kart/soru metnini örtmesin: HUD altında */
 .toast.iyi{border-color:var(--good)}
 .toast.kotu{border-color:var(--bad)}
 .toast.buyuk{font-family:var(--font-d);font-weight:400;font-size:64px;padding:18px 36px;color:#fff;background:var(--magenta);border-color:var(--ink-dark);-webkit-text-stroke:4px var(--ink-dark);paint-order:stroke fill;transform:rotate(-3deg)}
@@ -170,6 +174,9 @@ html,body{height:100%;margin:0;overflow:hidden}
 #dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 56px);overflow:auto;display:flex;align-items:safe center;justify-content:center}
 #dock .kavram-sim canvas,#dock .kavram-sim svg{max-height:100%;max-width:100%;object-fit:contain}
 #dock .kavram-butonlar{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap}
+/* "Nasıl yapılır?" köşe düğmesi geri bildirim kutusunun son sözcüklerini örtmesin */
+#dock:has(> .ob-onbilgi-ac) .dusman-soru,#dock:has(> .ob-onbilgi-ac) .aciklama,#dock:has(> .ob-onbilgi-ac) .p5-box{margin-right:140px}
+#dock:has(> .ob-onbilgi-ac) .tahmin-soru,#dock:has(> .ob-onbilgi-ac) .dusman-soru{margin-right:130px !important}  /* "Nasıl yapılır?" düğmesi soru metnini örtmesin (inline margin'i ezmek için !important) */
 @media (max-height:800px){#dock{padding:8px 12px;gap:6px}}
 @media (max-height:800px){#dock .opts{gap:5px}#dock .opt{padding:5px 12px;min-height:38px}}  /* 4 şık + Onayla 1366x768 dock içinde kaydırmasız */
 @media (max-height:1000px){#dock .opt{min-height:34px;padding:4px 12px;gap:8px}#dock .opt .num{width:24px;height:24px}}
@@ -199,7 +206,7 @@ html,body{height:100%;margin:0;overflow:hidden}
 .kk-grup-ust{display:flex;align-items:center;gap:8px;padding:6px 10px;background:linear-gradient(90deg,color-mix(in srgb,var(--kk-renk) 34%,var(--panel)),var(--panel));border-bottom:4px solid var(--kk-renk)}
 .kk-grup-ust .a8-icon{flex:0 0 auto;display:inline-flex}
 .kk-grup-ust .a8-icon svg{width:36px;height:30px}
-.kk-grup-ad{font-family:var(--font-d);font-size:17px;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kk-grup-ad{font-family:var(--font-d);font-size:17px;flex:1 1 auto;min-width:0;line-height:1.2;overflow-wrap:anywhere}
 .kk-ilerleme{flex:0 0 auto;font-size:var(--fs-small);font-weight:800;padding:1px 9px;border-radius:99px;border:2px solid var(--kk-renk);background:var(--panel2)}
 .kk-grup[data-tam="1"] .kk-ilerleme{background:var(--kk-renk);color:var(--ink-dark)}
 .kk-cubuk{height:5px;background:var(--panel2)}
@@ -992,7 +999,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     panelEl.appendChild(el('p', '', s.konu));
     if (s.sure) panelEl.appendChild(el('p', '', 'Süre hedefi: ' + s.sure + ' dk'));
     if (!acik) { panelEl.appendChild(el('p', '', 'Kilitli. Önceki istasyonu bitir.')); return; }
-    var b = btn(p.enSon ? 'Devam et' : 'Başla', 'primary', function(){ startStation(s, p.enSon || 0); });
+    var b = btn(p.tamam ? 'Yeniden oyna' : (p.enSon ? 'Devam et' : 'Başla'), 'primary', function(){ startStation(s, p.tamam ? 0 : (p.enSon || 0)); });
     panelEl.appendChild(b);
     if (s.engeller && s.engeller.length) {
       panelEl.appendChild(el('h4', '', 'İstediğin engele atla'));
@@ -1014,7 +1021,10 @@ html,body{height:100%;margin:0;overflow:hidden}
     var top = Object.keys(by).map(function(k){ return by[k]; }).sort(function(a, b){ return b.w - a.w; }).slice(0, 3);
     return { sayi: acik.length, top: top };
   }
-  function kavramAd(k){ return String(k || '?').replace(/_/g, ' '); }
+  /* Kavram kimliği -> ekranda gösterilecek ad (ham iç anahtar görünmesin); bilinmeyen kimlik için '_' -> boşluk. */
+  var KAVRAM_AD = { "kati_turleri": "Solid types (katı türleri)", "tane_siniri": "Grain boundary (tane sınırı)", "cz_tohum": "Seed crystal in CZ (CZ yönteminde tohum kristal)", "kristal_neden": "Why crystals (neden kristal)", "kristal_pahali": "Crystal cost (kristal maliyeti)", "atom_sayisi": "Atoms per unit cell (hücre başına atom)", "birim_hucre": "Unit cell (birim hücre)", "miller_duzlem": "Miller indices of a plane (düzlemin Miller indisleri)", "miller_yon": "Direction indices (yön indisleri)", "duzlem_neden": "Why crystal planes matter (kristal düzlemi neden önemli)", "karacisim_felaket": "Ultraviolet catastrophe (mor ötesi felaketi)", "planck_paket": "Planck quantum (Planck paketi)", "fotoelektrik_siddet": "Intensity in photoelectric effect (fotoelektrik olayda şiddet)", "kuantum_rastgele_sanisi": "Quantum randomness (kuantum rastgeleliği)", "atom_kararlilik": "Atomic stability (atom kararlılığı)", "ayrik_spektrum": "Discrete spectrum (ayrık spektrum)", "debroglie_dalga": "de Broglie wave (de Broglie dalgası)", "bohr_seviye": "Bohr energy levels (Bohr enerji seviyeleri)", "sifir_noktasi_sicaklik": "Zero-point energy (sıfır noktası enerjisi)", "psi_olasilik": "Probability density (olasılık yoğunluğu)", "schrodinger_girdi_cikti": "Schrödinger equation (Schrödinger denklemi)", "kuantalasma_sinir": "Quantization from boundary conditions (sınır koşullarından kuantalaşma)", "schrodinger_cokme": "Collapse (çökme)", "kuantalasma_olcum": "Energy quantization (enerji kuantalaşması)", "basamak_yansima": "Reflection at a step (basamakta yansıma)", "bariyer_sonumlenme": "Decay in a barrier (bariyerde sönümlenme)", "tunelleme_kalinlik": "Tunneling and thickness (tünelleme ve kalınlık)", "dalga_surekli": "Continuity of the wave function (dalga fonksiyonunun sürekliliği)", "postulatlar": "Postulates (postülalar)", "olcum_cokme": "Measurement collapse (ölçümde çökme)", "ozdeger_olcum": "Eigenvalue measurement (özdeğer ölçümü)", "evrim_belirlenimci": "Deterministic evolution (belirlenimci evrim)", "olasilik_katsayi": "Probability coefficients (olasılık katsayıları)", "belirsizlik_dalga": "Uncertainty from wave nature (dalga doğasından belirsizlik)", "belirsizlik_alet": "Uncertainty vs instrument error (belirsizlik ve alet hatası)", "eslenik_degisken": "Conjugate variables (eşlenik değişkenler)", "belirsizlik_makro": "Uncertainty in macroscopic objects (makroskopik cisimlerde belirsizlik)", "bant_yarilma": "Band splitting (bant yarılması)", "pauli_dislama": "Pauli exclusion principle (Pauli dışlama ilkesi)", "bant_aralik": "Bandgap (yasak enerji aralığı)", "bant_sonsuz_kuyu": "Bands from wells (kuyulardan bantlar)", "iletken_olasilik": "Conduction and probability (iletim ve olasılık)", "fermi_dagilim": "Fermi-Dirac distribution (Fermi-Dirac dağılımı)", "fermi_seviye": "Fermi level (Fermi seviyesi)", "tasiyici_np": "Carrier densities n and p (taşıyıcı yoğunlukları)", "drift_hiz": "Drift velocity (sürüklenme hızı)", "fermi_hep_dolu": "Occupation at Fermi level (Fermi seviyesinde doluluk)", "drift_ivme": "Drift and acceleration (sürüklenme ve ivme)", "hesap_atom": "Calculation (hesap): atoms per cell", "hesap_packing": "Calculation (hesap): packing fraction", "hesap_miller": "Calculation (hesap): Miller indices", "hesap_foton": "Calculation (hesap): photon", "hesap_bohr": "Calculation (hesap): Bohr model", "hesap_debroglie": "Calculation (hesap): de Broglie wavelength", "hesap_kuyu": "Calculation (hesap): potential well", "hesap_basamak": "Calculation (hesap): potential step", "hesap_tunel": "Calculation (hesap): tunneling", "hesap_olcum": "Calculation (hesap): measurement", "hesap_belirsizlik": "Calculation (hesap): uncertainty", "hesap_bant": "Calculation (hesap): bandgap", "hesap_fermi": "Calculation (hesap): Fermi-Dirac", "hesap_np": "Calculation (hesap): mass-action law", "hesap_drift": "Calculation (hesap): drift" };
+  Q.util.kavramAd = function(k){ var a = KAVRAM_AD[k]; return a || String(k || '?').replace(/_/g, ' '); };
+  function kavramAd(k){ return Q.util.kavramAd(k); }
   var TUR_AD = { 'emin-yanlis': 'Emindin, yanlış', yanlis: 'Yanlış', bilinmeyen: 'Bilmiyordun', sans: 'Şans eseri doğru' };
   function openHata(){
     var L = getLayer(), back = backdrop(false), p = el('div', 'panel modal');
@@ -1437,7 +1447,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     var alt = el('div', 'fb-alt');
     if (acik) {
       var b = el('button', 'btn primary fb-eylem', tamam ? 'Yeniden oyna' : (p.enSon ? 'Devam et' : 'Onar')); b.type = 'button';
-      b.addEventListener('click', function(){ ctx.baslat(s, p.enSon || 0); });
+      b.addEventListener('click', function(){ ctx.baslat(s, tamam ? 0 : (p.enSon || 0)); });
       alt.appendChild(b);
     } else {
       var i0 = ctx.st.indexOf(s), once = ctx.st[i0 - 1];
@@ -3336,9 +3346,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
   ui.toast = function(metin, o){
     o = o || {};
     var layer = $('toast-layer'); if (!layer) return null;
-    var t = el('div', 'toast ' + (o.tur || 'bilgi') + (o.buyuk ? ' buyuk' : ''), metin);
+    var t = el('div', 'toast ' + (o.tur || 'bilgi') + (o.buyuk ? ' buyuk' : '') + (o.ust ? ' ust' : ''), metin);
     t.setAttribute('role', 'status');
-    layer.appendChild(t);
+    (o.ust ? document.body : layer).appendChild(t);  /* layer transform'lu: fixed için body */
     setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, o.ms || (o.buyuk ? 1800 : 2600));
     return t;
   };
@@ -3712,7 +3722,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     var sayi = ilr[id].kisaDevre;
     Q.bus.emit('kisa-devre', { stationId: id, sayi: sayi });
     if (Q.save.write) Q.save.write();
-    if (hasUI('toast')) Q.ui.toast('KISA DEVRE!', { tur: 'kotu', ms: 2200 });
+    if (hasUI('toast')) Q.ui.toast('KISA DEVRE!', { tur: 'kotu', ms: 2200, ust: true });
     return temelTur(Q.data.stations[id]).then(function(){
       setVoltaj(70);
       if (sayi >= 3 && hasUI('toast')) Q.ui.toast('Tamir modu açıldı: hasar yarıya indi.', { tur: 'bilgi', ms: 3500 });
@@ -5178,7 +5188,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       if (typeof ResizeObserver !== 'undefined') {
         ro = new ResizeObserver(boyutla); ro.observe(cv);
       } else { onWin = boyutla; window.addEventListener('resize', onWin); }
-      if (api.hint) { try { api.hint('Low T: f(E) becomes a step (basamak); np = nᵢ² does not depend on E_F.'); } catch (e) {} }
+      if (api.hint) { try { api.hint('T düşünce f(E) step function (basamak fonksiyonu) olur; np = nᵢ² çarpımı E_F konumuna bağlı değildir.'); } catch (e) {} }
       boyutla(); guncelle();
       raf = requestAnimationFrame(anim);
 
@@ -6445,10 +6455,10 @@ Q.art.PORTRE_IDS = Object.keys(P);
     r2.appendChild(zeroBtn);
 
     /* 3) Tel <-> Kuyu */
-    var r3 = row();
-    var modBtn = mkBtn('', 1);
+    var modBtn = mkBtn('', 2);
     on(modBtn, 'click', function () { mod = mod === 'kuyu' ? 'tel' : 'kuyu'; refresh(); });
-    r3.appendChild(modBtn);
+    r2.style.flexWrap = 'wrap';
+    r2.appendChild(modBtn);  /* ayri satir yerine seviye satirinda: 1366x768 dock'a sigsin */
 
     on(slider, 'input', function () { L = clamp(+slider.value, 1, 10); shownL = L; flat = false; amp = 1; refresh(); });
 
@@ -6513,7 +6523,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
       if (destroyed) { return; }
       var dpr = window.devicePixelRatio || 1;
       W = Math.max(220, host.clientWidth || 300);
-      H = Math.max(150, Math.min(260, Math.round((window.innerHeight || 800) * 0.2)));
+      var ih = window.innerHeight || 800;
+      H = ih <= 800 ? Math.max(100, Math.round(ih * 0.14)) : Math.max(150, Math.min(260, Math.round(ih * 0.2)));
       canvas.style.height = H + 'px';
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -7106,10 +7117,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
       }
       function yuzKez(){
         var i;
+        sayac = [0, 0];            /* histogram ve metin yalnızca bu 100'lük taze seriyi göstersin */
         for (i = 0; i < 100; i++) kaydet(Math.random() < c1sq ? 1 : 2);
         hazirla();
         yuzYapti = true;
-        sonMetin = '100 fresh preparation (taze hazırlık): total (toplam) ' + sayac[0] + ' kez 1, ' + sayac[1] + ' kez 2.';
+        sonMetin = '100 fresh preparation (taze hazırlık): ' + sayac[0] + ' kez result (sonuç) 1, ' + sayac[1] + ' kez result (sonuç) 2.';
         guncelle(); bildir();
       }
       sl.addEventListener('input', function(){
@@ -7173,7 +7185,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
         }
         c.textAlign = 'left';
         if (collapsed) {
-          c.fillStyle = yel; c.font = '400 ' + Math.round(Math.min(34, H * 0.14)) + 'px ' + col('--font-d', 'Impact, sans-serif');
+          var fs = Math.round(Math.min(34, H * 0.14)), fd = col('--font-d', 'Impact, sans-serif');
+          c.fillStyle = yel; c.font = '400 ' + fs + 'px ' + fd;
+          while (fs > 12 && c.measureText('COLLAPSED (ÇÖKTÜ)').width > W * 0.36 - 6) { fs -= 2; c.font = '400 ' + fs + 'px ' + fd; }
           c.fillText('COLLAPSED (ÇÖKTÜ)', W * 0.64, H * 0.12);
         } else {
           c.fillStyle = muted; c.font = '700 16px ' + fb; c.fillText('superposition (süperpozisyon)', W * 0.64, H * 0.12);
@@ -7196,7 +7210,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
           else c.strokeRect(sx + i * sw + 0.5, sy + 0.5, sw - 4, sw - 1);
         }
         c.fillStyle = muted; c.textAlign = 'left'; c.font = '600 16px ' + fb;
-        c.fillText('last 20 measurement (ölçüm)', sx, sy - 12);
+        if (sx + 20 * sw + 8 + 240 <= W) c.fillText('last 20 measurement (ölçüm)', sx + 20 * sw + 8, sy + sw / 2);
+        else c.fillText('last 20 measurement (ölçüm)', sx, sy - 12);
       }
       function dongu(now){
         raf = 0;
@@ -7625,8 +7640,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
   Q.obs.register('kavram', {
     tip: 'kavram',
     async enter(ob, ctx){
-      var simObj = null, timers = [];
+      var simObj = null, timers = [], sigKaldir = null;
       function temizle(){
+        if (sigKaldir) { sigKaldir(); sigKaldir = null; }
         timers.forEach(function(t){ clearTimeout(t); });
         timers = [];
         if (simObj && typeof simObj.destroy === 'function') safe(function(){ simObj.destroy(); });
@@ -7679,14 +7695,33 @@ Q.art.PORTRE_IDS = Object.keys(P);
         butonlar.appendChild(ipBtn); butonlar.appendChild(gecBtn);
         ipBtn.addEventListener('click', function(){
           hintLine.textContent = sonHint || 'Kontrolleri dene, kapı tepki verir.';
-          hintLine.hidden = false;
+          hintLine.hidden = false; sigdir();
         });
         gecBtn.addEventListener('click', function(){
           if (acildi || kapandi) return;
           kapandi = true; bitir('gec');
         });
-        timers.push(setTimeout(function(){ ipBtn.hidden = false; }, tIpucu));
-        timers.push(setTimeout(function(){ gecBtn.hidden = false; }, tGec));
+        /* Alçak ekranda (1366x768) sim dock'a sığmazsa içeriği ölçekle: kırpılma/taşma olmasın */
+        function sigdir(){
+          safe(function(){
+            var c = simHost.firstElementChild; if (!c) return;
+            c.style.zoom = ''; c.style.width = '';
+            var dk = document.getElementById('dock') || host;
+            var z = 1;
+            for (var i = 0; i < 5; i++) {
+              var tasma = dk.scrollHeight - dk.clientHeight;
+              if (tasma <= 1 || z <= 0.55) break;
+              var h = simHost.scrollHeight;
+              z = Math.max(0.55, z * Math.max(0.5, (h - tasma - 3) / h));
+              c.style.zoom = String(z); c.style.width = (100 / z) + '%';
+            }
+          });
+        }
+        [0, 120, 500].forEach(function(ms){ timers.push(setTimeout(sigdir, ms)); });
+        window.addEventListener('resize', sigdir);
+        sigKaldir = function(){ window.removeEventListener('resize', sigdir); };
+        timers.push(setTimeout(function(){ ipBtn.hidden = false; sigdir(); }, tIpucu));
+        timers.push(setTimeout(function(){ gecBtn.hidden = false; sigdir(); }, tGec));
 
         var how = await bitisSozu;
         kapandi = true;
@@ -8737,9 +8772,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
           'The crystal lattice also allows controlled doping: donor or acceptor atoms placed on lattice sites give a known density of electrons or holes, which is needed for p-n junctions and transistors.',
           'A single crystal can be made extremely pure and almost free of defects, which gives high carrier mobility and long carrier lifetime.',
           'In an amorphous solid there is no long-range order, so there are dangling bonds and localized states in the gap; the carriers are trapped or scatter strongly and the mobility is low.',
-          'In a polycrystalline solid the grain boundaries scatter carriers, act as recombination centres and traps, and let dopants segregate, so the properties change from grain to grain.',
+          'In a polycrystalline solid the grain boundaries scatter carriers, act as recombination centers and traps, and let dopants segregate, so the properties change from grain to grain.',
           'Crystal planes also allow orientation-dependent processing: wafers are cut along (100) or (111) planes, they can be etched or cleaved along planes, and epitaxial layers grow on the crystal as a template.',
-          'Therefore only crystals give predictable, controllable and reproducible device behaviour, which is why the semiconductor industry is built on single-crystal wafers.'
+          'Therefore only crystals give predictable, controllable and reproducible device behavior, which is why the semiconductor industry is built on single-crystal wafers.'
         ],
         anahtar: [
           'Crystal = long-range periodic order (lattice + basis), which gives a periodic potential.',
@@ -8767,7 +8802,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           'A small seed crystal with a chosen orientation, for example (100) or (111), is dipped into the melt and pulled upwards slowly while it rotates.',
           'The silicon atoms of the melt attach to the seed and continue its lattice, so the whole ingot solidifies as one continuous crystal with the orientation of the seed.',
           'The main reason for growing a single crystal is that it has no grain boundaries; the whole wafer has the same, uninterrupted periodic lattice.',
-          'Grain boundaries contain dangling bonds and defects that scatter carriers and act as traps and recombination centres, which lowers the mobility and carrier lifetime and causes leakage currents.',
+          'Grain boundaries contain dangling bonds and defects that scatter carriers and act as traps and recombination centers, which lowers the mobility and carrier lifetime and causes leakage currents.',
           'In a single crystal the band structure is the same everywhere, so the device properties are uniform, predictable and reproducible over the whole wafer and between wafers.',
           'A single crystal also allows exact doping control, the choice of the surface orientation, and the growth of epitaxial layers on the wafer.',
           'Rotation and slow pulling keep the temperature and dopant distribution uniform and the diameter constant, so a large, round, nearly defect-free ingot is obtained and then sliced into wafers.',
@@ -8777,7 +8812,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           'Seed crystal is dipped into the melt and pulled while rotating.',
           'The melt solidifies on the seed with the same lattice and orientation (one continuous crystal).',
           'Main reason: no grain boundaries, so no scattering/trapping of carriers.',
-          'Higher mobility and lifetime, fewer leakage and recombination centres.',
+          'Higher mobility and lifetime, fewer leakage and recombination centers.',
           'Uniform, predictable, reproducible properties across the wafer; controlled orientation and doping.'
         ],
         hatalar: [
@@ -8862,10 +8897,10 @@ Q.art.PORTRE_IDS = Object.keys(P);
           'Assumption (from the figure): an electron of mass m; V = ∞ for x ≤ 0 and x ≥ 50 nm; V = 0 for 0 < x < 20 nm and 30 < x < 50 nm; and a barrier V₀ = 9 eV for 20 < x < 30 nm. We use ħ²/2m = 0.0381 eV·nm².',
           'Regions and solutions for E < V₀: define k = √(2mE)/ħ and κ = √(2m(V₀ − E))/ħ. Region I (0 < x < 20): ψ = A sin kx, because ψ(0) = 0. Region II (20 < x < 30): ψ = B e^{κx} + C e^{−κx}. Region III (30 < x < 50): ψ = D sin k(50 − x), because ψ(50) = 0.',
           'Boundary conditions: ψ and dψ/dx are continuous at x = 20 nm and x = 30 nm. These four conditions determine B/A, C/A, D/A and the eigenvalue equation.',
-          'The potential is symmetric about x = 25 nm, so the solutions are even or odd about the centre. Putting x′ = x − 25 nm, region II is ψ = B cosh κx′ (even) or B sinh κx′ (odd).',
+          'The potential is symmetric about x = 25 nm, so the solutions are even or odd about the center. Putting x′ = x − 25 nm, region II is ψ = B cosh κx′ (even) or B sinh κx′ (odd).',
           'Matching ψ′/ψ at x′ = 5 nm (the well side is ψ ∝ sin k(25 − x′), so ψ′/ψ = −k cot 20k with lengths in nm) gives the eigenvalue equations: even: κ tanh(5κ) = −k cot(20k); odd: κ coth(5κ) = −k cot(20k).',
           'For energies far below the barrier, κ·5 nm ≈ 77 (κ ≈ 15.4 nm⁻¹ at E ≈ 0), so tanh(5κ) = coth(5κ) = 1 to within e^{−150}. Both equations become the same equation, tan(20k) = −k/κ.',
-          'The tunnelling factor is e^{−2κd} with d = 10 nm, κd ≈ 154, so e^{−2κd} ≈ 10⁻¹³⁴: the two 20-nm wells are completely decoupled. Every level is doubly degenerate (the splitting is about 10⁻⁷⁰ eV for n = 1).',
+          'The tunneling factor is e^{−2κd} with d = 10 nm, κd ≈ 154, so e^{−2κd} ≈ 10⁻¹³⁴: the two 20-nm wells are completely decoupled. Every level is doubly degenerate (the splitting is about 10⁻⁷⁰ eV for n = 1).',
           'Approximation used: neglect the penetration into the barrier, ψ(20) = ψ(30) = 0. Then each well is an infinite well of width a = 20 nm: φ_n(x) = √(2/a) sin(nπx/a) = √(1/10 nm) sin(nπx/20 nm), n = 1, 2, 3, …, and E_n = n²π²ħ²/(2ma²) = 0.376 n²/a² eV (a in nm) = 0.94 n² meV.',
           'Wave functions: ψ_n^± = (1/√2)[φ_n(x) ± φ_n(50 nm − x)], with φ_n(x) = √(2/a) sin(nπx/a) for 0 < x < 20 nm and φ_n = 0 elsewhere; ψ⁺ is even and ψ⁻ is odd about x = 25 nm. Any combination, for example the electron localized in the left well, is also an eigenstate. In the barrier ψ decays as e^{−κ(20 nm − x)} and is practically zero.',
           'Exact eigenvalues (Python check of the equation above): the finite barrier lets the wave penetrate by 1/κ ≈ 0.065 nm, so the effective width is a + 1/κ and E_n ≈ 0.934 n² meV. Numerical values: E₁ = 0.934 meV, E₂ = 3.74 meV, E₃ = 8.41 meV, E₄ = 14.9 meV, E₅ = 23.3 meV, E₁₀ = 0.0934 eV, E₂₀ = 0.374 eV, E₅₀ = 2.33 eV, E₉₀ = 7.55 eV; each is a doublet.',
@@ -8875,7 +8910,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           'Divide the potential into three regions; for E < 9 eV use sine waves where V = 0 and exponentials e^{±κx} in the barrier.',
           'Boundary conditions: ψ = 0 at 0 and 50 nm; ψ and ψ′ continuous at 20 and 30 nm.',
           'Eigenvalue equation from symmetry: κ tanh(5κ) = −k cot(20k) (even), κ coth(5κ) = −k cot(20k) (odd).',
-          'κd ≈ 154, so the tunnelling is negligible: two independent 20-nm infinite wells, doubly degenerate levels.',
+          'κd ≈ 154, so the tunneling is negligible: two independent 20-nm infinite wells, doubly degenerate levels.',
           'ψ_n = √(2/a) sin(nπx/a) with a = 20 nm (or even/odd combinations of the two wells).',
           'E_n = n²π²ħ²/(2ma²) = 0.376 n²/a² eV = 0.94 n² meV (E₁ ≈ 0.94 meV).',
           'The approximation must be stated: valid for E ≪ V₀ (E < 9 eV); above 9 eV the electron is not confined to one well.'
@@ -8927,9 +8962,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
         text: 'From a quantum mechanical perspective, why do allowed energies in periodic structures appear as continuous bands?',
         model: [
           'An isolated atom has discrete energy levels, because the electron is bound and its wave function must satisfy boundary conditions.',
-          'In a crystal there are about N ~ 10²² atoms per cm³ at distances of a few ångströms, so the wave functions of neighbouring atoms overlap and the electron feels the periodic potential of the whole lattice.',
+          'In a crystal there are about N ~ 10²² atoms per cm³ at distances of a few ångströms, so the wave functions of neighboring atoms overlap and the electron feels the periodic potential of the whole lattice.',
           'Tight-binding picture: when N atoms are brought together, the N coupled systems have N slightly different states for each atomic level. Because of the Pauli exclusion principle, no two electrons can occupy the same state, so the original level must split into N distinct levels.',
-          'The width of the band is set by the overlap (coupling) of neighbouring atoms, a few eV, so the spacing between neighbouring levels is about 10⁻²² eV, far below kT = 0.026 eV. The N levels therefore look like a continuous band.',
+          'The width of the band is set by the overlap (coupling) of neighboring atoms, a few eV, so the spacing between neighboring levels is about 10⁻²² eV, far below kT = 0.026 eV. The N levels therefore look like a continuous band.',
           'Wave picture: in a periodic potential V(x + a) = V(x) the solutions are Bloch waves ψ_k(x) = u_k(x) e^{ikx}, with u_k periodic (Bloch theorem), and the energy E(k) is a continuous function of the wave number k.',
           'Near k = nπ/a the wavelength satisfies the Bragg condition, so the wave is reflected by the lattice and forms standing waves. The two standing waves pile up the charge at different places (on the ions or between them) and have different energies.',
           'This produces an energy gap at the Brillouin-zone boundary: the allowed energies are continuous bands E(k) and the forbidden regions are the bandgaps (Kronig-Penney model).',
@@ -8937,7 +8972,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           'Result: allowed energies form quasi-continuous bands separated by bandgaps. The filling of the bands (valence band, conduction band) with 2N states per band explains metals, insulators and semiconductors.'
         ],
         anahtar: [
-          'Isolated atom: discrete levels; in a crystal neighbouring wave functions overlap.',
+          'Isolated atom: discrete levels; in a crystal neighboring wave functions overlap.',
           'Pauli exclusion principle: N atoms give N distinct (slightly shifted) levels for each atomic level.',
           'N ~ 10²² levels within a few eV: spacing ≪ kT, so the band is quasi-continuous.',
           'Periodic potential: Bloch waves ψ = u_k(x) e^{ikx} with continuous k and E(k).',
@@ -9120,7 +9155,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       '.hg-ver-b{color:var(--muted);font-size:var(--fs-small)}.hg-ver{margin:0;padding-left:20px;color:var(--cyan);font-size:15px}.hg-ver li{margin:1px 0}' +
       '.hg-adim{padding:6px 10px;border:2px solid var(--line);border-radius:8px;background:var(--panel2);display:flex;flex-direction:column;gap:5px}' +
       '.hg-adim.bitti{opacity:.82}.hg-adim h4{margin:0;color:var(--cyan);font-size:16px}.hg-adim p{margin:0}' +
-      '.hg-formul{font-family:Georgia,"Times New Roman",serif;font-size:18px;padding:4px 10px;border-left:4px solid var(--yellow);background:rgba(255,255,255,.06);overflow-wrap:anywhere}.hg-formul sup,.hg-formul sub{font-size:.7em}' +
+      '.hg-formul{white-space:pre-wrap;font-family:Georgia,"Times New Roman",serif;font-size:18px;padding:4px 10px;border-left:4px solid var(--yellow);background:rgba(255,255,255,.06);overflow-wrap:anywhere}.hg-formul sup,.hg-formul sub{font-size:.7em}' +
       '.hg-kod{margin:0;padding:6px 8px;border-radius:6px;background:rgba(0,0,0,.35);font:12px/1.35 monospace;white-space:pre-wrap;overflow:auto}' +
       '.hg-gir{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.hg-gir input{background:var(--panel2);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:5px 10px;font:inherit;width:170px}' +
       '.hg-opts{display:flex;flex-direction:column;gap:5px}.hg-opts .opt{min-height:34px;text-align:left}' +
@@ -9220,6 +9255,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
         kutu.appendChild(yaz(el('h4'), (i + 1) + '. ' + String(adim.baslik).replace(/^\s*\d+\s*[.)]\s*/, '')));
         var yer = el('div'); yer.style.cssText = 'display:flex;flex-direction:column;gap:5px';
         kutu.appendChild(yer); sag.appendChild(kutu);
+        sag.scrollTop = sag.scrollHeight;
         var ilkYanlis = true;
         if (q) {
           yer.appendChild(p('', q.soru));
@@ -9243,7 +9279,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             var sirali = Q.util && Q.util.shuffle ? Q.util.shuffle(q.secenekler.map(function(s){ return s; })) : q.secenekler.slice();
             sirali.forEach(function(s, pos){
               var b = el('button', 'opt hg-sec'); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
-              b.appendChild(el('span', 'num', String(pos + 1))); b.appendChild(el('span', 't', s.t));
+              b.appendChild(el('span', 'num', String(pos + 1))); b.appendChild(yaz(el('span', 't'), s.t));
               b.addEventListener('click', function(){
                 if (dogruSag || b.disabled) return;
                 secili = pos; optBtns.forEach(function(x, j){ x.setAttribute('aria-pressed', j === pos ? 'true' : 'false'); });
@@ -9257,6 +9293,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             yer.appendChild(ops); sat.appendChild(onay); yer.appendChild(sat);
           }
           yer.appendChild(fb); yer.appendChild(cozum);
+          sag.scrollTop = sag.scrollHeight;
           var yardim = null;
           await new Promise(function(res){
             function dogruCoz(){ dogruSag = true; res(); }
@@ -9266,6 +9303,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
               if (k.gecersiz) { fb.className = 'hg-fb kotu'; fb.textContent = q.sayiCevap ? 'Bir sayı gir (örnek: 1,5 ya da 2e-4).' : 'Önce bir şık seç.'; return; }
               if (k.ok) {
                 fb.className = 'hg-fb iyi'; fb.textContent = 'Doğru.';
+                if (yardim && yardim.parentNode) yardim.parentNode.removeChild(yardim);
                 if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; });
                 dogruCoz();
               } else {
@@ -9288,7 +9326,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
                     yardim.appendChild(ob2);
                   }
                   yardim.appendChild(dv); yer.appendChild(yardim);
-                  dv.addEventListener('click', function(){ if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; }); dogruSag = true; acikla(kutu, adim, cozum); res(); });
+                  dv.addEventListener('click', function(){ if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; }); dogruSag = true; acikla(kutu, adim, cozum); if (yardim && yardim.parentNode) yardim.parentNode.removeChild(yardim); res(); });
                 }
                 if (giris) { giris.select(); giris.focus(); }
                 sag.scrollTop = sag.scrollHeight;
@@ -9389,7 +9427,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     olcum: 'Measurement & expectation value (ölçüm, beklenen değer)',
     belirsizlik: 'Uncertainty principle (belirsizlik ilkesi)',
     basamak: 'Potential step (basamak potansiyeli)',
-    tunel: 'Barrier tunnelling (bariyer tünelleme)',
+    tunel: 'Barrier tunneling (bariyer tünelleme)',
     bant: 'Bandgap & photon (yasak enerji aralığı, foton)',
     fermi: 'Fermi-Dirac distribution (Fermi-Dirac dağılımı)',
     np: 'Carrier concentration (taşıyıcı yoğunluğu, np = n_{i}²)',
@@ -9415,10 +9453,10 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   /* ================= s01 · Kristal yapı ================= */
   G('atom-fcc', 's01', true, 'atom', 'alistirma', 1, 'Atoms in an FCC unit cell',
-    'An FCC conventional unit cell has atoms at the 8 corners and at the centres of the 6 faces. How many atoms belong to one conventional cell?',
-    ['Corner atom: shared by 8 cells', 'Face-centre atom: shared by 2 cells'],
-    [S('Köşe atomları', 'Bir köşe atomu 8 hücrenin ortak noktasıdır; hücreye yalnızca 1/8\'i düşer. 8 köşe toplam kaç atom eder?', '8 × 1/8', N('Köşelerden gelen toplam atom sayısı?', 1, 'atom')),
-     S('Yüz merkezleri', 'Yüz merkezindeki atom iki hücre tarafından paylaşılır (1/2). 6 yüz toplam kaç atom eder?', '6 × 1/2', N('Yüzlerden gelen toplam atom sayısı?', 3, 'atom')),
+    'An FCC conventional unit cell has atoms at the 8 corners and at the centers of the 6 faces. How many atoms belong to one conventional cell?',
+    ['Corner atom: shared by 8 cells', 'Face-center atom: shared by 2 cells'],
+    [S('Corner atoms (köşe atomları)', 'Bir köşe atomu 8 hücrenin ortak noktasıdır; hücreye yalnızca 1/8\'i düşer. 8 köşe toplam kaç atom eder?', '8 × 1/8', N('Köşelerden gelen toplam atom sayısı?', 1, 'atom')),
+     S('Face centers (yüz merkezleri)', 'Yüz merkezindeki atom iki hücre tarafından paylaşılır (1/2). 6 yüz toplam kaç atom eder?', '6 × 1/2', N('Yüzlerden gelen toplam atom sayısı?', 3, 'atom')),
      S('Toplam', 'İkisini topla. Karşılaştırma için: sc = 8·(1/8) = 1, bcc = 8·(1/8) + 1 = 2, diamond = fcc 4 + hücre içi 4 = 8.', 'N = 8·(1/8) + 6·(1/2) = 1 + 3 = 4')],
     { deger: 4, birim: 'atom/hücre', metin: 'N = 4 atoms per conventional cell' },
     'Köşe = 1/8, yüz = 1/2, hücre içi = 1. "14 atom" demek (tüm noktaları tam saymak) en sık puan kaybı. Hücre başına atom sayısı doluluk oranı ve yoğunluk hesabının ilk adımıdır.');
@@ -9426,37 +9464,37 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('si-yogunluk', 's01', true, 'atom', 'alistirma', 2, 'Atomic density of silicon',
     'Silicon has the diamond structure with a cubic conventional cell of side a = 0.543 nm containing 8 atoms. Calculate the atomic density in units of 10^{22} cm^{-3}.',
     ['a = 0,543 nm', 'Atoms per cell = 8 (diamond)', '1 nm = 10^{-7} cm'],
-    [S('Hücre başına atom', 'Elmas yapı = fcc kafes + 2 atomlu baz: 4 × 2 = 8 atom.', 'N = 8', N('Hücre başına kaç atom?', 8, 'atom')),
-     S('Hücre hacmi', 'Önce a\'yı cm\'ye çevir: 0,543 nm = 0,543×10^{-7} cm. Sonra küpünü al ve 10^{-22} cm³ biriminde yaz.', 'V = a³ = (0,543×10^{-7} cm)³', N('V = a³ kaç ×10^{-22} cm³?', 1.601, '×10^{-22} cm³')),
+    [S('Atoms per unit cell (hücre başına atom)', 'Elmas yapı = fcc kafes + 2 atomlu baz: 4 × 2 = 8 atom.', 'N = 8', N('Hücre başına kaç atom?', 8, 'atom')),
+     S('Cell volume (hücre hacmi)', 'Önce a\'yı cm\'ye çevir: 0,543 nm = 0,543×10^{-7} cm. Sonra küpünü al ve 10^{-22} cm³ biriminde yaz.', 'V = a³ = (0,543×10^{-7} cm)³', N('V = a³ kaç ×10^{-22} cm³?', 1.601, '×10^{-22} cm³')),
      S('Yoğunluk', 'Yoğunluk = atom sayısı / hacim.', 'n = 8 / 1,601×10^{-22} cm³ = 4,997×10^{22} cm^{-3}')],
     { deger: 4.997, birim: '×10^{22} cm^{-3}', metin: 'n ≈ 5.0×10^{22} atoms/cm³' },
     'Birim hatası klasik tuzak: nm → cm için 10^{-7}, nm → m için 10^{-9}. Sonucun cm^{-3} cinsinden ~5×10^{22} çıkması katılar için beklenen mertebedir.');
 
   /* ================= s02 · Kafes, Miller ================= */
   G('pack-fcc', 's02', true, 'packing', 'sinav', 2, 'Packing fraction of FCC',
-    'Derive the packing fraction of an FCC lattice of identical hard spheres that touch their nearest neighbours.',
-    ['FCC: 4 atoms per cell', 'Nearest neighbours touch along the face diagonal'],
-    [S('Hücre başına atom', 'fcc için köşe + yüz katkısı toplam kaç atomdur?', 'N = 4', N('Hücre başına atom sayısı?', 4, 'atom')),
-     S('Yarıçap ve kafes sabiti', 'fcc\'de atomlar yüz köşegeni boyunca temas eder: köşegen uzunluğu a√2 ve 4 yarıçapa eşittir.', '4r = a√2  →  r = a√2/4', N('r/a oranı?', 0.3536, '')),
-     S('Doluluk oranı', 'Küre hacimleri toplamı / hücre hacmi.', 'f = 4·(4/3)πr³ / a³ = π√2/6 ≈ 0,7405')],
+    'Derive the packing fraction of an FCC lattice of identical hard spheres that touch their nearest neighbors.',
+    ['FCC: 4 atoms per cell', 'Nearest neighbors touch along the face diagonal'],
+    [S('Atoms per unit cell (hücre başına atom)', 'fcc için köşe + yüz katkısı toplam kaç atomdur?', 'N = 4', N('Hücre başına atom sayısı?', 4, 'atom')),
+     S('Radius and lattice constant (yarıçap ve kafes sabiti)', 'fcc\'de atomlar yüz köşegeni boyunca temas eder: köşegen uzunluğu a√2 ve 4 yarıçapa eşittir.', '4r = a√2  →  r = a√2/4', N('r/a oranı?', 0.3536, '')),
+     S('Packing fraction (doluluk oranı)', 'Küre hacimleri toplamı / hücre hacmi.', 'f = 4·(4/3)πr³ / a³ = π√2/6 ≈ 0,7405')],
     { deger: 0.7405, birim: '(birimsiz)', metin: 'f = π√2/6 ≈ 0.74 (74%)' },
     'Temas yönünü doğru seç: sc kenar (2r = a), bcc cisim köşegeni (4r = a√3), fcc yüz köşegeni (4r = a√2). Cevabı hem kesirli hem sayısal yaz.');
 
   G('pack-bcc', 's02', false, 'packing', 'sinav', 2, 'Packing fraction of BCC',
     'Derive the packing fraction of a BCC lattice of identical touching hard spheres.',
-    ['BCC: 2 atoms per cell', 'Nearest neighbours touch along the body diagonal'],
-    [S('Hücre başına atom', 'Köşeler 8×1/8 = 1, merkez 1.', 'N = 2', N('Hücre başına atom sayısı?', 2, 'atom')),
-     S('Yarıçap ve kafes sabiti', 'bcc\'de temas cisim köşegeni boyunca: uzunluğu a√3 ve 4 yarıçap.', '4r = a√3  →  r = a√3/4', N('r/a oranı?', 0.4330, '')),
-     S('Doluluk oranı', 'Küre hacimleri toplamı / hücre hacmi.', 'f = 2·(4/3)πr³ / a³ = π√3/8 ≈ 0,680')],
+    ['BCC: 2 atoms per cell', 'Nearest neighbors touch along the body diagonal'],
+    [S('Atoms per unit cell (hücre başına atom)', 'Köşeler 8×1/8 = 1, merkez 1.', 'N = 2', N('Hücre başına atom sayısı?', 2, 'atom')),
+     S('Radius and lattice constant (yarıçap ve kafes sabiti)', 'bcc\'de temas cisim köşegeni boyunca: uzunluğu a√3 ve 4 yarıçap.', '4r = a√3  →  r = a√3/4', N('r/a oranı?', 0.4330, '')),
+     S('Packing fraction (doluluk oranı)', 'Küre hacimleri toplamı / hücre hacmi.', 'f = 2·(4/3)πr³ / a³ = π√3/8 ≈ 0,680')],
     { deger: 0.6802, birim: '(birimsiz)', metin: 'f = π√3/8 ≈ 0.68 (68%)' },
     'sc 0,52 < bcc 0,68 < fcc 0,74 sıralamasını bil. Cisim köşegeni a√3, yüz köşegeni a√2: karıştırmak puan kaybettirir.');
 
   G('miller-326', 's02', true, 'miller', 'sinav', 2, 'Miller indices from intercepts and d_hkl',
     'A plane in a cubic crystal (silicon, a = 0.543 nm) intercepts the x, y and z axes at 2a, 3a and a. Determine its Miller indices and calculate the interplanar spacing d.',
     ['Intercepts: 2a, 3a, 1a', 'a = 0,543 nm', 'Cubic: d = a / √(h²+k²+l²)'],
-    [S('Kesişimlerin tersi', 'Kesişimleri a biriminde yaz (2, 3, 1), tersini al (1/2, 1/3, 1), sonra en küçük ortak paydayla çarpıp tam sayılara çevir.', '(1/2, 1/3, 1) × 6 = (3, 2, 6)', N('Ortak payda (kesirleri tam sayı yapan en küçük sayı)?', 6, '')),
-     S('Miller indisleri', 'Sonuç parantez içinde, virgülsüz yazılır. (hkl) = (326). Kesişim ∞ olsaydı indis 0 olurdu; negatif kesişimde indisin üstüne çizgi (bar) gelir.', '(hkl) = (3 2 6)', N('h² + k² + l² = ?', 49, '')),
-     S('Düzlem aralığı', 'Kübik kristalde aralık formülünü uygula.', 'd = a / √49 = 0,543 nm / 7 = 0,0776 nm')],
+    [S('Reciprocals of intercepts (kesişimlerin tersi)', 'Kesişimleri a biriminde yaz (2, 3, 1), tersini al (1/2, 1/3, 1), sonra en küçük ortak paydayla çarpıp tam sayılara çevir.', '(1/2, 1/3, 1) × 6 = (3, 2, 6)', N('Ortak payda (kesirleri tam sayı yapan en küçük sayı)?', 6, '')),
+     S('Miller indices (Miller indisleri)', 'Sonuç parantez içinde, virgülsüz yazılır. (hkl) = (326). Kesişim ∞ olsaydı indis 0 olurdu; negatif kesişimde indisin üstüne çizgi (bar) gelir.', '(hkl) = (3 2 6)', N('h² + k² + l² = ?', 49, '')),
+     S('Plane spacing (düzlem aralığı)', 'Kübik kristalde aralık formülünü uygula.', 'd = a / √49 = 0,543 nm / 7 = 0,0776 nm')],
     { deger: 0.07757, birim: 'nm', metin: '(326), d = a/7 ≈ 0.0776 nm' },
     'Önce ters al, sonra tam sayıya çevir (sıra ters olursa (236) bulunur). d formülü yalnızca kübikte geçerlidir; indisler zaten sadeleşmiş olmalı.');
 
@@ -9480,9 +9518,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('foto-cu', 's03', true, 'foton', 'sinav', 2, 'Photoelectric effect: kinetic energy',
     'Light of wavelength 250 nm illuminates a copper surface (work function φ = 4.7 eV). Calculate the maximum kinetic energy of the emitted electrons in eV.',
     ['λ = 250 nm', 'φ = 4,7 eV'],
-    [S('Foton enerjisi', 'E = 1239,84/λ.', 'E = 1239,84/250', N('Foton enerjisi kaç eV?', 4.959, 'eV')),
+    [S('Photon energy (foton enerjisi)', 'E = 1239,84/λ.', 'E = 1239,84/250', N('Foton enerjisi kaç eV?', 4.959, 'eV')),
      S('Emisyon olur mu?', 'Elektron çıkması için foton enerjisi iş fonksiyonunu geçmeli.', 'hf > φ ?', C('4,96 eV ile 4,7 eV karşılaştırması?', 'hf > φ: elektron çıkar', ['hf < φ: elektron çıkmaz', 'Şiddete bağlı'])),
-     S('Maksimum kinetik enerji', 'Einstein bağıntısı.', 'K_{max} = hf − φ = 4,959 − 4,7 = 0,259 eV')],
+     S('Maximum kinetic energy (maksimum kinetik enerji)', 'Einstein bağıntısı.', 'K_{max} = hf − φ = 4,959 − 4,7 = 0,259 eV')],
     { deger: 0.2594, birim: 'eV', metin: 'K_max ≈ 0.26 eV' },
     'Işık şiddeti K_max\'ı değiştirmez, yalnızca akım sayısını; frekans (enerji) K_max\'ı belirler. Sonucun eV olduğunu yaz.');
 
@@ -9490,7 +9528,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     'The work function of sodium is φ = 2.3 eV. Calculate the threshold (cut-off) wavelength for the photoelectric effect.',
     ['φ = 2,3 eV'],
     [S('Eşik koşulu', 'Eşikte foton enerjisi tam olarak iş fonksiyonuna eşittir ve K = 0.', 'hf_{0} = φ  →  hc/λ_{0} = φ', C('λ > λ_{0} olan ışıkla?', 'Elektron çıkmaz', ['Elektron çıkar, yavaş', 'Şiddet yeterliyse çıkar'])),
-     S('Dalga boyu', 'λ_{0} = hc/φ.', 'λ_{0} = 1239,84 / 2,3 = 539 nm')],
+     S('Wavelength (dalga boyu)', 'λ_{0} = hc/φ.', 'λ_{0} = 1239,84 / 2,3 = 539 nm')],
     { deger: 539.06, birim: 'nm', metin: 'λ_0 ≈ 539 nm (green)' },
     'Eşik altında şiddeti ne kadar artırırsan artır emisyon olmaz: klasik dalga teorisinin açıklayamadığı sonuç.');
 
@@ -9499,7 +9537,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     'Calculate the wavelength of the photon emitted when a hydrogen atom makes the transition from n = 3 to n = 2.',
     ['E_{n} = −13,6 eV / n²', 'hc = 1239,84 eV·nm'],
     [S('Enerji farkı', 'E_{n} = −13,6/n² olduğundan iki seviye arasındaki fark:', 'ΔE = 13,6·(1/2² − 1/3²) = 13,6·(5/36)', N('ΔE kaç eV?', 1.8897, 'eV')),
-     S('Dalga boyu', 'Yayılan foton ΔE kadar enerji taşır.', 'λ = hc/ΔE = 1239,84 / 1,89 = 656 nm')],
+     S('Wavelength (dalga boyu)', 'Yayılan foton ΔE kadar enerji taşır.', 'λ = hc/ΔE = 1239,84 / 1,89 = 656 nm')],
     { deger: 656.1, birim: 'nm', metin: 'λ ≈ 656 nm (red, H-alpha)' },
     '1/n₂² − 1/n₁² sırasını doğru kur (alt seviye önce). Sonuç görünür bölgede (Balmer, n = 2\'ye geçişler) çıkmalı.');
 
@@ -9514,8 +9552,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('debroglie-100', 's04', true, 'debroglie', 'sinav', 1, 'de Broglie wavelength of an electron',
     'Calculate the de Broglie wavelength of an electron with kinetic energy 100 eV.',
     ['E = 100 eV', 'm = 9,109×10^{-31} kg'],
-    [S('Dalga sayısı', 'k = √(2mE)/ħ elektron için pratik biçimde 5,123·√E[eV] nm^{-1}\'dir.', 'k = 5,123·√100 nm^{-1}', N('k kaç nm^{-1}?', 51.23, 'nm^{-1}')),
-     S('Dalga boyu', 'λ = 2π/k = h/p.', 'λ = 2π/51,23 = 0,1226 nm   (kısa yol: λ = 1,2264/√E[eV] nm)')],
+    [S('Wave number (dalga sayısı)', 'k = √(2mE)/ħ elektron için pratik biçimde 5,123·√E[eV] nm^{-1}\'dir.', 'k = 5,123·√100 nm^{-1}', N('k kaç nm^{-1}?', 51.23, 'nm^{-1}')),
+     S('Wavelength (dalga boyu)', 'λ = 2π/k = h/p.', 'λ = 2π/51,23 = 0,1226 nm   (kısa yol: λ = 1,2264/√E[eV] nm)')],
     { deger: 0.12264, birim: 'nm', metin: 'λ ≈ 0.123 nm (≈ atomic spacing)' },
     'Kinetik enerji eV ise p = √(2mE) kullan; foton formülü (hc/E) elektrona uygulanmaz. λ kristal aralığı mertebesinde: elektron kırınımı mümkün.');
 
@@ -9541,8 +9579,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('q5-bos-kuyu', 's05', true, 'kuyu', 'sinav', 2, 'Exam Question 5, part A: the well without the barrier',
     'Ignore the 9 eV barrier first. An electron is in an infinite square well of width L = 50 nm. Write the normalized wave function ψ_n(x) and calculate the ground-state energy E_1 in meV.',
     ['L = 50 nm', 'E_{n} = n²π²ħ²/2mL² = 0,3760·n²/L²[nm] eV'],
-    [S('Dalga fonksiyonu', 'ψ(0) = ψ(L) = 0 sınır koşulları sin kx çözümünü verir: kL = nπ. Normalizasyon: A²·L/2 = 1.', 'ψ_{n}(x) = √(2/L)·sin(nπx/L),   n = 1, 2, 3, …', N('A = √(2/L) kaç nm^{-1/2}?', 0.2, 'nm^{-1/2}')),
-     S('İzinli enerjiler', 'E = ħ²k²/2m ve k = nπ/L. Elektron için π²ħ²/2m = 0,3760 eV·nm². n = 0 yok (ψ ≡ 0): sıfır noktası enerjisi sınır koşulundan gelir.', 'E_{n} = n²π²ħ²/(2mL²) = 0,3760·n² / L²[nm²] eV', N('L² kaç nm²?', 2500, 'nm²')),
+    [S('Wave function (dalga fonksiyonu)', 'ψ(0) = ψ(L) = 0 sınır koşulları sin kx çözümünü verir: kL = nπ. Normalizasyon: A²·L/2 = 1.', 'ψ_{n}(x) = √(2/L)·sin(nπx/L),   n = 1, 2, 3, …', N('A = √(2/L) kaç nm^{-1/2}?', 0.2, 'nm^{-1/2}')),
+     S('Allowed energies (izinli enerjiler)', 'E = ħ²k²/2m ve k = nπ/L. Elektron için π²ħ²/2m = 0,3760 eV·nm². n = 0 yok (ψ ≡ 0): sıfır noktası enerjisi sınır koşulundan gelir.', 'E_{n} = n²π²ħ²/(2mL²) = 0,3760·n² / L²[nm²] eV', N('L² kaç nm²?', 2500, 'nm²')),
      S('Sayı', 'L = 50 nm: E₁ = 0,3760/2500 = 1,504×10^{-4} eV = 0,1504 meV. E₂ = 4E₁ = 0,6016 meV, E₃ = 9E₁ = 1,354 meV.', 'E_{1} = 0,1504 meV,  E_{2} = 0,6016 meV,  E_{3} = 1,354 meV')],
     { deger: 0.1504, birim: 'meV', metin: 'E_1 ≈ 0.150 meV (before adding the barrier)' },
     'Önemli: bu sayılar engelsiz kuyunundur. Engel varken seviyeler değişir (sonraki görevler). Birim: nm/eV formülünde L nm, sonuç eV; meV için ×1000.');
@@ -9577,7 +9615,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('kuyu-norm', 's05', false, 'kuyu', 'alistirma', 1, 'Normalization constant',
     'An electron is in the ground state of an infinite well of width L = 5 nm, ψ = A sin(πx/L). Find the normalization constant A.',
     ['L = 5 nm'],
-    [S('Normalizasyon', 'Toplam olasılık 1 olmalı. ∫₀^L sin²(πx/L) dx = L/2.', '∫_{0}^{L} |ψ|² dx = A²·L/2 = 1', N('∫ sin² dx = L/2 kaç nm?', 2.5, 'nm')),
+    [S('Normalization (normalizasyon)', 'Toplam olasılık 1 olmalı. ∫₀^L sin²(πx/L) dx = L/2.', '∫_{0}^{L} |ψ|² dx = A²·L/2 = 1', N('∫ sin² dx = L/2 kaç nm?', 2.5, 'nm')),
      S('A', '', 'A = √(2/L) = √(2/5 nm) = 0,632 nm^{-1/2}')],
     { deger: 0.6325, birim: 'nm^{-1/2}', metin: 'A = √(2/L) ≈ 0.632 nm^{-1/2}' },
     'Normalizasyon sabitinin birimi uzunluk^{-1/2}. Sınav: sadece "A = √(2/L)" yazmak yeterli, ama integrali göster.');
@@ -9585,7 +9623,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('kuyu-foton', 's05', false, 'kuyu', 'alistirma', 2, 'Photon emitted from a well transition',
     'An electron in an infinite well of width L = 2 nm makes the transition n = 2 → n = 1. Calculate the wavelength of the emitted photon in μm.',
     ['L = 2 nm', 'E_{n} = 0,3760 n²/L²[nm] eV'],
-    [S('Temel seviye', 'E₁ = 0,3760/4.', 'E_{1} = 0,0940 eV', N('E₁ kaç eV?', 0.094, 'eV')),
+    [S('Ground state (temel seviye)', 'E₁ = 0,3760/4.', 'E_{1} = 0,0940 eV', N('E₁ kaç eV?', 0.094, 'eV')),
      S('Geçiş', 'E₂ − E₁ = 3E₁ = 0,2820 eV. λ = 1239,84/ΔE nm = 4396 nm.', 'λ = hc/(3E_{1}) = 1239,84 / 0,2820 nm = 4,40 μm')],
     { deger: 4.396, birim: 'μm', metin: 'λ ≈ 4.4 μm (infrared)' },
     'E₂ − E₁ = (4 − 1)E₁ = 3E₁ ve nm → μm dönüşümü (÷1000).');
@@ -9610,11 +9648,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
     { deger: 0.1380, birim: 'nm', metin: 'R = 1 (total reflection); ψ_II = t e^{-κx}, δ = 1/κ ≈ 0.138 nm' },
     'E < V₀: R = 1, T = 0; ama ψ bölge II\'de sıfır değildir (üstel azalır). "Parçacık basamağın içine hiç giremez" demek klasik ve yanlış.');
 
-  G('tunel-1nm', 's06', false, 'tunel', 'sinav', 2, 'Tunnelling probability through a barrier',
+  G('tunel-1nm', 's06', false, 'tunel', 'sinav', 2, 'Tunneling probability through a barrier',
     'An electron with E = 1 eV is incident on a rectangular barrier of height V_0 = 4 eV and width a = 1 nm. Estimate the transmission probability using T ≈ e^{-2κa}.',
     ['E = 1 eV', 'V_{0} = 4 eV', 'a = 1 nm'],
     [S('Sönüm sabiti', 'κ = √(2m(V₀ − E))/ħ = 5,123·√(V₀ − E) nm^{-1}.', 'κ = 5,123·√3 = 8,874 nm^{-1}', N('κ kaç nm^{-1}?', 8.874, 'nm^{-1}')),
-     S('Geçirgenlik', 'Kalın bariyer yaklaşımı: 2κa = 17,75. Cevabı 1,96e-8 biçiminde girebilirsin.', 'T ≈ e^{−2κa} = e^{−17,75} ≈ 2,0×10^{-8}')],
+     S('Transmission (geçirgenlik)', 'Kalın bariyer yaklaşımı: 2κa = 17,75. Cevabı 1,96e-8 biçiminde girebilirsin.', 'T ≈ e^{−2κa} = e^{−17,75} ≈ 2,0×10^{-8}')],
     { deger: 1.961e-8, birim: '(birimsiz, 1.96e-8 biçiminde gir)', metin: 'T ≈ 2×10^{-8} (exact formula: ≈ 6×10^{-8}; same order of magnitude)' },
     'Üstel çok duyarlıdır: a ikiye katlanırsa T karesi alınır. Tam formüldeki öndeki çarpan (burada ≈ 3) mertebeyi değiştirmez; sınavda yaklaşım yazdığını belirt.');
 
@@ -9622,8 +9660,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('olc-p', 's07', true, 'olcum', 'sinav', 2, 'Measurement probabilities',
     'A particle in an infinite well is in the state ψ = A(φ_1 + 2φ_2), where φ_1 and φ_2 are normalized energy eigenstates. Find A and the probability of measuring E_2.',
     ['ψ = A(φ_{1} + 2φ_{2})', '⟨φ_{i}|φ_{j}⟩ = δ_{ij}'],
-    [S('Normalizasyon', 'φ\'ler ortonormal: ⟨ψ|ψ⟩ = A²(1 + 4) = 1.', 'A²(1² + 2²) = 1  →  A = 1/√5 = 0,447', N('A kaç?', 0.4472, '')),
-     S('Olasılık', 'ψ = Σ cₙφₙ ise E_n bulma olasılığı |cₙ|². Burada c₂ = 2A.', 'P(E_{2}) = |2A|² = 4/5 = 0,8,   P(E_{1}) = 1/5')],
+    [S('Normalization (normalizasyon)', 'φ\'ler ortonormal: ⟨ψ|ψ⟩ = A²(1 + 4) = 1.', 'A²(1² + 2²) = 1  →  A = 1/√5 = 0,447', N('A kaç?', 0.4472, '')),
+     S('Probability (olasılık)', 'ψ = Σ cₙφₙ ise E_n bulma olasılığı |cₙ|². Burada c₂ = 2A.', 'P(E_{2}) = |2A|² = 4/5 = 0,8,   P(E_{1}) = 1/5')],
     { deger: 0.8, birim: '(birimsiz)', metin: 'A = 1/√5; P(E_2) = 0.8' },
     'Ölçümden sonra ψ ölçülen özdurumuna çöker (E₂ bulunduysa ψ = φ₂); hemen tekrar ölçersen aynı değer çıkar. Schrödinger denklemi çökmez, çökme ölçümle olur.');
 
@@ -9631,7 +9669,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     'An electron in an infinite well of width L = 2 nm is in the state ψ = (√3/2)φ_1 + (1/2)φ_2. Calculate the expectation value ⟨E⟩ in eV.',
     ['L = 2 nm', 'E_{n} = 0,0940·n² eV', '|c_{1}|² = 3/4, |c_{2}|² = 1/4'],
     [S('Seviyeler', 'E₁ = 0,3760/L² eV, E₂ = 4E₁.', 'E_{1} = 0,0940 eV,  E_{2} = 0,376 eV', N('E₁ kaç eV?', 0.094, 'eV')),
-     S('Beklenen değer', '⟨E⟩ = Σ|cₙ|²Eₙ.', '⟨E⟩ = (3/4)(0,0940) + (1/4)(0,376) = 1,75·E_{1} = 0,1645 eV')],
+     S('Expectation value (beklenen değer)', '⟨E⟩ = Σ|cₙ|²Eₙ.', '⟨E⟩ = (3/4)(0,0940) + (1/4)(0,376) = 1,75·E_{1} = 0,1645 eV')],
     { deger: 0.1645, birim: 'eV', metin: '⟨E⟩ ≈ 0.165 eV' },
     '⟨E⟩ ölçümde bulacağın bir değer değildir: yalnızca 0,094 ya da 0,376 eV çıkar. Ortalama ağırlıkları |c|² ile hesapla.');
 
@@ -9639,8 +9677,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('bel-v', 's08', true, 'belirsizlik', 'sinav', 2, 'Uncertainty principle: velocity of a confined electron',
     'An electron is confined to a region of size Δx = 0.1 nm (atomic size). Using the uncertainty principle, calculate the minimum uncertainty in its momentum and in its velocity (give Δv in km/s).',
     ['Δx = 0,1 nm', 'ħ = 1,055×10^{-34} J·s', 'm = 9,109×10^{-31} kg'],
-    [S('Momentum belirsizliği', 'ΔxΔp ≥ ħ/2. Δx = 0,1 nm = 10^{-10} m.', 'Δp ≥ ħ/(2Δx) = 5,275×10^{-25} kg·m/s', N('Δp kaç ×10^{-25} kg·m/s?', 5.275, '×10^{-25} kg·m/s')),
-     S('Hız belirsizliği', 'Δv = Δp/m.', 'Δv ≥ 5,275×10^{-25} / 9,109×10^{-31} = 5,79×10^{5} m/s = 579 km/s')],
+    [S('Momentum uncertainty (momentum belirsizliği)', 'ΔxΔp ≥ ħ/2. Δx = 0,1 nm = 10^{-10} m.', 'Δp ≥ ħ/(2Δx) = 5,275×10^{-25} kg·m/s', N('Δp kaç ×10^{-25} kg·m/s?', 5.275, '×10^{-25} kg·m/s')),
+     S('Velocity uncertainty (hız belirsizliği)', 'Δv = Δp/m.', 'Δv ≥ 5,275×10^{-25} / 9,109×10^{-31} = 5,79×10^{5} m/s = 579 km/s')],
     { deger: 579.1, birim: 'km/s', metin: 'Δp ≥ 5.28×10^{-25} kg·m/s, Δv ≥ 579 km/s' },
     'ħ/2 mi ħ mi? Sınavda ΔxΔp ≥ ħ/2 yaz. Birim: nm → m. Belirsizlik ölçü aletinin kusuru değil, dalga doğasının sonucudur.');
 
@@ -9656,7 +9694,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('bant-si', 's09', true, 'bant', 'sinav', 1, 'Absorption edge of silicon',
     'Silicon has a bandgap E_g = 1.12 eV. Calculate the longest wavelength of light that can create an electron-hole pair.',
     ['E_{g} = 1,12 eV', 'hc = 1239,84 eV·nm'],
-    [S('Koşul', 'Elektronu valence band (değerlik bandı) → conduction band (iletim bandı) taşımak için hf ≥ E_g. Sınır durumda eşitlik.', 'hf ≥ E_{g}  →  λ ≤ hc/E_{g}', C('Daha uzun dalga boyu (E < E_g)?', 'Soğurulmaz (Si saydam)', ['Daha iyi soğurulur', 'Çift e-h üretir'])),
+    [S('Koşul', 'Elektronu valence band (valans bandı) → conduction band (iletim bandı) taşımak için hf ≥ E_g. Sınır durumda eşitlik.', 'hf ≥ E_{g}  →  λ ≤ hc/E_{g}', C('Daha uzun dalga boyu (E < E_g)?', 'Soğurulmaz (Si saydam)', ['Daha iyi soğurulur', 'Çift e-h üretir'])),
      S('Sayı', '', 'λ_{max} = 1239,84 / 1,12 = 1107 nm  (yakın kızılötesi)', N('λ_max kaç nm? (hc/E_g)', 1107, 'nm'))],
     { deger: 1107.0, birim: 'nm', metin: 'λ_max ≈ 1.11 μm' },
     'Eg\'den küçük enerjili foton soğurulmaz. Soğurma eşiği = bandgap, fotoelektrik eşik ile aynı mantık.');
@@ -9664,7 +9702,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('bant-gaas', 's09', true, 'bant', 'alistirma', 1, 'GaAs bandgap and photon wavelength',
     'GaAs has a bandgap E_g = 1.42 eV. Calculate the wavelength of the photon emitted when an electron recombines across the gap, and decide whether a 1000 nm photon can be absorbed.',
     ['E_{g} = 1,42 eV'],
-    [S('Yayılan foton', 'Rekombinasyonda yaklaşık E_g enerjili foton yayılır.', 'λ = 1239,84 / 1,42 = 873 nm', N('Yayılan fotonun dalga boyu kaç nm?', 873.1, 'nm')),
+    [S('Emitted photon (yayılan foton)', 'Rekombinasyonda yaklaşık E_g enerjili foton yayılır.', 'λ = 1239,84 / 1,42 = 873 nm', N('Yayılan fotonun dalga boyu kaç nm?', 873.1, 'nm')),
      S('1000 nm foton', '1000 nm → E = 1,24 eV < 1,42 eV.', 'E_{foton} = 1,24 eV < E_{g}', C('1000 nm foton GaAs\'ta?', 'Soğurulmaz', ['Soğurulur', 'Yalnızca ısıtırsa soğurulur']))],
     { deger: 873.1, birim: 'nm', metin: 'λ ≈ 873 nm; a 1000 nm photon is not absorbed' },
     'Foton enerjisi E_g\'den küçükse bantlar arası geçiş yok. GaAs doğrudan bant aralığı: verimli ışık yayar.');
@@ -9690,15 +9728,15 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('np-ni', 's10', false, 'np', 'sinav', 2, 'Mass-action law',
     'Silicon at 300 K has intrinsic carrier concentration n_i = 1.5×10^{10} cm^{-3}. It is doped with N_D = 10^{16} cm^{-3} donors (fully ionized). Calculate the hole concentration p in cm^{-3}.',
     ['n_{i} = 1,5×10^{10} cm^{-3}', 'N_{D} = 10^{16} cm^{-3}'],
-    [S('Elektron yoğunluğu', 'N_D ≫ n_i olduğundan n ≈ N_D.', 'n ≈ N_{D} = 10^{16} cm^{-3}', C('Katkılı yarıiletken n tipi mi p tipi mi?', 'n tipi (donör)', ['p tipi (akseptör)', 'özgün (intrinsic)'])),
-     S('Delik yoğunluğu', 'Kütle etkisi yasası np = n_i².', 'p = n_{i}²/n = (1,5×10^{10})² / 10^{16} = 2,25×10^{4} cm^{-3}')],
-    { deger: 22500, birim: 'cm^{-3} (2.25e4 biçiminde gir)', metin: 'p ≈ 2.25×10^{4} cm^{-3}' },
+    [S('Electron density (elektron yoğunluğu)', 'N_D ≫ n_i olduğundan n ≈ N_D.', 'n ≈ N_{D} = 10^{16} cm^{-3}', C('Katkılı yarıiletken n tipi mi p tipi mi?', 'n tipi (donör)', ['p tipi (akseptör)', 'özgün (intrinsic)'])),
+     S('Hole density (delik yoğunluğu)', 'Kütle etkisi yasası np = n_i².', 'p = n_{i}²/n = (1,5×10^{10})² / 10^{16} = 2,25×10^{4} cm^{-3}')],
+    { deger: 22500, birim: 'cm^{-3}', metin: 'p ≈ 2.25×10^{4} cm^{-3}' },
     'Çoğunluk taşıyıcı (n) katkıdan, azınlık (p) np = n_i²\'den. Birimler cm^{-3}, (1,5×10^{10})² = 2,25×10^{20} (kuvvetler toplanır, katsayı karesi alınır).');
 
   G('drift-v', 's10', false, 'drift', 'alistirma', 1, 'Drift velocity',
     'The electron mobility in silicon is μ_n = 1350 cm²/(V·s). Calculate the drift velocity in an electric field E = 100 V/cm, in m/s.',
     ['μ_{n} = 1350 cm²/Vs', 'E = 100 V/cm'],
-    [S('Sürüklenme hızı', 'v_d = μE. Önce cm/s bul: 1350 × 100 = 1,35×10^{5} cm/s.', 'v_{d} = μ_{n}E = 1350 × 100 = 1,35×10^{5} cm/s'),
+    [S('Drift velocity (sürüklenme hızı)', 'v_d = μE. Önce cm/s bul: 1350 × 100 = 1,35×10^{5} cm/s.', 'v_{d} = μ_{n}E = 1350 × 100 = 1,35×10^{5} cm/s'),
      S('Birim', '1 m = 100 cm.', 'v_{d} = 1,35×10^{3} m/s = 1350 m/s')],
     { deger: 1350, birim: 'm/s', metin: 'v_d = 1.35×10^5 cm/s = 1350 m/s' },
     'cm ve m karışmasın: μ cm²/Vs, E V/cm verilirse çarpım doğrudan cm/s.');
@@ -9706,8 +9744,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('drift-J', 's10', true, 'drift', 'sinav', 2, 'Drift current density',
     'Silicon is doped n-type with n = 10^{16} cm^{-3} (μ_n = 1350 cm²/Vs). Calculate the drift current density J for E = 10 V/cm, in A/cm².',
     ['n = 10^{16} cm^{-3}', 'μ_{n} = 1350 cm²/Vs', 'E = 10 V/cm', 'q = 1,602×10^{-19} C'],
-    [S('İletkenlik', 'σ = qnμ_n.', 'σ = 1,602×10^{-19} × 10^{16} × 1350 = 2,163 S/cm', N('σ kaç S/cm?', 2.163, 'S/cm')),
-     S('Akım yoğunluğu', 'J = σE.', 'J = qnμ_{n}E = 2,163 × 10 = 21,6 A/cm²')],
+    [S('Conductivity (iletkenlik)', 'σ = qnμ_n.', 'σ = 1,602×10^{-19} × 10^{16} × 1350 = 2,163 S/cm', N('σ kaç S/cm?', 2.163, 'S/cm')),
+     S('Current density (akım yoğunluğu)', 'J = σE.', 'J = qnμ_{n}E = 2,163 × 10 = 21,6 A/cm²')],
     { deger: 21.63, birim: 'A/cm²', metin: 'J ≈ 21.6 A/cm²' },
     'Birim kontrolü: C·cm^{-3}·cm²/(V·s)·V/cm = A/cm². Tek taşıyıcı baskınsa (n ≫ p) delik terimi ihmal edilir.');
 
@@ -9725,19 +9763,19 @@ Q.art.PORTRE_IDS = Object.keys(P);
   }
 
   /* ---- s01 ---- */
-  X('atom-fcc', 'Worked example: atoms in a BCC unit cell', 'How many atoms belong to one BCC conventional cell (atoms at the 8 corners and one in the centre)?',
+  X('atom-fcc', 'Worked example: atoms in a BCC unit cell', 'How many atoms belong to one BCC conventional cell (atoms at the 8 corners and one in the center)?',
     ['Atomun hücrede nerede durduğuna bak: köşe, yüz, kenar ya da hücrenin içi.', 'Her konumun payını yaz: köşe = 1/8, yüz merkezi = 1/2, hücre içi = 1.', 'Konum sayısı × payı çarp.', 'Hepsini topla: bu, hücre başına atom sayısıdır.'],
-    ['8 corner atoms (each shared by 8 cells)', '1 atom at the body centre (inside the cell)'],
-    [['Köşe atomları', 'Köşe atomu 8 hücreye ortaktır, payı 1/8. Köşe sayısı 8.', '8 × 1/8 = 1', '1 atom', 1],
-     ['Merkez atomu', 'Cisim merkezindeki atom yalnızca bu hücreye aittir, payı 1.', '1 × 1 = 1', '1 atom', 1],
+    ['8 corner atoms (each shared by 8 cells)', '1 atom at the body center (inside the cell)'],
+    [['Corner atoms (köşe atomları)', 'Köşe atomu 8 hücreye ortaktır, payı 1/8. Köşe sayısı 8.', '8 × 1/8 = 1', '1 atom', 1],
+     ['Center atom (merkez atomu)', 'Cisim merkezindeki atom yalnızca bu hücreye aittir, payı 1.', '1 × 1 = 1', '1 atom', 1],
      ['Toplam', 'İki katkıyı topla.', 'N = 1 + 1 = 2', 'N = 2 atom/hücre', 2]],
     'BCC: N = 2 atoms per conventional cell', 2, 'atom', 'Bu örnekte yüz atomu yok. Senin görevinde yüz merkezleri var: onların payı 1/2.');
 
   X('si-yogunluk', 'Worked example: atomic density of germanium', 'Germanium (diamond structure, 8 atoms per cell) has a = 0.566 nm. Find the atomic density in units of 10^{22} cm^{-3}.',
     ['Hücre başına atom sayısı N\'yi yaz (elmas yapı: 8).', 'Kenarı cm\'ye çevir: 1 nm = 10^{-7} cm.', 'Hacmi bul: V = a³ (cm³).', 'Yoğunluk n = N / V; sonucu 10^{22} cm^{-3} biriminde yaz.'],
     ['a = 0,566 nm', 'N = 8 atoms per cell', '1 nm = 10^{-7} cm'],
-    [['Hücre başına atom', 'Elmas yapı: 8 atom.', 'N = 8', 'N = 8', 8],
-     ['Hücre hacmi', 'a = 0,566×10^{-7} cm. Küpünü al: 0,566³ = 0,1813.', 'V = (0,566×10^{-7})³ = 1,813×10^{-22} cm³', 'V = 1,813×10^{-22} cm³', 1.8132],
+    [['Atoms per unit cell (hücre başına atom)', 'Elmas yapı: 8 atom.', 'N = 8', 'N = 8', 8],
+     ['Cell volume (hücre hacmi)', 'a = 0,566×10^{-7} cm. Küpünü al: 0,566³ = 0,1813.', 'V = (0,566×10^{-7})³ = 1,813×10^{-22} cm³', 'V = 1,813×10^{-22} cm³', 1.8132],
      ['Yoğunluk', 'Atom sayısı / hacim.', 'n = 8 / 1,813×10^{-22} = 4,41×10^{22} cm^{-3}', 'n ≈ 4,41×10^{22} cm^{-3}', 4.412]],
     'n ≈ 4.41×10^{22} atoms/cm³', 4.412, '×10^{22} cm^{-3}', 'nm → cm için 10^{-7}. Katılarda sonuç hep 10^{22} mertebesinde çıkar.');
 
@@ -9745,25 +9783,25 @@ Q.art.PORTRE_IDS = Object.keys(P);
   X('pack-fcc', 'Worked example: packing fraction of simple cubic', 'Find the packing fraction of a simple cubic (sc) lattice of identical touching hard spheres.',
     ['Hücre başına atom sayısı N\'yi bul.', 'Hangi atomlar birbirine değiyor? Temas çizgisini a ve r ile yaz (sc: kenar boyunca 2r = a).', 'r/a oranını çıkar.', 'f = N · (4/3)πr³ / a³ ile doluluk oranını hesapla.'],
     ['sc: 8 corner atoms', 'Atoms touch along the cube edge'],
-    [['Hücre başına atom', '8 köşe × 1/8.', 'N = 8 × 1/8 = 1', 'N = 1', 1],
-     ['Yarıçap ve kafes sabiti', 'sc\'de komşu atomlar kenar boyunca değer: kenar uzunluğu iki yarıçap.', '2r = a  →  r/a = 0,5', 'r/a = 0,5', 0.5],
-     ['Doluluk oranı', 'Küre hacmi / hücre hacmi.', 'f = 1·(4/3)π(0,5)³ = π/6 = 0,5236', 'f ≈ 0,524', 0.5236]],
+    [['Atoms per unit cell (hücre başına atom)', '8 köşe × 1/8.', 'N = 8 × 1/8 = 1', 'N = 1', 1],
+     ['Radius and lattice constant (yarıçap ve kafes sabiti)', 'sc\'de komşu atomlar kenar boyunca değer: kenar uzunluğu iki yarıçap.', '2r = a  →  r/a = 0,5', 'r/a = 0,5', 0.5],
+     ['Packing fraction (doluluk oranı)', 'Küre hacmi / hücre hacmi.', 'f = 1·(4/3)π(0,5)³ = π/6 = 0,5236', 'f ≈ 0,524', 0.5236]],
     'sc: f = π/6 ≈ 0.52', 0.5236, '(birimsiz)', 'Temas yönü değişince r/a değişir: kenar (sc) 0,5; yüz köşegeni (fcc) a√2/4; cisim köşegeni (bcc) a√3/4.');
 
-  X('pack-bcc', 'Worked example: packing fraction of diamond', 'Find the packing fraction of the diamond lattice (8 atoms per cell); nearest neighbours touch along a quarter of the body diagonal.',
+  X('pack-bcc', 'Worked example: packing fraction of diamond', 'Find the packing fraction of the diamond lattice (8 atoms per cell); nearest neighbors touch along a quarter of the body diagonal.',
     ['Hücre başına atom sayısını yaz (elmas: 8).', 'Temas çizgisini bul: elmasta komşu uzaklığı cisim köşegeninin 1/4\'ü, yani 2r = a√3/4.', 'r/a oranını çıkar.', 'f = N · (4/3)πr³ / a³.'],
     ['N = 8 atoms per cell', 'Touching distance 2r = a√3/4'],
-    [['Hücre başına atom', 'fcc 4 + hücre içi 4.', 'N = 8', 'N = 8', 8],
-     ['Yarıçap ve kafes sabiti', 'Komşu uzaklığı a√3/4 ve bu uzaklık 2r\'ye eşit.', '2r = a√3/4  →  r/a = √3/8 = 0,2165', 'r/a = 0,2165', 0.2165],
-     ['Doluluk oranı', 'Küre hacimleri toplamı / hücre hacmi.', 'f = 8·(4/3)π(0,2165)³ = π√3/16 = 0,340', 'f ≈ 0,340', 0.3401]],
+    [['Atoms per unit cell (hücre başına atom)', 'fcc 4 + hücre içi 4.', 'N = 8', 'N = 8', 8],
+     ['Radius and lattice constant (yarıçap ve kafes sabiti)', 'Komşu uzaklığı a√3/4 ve bu uzaklık 2r\'ye eşit.', '2r = a√3/4  →  r/a = √3/8 = 0,2165', 'r/a = 0,2165', 0.2165],
+     ['Packing fraction (doluluk oranı)', 'Küre hacimleri toplamı / hücre hacmi.', 'f = 8·(4/3)π(0,2165)³ = π√3/16 = 0,340', 'f ≈ 0,340', 0.3401]],
     'Diamond: f = π√3/16 ≈ 0.34', 0.3401, '(birimsiz)', 'Elmas yapı seyrektir (0,34); fcc\'nin yarısından az. Köşegen çarpanı (√3/4) komşu uzaklığını verir.');
 
   X('miller-326', 'Worked example: Miller indices and d_hkl', 'A plane in a cubic crystal (a = 0.4 nm) intercepts the axes at a, 2a and 2a. Find (hkl) and the interplanar spacing d.',
     ['Kesişimleri a biriminde yaz (örnek: 1, 2, 2).', 'Her birinin tersini al (1, 1/2, 1/2).', 'En küçük ortak payda ile çarpıp tam sayıya çevir (ortak çarpan kalmaz).', 'Parantez içinde, virgülsüz yaz: (hkl).', 'Kübikte d = a / √(h²+k²+l²).'],
     ['Intercepts: 1a, 2a, 2a', 'a = 0,4 nm'],
     [['Ters al, tam sayıya çevir', 'Kesişimler 1, 2, 2: tersleri 1, 1/2, 1/2. Ortak payda 2: hepsini 2 ile çarp.', '(1, 1/2, 1/2) × 2 = (2, 1, 1)', 'Ortak payda = 2', 2],
-     ['Miller indisleri', 'Sonucu parantez içinde yaz: (211). Sonra h²+k²+l² hesapla.', '(hkl) = (2 1 1),   h²+k²+l² = 4+1+1 = 6', 'h²+k²+l² = 6', 6],
-     ['Düzlem aralığı', 'Kübik formül.', 'd = a/√6 = 0,4 / 2,449 = 0,1633 nm', 'd ≈ 0,163 nm', 0.1633]],
+     ['Miller indices (Miller indisleri)', 'Sonucu parantez içinde yaz: (211). Sonra h²+k²+l² hesapla.', '(hkl) = (2 1 1),   h²+k²+l² = 4+1+1 = 6', 'h²+k²+l² = 6', 6],
+     ['Plane spacing (düzlem aralığı)', 'Kübik formül.', 'd = a/√6 = 0,4 / 2,449 = 0,1633 nm', 'd ≈ 0,163 nm', 0.1633]],
     '(211), d ≈ 0.163 nm', 0.1633, 'nm', 'Sıra: önce ters, sonra tam sayı. Kesişimleri doğrudan indis yaparsan (122) gibi yanlış bir sonuç çıkar.');
 
   X('miller-210', 'Worked example: plane parallel to two axes', 'A plane intercepts the x axis at 2a and is parallel to the y and z axes (a = 0.4 nm, cubic). Find (hkl) and d.',
@@ -9784,16 +9822,16 @@ Q.art.PORTRE_IDS = Object.keys(P);
   X('foto-cu', 'Worked example: photoelectric effect on zinc', 'Light of wavelength 200 nm illuminates a zinc surface (work function φ = 4.3 eV). Find the maximum kinetic energy of the emitted electrons.',
     ['Foton enerjisini bul: E = 1239,84 / λ[nm].', 'Karşılaştır: hf > φ ise elektron çıkar, değilse çıkmaz.', 'K_{max} = hf − φ.', 'Sonucu eV yaz.'],
     ['λ = 200 nm', 'φ = 4,3 eV'],
-    [['Foton enerjisi', 'E = 1239,84/λ.', 'E = 1239,84 / 200 = 6,20 eV', 'E = 6,20 eV', 6.1992],
+    [['Photon energy (foton enerjisi)', 'E = 1239,84/λ.', 'E = 1239,84 / 200 = 6,20 eV', 'E = 6,20 eV', 6.1992],
      ['Emisyon olur mu?', '6,20 eV, 4,3 eV\'den büyük mü?', 'hf = 6,20 > φ = 4,3 → elektron çıkar', 'Evet, çıkar'],
-     ['Maksimum kinetik enerji', 'Einstein bağıntısı.', 'K_{max} = 6,20 − 4,3 = 1,90 eV', 'K_{max} ≈ 1,90 eV', 1.8992]],
+     ['Maximum kinetic energy (maksimum kinetik enerji)', 'Einstein bağıntısı.', 'K_{max} = 6,20 − 4,3 = 1,90 eV', 'K_{max} ≈ 1,90 eV', 1.8992]],
     'K_max ≈ 1.90 eV', 1.8992, 'eV', 'Önce emisyon var mı diye bak; hf < φ ise K_max sorusu anlamsızdır.');
 
   X('foto-esik', 'Worked example: threshold wavelength of caesium', 'The work function of caesium is φ = 1.9 eV. Calculate the threshold wavelength.',
     ['Eşikte foton enerjisi iş fonksiyonuna eşittir: hf₀ = φ.', 'λ₀ = 1239,84 / φ[eV] (nm).', 'Eşikten uzun dalga boyunda elektron çıkmaz.'],
     ['φ = 1,9 eV'],
     [['Eşik koşulu', 'Eşikte K = 0 olur.', 'hc/λ_{0} = φ', 'Koşul yazıldı'],
-     ['Dalga boyu', 'Çöz.', 'λ_{0} = 1239,84 / 1,9 = 652,5 nm', 'λ_{0} ≈ 652,5 nm', 652.55]],
+     ['Wavelength (dalga boyu)', 'Çöz.', 'λ_{0} = 1239,84 / 1,9 = 652,5 nm', 'λ_{0} ≈ 652,5 nm', 652.55]],
     'λ_0 ≈ 652.5 nm (red)', 652.55, 'nm', 'φ küçüldükçe eşik dalga boyu uzar: sezyum görünür kırmızı ışıkla bile elektron verir.');
 
   /* ---- s04 ---- */
@@ -9801,7 +9839,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     ['Enerji farkını yaz: ΔE = 13,6 · (1/n_{alt}² − 1/n_{üst}²) eV.', 'Sayıyı hesapla.', 'Dalga boyu: λ = 1239,84 / ΔE (nm).', 'Alt ve üst seviyenin sırasını karıştırma.'],
     ['E_{n} = −13,6 eV / n²', 'n = 4 → 2'],
     [['Enerji farkı', 'Alt seviye n = 2, üst seviye n = 4.', 'ΔE = 13,6·(1/4 − 1/16) = 13,6·(3/16) = 2,55 eV', 'ΔE = 2,55 eV', 2.55],
-     ['Dalga boyu', 'Foton ΔE kadar enerji taşır.', 'λ = 1239,84 / 2,55 = 486 nm', 'λ ≈ 486 nm (H-beta, mavi-yeşil)', 486.2]],
+     ['Wavelength (dalga boyu)', 'Foton ΔE kadar enerji taşır.', 'λ = 1239,84 / 2,55 = 486 nm', 'λ ≈ 486 nm (H-beta, mavi-yeşil)', 486.2]],
     'λ ≈ 486 nm (blue-green, H-beta)', 486.2, 'nm', '1/n_{alt}² önce gelir; n = 2\'ye inen çizgiler görünür bölgededir (Balmer serisi).');
 
   X('bohr-iyon', 'Worked example: ionization from n = 3', 'Calculate the energy needed to ionize a hydrogen atom that is in the n = 3 state.',
@@ -9814,8 +9852,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
   X('debroglie-100', 'Worked example: electron at 25 eV', 'Calculate the de Broglie wavelength of an electron with kinetic energy 25 eV.',
     ['Kinetik enerjiyi eV olarak yaz.', 'Dalga sayısını bul: k = 5,123·√E[eV] nm^{-1}.', 'Dalga boyunu bul: λ = 2π / k.', 'Kısa yol: λ = 1,2264 / √E[eV] nm.'],
     ['E = 25 eV'],
-    [['Dalga sayısı', 'Kök al ve 5,123 ile çarp.', 'k = 5,123·√25 = 25,62 nm^{-1}', 'k = 25,62 nm^{-1}', 25.616],
-     ['Dalga boyu', 'λ = 2π/k.', 'λ = 6,283 / 25,62 = 0,2453 nm', 'λ ≈ 0,245 nm', 0.2453]],
+    [['Wave number (dalga sayısı)', 'Kök al ve 5,123 ile çarp.', 'k = 5,123·√25 = 25,62 nm^{-1}', 'k = 25,62 nm^{-1}', 25.616],
+     ['Wavelength (dalga boyu)', 'λ = 2π/k.', 'λ = 6,283 / 25,62 = 0,2453 nm', 'λ ≈ 0,245 nm', 0.2453]],
     'λ ≈ 0.245 nm', 0.2453, 'nm', 'Kontrol: 1,2264/√25 = 0,2453 nm. Enerji 4 katına çıkarsa λ yarıya iner.');
 
   X('debroglie-lam', 'Worked example: energy from wavelength', 'An electron has a de Broglie wavelength of 0.2 nm. Calculate its kinetic energy in eV.',
@@ -9831,15 +9869,15 @@ Q.art.PORTRE_IDS = Object.keys(P);
     ['L = 40 nm', 'Barrier 17 nm < x < 23 nm, d = 6 nm', 'V_{0} = 4 eV, E ≪ V_{0}'],
     [['Bölgelere ayır', 'Bölge I: 0-17 nm (V=0), bölge II: 17-23 nm (V=4 eV), bölge III: 23-40 nm (V=0).', 'I: V=0   II: V=V_{0}   III: V=0', '3 bölge', 3],
      ['Her bölgede çözüm', 'V=0 bölgelerinde salınım, engelde gerçek üstel (E < V₀).', 'ψ_{I} = A sin kx + A\' cos kx,   ψ_{II} = B e^{κx} + C e^{−κx}', 'sin/cos ve e^{±κx}'],
-     ['Sınır koşulları', 'ψ(0) = ψ(40) = 0; x = 17 ve 23\'te ψ, ψ\' sürekli: 4 bilinmeyen, 4 denklem.', 'ψ(0)=0, ψ(40)=0; süreklilik x=17, x=23', '4 koşul', 4],
+     ['Boundary conditions (sınır koşulları)', 'ψ(0) = ψ(40) = 0; x = 17 ve 23\'te ψ, ψ\' sürekli: 4 bilinmeyen, 4 denklem.', 'ψ(0)=0, ψ(40)=0; süreklilik x=17, x=23', '4 koşul', 4],
      ['Engelin geçirgenliği', 'E ≪ V₀ için κ = 5,123·√4 = 10,25 nm^{-1}. κd ne kadar büyükse engel o kadar geçirimsizdir.', 'κd = 10,25 × 6 = 61,5', 'κd ≈ 61,5', 61.478]],
     'κd ≈ 61.5 ≫ 1: practically impenetrable', 61.478, '(birimsiz)', 'κd ≫ 1 ise engel pratikte geçirimsizdir: iki ayrı kuyu gibi düşünebilirsin.');
 
   X('q5-bos-kuyu', 'Worked example: well of width 20 nm', 'An electron is in an infinite square well of width L = 20 nm. Give ψ_n and the ground-state energy E_1 in meV.',
     ['Sınır koşulları ψ(0) = ψ(L) = 0 → ψ = A sin(nπx/L).', 'Normalizasyon: A²·L/2 = 1 → A = √(2/L).', 'E_{n} = 0,3760·n² / L²[nm] eV.', 'n = 1 için hesapla ve meV\'e çevir (×1000).'],
     ['L = 20 nm', 'π²ħ²/2m = 0,3760 eV·nm²'],
-    [['Dalga fonksiyonu', 'sin kx, kL = nπ; A²·L/2 = 1.', 'ψ_{n} = √(2/L) sin(nπx/L);  A = √(2/20) = 0,316 nm^{-1/2}', 'A = 0,316 nm^{-1/2}', 0.3162],
-     ['İzinli enerjiler', 'L² = 400 nm².', 'E_{n} = 0,3760·n² / 400 eV', 'L² = 400 nm²', 400],
+    [['Wave function (dalga fonksiyonu)', 'sin kx, kL = nπ; A²·L/2 = 1.', 'ψ_{n} = √(2/L) sin(nπx/L);  A = √(2/20) = 0,316 nm^{-1/2}', 'A = 0,316 nm^{-1/2}', 0.3162],
+     ['Allowed energies (izinli enerjiler)', 'L² = 400 nm².', 'E_{n} = 0,3760·n² / 400 eV', 'L² = 400 nm²', 400],
      ['Sayı', 'n = 1: 0,3760/400 = 9,40×10^{-4} eV.', 'E_{1} = 0,940 meV,  E_{2} = 3,76 meV', 'E_{1} ≈ 0,940 meV', 0.94]],
     'E_1 ≈ 0.940 meV', 0.9401, 'meV', 'E ∝ n² / L²: kuyu 2 kat genişlerse enerji 4 kat azalır.');
 
@@ -9869,14 +9907,14 @@ Q.art.PORTRE_IDS = Object.keys(P);
   X('kuyu-norm', 'Worked example: normalization in an 8 nm well', 'An electron is in the ground state ψ = A sin(πx/L) of an infinite well with L = 8 nm. Find A.',
     ['Toplam olasılık 1: ∫|ψ|²dx = 1.', '∫₀^L sin²(πx/L)dx = L/2 değerini kullan.', 'A²·L/2 = 1 → A = √(2/L).'],
     ['L = 8 nm'],
-    [['Normalizasyon', '∫ sin² dx = L/2 = 4 nm.', 'A²·L/2 = 1,   L/2 = 4 nm', 'L/2 = 4 nm', 4],
+    [['Normalization (normalizasyon)', '∫ sin² dx = L/2 = 4 nm.', 'A²·L/2 = 1,   L/2 = 4 nm', 'L/2 = 4 nm', 4],
      ['A', 'A² = 2/L.', 'A = √(2/8 nm) = 0,5 nm^{-1/2}', 'A = 0,5 nm^{-1/2}', 0.5]],
     'A = √(2/L) = 0.5 nm^{-1/2}', 0.5, 'nm^{-1/2}', 'A\'nın birimi uzunluk^{-1/2}\'dir.');
 
   X('kuyu-foton', 'Worked example: photon from a 1 nm well', 'An electron in an infinite well of width L = 1 nm falls from n = 2 to n = 1. Find the photon wavelength in μm.',
     ['E₁ = 0,3760 / L²[nm] eV.', 'E₂ − E₁ = 3E₁.', 'λ = 1239,84 / ΔE (nm), sonra μm\'ye çevir (÷1000).'],
     ['L = 1 nm', 'E_{n} = 0,3760 n²/L²'],
-    [['Temel seviye', 'L = 1 nm → L² = 1.', 'E_{1} = 0,3760 eV', 'E_{1} = 0,376 eV', 0.376],
+    [['Ground state (temel seviye)', 'L = 1 nm → L² = 1.', 'E_{1} = 0,3760 eV', 'E_{1} = 0,376 eV', 0.376],
      ['Geçiş', 'ΔE = 3E₁ = 1,128 eV; λ = 1239,84/1,128 = 1099 nm.', 'λ = 1239,84 / 1,128 = 1099 nm = 1,10 μm', 'λ ≈ 1,10 μm', 1.0991]],
     'λ ≈ 1.10 μm (near infrared)', 1.0991, 'μm', 'Kuyu daraldıkça enerji artar, dalga boyu kısalır.');
 
@@ -9887,7 +9925,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     [['Bölge I', 'Gelen + yansıyan dalga.', 'k_{1} = 5,123·√8 = 14,49 nm^{-1}', 'k_{1} = 14,49 nm^{-1}', 14.4905],
      ['Bölge II', 'Yalnızca geçen dalga.', 'k_{2} = 5,123·√6 = 12,55 nm^{-1}', 'k_{2} = 12,55 nm^{-1}', 12.5491],
      ['Süreklilik', '1 + r = t ve k₁(1 − r) = k₂t.', 'r = (14,49 − 12,55)/(14,49 + 12,55) = 0,0718,   t = 1,0718', 'r ≈ 0,0718', 0.0718],
-     ['Yansıma katsayısı', 'R = r².', 'R = 0,0718² = 0,00515,   T = 0,9948', 'R ≈ 0,0052', 0.005155]],
+     ['Reflection coefficient (yansıma katsayısı)', 'R = r².', 'R = 0,0718² = 0,00515,   T = 0,9948', 'R ≈ 0,0052', 0.005155]],
     'R ≈ 0.0052, T ≈ 0.995', 0.005155, '(birimsiz)', 'Basamak küçükse (V₀ ≪ E) R de küçüktür. Senin görevinde V₀ / E = 1/2: R daha büyük.');
 
   X('q6-e-lt', 'Worked example: potential step, E = 2 eV, V_0 = 6 eV', 'For the step V_0 = 6 eV and E = 2 eV (E < V_0), find R, |t|² and the penetration depth.',
@@ -9895,37 +9933,37 @@ Q.art.PORTRE_IDS = Object.keys(P);
     ['E = 2 eV', 'V_{0} = 6 eV'],
     [['Bölge II çözümü', 'Sönümlenen üstel.', 'κ = 5,123·√4 = 10,25 nm^{-1}', 'κ = 10,25 nm^{-1}', 10.2463],
      ['R ve |t|²', 'Tam yansıma; dalga fonksiyonu yine de sıfır değil.', 'R = 1,   |t|² = 4E/V_{0} = 4·2/6 = 1,333', '|t|² = 1,33', 1.3333],
-     ['Sızma derinliği', '1/e uzaklığı.', 'δ = 1/κ = 1/10,25 = 0,0976 nm', 'δ ≈ 0,098 nm', 0.0976]],
+     ['Penetration depth (sızma derinliği)', '1/e uzaklığı.', 'δ = 1/κ = 1/10,25 = 0,0976 nm', 'δ ≈ 0,098 nm', 0.0976]],
     'R = 1; δ = 1/κ ≈ 0.098 nm', 0.0976, 'nm', 'κ büyüdükçe sızma derinliği azalır. R = 1 ama ψ ≠ 0.');
 
-  X('tunel-1nm', 'Worked example: tunnelling through a 0.6 nm barrier', 'An electron with E = 2 eV meets a barrier V_0 = 5 eV, a = 0.6 nm. Estimate T ≈ e^{-2κa}.',
+  X('tunel-1nm', 'Worked example: tunneling through a 0.6 nm barrier', 'An electron with E = 2 eV meets a barrier V_0 = 5 eV, a = 0.6 nm. Estimate T ≈ e^{-2κa}.',
     ['κ = 5,123·√(V₀ − E) nm^{-1}.', '2κa üssünü hesapla.', 'T ≈ e^{−2κa}; sonucu 2,37e-5 gibi bilimsel yaz.'],
     ['E = 2 eV', 'V_{0} = 5 eV', 'a = 0,6 nm'],
     [['Sönüm sabiti', 'V₀ − E = 3 eV.', 'κ = 5,123·√3 = 8,874 nm^{-1}', 'κ = 8,874 nm^{-1}', 8.8736],
-     ['Geçirgenlik', '2κa = 2·8,874·0,6 = 10,65.', 'T ≈ e^{−10,65} = 2,37×10^{-5}', 'T ≈ 2,4×10^{-5}', 2.374e-5]],
+     ['Transmission (geçirgenlik)', '2κa = 2·8,874·0,6 = 10,65.', 'T ≈ e^{−10,65} = 2,37×10^{-5}', 'T ≈ 2,4×10^{-5}', 2.374e-5]],
     'T ≈ 2.4×10^{-5}', 2.374e-5, '(birimsiz)', 'a küçülünce üstel hızla artar: a büyüdükçe T çok hızlı düşer.');
 
   /* ---- s07 ---- */
   X('olc-p', 'Worked example: measurement probabilities', 'A particle is in ψ = A(3φ_1 + 4φ_2) with orthonormal eigenstates φ_n. Find A and the probability of measuring E_1.',
     ['Normalizasyon: katsayıların karelerinin toplamı × A² = 1.', 'A\'yı çöz.', 'E_n bulma olasılığı = |c_n|² (c_n = A × katsayı).'],
     ['ψ = A(3φ_{1} + 4φ_{2})', '⟨φ_{i}|φ_{j}⟩ = δ_{ij}'],
-    [['Normalizasyon', 'A²(3² + 4²) = 1.', 'A²·25 = 1  →  A = 1/5 = 0,2', 'A = 0,2', 0.2],
-     ['Olasılık', 'c₁ = 3A = 0,6.', 'P(E_{1}) = |3A|² = 9/25 = 0,36,   P(E_{2}) = 16/25', 'P(E_{1}) = 0,36', 0.36]],
+    [['Normalization (normalizasyon)', 'A²(3² + 4²) = 1.', 'A²·25 = 1  →  A = 1/5 = 0,2', 'A = 0,2', 0.2],
+     ['Probability (olasılık)', 'c₁ = 3A = 0,6.', 'P(E_{1}) = |3A|² = 9/25 = 0,36,   P(E_{2}) = 16/25', 'P(E_{1}) = 0,36', 0.36]],
     'A = 1/5; P(E_1) = 0.36', 0.36, '(birimsiz)', 'Kontrol: olasılıklar toplamı 0,36 + 0,64 = 1 olmalı.');
 
   X('olc-E', 'Worked example: expectation value', 'An electron in an infinite well of width L = 1 nm is in ψ = (3/5)φ_1 + (4/5)φ_2. Find ⟨E⟩ in eV.',
     ['Olasılıkları yaz: |c_n|².', 'Seviyeleri hesapla: E_n = 0,3760 n²/L².', '⟨E⟩ = Σ |c_n|² E_n.'],
     ['L = 1 nm', '|c_{1}|² = 9/25, |c_{2}|² = 16/25'],
     [['Seviyeler', 'L = 1 nm: E₁ = 0,376 eV, E₂ = 4E₁.', 'E_{1} = 0,376 eV,  E_{2} = 1,504 eV', 'E_{1} = 0,376 eV', 0.376],
-     ['Beklenen değer', 'Ağırlıklı ortalama.', '⟨E⟩ = 0,36·0,376 + 0,64·1,504 = 0,1354 + 0,9626 = 1,098 eV', '⟨E⟩ ≈ 1,098 eV', 1.098]],
+     ['Expectation value (beklenen değer)', 'Ağırlıklı ortalama.', '⟨E⟩ = 0,36·0,376 + 0,64·1,504 = 0,1354 + 0,9626 = 1,098 eV', '⟨E⟩ ≈ 1,098 eV', 1.098]],
     '⟨E⟩ ≈ 1.10 eV', 1.098, 'eV', '⟨E⟩ ölçümde bulunan bir değer değil, ortalamadır: yalnızca 0,376 ya da 1,504 eV çıkar.');
 
   /* ---- s08 ---- */
   X('bel-v', 'Worked example: uncertainty for a confined electron', 'An electron is confined within Δx = 1 nm. Find the minimum Δp and Δv (in km/s).',
     ['Belirsizlik ilkesi: Δx·Δp ≥ ħ/2.', 'Δx\'i metreye çevir (1 nm = 10^{-9} m).', 'Δp = ħ/(2Δx).', 'Δv = Δp / m.'],
     ['Δx = 1 nm', 'ħ = 1,055×10^{-34} J·s', 'm = 9,109×10^{-31} kg'],
-    [['Momentum belirsizliği', 'Δx = 10^{-9} m.', 'Δp ≥ 1,055×10^{-34}/(2×10^{-9}) = 5,27×10^{-26} kg·m/s', 'Δp ≈ 5,27×10^{-26}', 5.273],
-     ['Hız belirsizliği', 'Δp / m.', 'Δv ≥ 5,27×10^{-26} / 9,109×10^{-31} = 5,79×10^{4} m/s = 57,9 km/s', 'Δv ≈ 57,9 km/s', 57.88]],
+    [['Momentum uncertainty (momentum belirsizliği)', 'Δx = 10^{-9} m.', 'Δp ≥ 1,055×10^{-34}/(2×10^{-9}) = 5,27×10^{-26} kg·m/s', 'Δp ≈ 5,27×10^{-26}', 5.273],
+     ['Velocity uncertainty (hız belirsizliği)', 'Δp / m.', 'Δv ≥ 5,27×10^{-26} / 9,109×10^{-31} = 5,79×10^{4} m/s = 57,9 km/s', 'Δv ≈ 57,9 km/s', 57.88]],
     'Δv ≥ 57.9 km/s', 57.88, 'km/s', 'Δx 10 kat büyürse Δv 10 kat küçülür. Birim: nm → m.');
 
   X('bel-t', 'Worked example: energy-time uncertainty', 'An excited state has lifetime Δt = 10 ns. Estimate the minimum energy uncertainty in μeV.',
@@ -9939,14 +9977,14 @@ Q.art.PORTRE_IDS = Object.keys(P);
   X('bant-si', 'Worked example: absorption edge of germanium', 'Germanium has a bandgap E_g = 0.66 eV. Calculate the longest wavelength that can create an electron-hole pair.',
     ['Koşul: foton enerjisi ≥ E_g.', 'Sınır durumda eşitlik: λ_{max} = 1239,84 / E_g.', 'Daha uzun dalga boyu soğurulmaz.'],
     ['E_{g} = 0,66 eV'],
-    [['Koşul', 'Elektronu valence band\'den conduction band\'e çıkarmak için hf ≥ E_g.', 'λ ≤ hc / E_{g}', 'Koşul yazıldı'],
+    [['Koşul', 'Elektronu valence band (valans bandı) → conduction band (iletim bandı) çıkarmak için hf ≥ E_g.', 'λ ≤ hc / E_{g}', 'Koşul yazıldı'],
      ['Sayı', 'Böl.', 'λ_{max} = 1239,84 / 0,66 = 1879 nm', 'λ_{max} ≈ 1879 nm', 1878.5]],
     'λ_max ≈ 1.88 μm', 1878.5, 'nm', 'Küçük bandgap = uzun dalga boyu eşiği (kızılötesi).');
 
   X('bant-gaas', 'Worked example: GaN bandgap', 'GaN has E_g = 3.4 eV. Find the wavelength emitted on recombination and decide whether a 400 nm photon is absorbed.',
     ['Yayılan foton: λ = 1239,84 / E_g.', 'Verilen fotonun enerjisini bul: E = 1239,84 / λ.', 'E ≥ E_g ise soğurulur, değilse soğurulmaz.'],
     ['E_{g} = 3,4 eV'],
-    [['Yayılan foton', 'E ≈ E_g.', 'λ = 1239,84 / 3,4 = 365 nm (mor ötesi)', 'λ ≈ 365 nm', 364.66],
+    [['Emitted photon (yayılan foton)', 'E ≈ E_g.', 'λ = 1239,84 / 3,4 = 365 nm (mor ötesi)', 'λ ≈ 365 nm', 364.66],
      ['400 nm foton', 'E = 1239,84/400 = 3,10 eV.', 'E_{foton} = 3,10 eV < E_{g} = 3,4 eV → soğurulmaz', 'Soğurulmaz']],
     'λ ≈ 365 nm; a 400 nm photon is not absorbed', 364.66, 'nm', 'Geniş bandgap = kısa dalga boyu (mavi/mor ötesi LED).');
 
@@ -9969,22 +10007,22 @@ Q.art.PORTRE_IDS = Object.keys(P);
   X('np-ni', 'Worked example: p-type silicon', 'Silicon (n_i = 1.5×10^{10} cm^{-3}) is doped with N_A = 2×10^{16} cm^{-3} acceptors. Find the electron concentration n.',
     ['Katkıya bak: N_A ≫ n_i ise çoğunluk taşıyıcı p ≈ N_A (p tipi).', 'Kütle etkisi yasası: n·p = n_i².', 'Azınlık taşıyıcı: n = n_i² / p.'],
     ['n_{i} = 1,5×10^{10} cm^{-3}', 'N_{A} = 2×10^{16} cm^{-3}'],
-    [['Çoğunluk taşıyıcı', 'Akseptör katkısı delik yoğunluğunu belirler.', 'p ≈ N_{A} = 2×10^{16} cm^{-3}', 'p tipi'],
-     ['Elektron yoğunluğu', 'n = n_i² / p.', 'n = (1,5×10^{10})² / 2×10^{16} = 2,25×10^{20}/2×10^{16} = 1,125×10^{4} cm^{-3}', 'n ≈ 1,13×10^{4} cm^{-3}', 11250]],
+    [['Majority carrier (çoğunluk taşıyıcı)', 'Akseptör katkısı delik yoğunluğunu belirler.', 'p ≈ N_{A} = 2×10^{16} cm^{-3}', 'p tipi'],
+     ['Electron density (elektron yoğunluğu)', 'n = n_i² / p.', 'n = (1,5×10^{10})² / 2×10^{16} = 2,25×10^{20}/2×10^{16} = 1,125×10^{4} cm^{-3}', 'n ≈ 1,13×10^{4} cm^{-3}', 11250]],
     'n ≈ 1.13×10^{4} cm^{-3}', 11250, 'cm^{-3}', 'Azınlık taşıyıcı katkı arttıkça azalır: np sabit.');
 
   X('drift-v', 'Worked example: hole drift velocity', 'Hole mobility in silicon is μ_p = 480 cm²/(V·s). Find the drift velocity in E = 50 V/cm, in m/s.',
     ['v_d = μ·E.', 'Birimleri kontrol et: cm²/(V·s) × V/cm = cm/s.', 'cm/s → m/s için ÷100.'],
     ['μ_{p} = 480 cm²/Vs', 'E = 50 V/cm'],
-    [['Sürüklenme hızı', 'Çarp.', 'v_{d} = 480 × 50 = 2,4×10^{4} cm/s', 'v_{d} = 2,4×10^{4} cm/s', 24000],
+    [['Drift velocity (sürüklenme hızı)', 'Çarp.', 'v_{d} = 480 × 50 = 2,4×10^{4} cm/s', 'v_{d} = 2,4×10^{4} cm/s', 24000],
      ['Birim', '1 m = 100 cm.', 'v_{d} = 240 m/s', 'v_{d} = 240 m/s', 240]],
     'v_d = 240 m/s', 240, 'm/s', 'Alan 2 kat → hız 2 kat (doğrusal rejim).');
 
   X('drift-J', 'Worked example: drift current density', 'n-type silicon: n = 5×10^{15} cm^{-3}, μ_n = 1000 cm²/Vs. Find J for E = 20 V/cm, in A/cm².',
     ['İletkenlik: σ = q·n·μ.', 'Akım yoğunluğu: J = σ·E.', 'Birim kontrolü: C·cm^{-3}·cm²/(V·s)·V/cm = A/cm².'],
     ['n = 5×10^{15} cm^{-3}', 'μ_{n} = 1000 cm²/Vs', 'E = 20 V/cm', 'q = 1,602×10^{-19} C'],
-    [['İletkenlik', 'Çarp.', 'σ = 1,602×10^{-19} × 5×10^{15} × 1000 = 0,801 S/cm', 'σ = 0,801 S/cm', 0.801],
-     ['Akım yoğunluğu', 'J = σE.', 'J = 0,801 × 20 = 16,0 A/cm²', 'J ≈ 16,0 A/cm²', 16.02]],
+    [['Conductivity (iletkenlik)', 'Çarp.', 'σ = 1,602×10^{-19} × 5×10^{15} × 1000 = 0,801 S/cm', 'σ = 0,801 S/cm', 0.801],
+     ['Current density (akım yoğunluğu)', 'J = σE.', 'J = 0,801 × 20 = 16,0 A/cm²', 'J ≈ 16,0 A/cm²', 16.02]],
     'J ≈ 16.0 A/cm²', 16.02, 'A/cm²', 'n ya da E iki katına çıkarsa J de iki katına çıkar.');
 
   /* ---- Soru 5 görevleri: son sonucu oyuncuya da sor (sonucSoru; adımlardan sonra, 'Sonuç kontrolü' adımı) ---- */
@@ -10091,11 +10129,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
         kisa: 'Tünel istasyonu',
         rol: 'Elektron dalgasının ince bir bariyerin içine sızıp karşıya geçebildiğini gösterir.',
         neden: 'Elektron ince bir duvarı aşar gibi geçebilir; transistörde ve flash bellekte bu hem işe yarar hem sızıntı yapar.',
-        bagliKavramlar: ['Tunneling (tünelleme)', 'Barrier (bariyer)', 'Reflection (yansıma)', 'Transmission (geçirme)'],
+        bagliKavramlar: ['Tunneling (tünelleme)', 'Barrier (bariyer)', 'Reflection (yansıma)', 'Transmission (geçiş)'],
         miniSoru: {
           soru: 'Barrier (bariyer) kalınlaştıkça tunneling (tünelleme) olasılığına ne olur?',
           secenekler: [
-            s('Üstel olarak azalır, çünkü ψ bariyerin içinde sönümlenir', true, 'Transmission (geçirme) kalınlıkla üstel düşer.'),
+            s('Üstel olarak azalır, çünkü ψ bariyerin içinde sönümlenir', true, 'Transmission (geçiş) kalınlıkla üstel düşer.'),
             s('Değişmez', false, 'Kalınlık sönümlenme mesafesini doğrudan etkiler.'),
             s('Artar, çünkü daha çok yüzey vardır', false, 'Kalınlık arttıkça geçiş zorlaşır.')
           ]
@@ -10117,7 +10155,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s08: {
         kisa: 'Kalibrasyon',
-        rol: 'Konum ile momentum (momentum) aynı anda keskin bilinemez; aralarında bir sınır vardır.',
+        rol: 'Position (konum) ile momentum aynı anda keskin bilinemez; aralarında bir sınır vardır.',
         neden: 'Elektronu ne kadar dar sıkıştırırsan o kadar hızlı kıpırdar; bu, çip küçülmesinin sınırlarından biridir.',
         bagliKavramlar: ['Uncertainty principle (belirsizlik ilkesi)', 'Conjugate variables (eşlenik değişkenler)', 'Zero-point energy (sıfır noktası enerjisi)'],
         miniSoru: {
@@ -10131,9 +10169,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
       },
       s09: {
         kisa: 'Bant testi',
-        rol: 'Çok atom yan yana gelince enerji seviyeleri bantlara dönüşür; aralarında band gap (bant aralığı) kalır.',
+        rol: 'Çok atom yan yana gelince enerji seviyeleri bantlara dönüşür; aralarında bandgap (yasak enerji aralığı) kalır.',
         neden: 'Malzemenin metal, semiconductor (yarıiletken) ya da insulator (yalıtkan) olması bant yapısına bağlıdır.',
-        bagliKavramlar: ['Energy band (enerji bandı)', 'Band gap (bant aralığı)', 'Valence band (değerlik bandı)', 'Conduction band (iletim bandı)'],
+        bagliKavramlar: ['Energy band (enerji bandı)', 'Bandgap (yasak enerji aralığı)', 'Valence band (valans bandı)', 'Conduction band (iletim bandı)'],
         miniSoru: {
           soru: 'Bir kristalde energy bands (enerji bantları) neden oluşur?',
           secenekler: [
@@ -10152,7 +10190,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           soru: 'Fermi level (Fermi seviyesi) neyi belirtir?',
           secenekler: [
             s('Seviyenin dolu olma olasılığının 1/2 olduğu enerjiyi', true, 'Fermi-Dirac distribution (Fermi-Dirac dağılımı) bu enerjide 1/2 verir.'),
-            s('Elektronların hep dolu olduğu en üst bandı', false, 'Bu valence band (değerlik bandı) olur, Fermi seviyesi değildir.'),
+            s('Elektronların hep dolu olduğu en üst bandı', false, 'Bu valence band (valans bandı) olur, Fermi seviyesi değildir.'),
             s('Elektronların sürüklenme hızını', false, 'Drift velocity (sürüklenme hızı) ayrı bir kavramdır.')
           ]
         }
@@ -10400,7 +10438,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     { id: 'neumann', ist: 's07', kisi: 'John von Neumann', yil: 1932, tekCumle: 'Measurement postulate (ölçüm postülatı): sonuç eigenvalue (özdeğer), ardından collapse (çökme).' },
     { id: 'kennard', ist: 's08', kisi: 'Earle H. Kennard', yil: 1927, tekCumle: 'Belirsizlik bağıntısını kesin eşitsizlik olarak türetti: σ_x σ_p ≥ ħ/2.' },
     { id: 'bloch', ist: 's09', kisi: 'Felix Bloch', yil: 1928, tekCumle: 'Periodic potential (periyodik potansiyel) içinde çözüm e^(ikx) çarpı periyodik u(x): Bloch theorem (Bloch teoremi).' },
-    { id: 'kronig', ist: 's09', kisi: 'Kronig ve Penney', yil: 1931, tekCumle: 'Tekrar eden bariyer modeliyle energy bands (enerji bantları) ve bandgap (yasak aralık) gösterdiler.' },
+    { id: 'kronig', ist: 's09', kisi: 'Kronig ve Penney', yil: 1931, tekCumle: 'Tekrar eden bariyer modeliyle energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) gösterdiler.' },
     { id: 'dirac', ist: 's10', kisi: 'Paul Dirac', yil: 1926, tekCumle: 'Fermi-Dirac statistics (Fermi-Dirac istatistiği)ni antisimetrik dalga fonksiyonlarından türetti.' },
     { id: 'shockley', ist: 's10', kisi: 'William Shockley', yil: 1948, tekCumle: 'p-n junction (p-n eklem) kuramı ve junction transistor (eklem transistörü) fikri.' }
   ];
@@ -10481,9 +10519,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "Scattering (saçılma): electron (elektron) bozuk düzende yön değiştirir; mean free path (serbest yol) iki saçılma arası ortalama mesafedir." ] },
           { baslik: "Neden crystal, nasıl çekilir?", madde: [
             "Lattice (kafes) tekrar ettiği için electron (elektron) periodic potential (periyodik potansiyel) görür; bundan energy band (enerji bandı) doğar.",
-            "CZ: melt (eriyik) silisyuma seed crystal (tohum kristal) batırılır, yavaşça döndürülerek çekilir; ingot (külçe) oluşur.",
-            "Ingot (külçe) dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
-            "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir." ] }
+            "CZ: melt (eriyik) silisyuma seed crystal (tohum kristal) batırılır, yavaşça döndürülerek çekilir; ingot (külçe) oluşur, dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
+            "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir.",
+            "Dopant (katkı atomu): bilerek eklenen yabancı atom. Carrier (taşıyıcı): akım taşıyan yük; mobility (hareketlilik): ne kadar kolay ilerler; lifetime (ömür): ne kadar yaşar." ] }
         ],
         nasil: [
           {
@@ -10509,8 +10547,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "madde": [
               "1) Hücre başına atom sayısı N: sc 1, bcc 2, fcc 4, diamond (elmas) 8.",
               "2) Kenar a'yı cm'ye çevir (1 nm = 10⁻⁷ cm), sonra hacmi bul: V = a³.",
-              "3) Yoğunluk n = N/V. Örnek: germanium (germanyum), a = 0,565 nm, N = 8 → V = 1,80×10⁻²² cm³.",
-              "4) n = 8 / 1,80×10⁻²² ≈ 4,4×10²² atom/cm³. Birimi her zaman yaz."
+              "3) Yoğunluk n = N/V. Örnek: germanium (germanyum), a = 0,566 nm, N = 8 → V = 1,81×10⁻²² cm³.",
+              "4) n = 8 / 1,81×10⁻²² ≈ 4,4×10²² atom/cm³. Birimi her zaman yaz."
             ]
           },
           {
@@ -10702,7 +10740,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   var o04 = {
     id: "s02-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
-    onNot: "Diamond structure (elmas yapı): silisyum ve germanyumun kafesi. Nearest neighbor (en yakın komşu): bir atoma en yakın duran atomlar; sayısı coordination number (koordinasyon sayısı) olur.",
+    onNot: "Diamond structure (elmas yapı): silisyum ve germanyumun kafesi; fcc kafes + iki atomlu basis (baz), sp3 bağlarıyla. Nearest neighbor (en yakın komşu): bir atoma en yakın duran atomlar; sayısı coordination number (koordinasyon sayısı) olur.",
     soru: "diamond structure (elmas yapı) içinde her atom (atom) için nearest neighbor (en yakın komşu) sayısı kaçtır?",
     secenekler: [
       s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 neighbors (komşu) ile."),
@@ -11018,7 +11056,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
         id: 's03-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'karacisim_felaket', agirlik: 1,
         onBilgi: [
           { baslik: "Tarihçe: ışık ve enerji paketleri", madde: [
-            "Blackbody (kara cisim): tüm ışığı soğuran ideal cisim. Klasik teori yüksek frequency (frekans) değerlerinde sonsuz energy (enerji) öngördü: ultraviolet catastrophe (mor ötesi felaketi).",
+            "Blackbody (kara cisim): tüm ışığı soğuran ideal cisim. Klasik teori yüksek frequency (frekans) değerlerinde sonsuz energy (enerji) öngördü: ultraviolet catastrophe (mor ötesi felaketi). Bu klasik tahmin Rayleigh-Jeans law (Rayleigh-Jeans yasası) diye bilinir.",
             "Atomlar da yalnızca belirli renklerde ışık yayar: discrete atomic spectra (ayrık atom spektrumları). Wave-particle duality (dalga-parçacık ikiliği) sonraki istasyonlarda.",
             "Max Planck (Berlin, 1900): enerji ancak paketler halinde alınıp verilir diyerek ölçümle uyuşan eğriyi buldu.",
             "Hertz (1887) photoelectric effect (fotoelektrik olay) gözledi; Einstein (1905) ışığı foton paketleriyle açıkladı, Nobel 1921." ] },
@@ -11031,7 +11069,12 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "E = hf; h = 6,626×10⁻³⁴ J·s, f hertz (Hz), E joule (J) veya eV. Threshold frequency (eşik frekansı): f₀ = φ/h.",
             "Maximum kinetic energy (en büyük kinetik enerji): K = hf − φ. Eşik üstünde frequency arttıkça K büyür; sayıyı intensity belirler.",
             "Karışan: wavelength (dalga boyu) kısaldıkça frequency (frekans) ve photon energy (foton enerjisi) artar; λf = c.",
-            "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] }
+            "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] },
+          { baslik: "Wien kayması, durdurma voltajı", madde: [
+            "Blackbody (kara cisim) ısınınca ışık yayar. Sıcaklık T arttıkça eğrinin tepesi kısa wavelength (dalga boyu) tarafına kayar: λ_max·T = sabit (Wien yasası).",
+            "Stopping potential (durdurma potansiyeli) V₀: en hızlı electron (elektron) bile durur; eV₀ = K_max. Örnek: K_max = 0,8 eV ise V₀ = 0,8 V.",
+            "Photoelectric effect (fotoelektrik olay) anlıktır: eşik üstünde ışık gelir gelmez electron (elektron) çıkar, gözle görülür gecikme olmaz. Photocurrent (fotoakım) intensity ile artar.",
+            "Klasik dalga teorisi gecikme ve şiddete bağlı K öngörürdü; deney bunu çürüttü." ] }
         ],
         gorev: 'Temperature (sıcaklık) değerini 5000 K yap, classical curve (klasik eğri) açık kalsın.',
         tanitim: "Yatay eksen wavelength (dalga boyu), dikey eksen yayılan intensity (şiddet). Temperature (sıcaklık) çubuğu Planck eğrisini değiştirir; Classical curve (klasik eğri) düğmesi klasik tahmini açıp kapatır. Kısa wavelength (dalga boyu) tarafına bak.",
@@ -11254,7 +11297,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           { baslik: "Bohr modeli ve enerji", madde: [
             "Bohr postulates (Bohr varsayımları): electron (elektron) belirli stationary orbits (durağan yörüngeler) üzerinde ışıma yapmadan döner; angular momentum (açısal momentum) L = nħ.",
             "de Broglie bakışı: orbit (yörünge) çevresine tam sayı wave (dalga) sığmalı, 2πr = nλ; buradan mvr = nħ çıkar.",
-            "Ionisation energy (iyonlaşma enerjisi): electron (elektron) n=1'den sonsuza çıkarmak için gereken energy (enerji); hidrojende 13,6 eV.",
+            "Ionization energy (iyonlaşma enerjisi): electron (elektron) n=1'den sonsuza çıkarmak için gereken energy (enerji); hidrojende 13,6 eV.",
             "Foton dalga boyu λ = hc/ΔE ile bulunur; hc ≈ 1240 eV·nm. Bohr radius (Bohr yarıçapı) a₀ ≈ 0,053 nm." ] },
           { baslik: "Sıkışma ve denge", madde: [
             "Electron (elektron) daha küçük bölgeye sıkışırsa Δx azalır, Δp büyür; momentum (momentum) büyüyünce kinetic energy (kinetik enerji) de büyür.",
@@ -11484,19 +11527,19 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   var o05 = {
     id: 's05-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'kuantalasma_sinir', agirlik: 1.5,
-    soru: 'Potential well (potansiyel kuyusu) genişliği L yarıya inerse E₁ ne olur?',
+    soru: 'L sabitken electron (elektron) n = 1 seviyesinden n = 3 seviyesine çıkarsa energy (enerji) ne olur?',
     secenekler: [
-      sec('4 katına çıkar', true, 'Doğru. E ∝ 1/L².'),
-      sec('2 katına çıkar', false, 'Yanlış. Energy (enerji) L²\'ye ters orantılıdır: 4 kat.'),
-      sec('Değişmez', false, 'Yanlış. Dar well (kuyu) içinde wavelength (dalga boyu) kısalır, energy (enerji) artar.')
+      sec('E₃ = 9·E₁ olur (9 katına çıkar)', true, 'Doğru. E ∝ n², dolayısıyla n = 3 için 3² = 9.'),
+      sec('E₃ = 3·E₁ olur (3 katına çıkar)', false, 'Yanlış. Energy (enerji) n ile değil n²\'ye orantılıdır: 9 kat.'),
+      sec('Değişmez, çünkü L aynı', false, 'Yanlış. Üst seviyede wavelength (dalga boyu) kısalır ve energy (enerji) artar.')
     ],
     sim: {
       modul: 'kuyu',
       onceki: { L: 2, n: 1 },
-      sonraki: { L: 1, n: 1 }
+      sonraki: { L: 2, n: 3 }
     },
-    ipucu: 'E_yeni / E_eski = (L_eski / L_yeni)²: "Nasıl yapılır: L değişince E" kartına bak.',
-    acik: 'E ∝ 1/L²: L yarıya inince energy (enerji) dört katına çıkar.'
+    ipucu: 'E ∝ n²/L²: L sabit kalınca yalnız n²\'nin oranına bak ("Infinite well, quantization" kartı).',
+    acik: 'E = n²π²ħ²/(2mL²): L aynıyken E ∝ n²; n 1\'den 3\'e çıkınca energy (enerji) 9 katına çıkar.'
   };
 
   Q.data.stations.s05 = {
@@ -11536,13 +11579,13 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "ψ position (konum) ya da energy (enerji) değeri vermez; yalnızca probability distribution (olasılık dağılımı) taşır." ] },
           { baslik: "Schrödinger equation (denklemi)", madde: [
             "Girdi: potential (potansiyel) V(x) ve boundary condition (sınır koşulu). Çıktı: ψ ve izinli E değerleri.",
-            "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi).",
+            "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi); çözümleri eigenfunction (özfonksiyon) ψₙ olur.",
             "Time-dependent (zamana bağlı) hâli ψ'yi zamanla düzgün ve deterministic (belirlenimci) evriltir.",
             "Collapse (çökme) denklemin parçası değildir; measurement postulate (ölçüm postülatı) ayrıdır ve ilerleyen istasyonlarda gelir." ] },
           { baslik: "Infinite well (sonsuz kuyu), quantization", madde: [
             "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
-            "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
-            "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L yarıya inerse etkisi büyüktür.",
+            "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3... ψₙ içinde n − 1 node (düğüm; ψ = 0 olan iç nokta) vardır.",
+            "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L küçülürse ya da n büyürse energy (enerji) artar.",
             "n = 0 dalga yok demektir; en düşük E₁ > 0 olur: zero-point energy (sıfır noktası enerjisi), sınır koşulundan gelir." ] },
           { baslik: "Nasıl yapılır: L değişince E", madde: [
             "Adım 1: E ∝ 1/L² olduğundan E_yeni / E_eski = (L_eski / L_yeni)² yaz. n aynı kalır.",
@@ -12004,19 +12047,19 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   var o05 = {
     id: 's07-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'olcum_cokme', agirlik: 1.5,
-    soru: 'Collapse (çökme) sonrası aynı büyüklüğü hemen tekrar measure (ölçersen) ne olur?',
+    soru: '|c₁|² = 0,3 olan aynı ψ durumu 100 kez taze hazırlanıp her seferinde bir kez measurement (ölçüm) yapılırsa result (sonuç) nasıl dağılır?',
     secenekler: [
-      sec('Aynı result (sonuç) çıkar', true, 'Doğru. ψ artık eigenstate (özdurum) içinde, result (sonuç) değişmez.'),
-      sec('Yeni random (rastgele) result (sonuç)', false, 'Yanlış. Collapse (çökme) sonrası state (durum) eigenstate (özdurum) olur, result (sonuç) aynı kalır.'),
-      sec('İki result (sonuç) average (ortalama) değeri', false, 'Yanlış. Tek measurement (ölçüm) bir eigenvalue (özdeğer) verir.')
+      sec('Yaklaşık 30 kez φ₁, 70 kez φ₂', true, 'Doğru. Her tek measurement (ölçüm) bir eigenvalue (özdeğer) verir; sıklıklar |c|² değerlerine yaklaşır (0,3 ve 0,7).'),
+      sec('Hep average (ortalama) değer çıkar', false, 'Yanlış. Tek measurement (ölçüm) average (ortalama) değeri vermez; yalnız bir eigenvalue (özdeğer) görülür.'),
+      sec('Hepsi aynı eigenstate (özdurum) çıkar', false, 'Yanlış. Seçim rastgeledir; φ₂ olasılığı 0,7 olduğu için yaklaşık 70 kez çıkar.')
     ],
     sim: {
       modul: 'olcum',
       onceki: { c1sq: 0.3 },
-      sonraki: { c1sq: 0.3, olcTekrar: true }
+      sonraki: { c1sq: 0.3 }
     },
-    ipucu: 'Çökmeden sonra ψ hangi durumdadır? "Measurement (ölçüm), collapse (çökme)" kartına bak.',
-    acik: 'Collapse (çökme) sonrası ψ eigenstate (özdurum) olur; tekrar measurement (ölçüm) aynı result (sonuç) verir.'
+    ipucu: 'Olasılık c₁ mi, c₁² mi? "Nasıl yapılır: |c|² ile olasılık" kartına bak.',
+    acik: 'Taze hazırlanan her ψ için sonuç şansla seçilir ve ağırlığı |c|² belirler: 100 ölçümde yaklaşık 30 kez φ₁, 70 kez φ₂.'
   };
 
   Q.data.stations.s07 = {
@@ -12088,7 +12131,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           params: { c1sq: 0.3 },
           basari: { tekrarAyni: true }
         },
-        ogrenilen: 'Measurement (ölçüm) ψ\'yi result (sonuç) durumuna collapse (çökertir) eder; hemen tekrar measure (ölçersen) aynı result (sonuç) alırsın.'
+        ogrenilen: 'Measurement (ölçüm) ψ\'yi result (sonuç) durumuna çökertir (collapse); hemen tekrar ölçersen aynı result (sonuç) değerini alırsın.'
       },
       o03,
       o04,
@@ -12107,7 +12150,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
         bloklar: [
           'System (sistem) eigenstate (özdurum) superposition (süperpozisyon) içindedir',
           'Measurement (ölçüm) bir eigenvalue (özdeğer) değerini |c|² probability (olasılık) ile verir',
-          'ψ o eigenstate durumuna collapse (çöker) eder',
+          'ψ o eigenstate durumuna collapse (çöker)',
           'Sonra equation (denklem) ψ\'yi yeniden evolve (evriltir)'
         ],
         sonuc: 'Superposition (süperpozisyon), probabilistic (olasılıklı) result (sonuç), collapse (çökme), deterministic (belirlenimci) evolution (evrim).',
@@ -12131,7 +12174,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             secenekler: [
               sec('Eigenstate (özdurum) superposition (süperpozisyon) hâli', true, 'Doğru. ψ = Σ cₙφₙ.'),
               sec('Hidden (gizli) ama belirli bir value (değer)', false, 'Hayır. Standart yorumda measurement (ölçüm) öncesi belirli value (değer) yoktur.'),
-              sec('Zero energy (sıfır enerji)', false, 'Hayır. Energy (enerji) sıfır olmak zorunda değil.')
+              sec('Energy (enerji) her zaman tek ve kesin bir value (değer) taşır', false, 'Hayır. Superposition (süperpozisyon) durumunda energy (enerji) ölçüm öncesi kesin değildir; sonuç olasılıkla belirlenir.')
             ],
             alt: {
               soru: 'Hangi büyüklük bir measurement (ölçüm) result (sonuç) olabilir?',
@@ -12149,7 +12192,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             anahtarFikirler: [
               'State (durum) ψ ile tarif edilir, |ψ|² probability density (olasılık yoğunluğu) olur.',
               'Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir.',
-              'Measurement (ölçüm) yalnızca eigenvalue (özdeğer) verir, state (durum) eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Measurement (ölçüm) yalnızca eigenvalue (özdeğer) verir, state (durum) eigenstate (özdurum) durumuna collapse (çöker).',
               'Time evolution (zaman evrimi) Schrödinger equation (denklem) ile deterministic (belirlenimci) olur.'
             ],
             yanlisKavramlar: [
@@ -12157,7 +12200,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
               'Measurement (ölçüm) sırasında ψ hiç değişmez'
             ],
             yanlisKavramIds: ['evrim_belirlenimci', 'olcum_cokme'],
-            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker) eder. Measurement (ölçüm) arasında ψ, Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde evrilir.',
+            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker). Measurement (ölçüm) arasında ψ, Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde evrilir.',
             yedekSecmeli: {
               soru: 'Hangisi kuantum postulate (postülat) ilkelerinden biridir?',
               secenekler: [
@@ -12176,7 +12219,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             anahtarFikirler: [
               'State (durum) superposition (süperpozisyon) olarak eigenstate (özdurum) toplamıdır: ψ = Σ cₙφₙ.',
               'Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir.',
-              'Measurement (ölçüm) sonrası ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Measurement (ölçüm) sonrası ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker).',
               'Hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.'
             ],
             yanlisKavramlar: [
@@ -12184,11 +12227,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
               'Collapse (çökme) Schrödinger equation (denklem) kaynaklıdır'
             ],
             yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
-            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder; hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
+            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker); hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
             yedekSecmeli: {
               soru: 'Eigenstate (özdurum) olmayan state (durumda) measurement (ölçüm) sonrası ne olur?',
               secenekler: [
-                sec('State (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder', true, 'Doğru. Result (sonuç) probability (olasılık) ile belirlenir.'),
+                sec('State (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker)', true, 'Doğru. Result (sonuç) probability (olasılık) ile belirlenir.'),
                 sec('State (durum) hiç değişmez', false, 'Yanlış. Measurement (ölçüm) state (durum) değiştirir.'),
                 sec('State (durum) average (ortalama) eigenstate (özdurum) içinde olur', false, 'Yanlış. Average (ortalama) eigenstate (özdurum) diye bir şey yok.'),
                 sec('System (sistem) yok olur', false, 'Yanlış. System (sistem) eigenstate (özdurum) içinde kalır.')
@@ -12202,7 +12245,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       {
         id: 's07-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin probability (olasılık) olduğunu söyledi.' },
-        ozet: ['Measurement (ölçüm) eigenvalue (özdeğer) verir, |c|² probability (olasılık) ile', 'Measurement (ölçüm) sırasında ψ eigenstate (özdurum) durumuna collapse (çöker) eder', 'Equation (denklem) deterministic (belirlenimci), collapse (çökme) measurement (ölçüm) ile'],
+        ozet: ['Measurement (ölçüm) eigenvalue (özdeğer) verir, |c|² probability (olasılık) ile', 'Measurement (ölçüm) sırasında ψ eigenstate (özdurum) durumuna collapse (çöker)', 'Equation (denklem) deterministic (belirlenimci); collapse (çökme) yalnızca measurement (ölçüm) ile olur'],
         kontrolNoktasi: true
       }
     ],
@@ -12248,9 +12291,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   var o03 = {
     id: 's08-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
-    soru: 'Δx küçülürse Δp (momentum) ne olur?',
+    soru: 'Δx küçülürse Δp (momentum) için alt sınır ne olur?',
     secenekler: [
-      sec('Büyür (increases)', true, 'Doğru. ΔxΔp ≥ ħ/2 product (çarpım) en az sabit kalır.'),
+      sec('Alt sınırı büyür (increases)', true, 'Doğru. ΔxΔp ≥ ħ/2 product (çarpım) en az sabit kalır; Δp alt sınırı büyür.'),
       sec('Küçülür (decreases)', false, 'Yanlış. Product (çarpım) sınırlı olduğundan biri küçülünce öbürü büyür.'),
       sec('Değişmez (unchanged)', false, 'Yanlış. ΔxΔp ≥ ħ/2 condition (koşul) bunu zorunlu kılar.')
     ],
@@ -12272,19 +12315,19 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   var o05 = {
     id: 's08-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'belirsizlik_dalga', agirlik: 1.5,
-    soru: 'Wave packet (dalga paketi) için position (konum) genişliğini yarıya indirirsen momentum spread (momentum yayılması) ne olur?',
+    soru: 'Wave packet (dalga paketi) için position (konum) genişliğini iki katına çıkarırsan (σx 1 nm -> 2 nm) momentum spread (momentum yayılması) ne olur?',
     secenekler: [
-      sec('İki katına çıkar (doubles)', true, 'Doğru. σp = ħ/(2σx).'),
-      sec('Yarıya iner (halves)', false, 'Yanlış. Position (konum) daralınca momentum genişler.'),
-      sec('Aynı kalır (unchanged)', false, 'Yanlış. Position (konum) ve momentum bağlıdır.')
+      sec('Yarıya iner (halves)', true, 'Doğru. σp = ħ/(2σx); σx iki katına çıkınca σp yarıya iner.'),
+      sec('İki katına çıkar (doubles)', false, 'Yanlış. Position (konum) genişleyince momentum yayılması daralır.'),
+      sec('Aynı kalır (unchanged)', false, 'Yanlış. Position (konum) ve momentum yayılması ters orantılıdır.')
     ],
     sim: {
       modul: 'belirsizlik',
-      onceki: { sx: 2 },
-      sonraki: { sx: 1 }
+      onceki: { sx: 1 },
+      sonraki: { sx: 2 }
     },
     ipucu: 'σp = ħ/(2σx): ters orantı. "Nasıl yapılır: Δp bulmak" kartına bak.',
-    acik: 'σx 2\'den 1\'e inince σp iki katına çıktı; product (çarpım) ħ/2\'de kaldı.'
+    acik: 'σx 1\'den 2\'ye çıkınca σp yarıya indi; product (çarpım) ħ/2\'de kaldı.'
   };
 
   Q.data.stations.s08 = {
@@ -12541,11 +12584,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
     soru: 'Insulator (yalıtkan) neden akım taşımaz?',
     secenekler: [
       sec('Valence band (valans bandı) dolu, bandgap (yasak enerji aralığı) büyük', true, 'Doğru. Electron (elektron) boş seviyeye çıkamaz.'),
-      sec('Atom (atom) hiç electron (elektron) içermez', false, 'Hayır. Electron (elektron) vardır, ama hareket edemez.'),
+      sec('Valence band (valans bandı) boştur, electron (elektron) atoma sıkı bağlıdır', false, 'Hayır. Insulator (yalıtkan) içinde valence band (valans bandı) doludur; sorun boş seviyenin bandgap (yasak enerji aralığı) ötesinde olmasıdır.'),
       sec('Conduction band (iletim bandı) yarı doludur', false, 'Hayır. Yarı dolu band (bant) metal (metal) özelliğidir.')
     ],
     kusurSkin: 'bant_bosluk',
-    ipucu: "Dolu band ve E_g: \"Nasıl yapılır: malzemeyi belirle\" kartındaki Adım 2-3'e bak."
+    ipucu: "Dolu band ve Eg: \"Nasıl yapılır: malzemeyi belirle\" kartındaki Adım 2-3'e bak."
   };
 
   var o05 = {
@@ -12598,7 +12641,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
         onBilgi: [
           { baslik: "Energy band (enerji bandı) nasıl oluşur", madde: [
             "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır. Atomlar yaklaştıkça örtüşme artar, band (bant) genişler.",
-            "Yakın seviyeler birleşip energy band (enerji bandı) olur; N ≈ 10^22 için seviye aralığı ısıl enerjiden (kT) çok küçüktür, band sürekli gibi davranır.",
+            "Yakın seviyeler birleşip energy band (enerji bandı) olur; N ≈ 10²² için seviye aralığı ısıl enerjiden (kT) çok küçüktür, band sürekli gibi davranır.",
             "Tek infinite well (sonsuz kuyu) bant vermez; bant, çok atomlu periodic potential (periyodik potansiyel) içinde olur.",
             "Crystal (kristal) düzenli olduğu için bantlar öngörülebilir; amorf yapıda bu düzen bozulur." ] },
           { baslik: "Pauli ilkesi ve doluluk", madde: [
@@ -12608,33 +12651,33 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "Sık karışan nokta: tam dolu band (bant) boş seviye bırakmadığı için akım taşımaz; yarı dolu band (bant) taşır." ] },
           { baslik: "Bandgap (yasak enerji aralığı), malzeme", madde: [
             "Valence band (valans bandı): dolu üst band. Conduction band (iletim bandı): üstteki, akım taşıyabilen band.",
-            "Bandgap (yasak enerji aralığı) E_g (birim eV): iki band arası; bu enerjide allowed state (izinli durum) yoktur.",
-            "Metal (metal): band yarı dolu ya da örtüşür. Insulator (yalıtkan): büyük E_g (elmas ≈ 5,5 eV).",
-            "Semiconductor (yarıiletken): küçük E_g (silikon ≈ 1,1 eV). Ayrım probability (olasılık) değil, band (bant) yapısıdır." ] }
+            "Bandgap (yasak enerji aralığı) Eg (birim eV): iki band arası; bu enerjide allowed state (izinli durum) yoktur.",
+            "Metal (metal): band yarı dolu ya da örtüşür. Insulator (yalıtkan): büyük Eg (elmas ≈ 5,5 eV).",
+            "Semiconductor (yarıiletken): küçük Eg (silikon ≈ 1,1 eV). Ayrım probability (olasılık) değil, band (bant) yapısıdır." ] }
         ],
         nasil: [
           { baslik: "Nasıl yapılır: malzemeyi belirle", madde: [
             "Adım 1: kapasiteyi bul. N atom (atom) N seviye verir, her seviye 2 electron (elektron) alır; band (bant) kapasitesi 2N olur.",
             "Adım 2: electron (elektron) sayısını kapasiteyle karşılaştır. Band (bant) yarı doluysa metal (metal); tam doluysa Adım 3.",
-            "Adım 3: tam dolu bandın üstündeki bandgap (yasak enerji aralığı) E_g'ye bak: birkaç eV ise insulator (yalıtkan), yaklaşık 1 eV ise semiconductor (yarıiletken).",
-            "Örnek: N = 10, kapasite 20. 10 electron (elektron) varsa band (bant) yarı dolu: metal. 20 electron ve E_g = 6 eV ise insulator (yalıtkan)." ] },
+            "Adım 3: tam dolu bandın üstündeki bandgap (yasak enerji aralığı) Eg'ye bak: birkaç eV ise insulator (yalıtkan), yaklaşık 1 eV ise semiconductor (yarıiletken).",
+            "Örnek: N = 10, kapasite 20. 10 electron (elektron) varsa band (bant) yarı dolu: metal. 20 electron ve Eg = 6 eV ise insulator (yalıtkan)." ] },
           { baslik: "Nasıl yapılır: gap ve foton", madde: [
-            "Foton enerjisi E = hc/λ, hc = 1239,84 eV·nm. Elektronu bandgap (yasak enerji aralığı) üstüne çıkarmak için E ≥ E_g gerekir.",
-            "Adım 1: E_g'yi eV yaz. Adım 2: λ_max = hc / E_g hesapla. Bundan uzun dalga boyu soğurulmaz.",
-            "Örnek: germanium (germanyum) E_g = 0,67 eV. λ_max = 1239,84 / 0,67 ≈ 1850 nm; 2000 nm fotonun enerjisi E_g'den küçüktür, soğurulmaz.",
-            "Tersi: electron (elektron) iletim bandından alta inerse yaklaşık E_g enerjili foton yayılır; dalga boyu aynı formülle bulunur." ] },
+            "Foton enerjisi E = hc/λ, hc = 1239,84 eV·nm. Elektronu bandgap (yasak enerji aralığı) üstüne çıkarmak için E ≥ Eg gerekir.",
+            "Adım 1: Eg'yi eV yaz. Adım 2: λmax = hc / Eg hesapla. Bundan uzun dalga boyu soğurulmaz.",
+            "Örnek: germanium (germanyum) Eg = 0,66 eV. λmax = 1239,84 / 0,66 ≈ 1879 nm; 2000 nm fotonun enerjisi Eg'den küçüktür, soğurulmaz.",
+            "Tersi: electron (elektron) iletim bandından alta inerse yaklaşık Eg enerjili foton yayılır; dalga boyu aynı formülle bulunur." ] },
           { baslik: "Nasıl yapılır: zincir ve cevap", madde: [
             "Zincir sırası nedensellik sırasıdır: atomlar yaklaşır, seviyeler yarılır, çizgiler yığılıp band (bant) olur, bantlar arası boşluk bandgap (yasak enerji aralığı) kalır.",
             "Neden: yarılma atomların etkileşiminden doğar; tek atomda yarılma olmaz. Band (bant) ancak çok yakın çizgi olunca oluşur; gap ise bantlardan sonra kalan boşluktur.",
             "Dolu band (bant) neden akım taşımaz: electron (elektron) hareket için boş seviye ister, tam dolu bandda komşu boş seviye yoktur.",
-            "Açık cevap şablonu: (1) seviyeler yarılır, (2) band (bant) olur, (3) Pauli kapasitesi, (4) doluluk ve E_g ile malzemeyi sınıfla." ] },
+            "Açık cevap şablonu: (1) seviyeler yarılır, (2) band (bant) olur, (3) Pauli kapasitesi, (4) doluluk ve Eg ile malzemeyi sınıfla." ] },
           { baslik: "Nasıl yapılır: bant simülasyonu", madde: [
             "N kaydırıcısı atom (atom) sayısını 1'den 64'e çıkarır; N arttıkça her seviye N çizgiye yarılır ve çizgiler band (bant) oluşturur.",
-            "Üç düğme malzemeyi seçer: Metal, Insulator (yalıtkan), Semiconductor (yarıiletken). Alttaki satırda E_g değeri görünür.",
+            "Üç düğme malzemeyi seçer: Metal, Insulator (yalıtkan), Semiconductor (yarıiletken). Alttaki satırda Eg değeri görünür.",
             "Fill electrons (elektron doldur) düğmesi electron'ları alttan yukarı doldurur; dolum bitince akım taşıyıp taşımadığı yazılır.",
             "Görev sırası: N'yi 32 yap, bir malzeme seç, Fill'e bas; sonra diğer iki malzemede tekrarla." ] }
         ],
-        tanitim: "Kaydırıcı N atom (atom) sayısını değiştirir. Üç düğme malzemeyi seçer. Fill electrons (elektron doldur) alttan doldurur; alttaki satır E_g ve akım durumunu yazar. Kartları Nasıl yapılır? düğmesiyle yeniden açabilirsin.",
+        tanitim: "Kaydırıcı N atom (atom) sayısını değiştirir. Üç düğme malzemeyi seçer. Fill electrons (elektron doldur) alttan doldurur; alttaki satır Eg ve akım durumunu yazar. Kartları Nasıl yapılır? düğmesiyle yeniden açabilirsin.",
         gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {
           modul: 'bant',
@@ -12843,18 +12886,18 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   var o05 = {
     id: 's10-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'fermi_dagilim', agirlik: 1.5,
-    soru: 'Temperature (sıcaklık) 300 K\'den 50 K\'e inerse f(E) eğrisi E_F çevresinde ne olur?',
+    soru: 'E_F\'nin 0,1 eV üstündeki bir seviyenin dolu olma olasılığı f, sıcaklık 300 K\'den 600 K\'e çıkınca ne olur?',
     secenekler: [
-      sec('Dikleşir, step function (basamak fonksiyonu) biçimine yaklaşır', true, 'Doğru. kT küçülünce geçiş bölgesi daralır.'),
-      sec('Daha da yumuşar', false, 'Yanlış. Yumuşama sıcaklıkla artar, düşmez.'),
-      sec('E_F noktası kaybolur', false, 'Yanlış. f(E_F) = 1/2 her T için sürer.')
+      sec('Artar (increases): f ≈ 0,02 -> 0,13', true, 'Doğru. kT büyüyünce geçiş bölgesi genişler, E_F üstündeki seviyeler daha çok dolar.'),
+      sec('Azalır (decreases)', false, 'Yanlış. Isınan electron (elektron) daha yüksek seviyelere çıkar, E_F üstündeki f artar.'),
+      sec('f(E_F) de 1/2\'den büyük olur', false, 'Yanlış. f(E_F) = 1/2 her T için sürer.')
     ],
     sim: {
       modul: 'fermi',
       onceki: { T: 300 },
-      sonraki: { T: 50 }
+      sonraki: { T: 600 }
     },
-    acik: 'T 300 K\'den 50 K\'e inince f(E) eğrisi diklendi; geçiş bölgesi E_F çevresinde daraldı, basamağa yaklaştı.',
+    acik: 'T 300 K\'den 600 K\'e çıkınca E_F + 0,1 eV seviyesinde f ≈ 0,02\'den 0,13\'e yükseldi; geçiş bölgesi genişledi.',
     ipucu: "Geçiş genişliği kT ile orantılı: \"Nasıl yapılır: sıcaklık ve kT\" kartına bak."
   };
 
@@ -12966,8 +13009,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
         sonuc: 'Alan E, drift velocity (sürüklenme hızı) v_d = μE verir; n ve p ile birlikte J = q(nμₙ + pμₚ)E akımı çıkar.'
       },
       {
-        id: 's10-o08', tip: 'patron', baslik: 'Fermi (Fermi) Canavarı', kavram: null, agirlik: 1,
-        canavar: 'fermi', canavarAd: 'Fermi (Fermi) Canavarı',
+        id: 's10-o08', tip: 'patron', baslik: 'Fermi Canavarı', kavram: null, agirlik: 1,
+        canavar: 'fermi', canavarAd: 'Fermi Canavarı',
         giris: 'Seviyeleri ben doldururum! Sıcaklık yükselirse sınırım bulanır!',
         fazlar: [
           {
@@ -13120,14 +13163,14 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   /* ---- s01 crystal structure ---- */
   M('sv-s01-m1', 's01', 'The packing fraction of a simple cubic (SC) lattice of identical touching hard spheres is approximately:', '0.52', ['0.68', '0.74', '0.34'], 'Nearest atoms touch along the cube edge, so r = a/2. One atom per cell gives (4/3)π(a/2)^3 / a^3 = π/6 ≈ 0.52.');
-  M('sv-s01-m2', 's01', 'How many atoms does the conventional unit cell of a BCC lattice contain?', '2', ['1', '4', '8'], 'Eight corners contribute 8 × 1/8 = 1 atom, and the body centre contributes 1 more, so 2 atoms per cell.');
-  M('sv-s01-m3', 's01', 'How many lattice points belong to the conventional unit cell of an FCC lattice?', '4', ['2', '6', '14'], 'Corners give 8 × 1/8 = 1 and the six face centres give 6 × 1/2 = 3, so the total is 4.');
-  M('sv-s01-m4', 's01', 'An FCC metal has lattice constant a = 0.50 nm. Calculate the nearest-neighbour distance.', '0.35 nm', ['0.25 nm', '0.43 nm', '0.50 nm'], 'In FCC the nearest neighbours lie along the face diagonal, whose length is a√2, so d = a/√2 = 0.50/1.414 ≈ 0.35 nm.');
-  M('sv-s01-m5', 's01', 'What is the coordination number of an atom in the diamond structure?', '4', ['6', '8', '12'], 'Each atom is tetrahedrally bonded to 4 nearest neighbours (sp3 bonding), as in silicon.');
+  M('sv-s01-m2', 's01', 'How many atoms does the conventional unit cell of a BCC lattice contain?', '2', ['1', '4', '8'], 'Eight corners contribute 8 × 1/8 = 1 atom, and the body center contributes 1 more, so 2 atoms per cell.');
+  M('sv-s01-m3', 's01', 'How many lattice points belong to the conventional unit cell of an FCC lattice?', '4', ['2', '6', '14'], 'Corners give 8 × 1/8 = 1 and the six face centers give 6 × 1/2 = 3, so the total is 4.');
+  M('sv-s01-m4', 's01', 'An FCC metal has lattice constant a = 0.50 nm. Calculate the nearest-neighbor distance.', '0.35 nm', ['0.25 nm', '0.43 nm', '0.50 nm'], 'In FCC the nearest neighbors lie along the face diagonal, whose length is a√2, so d = a/√2 = 0.50/1.414 ≈ 0.35 nm.');
+  M('sv-s01-m5', 's01', 'What is the coordination number of an atom in the diamond structure?', '4', ['6', '8', '12'], 'Each atom is tetrahedrally bonded to 4 nearest neighbors (sp3 bonding), as in silicon.');
   M('sv-s01-m6', 's01', 'Which statement correctly describes the diamond structure?', 'An FCC lattice with a two-atom basis', ['A simple cubic lattice with a one-atom basis', 'A BCC lattice with a two-atom basis', 'A hexagonal lattice with a one-atom basis'], 'Diamond is not a Bravais lattice itself: it is an FCC lattice with two identical atoms per lattice point, displaced by (a/4, a/4, a/4).');
-  M('sv-s01-m7', 's01', 'A BCC crystal has a = 0.40 nm. Determine the nearest-neighbour distance.', '0.35 nm', ['0.20 nm', '0.28 nm', '0.40 nm'], 'Nearest neighbours lie along the body diagonal (length a√3), and the centre atom touches a corner atom over half of it: d = a√3/2 = 0.40 × 0.866 ≈ 0.35 nm.');
+  M('sv-s01-m7', 's01', 'A BCC crystal has a = 0.40 nm. Determine the nearest-neighbor distance.', '0.35 nm', ['0.20 nm', '0.28 nm', '0.40 nm'], 'Nearest neighbors lie along the body diagonal (length a√3), and the center atom touches a corner atom over half of it: d = a√3/2 = 0.40 × 0.866 ≈ 0.35 nm.');
   M('sv-s01-m8', 's01', 'Which expression defines a crystal structure?', 'Crystal structure = lattice + basis', ['Crystal structure = lattice × Fermi level', 'Crystal structure = basis − unit cell', 'Crystal structure = lattice + bandgap'], 'The lattice is the set of translation points; the basis is the group of atoms attached to every lattice point. Together they give the crystal.');
-  K('sv-s01-k1', 's01', 'packing fraction', 'Derive the packing fraction of a simple cubic (SC) lattice, assuming identical hard spheres that touch their nearest neighbours.',
+  K('sv-s01-k1', 's01', 'packing fraction', 'Derive the packing fraction of a simple cubic (SC) lattice, assuming identical hard spheres that touch their nearest neighbors.',
     'In SC the atoms touch along the cube edge, so the sphere radius is r = a/2. There is one atom per unit cell (8 corners × 1/8). The sphere volume is (4/3)πr^3 = (4/3)π(a/2)^3 = πa^3/6. Dividing by the cell volume a^3 gives a packing fraction of π/6 ≈ 0.52, so about 48 % of the volume is empty.',
     ['Touching along the edge: r = a/2', 'One atom per cell (8 × 1/8)', 'Sphere volume (4/3)πr^3', 'Result π/6 ≈ 0.52']);
   K('sv-s01-k2', 's01', 'packing fraction', 'Calculate the packing fraction of a BCC lattice and compare it with that of an FCC lattice.',
@@ -13142,7 +13185,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   M('sv-s02-m2', 's02', 'A plane intercepts all three axes at 2a. State its Miller indices.', '(111)', ['(222)', '(200)', '(110)'], 'Reciprocals are 1/2, 1/2, 1/2; scaling to the smallest integers gives (111). Indices are never left with a common factor.');
   M('sv-s02-m3', 's02', 'A plane is parallel to both the y and z axes and cuts the x axis at a. Its Miller indices are:', '(100)', ['(111)', '(010)', '(011)'], 'Intercepts 1, ∞, ∞ give reciprocals 1, 0, 0, so the plane is (100).');
   M('sv-s02-m4', 's02', 'A plane has intercepts a/2, a/3 and a along x, y and z. Determine its Miller indices.', '(231)', ['(321)', '(132)', '(123)'], 'Intercepts in units of a: 1/2, 1/3, 1. Reciprocals: 2, 3, 1, which are already the smallest integers, so the plane is (231).');
-  M('sv-s02-m5', 's02', 'For a cubic crystal with a = 0.50 nm, calculate the spacing between neighbouring (110) planes.', '0.35 nm', ['0.25 nm', '0.50 nm', '0.71 nm'], 'For cubic crystals d = a/√(h^2 + k^2 + l^2) = 0.50/√2 ≈ 0.35 nm.');
+  M('sv-s02-m5', 's02', 'For a cubic crystal with a = 0.50 nm, calculate the spacing between neighboring (110) planes.', '0.35 nm', ['0.25 nm', '0.50 nm', '0.71 nm'], 'For cubic crystals d = a/√(h^2 + k^2 + l^2) = 0.50/√2 ≈ 0.35 nm.');
   M('sv-s02-m6', 's02', 'In a cubic crystal, the direction [111] is:', 'perpendicular to the (111) plane', ['parallel to the (111) plane', 'perpendicular to the (110) plane', 'at 45° to the (111) plane'], 'In cubic systems the direction [hkl] is normal to the plane (hkl). This is not true in general for non-cubic lattices.');
   M('sv-s02-m7', 's02', 'Which statement best describes the Czochralski method?', 'A seed crystal is dipped into the melt and slowly pulled up while rotating to grow a single-crystal ingot', ['A gas is condensed on a cold substrate to grow a polycrystalline film', 'A melt is cooled rapidly so that grain boundaries form everywhere', 'A wafer is cut and then doped by ion implantation to grow a crystal'], 'The pulled and rotated seed fixes the crystal orientation, so the ingot is a single crystal. Wafers are sliced from it afterwards.');
   M('sv-s02-m8', 's02', 'A bar over a Miller index, as in (1 1 1̄), means that the plane:', 'cuts the corresponding axis on the negative side of the origin', ['is parallel to that axis', 'has an intercept of 1/2', 'contains no atoms'], 'A negative intercept gives a negative index, written with a bar above the number.');
@@ -13161,7 +13204,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   M('sv-s03-m2', 's03', 'Einstein\'s photoelectric equation for the maximum kinetic energy of an emitted electron is:', 'K_max = hf − φ', ['K_max = hf + φ', 'K_max = φ/hf', 'K_max = hf × φ'], 'Each photon gives all its energy hf to one electron; the work function φ is spent leaving the metal and the rest is kinetic energy.');
   M('sv-s03-m3', 's03', 'Light of frequency below the threshold frequency shines on a metal with very high intensity. What happens?', 'No electrons are emitted', ['Electrons are emitted after a delay', 'Electrons are emitted with lower energy', 'Electrons are emitted with higher energy'], 'Emission depends on photon energy, not intensity. If hf < φ, no single photon can free an electron, however many arrive.');
   M('sv-s03-m4', 's03', 'The maximum kinetic energy of photoelectrons is 1.5 eV. What stopping potential is needed to stop them?', '1.5 V', ['0.75 V', '3.0 V', '2.25 V'], 'eV_0 = K_max, so V_0 = 1.5 eV / e = 1.5 V.');
-  M('sv-s03-m5', 's03', 'What is the "ultraviolet catastrophe"?', 'The classical Rayleigh-Jeans law predicts that radiated energy diverges at short wavelengths', ['Metals emit no electrons under ultraviolet light', 'Atoms collapse because electrons radiate energy', 'Blackbody radiation has no peak at any temperature'], 'Classical equipartition assigns kT to each mode, and modes are infinite at high frequency, so the energy would be infinite. Planck\'s quantisation E = nhf solved this.');
+  M('sv-s03-m5', 's03', 'What is the "ultraviolet catastrophe"?', 'The classical Rayleigh-Jeans law predicts that radiated energy diverges at short wavelengths', ['Metals emit no electrons under ultraviolet light', 'Atoms collapse because electrons radiate energy', 'Blackbody radiation has no peak at any temperature'], 'Classical equipartition assigns kT to each mode, and modes are infinite at high frequency, so the energy would be infinite. Planck\'s quantization E = nhf solved this.');
   M('sv-s03-m6', 's03', 'A metal has work function 2.0 eV. It is illuminated by photons of energy 3.0 eV. Calculate the maximum kinetic energy of the electrons.', '1.0 eV', ['0.5 eV', '2.0 eV', '5.0 eV'], 'K_max = hf − φ = 3.0 − 2.0 = 1.0 eV.');
   M('sv-s03-m7', 's03', 'Above the threshold frequency, the light intensity is doubled at constant frequency. What changes?', 'The photocurrent doubles while K_max stays the same', ['K_max doubles while the photocurrent stays the same', 'Both K_max and the photocurrent double', 'Neither changes'], 'Intensity sets the number of photons per second, hence the number of electrons. Photon energy hf, and therefore K_max, is unchanged.');
   M('sv-s03-m8', 's03', 'According to Wien\'s displacement law, when the temperature of a blackbody rises, the peak wavelength:', 'shifts to shorter wavelengths', ['shifts to longer wavelengths', 'stays the same', 'disappears'], 'λ_max T = constant (≈ 2.9 × 10^-3 m·K), so higher T means smaller λ_max; a hot object glows bluer.');
@@ -13171,7 +13214,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   K('sv-s03-k2', 's03', 'work function and threshold', 'Calculate the threshold wavelength of a metal with work function 2.3 eV, and determine the stopping potential when it is illuminated by 400 nm light (hc ≈ 1240 eV·nm).',
     'At threshold hf_0 = φ, so λ_0 = hc/φ = 1240/2.3 ≈ 539 nm. For 400 nm light the photon energy is 1240/400 = 3.10 eV. Then K_max = 3.10 − 2.3 = 0.80 eV. The stopping potential satisfies eV_0 = K_max, so V_0 = 0.80 V. Light longer than 539 nm would eject no electrons.',
     ['λ_0 = hc/φ ≈ 539 nm', 'E_photon = 3.10 eV at 400 nm', 'K_max = 0.80 eV', 'V_0 = 0.80 V']);
-  K('sv-s03-k3', 's03', 'blackbody radiation', 'State the ultraviolet catastrophe and explain how Planck\'s quantisation hypothesis removes it.',
+  K('sv-s03-k3', 's03', 'blackbody radiation', 'State the ultraviolet catastrophe and explain how Planck\'s quantization hypothesis removes it.',
     'Classical physics (Rayleigh-Jeans) gives each mode of the cavity an average energy kT, and the number of modes grows as f^2, so the predicted spectral energy diverges at high frequency. This does not match the measured spectrum, which falls to zero. Planck assumed that the oscillators can only exchange energy in discrete steps E = nhf. High-frequency modes need a large quantum hf >> kT, so they are rarely excited and the spectrum is cut off, which reproduces the measured peak.',
     ['Rayleigh-Jeans: kT per mode, divergence', 'Planck: E = nhf', 'High-frequency modes suppressed (hf >> kT)', 'Matches measured spectrum']);
 
@@ -13179,10 +13222,10 @@ Q.art.PORTRE_IDS = Object.keys(P);
   M('sv-s04-m1', 's04', 'The de Broglie wavelength of a particle with momentum p is:', 'λ = h/p', ['λ = p/h', 'λ = hp', 'λ = h/p^2'], 'De Broglie assigned a wavelength λ = h/p to matter, confirmed by electron diffraction.');
   M('sv-s04-m2', 's04', 'Using E_n = −13.6 eV / n^2, calculate the energy of the hydrogen n = 2 level.', '−3.4 eV', ['−6.8 eV', '−1.5 eV', '−13.6 eV'], 'E_2 = −13.6 / 4 = −3.4 eV.');
   M('sv-s04-m3', 's04', 'Calculate the energy of the photon emitted in the hydrogen transition n = 3 → n = 2.', '1.89 eV', ['3.40 eV', '10.2 eV', '0.66 eV'], 'ΔE = 13.6 (1/4 − 1/9) = 13.6 × 5/36 ≈ 1.89 eV (red light, about 656 nm).');
-  M('sv-s04-m4', 's04', 'Bohr\'s quantisation condition states that the electron angular momentum is:', 'L = nħ', ['L = n/ħ', 'L = ħ/n', 'L = nħ^2'], 'Bohr allowed only orbits where L = m v r = nħ, n = 1, 2, 3...');
+  M('sv-s04-m4', 's04', 'Bohr\'s quantization condition states that the electron angular momentum is:', 'L = nħ', ['L = n/ħ', 'L = ħ/n', 'L = nħ^2'], 'Bohr allowed only orbits where L = m v r = nħ, n = 1, 2, 3...');
   M('sv-s04-m5', 's04', 'Calculate the de Broglie wavelength of an electron accelerated through 100 V (use λ ≈ 1.226 nm / √V).', '0.123 nm', ['1.23 nm', '0.0123 nm', '0.50 nm'], 'λ = 1.226 / √100 = 0.1226 nm, comparable to atomic spacings, which is why electrons diffract from crystals.');
   M('sv-s04-m6', 's04', 'Why do atoms emit discrete line spectra?', 'Only discrete energy levels exist, so photons have fixed energies', ['Electrons orbit at any radius and radiate at fixed times', 'The nucleus emits photons at fixed frequencies', 'Photons are absorbed by the electron cloud as a continuum'], 'Each transition satisfies hf = E_i − E_f, and only certain energies exist, so only certain frequencies appear.');
-  M('sv-s04-m7', 's04', 'What is the ionisation energy of hydrogen in its ground state?', '13.6 eV', ['3.4 eV', '1.51 eV', '27.2 eV'], 'It is the energy needed to take the electron from n = 1 (E = −13.6 eV) to E = 0 at infinity.');
+  M('sv-s04-m7', 's04', 'What is the ionization energy of hydrogen in its ground state?', '13.6 eV', ['3.4 eV', '1.51 eV', '27.2 eV'], 'It is the energy needed to take the electron from n = 1 (E = −13.6 eV) to E = 0 at infinity.');
   M('sv-s04-m8', 's04', 'The momentum of a particle is doubled. What happens to its de Broglie wavelength?', 'It is halved', ['It is doubled', 'It is unchanged', 'It is quartered'], 'λ = h/p, so λ is inversely proportional to p.');
   K('sv-s04-k1', 's04', 'Bohr postulates', 'State the postulates of the Bohr model of hydrogen and justify why it was introduced despite classical physics predicting that an orbiting electron should radiate.',
     'Bohr postulated that (1) the electron moves in circular orbits (stationary states) without radiating, (2) only orbits with angular momentum L = nħ are allowed, and (3) a photon of energy hf = E_i − E_f is emitted or absorbed when the electron jumps between states. Classically an accelerating charge radiates and would spiral into the nucleus in about 10^-11 s, so atoms would not be stable. The postulates enforce stability and reproduce the observed discrete spectrum and the Rydberg formula.',
@@ -13191,7 +13234,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     'The energies are E_3 = −13.6/9 = −1.51 eV and E_2 = −13.6/4 = −3.40 eV. The photon energy is ΔE = 3.40 − 1.51 = 1.89 eV. The wavelength is λ = hc/ΔE = 1240/1.89 ≈ 656 nm, in the red part of the visible spectrum (the H-alpha line of the Balmer series).',
     ['E_3 = −1.51 eV, E_2 = −3.40 eV', 'ΔE = 1.89 eV', 'λ = hc/ΔE ≈ 656 nm', 'Balmer series, red']);
   K('sv-s04-k3', 's04', 'de Broglie waves', 'Derive Bohr\'s angular momentum condition from the de Broglie hypothesis by requiring a standing wave around the orbit, and explain the physical meaning.',
-    'For a stable orbit the electron wave must interfere constructively with itself, so the circumference must contain an integer number of wavelengths: 2πr = nλ. With de Broglie λ = h/p = h/(mv), this gives 2πr = nh/(mv), or mvr = nh/2π = nħ. Therefore L = nħ follows naturally. Otherwise the wave would cancel after repeated turns, so only discrete orbits and energies survive, which explains quantisation.',
+    'For a stable orbit the electron wave must interfere constructively with itself, so the circumference must contain an integer number of wavelengths: 2πr = nλ. With de Broglie λ = h/p = h/(mv), this gives 2πr = nh/(mv), or mvr = nh/2π = nħ. Therefore L = nħ follows naturally. Otherwise the wave would cancel after repeated turns, so only discrete orbits and energies survive, which explains quantization.',
     ['Standing wave: 2πr = nλ', 'λ = h/(mv)', 'mvr = nħ', 'Destructive interference removes other orbits']);
 })();
 
@@ -13324,11 +13367,11 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     ['3.3 × 10⁻² eV','5.3 × 10⁻²⁷ eV','3.3 × 10⁻⁸ eV','1.0 eV'],2,
     'ΔE ≥ ħ/(2Δt) = 5.3×10⁻²⁷ J = 5.3×10⁻²⁷ / 1.602×10⁻¹⁹ eV ≈ 3.3 × 10⁻⁸ eV (natural linewidth).'),
   M('s08-m6','s08','Which statement best describes the origin of the uncertainty principle?',
-    ['It is caused only by clumsy measuring instruments','It is a fundamental property of wave-like states: x and p are Fourier-conjugate quantities','It applies only to electrons','It means that particles have no definite properties at all'],1,
+    ['It is caused only by clumsy measuring instruments','It is a fundamental property of wave-like states: x and p are conjugate quantities','It applies only to electrons','It means that particles have no definite properties at all'],1,
     'A narrow wave packet in x necessarily contains a broad range of wavenumbers, so Δx Δk ≥ 1/2. This holds even for ideal measurements.'),
   M('s08-m7','s08','Which pair of observables can in principle both be known exactly at the same time?',
-    ['x and pₓ','Lₓ and L_y','E and t','x and p_y'],3,
-    'x and p_y commute ([x, p_y] = 0), so there is no uncertainty relation between them. The other pairs have nonzero commutators or conjugate-variable relations.'),
+    ['x and pₓ','y and p_y','E and t','x and p_y'],3,
+    'x and p_y commute ([x, p_y] = 0), so there is no uncertainty relation between them. The other pairs are conjugate variables (x and pₓ, y and p_y) or are linked by an energy-time relation.'),
   M('s08-m8','s08','For a Gaussian wave packet the product Δx Δp equals:',
     ['ħ','ħ/2, the minimum allowed value','h','0'],1,
     'Gaussian packets are minimum-uncertainty states: Δx Δp = ħ/2.'),
@@ -13347,7 +13390,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     ['Solve ψ″ = −k²ψ inside the well with ψ(0) = ψ(L) = 0','Boundary conditions give kL = nπ, so energy is quantized','Eₙ = n²π²ħ²/(2mL²) ∝ n²/L²','Normalization gives A = √(2/L)','n = 0 is excluded (trivial solution)']),
   K('s05-k2','s05','psi_olasilik',
     'Explain the physical meaning of the wave function ψ(x) and the normalization condition. For the ground state of an infinite well of width L, state where the particle is most likely to be found and calculate the probability that it is in the left half of the well.',
-    'The wave function ψ(x) is a complex probability amplitude; the observable quantity is |ψ(x)|², the probability density, so that |ψ|²dx is the probability of finding the particle between x and x + dx. Normalization ∫|ψ|²dx = 1 expresses that the particle is certainly found somewhere. For the ground state ψ₁ = √(2/L) sin(πx/L), |ψ₁|² is largest at x = L/2, the centre of the well. By the symmetry of |ψ₁|² about L/2 the probability in the left half is exactly P = ∫₀^{L/2} (2/L) sin²(πx/L) dx = 1/2.',
+    'The wave function ψ(x) is a complex probability amplitude; the observable quantity is |ψ(x)|², the probability density, so that |ψ|²dx is the probability of finding the particle between x and x + dx. Normalization ∫|ψ|²dx = 1 expresses that the particle is certainly found somewhere. For the ground state ψ₁ = √(2/L) sin(πx/L), |ψ₁|² is largest at x = L/2, the center of the well. By the symmetry of |ψ₁|² about L/2 the probability in the left half is exactly P = ∫₀^{L/2} (2/L) sin²(πx/L) dx = 1/2.',
     ['ψ is an amplitude; |ψ|² is the probability density','Normalization means total probability equals 1','Ground state peaks at x = L/2','Symmetry gives P(left half) = 1/2','Show the integral of sin² explicitly']),
   K('s05-k3','s05','sifir_noktasi_sicaklik',
     'Explain why a particle confined in an infinite well cannot have zero energy, and calculate the ground-state energy of an electron confined to L = 0.50 nm (use E₁ = 0.376 eV·nm²/L²). Justify that this is not a thermal effect.',
@@ -13430,7 +13473,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
 
   /* ---- s01 ek ---- */
   M('sv-s01-m9', 's01', 'Which statement distinguishes a single crystal from a polycrystalline solid?', 'A single crystal has long-range order throughout; a polycrystal consists of many small crystal grains separated by grain boundaries', ['A single crystal has no periodic arrangement; a polycrystal is perfectly periodic', 'A single crystal contains only one atom; a polycrystal contains many atoms', 'A single crystal has short-range order only; a polycrystal has no order at all'], 'In a single crystal the same lattice continues over the whole sample. A polycrystal is a patchwork of small crystallites with different orientations; the grain boundaries scatter carriers.');
-  M('sv-s01-m10', 's01', 'GaAs crystallises in the zincblende structure. How does it compare with the diamond structure?', 'It has the same FCC-based arrangement, but the two atoms of the basis are different (Ga and As)', ['It is a BCC lattice with a one-atom basis', 'It is a simple cubic lattice of Ga atoms only', 'It has a coordination number of 8 instead of 4'], 'Zincblende is the diamond arrangement with two different atoms on the two interpenetrating FCC sublattices. Each atom still has 4 nearest neighbours.');
+  M('sv-s01-m10', 's01', 'GaAs crystallizes in the zincblende structure. How does it compare with the diamond structure?', 'It has the same FCC-based arrangement, but the two atoms of the basis are different (Ga and As)', ['It is a BCC lattice with a one-atom basis', 'It is a simple cubic lattice of Ga atoms only', 'It has a coordination number of 8 instead of 4'], 'Zincblende is the diamond arrangement with two different atoms on the two interpenetrating FCC sublattices. Each atom still has 4 nearest neighbors.');
   K('sv-s01-k4', 's01', 'crystalline solids in industry', 'Explain why crystalline solids are used in the semiconductor industry, and why polycrystalline or amorphous solids are less suitable.',
     'In a crystal the periodic arrangement of atoms creates a periodic potential, which gives well-defined energy bands and a well-defined bandgap. Electrical properties can therefore be predicted, reproduced and controlled by doping. In polycrystalline solids, grain boundaries scatter or trap carriers; in amorphous solids, dangling bonds and missing long-range order smear the band edges and add defect states. Carrier mobility and lifetime drop and device properties vary from sample to sample, so reproducible devices are difficult.',
     ['Periodic potential gives well-defined bands and bandgap', 'Predictable, reproducible properties; control by doping', 'Grain boundaries scatter or trap carriers', 'Amorphous: dangling bonds, no long-range order']);
@@ -13439,12 +13482,12 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   M('sv-s02-m9', 's02', 'What does the notation {100} denote in a cubic crystal?', 'The family of planes equivalent by cubic symmetry: (100), (010), (001) and their negatives', ['A single plane parallel to the x axis', 'The direction normal to the (100) plane', 'A family of directions equivalent to [100]'], 'Curly braces {hkl} mean the set of all planes related by the crystal symmetry. Round brackets denote one plane, square brackets one direction and angle brackets a family of directions.');
   M('sv-s02-m10', 's02', 'A plane cuts the x axis at a, the y axis at −a and is parallel to the z axis. Determine its Miller indices.', '(1 1̄ 0)', ['(1 1 0)', '(1̄ 1̄ 0)', '(1 1̄ 1)'], 'Intercepts: 1, −1, ∞. Reciprocals: 1, −1, 0. The negative index is written with a bar: (1 1̄ 0).');
   K('sv-s02-k4', 's02', 'single crystal growth', 'Explain the main reason for growing a single-crystal silicon ingot by the Czochralski method instead of using polycrystalline silicon.',
-    'In the Czochralski method a seed crystal is dipped into molten silicon and slowly pulled up while rotating, so the melt solidifies with the same crystal order as the seed. The result is one continuous lattice without grain boundaries. Grain boundaries scatter carriers and act as recombination centres, which lowers mobility and carrier lifetime and makes the properties differ from one device to another. A single crystal guarantees the same well-defined band structure over the whole wafer, so devices are uniform and reproducible.',
+    'In the Czochralski method a seed crystal is dipped into molten silicon and slowly pulled up while rotating, so the melt solidifies with the same crystal order as the seed. The result is one continuous lattice without grain boundaries. Grain boundaries scatter carriers and act as recombination centers, which lowers mobility and carrier lifetime and makes the properties differ from one device to another. A single crystal guarantees the same well-defined band structure over the whole wafer, so devices are uniform and reproducible.',
     ['Seed crystal dipped in melt, pulled while rotating', 'Seed continues its crystal order: no grain boundaries', 'Grain boundaries lower mobility and lifetime', 'Uniform, reproducible band structure over the wafer']);
 
   /* ---- s03 / s04 ek ---- */
   K('sv-s03-k4', 's03', 'why quantum mechanics', 'Explain why quantum mechanics was needed. Describe three failures of classical physics and the successes of quantum theory that resolved them.',
-    'Classical physics failed in several experiments. Blackbody radiation: the Rayleigh-Jeans law predicts infinite energy at high frequency (ultraviolet catastrophe), while Planck\'s hypothesis E = hf removes it. Photoelectric effect: classical waves predict that intensity controls electron energy and that no threshold exists, but experiments show a threshold frequency and K_max = hf − φ, explained by Einstein\'s photons. Atomic spectra: classical theory predicts a continuous spectrum and a collapsing atom, while atoms show discrete lines explained by quantised energy levels. Quantum theory also explains the stability of atoms, the periodic table and the electrical properties of solids.',
+    'Classical physics failed in several experiments. Blackbody radiation: the Rayleigh-Jeans law predicts infinite energy at high frequency (ultraviolet catastrophe), while Planck\'s hypothesis E = hf removes it. Photoelectric effect: classical waves predict that intensity controls electron energy and that no threshold exists, but experiments show a threshold frequency and K_max = hf − φ, explained by Einstein\'s photons. Atomic spectra: classical theory predicts a continuous spectrum and a collapsing atom, while atoms show discrete lines explained by quantized energy levels. Quantum theory also explains the stability of atoms, the periodic table and the electrical properties of solids.',
     ['Blackbody: ultraviolet catastrophe, Planck E = hf', 'Photoelectric: threshold frequency, photons', 'Discrete atomic spectra and atomic stability', 'Quantum theory explains atoms and solids']);
   K('sv-s04-k4', 's04', 'hydrogen atom stability', 'Explain why the hydrogen atom is stable according to quantum mechanics, while classical physics predicts that the electron would spiral into the nucleus.',
     'Classically, an orbiting electron accelerates and should radiate electromagnetic energy, so it would lose energy and fall into the nucleus within about 10^-11 s. In quantum mechanics the electron is a confined wave. Confining it to a smaller region increases its momentum spread and therefore its kinetic energy (uncertainty principle, E ~ ħ²/2mr²), while the Coulomb attraction lowers the potential energy as r decreases. The total energy has a minimum at a finite radius, the Bohr radius, so the lowest state has a non-zero size and energy −13.6 eV. There is no lower state to fall into, so the atom is stable.',
@@ -13459,15 +13502,15 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     ['Superposition of eigenstates ψ = Σ cₙφₙ', 'Result is one eigenvalue with probability |cₙ|²', 'Collapse to the eigenstate φₙ', 'Repeated measurement gives the same result']);
 
   /* ---- s09 Band test ---- */
-  M('sv-s09-m1', 's09', 'N identical atoms are brought close together to form a crystal. What happens to each atomic energy level?', 'It splits into N closely spaced levels that form an energy band', ['It stays as a single level', 'It splits into exactly two levels', 'It disappears because electrons become free'], 'The wave functions of neighbouring atoms overlap. Because the Pauli exclusion principle forbids identical states, each level splits into N slightly different levels; for N ~ 10^22 they form a quasi-continuous band.');
+  M('sv-s09-m1', 's09', 'N identical atoms are brought close together to form a crystal. What happens to each atomic energy level?', 'It splits into N closely spaced levels that form an energy band', ['It stays as a single level', 'It splits into exactly two levels', 'It disappears because electrons become free'], 'The wave functions of neighboring atoms overlap. Because the Pauli exclusion principle forbids identical states, each level splits into N slightly different levels; for N ~ 10^22 they form a quasi-continuous band.');
   M('sv-s09-m2', 's09', 'Why does an insulator not conduct current?', 'Its valence band is full and the bandgap is large, so electrons cannot reach empty states', ['It contains no electrons', 'Its conduction band is half filled', 'Its atoms are too heavy to move'], 'A full band offers no empty states for electrons to move into, and the large gap prevents thermal excitation to the next band. A half-filled band would be a metal.');
   M('sv-s09-m3', 's09', 'Which band picture describes a metal?', 'A partially filled band, so electrons can move into nearby empty states', ['A completely full valence band separated by a large gap', 'A completely empty valence band', 'Two completely full bands separated by a large gap'], 'In a metal the highest occupied band is only partly filled (or overlaps another band), so a small field can shift electrons into empty states.');
   M('sv-s09-m4', 's09', 'According to the Pauli exclusion principle, how many electrons can occupy one energy level (including spin)?', '2', ['1', '4', 'Any number'], 'No two electrons can share the same set of quantum numbers. A level holds two electrons of opposite spin.');
-  M('sv-s09-m5', 's09', 'The bandgap is best defined as:', 'The range of energies between the top of the valence band and the bottom of the conduction band where no allowed states exist', ['The spacing between two neighbouring levels inside one band', 'The width of the valence band', 'The energy needed to ionise a single atom'], 'Inside the bandgap there are no allowed electron states in a perfect crystal.');
+  M('sv-s09-m5', 's09', 'The bandgap is best defined as:', 'The range of energies between the top of the valence band and the bottom of the conduction band where no allowed states exist', ['The spacing between two neighboring levels inside one band', 'The width of the valence band', 'The energy needed to ionize a single atom'], 'Inside the bandgap there are no allowed electron states in a perfect crystal.');
   M('sv-s09-m6', 's09', 'A crystal contains N atoms, each contributing one s level. Including spin, how many electron states does the resulting s band hold?', '2N', ['N', 'N/2', '4N'], 'N atoms give N orbital levels in the band, and each holds two electrons of opposite spin, so 2N states.');
   M('sv-s09-m7', 's09', 'What mainly distinguishes a semiconductor from an insulator?', 'A smaller bandgap, so thermal energy can excite some electrons into the conduction band', ['A half-filled valence band', 'A larger number of atoms per unit volume', 'The absence of a periodic lattice'], 'Silicon has Eg ≈ 1.1 eV, so a few carriers are excited at room temperature; in a wide-gap insulator almost none are.');
   M('sv-s09-m8', 's09', 'Why do energy bands form in a crystal, but not in a single isolated infinite well?', 'Bands need many coupled atoms (a periodic potential); a single well has only discrete levels', ['A single well has no boundary conditions', 'A single well has too much energy', 'Bands form only at high temperature'], 'An isolated well gives discrete levels from its boundary conditions. Coupling many wells splits each level into N levels, forming a band.');
-  M('sv-s09-m9', 's09', 'When the atoms in a crystal are moved closer together, the width of an energy band:', 'increases, because the overlap of neighbouring wave functions increases', ['decreases, because the levels merge into one', 'stays the same', 'becomes zero'], 'Stronger overlap means stronger splitting, so the band is wider. When atoms are far apart the levels return to the sharp atomic levels.');
+  M('sv-s09-m9', 's09', 'When the atoms in a crystal are moved closer together, the width of an energy band:', 'increases, because the overlap of neighboring wave functions increases', ['decreases, because the levels merge into one', 'stays the same', 'becomes zero'], 'Stronger overlap means stronger splitting, so the band is wider. When atoms are far apart the levels return to the sharp atomic levels.');
   M('sv-s09-m10', 's09', 'Why can a completely filled band not carry a net current?', 'There are no empty states available, so an electric field cannot change the electron distribution', ['Filled bands contain no electrons', 'Electrons in a full band are not charged', 'The Pauli principle forces all electrons to have zero velocity'], 'Every state is occupied, so an applied field cannot shift electrons to new states; for every electron with velocity v there is one with −v.');
   K('sv-s09-k1', 's09', 'energy bands', 'Explain why the allowed energies of electrons in a periodic structure (a crystal) form bands.',
     'An isolated atom has discrete energy levels. When N atoms are brought together, the electron wave functions overlap and the atoms interact. The Pauli exclusion principle forbids two electrons from having the same state, so each atomic level must split into N slightly different levels. For N ~ 10^22 the spacing between these levels is far below kT, so they form an almost continuous energy band. Between the bands there are energies with no allowed states: the bandgap. The periodic potential of the lattice (Bloch theorem) produces the same allowed and forbidden energy regions.',
@@ -13479,7 +13522,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     'The Pauli exclusion principle says that no two electrons can occupy the same quantum state; an energy level can hold at most two electrons, with opposite spin. In a completely filled band all states are occupied. An applied electric field would have to move electrons into slightly different states, but there are no empty states available, so the distribution of electrons does not change. For every electron moving with velocity v there is another moving with −v, so the net current is zero. Only a partly filled band, or electrons excited across the gap, can conduct.',
     ['No two electrons in the same state', 'At most two electrons per level (spin)', 'Full band: no empty states to move into', 'Net current zero; partly filled band conducts']);
   K('sv-s09-k4', 's09', 'level spacing in a band', 'Estimate the level spacing inside an energy band of width 5 eV formed from 5 × 10^22 atoms, and compare it with kT at 300 K (kT ≈ 0.026 eV). What does this show?',
-    'The band contains about N = 5 × 10^22 levels spread over 5 eV, so the average spacing is ΔE ≈ 5 eV / (5 × 10^22) = 1 × 10^-22 eV. This is about 10^20 times smaller than kT ≈ 0.026 eV at 300 K. Thermal energy can therefore move an electron between neighbouring levels with no noticeable cost, and the levels behave as a continuum. This is why a macroscopic crystal is described by continuous bands rather than by individual levels.',
+    'The band contains about N = 5 × 10^22 levels spread over 5 eV, so the average spacing is ΔE ≈ 5 eV / (5 × 10^22) = 1 × 10^-22 eV. This is about 10^20 times smaller than kT ≈ 0.026 eV at 300 K. Thermal energy can therefore move an electron between neighboring levels with no noticeable cost, and the levels behave as a continuum. This is why a macroscopic crystal is described by continuous bands rather than by individual levels.',
     ['Spacing = band width / N', 'ΔE ≈ 10^-22 eV', 'Much smaller than kT = 0.026 eV', 'Levels act as a continuum']);
 
   /* ---- SEÇKİ: çıkma olasılığı en yüksek 50 MCQ + 20 klasik (TAHMİN, bkz. SECKI.md) ---- */
@@ -13532,8 +13575,8 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   M('sv-s10-m2', 's10', 'How does the Fermi function f(E) look at T = 0 K?', 'A step function: f = 1 for E < E_F and f = 0 for E > E_F', ['f = 1/2 for all energies', 'f = 1 for all energies', 'A smooth curve that decreases slowly over several eV'], 'At T = 0 K the exponent goes to −∞ below E_F and +∞ above it, so all states below E_F are filled and all states above are empty.');
   M('sv-s10-m3', 's10', 'The temperature of a material is raised. What happens to the Fermi function f(E) around E_F?', 'The transition region broadens, so some electrons occupy states above E_F', ['The curve becomes a sharper step', 'f(E_F) increases above 1/2', 'The Fermi level moves to zero energy'], 'The width of the transition region is of the order of kT. A larger kT smooths the curve, but f(E_F) stays 1/2.');
   M('sv-s10-m4', 's10', 'In thermal equilibrium np = nᵢ². A semiconductor is doped so that the electron density n increases. What happens to the hole density p?', 'p decreases, so that the product np stays equal to nᵢ²', ['p increases by the same factor as n', 'p stays unchanged', 'p becomes equal to n'], 'Extra electrons recombine with holes. The mass-action law keeps the product np fixed at nᵢ² at a given temperature, so p = nᵢ²/n falls.');
-  M('sv-s10-m5', 's10', 'The drift velocity of a carrier in an electric field E is v_d = μE. If the field is doubled, the drift velocity:', 'doubles, because v_d is proportional to E', ['stays the same', 'is halved', 'increases by a factor of four'], 'The mobility μ is the proportionality constant between drift velocity and field (at moderate fields), so doubling E doubles v_d.');
-  M('sv-s10-m6', 's10', 'Why does the carrier velocity not increase without limit under a constant electric field?', 'Scattering by lattice vibrations and impurities limits the average velocity to v_d = μE', ['The electric field becomes zero after some time', 'The carrier mass becomes infinite', 'The Pauli exclusion principle forbids motion'], 'The field accelerates the carrier, but frequent collisions randomise its motion. A balance between acceleration and scattering gives a constant average drift velocity.');
+  M('sv-s10-m5', 's10', 'The drift velocity of a carrier in an electric field E is v_d = μE. If the field is doubled, the drift velocity:', 'doubles, because v_d is proportional to E', ['stays the same', 'is halved', 'increases by a factor of four'], 'The mobility μ is the proportionality constant between drift velocity and field (at low to moderate fields), so doubling E doubles v_d.');
+  M('sv-s10-m6', 's10', 'Why does the carrier velocity not increase without limit under a constant electric field?', 'Scattering by lattice vibrations and impurities limits the average velocity to v_d = μE', ['The electric field becomes zero after some time', 'The carrier mass becomes infinite', 'The Pauli exclusion principle forbids motion'], 'The field accelerates the carrier, but frequent collisions randomize its motion. A balance between acceleration and scattering gives a constant average drift velocity.');
   M('sv-s10-m7', 's10', 'The current density in a semiconductor is J = q(nμₙ + pμₚ)E. Which statement is correct?', 'Both electrons and holes contribute, and their contributions add', ['Only electrons contribute to the current', 'Electron and hole currents cancel each other', 'J does not depend on the field E'], 'Electrons and holes drift in opposite directions, but because they have opposite charge their currents point the same way and add.');
   M('sv-s10-m8', 's10', 'A pure (intrinsic) semiconductor is heated. What happens to the carrier density nᵢ?', 'It increases, because thermal energy excites more electrons across the bandgap', ['It decreases, because the bandgap widens', 'It stays constant because it depends only on the lattice', 'It becomes zero'], 'Thermal excitation across the gap grows rapidly with T (roughly e^(−Eg/2kT)), so nᵢ and therefore the conductivity increase.');
   K('sv-s10-k1', 's10', 'Fermi-Dirac distribution', 'State the Fermi-Dirac distribution. Explain the meaning of the Fermi level E_F and describe how f(E) changes with temperature.',
@@ -14302,7 +14345,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       var q = el('div', 'fn-soru', ob.soru);
       q.style.cssText = 'font-weight:800;font-size:17px;line-height:1.35;margin:0 0 8px';
       a.appendChild(q);
-      if (ob.sekil && Q.gercekSinav && Q.gercekSinav.sekilEl) { var sk = Q.gercekSinav.sekilEl(ob.sekil); if (sk) { sk.style.maxWidth = '420px'; a.appendChild(sk); } }
+      if (ob.sekil && Q.gercekSinav && Q.gercekSinav.sekilEl) { var sk = Q.gercekSinav.sekilEl(ob.sekil); if (sk) { sk.style.maxWidth = '440px'; sk.style.padding = '0 6px'; var sv = sk.querySelector('svg'); if (sv) sv.style.maxHeight = '125px'; a.appendChild(sk); } }
       return a;
     }
     function bekle(area, etiket){
@@ -14359,7 +14402,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
         area.appendChild(it);
         var tb = el('div', 'fn-tb');
         it.appendChild(tb);
-        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: 7, deger: cevap });
+        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: ob.sekil ? 2 : 5, deger: cevap });
         if (v == null || !String(v).trim() || /^\s*(bilmiyorum|i don'?t know)\s*\.?\s*$/i.test(String(v))) {
           rec.mod = 'bos'; rec.dogruluk = 0; rec.eminlik = 0; rec.eksik = ob.anahtarFikirler.slice();
           area.textContent = '';
@@ -14523,7 +14566,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       acikK.forEach(function(h){ by[h.kavram] = (by[h.kavram] || 0) + 1; });
       var kv = Object.keys(by).sort(function(a, b){ return by[b] - by[a]; }).slice(0, 5);
       kok.appendChild(el('h4', null, 'Hata defteri')).style.margin = '12px 0 4px';
-      kok.appendChild(el('p', null, acikK.length ? acikK.length + ' açık kayıt: ' + kv.map(function(k){ return String(k).replace(/_/g, ' ') + ' (' + by[k] + ')'; }).join(', ') : 'Açık kayıt yok.'));
+      kok.appendChild(el('p', null, acikK.length ? acikK.length + ' açık kayıt: ' + kv.map(function(k){ return (Q.util.kavramAd ? Q.util.kavramAd(k) : String(k).replace(/_/g, ' ')) + ' (' + by[k] + ')'; }).join(', ') : 'Açık kayıt yok.'));
       /* tekrar önerisi */
       var zayif = sonuc.sorular.filter(function(r){ return (r.dogruluk || 0) < 80; })
         .sort(function(a, b){ return (a.dogruluk || 0) - (b.dogruluk || 0); });
@@ -14691,7 +14734,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   var CURATED = [
     ['wave function', 'dalga fonksiyonu'], ['probability density', 'olasılık yoğunluğu'], ['eigenvalue', 'özdeğer'], ['eigenfunction', 'özfonksiyon'],
     ['potential well', 'potansiyel kuyusu'], ['potential barrier', 'potansiyel bariyeri'], ['tunneling', 'tünelleme'], ['bandgap', 'yasak enerji aralığı'],
-    ['valence band', 'değerlik bandı'], ['conduction band', 'iletim bandı'], ['Fermi level', 'Fermi seviyesi'], ['DOS (density of states)', 'durum yoğunluğu'],
+    ['valence band', 'valans bandı'], ['conduction band', 'iletim bandı'], ['Fermi level', 'Fermi seviyesi'], ['DOS (density of states)', 'durum yoğunluğu'],
     ['Miller indices', 'Miller indisleri'], ['unit cell', 'birim hücre'], ['lattice', 'kafes'], ['lattice constant', 'kafes sabiti'], ['crystal structure', 'kristal yapı'],
     ['basis', 'baz (atom grubu)'], ['primitive cell', 'ilkel hücre'], ['simple cubic (SC)', 'basit kübik'], ['body-centered cubic (BCC)', 'cisim merkezli kübik'],
     ['face-centered cubic (FCC)', 'yüzey merkezli kübik'], ['diamond structure', 'elmas yapı'], ['coordination number', 'koordinasyon sayısı'],
@@ -14720,7 +14763,10 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     });
     CURATED.forEach(function(c){ var k = c[0].toLowerCase(); if (gor[k]) return; gor[k] = 1; v.push({ en: c[0], tr: c[1], g: 'temel' }); });
     var enler = {}; v.forEach(function(t){ enler[t.en.toLowerCase()] = 1; });
-    v = v.filter(function(t){ return t.g === 'temel' || !enler[t.tr.toLowerCase()]; });
+    /* otomatik çıkarımın ürettiği yanlış/anlamsız girdiler (Türkçe kelime kalıntısı, birim, öntakı) */
+    var YASAK = {};
+    ['say','bak','olunca','gelir','etken','sabit','neden','tepki','enerjiden','paketleme','kesiyor','normaldir','artar','of solids','of information',"k'e indir",'nanometre','elektronvolt','hertz','electron-volts','single','poly','equation','exclusion','quantize','per unit cell','not instrument','initial n','final m','the same','doubles','halves','hundred percent','atomlar long-range order','yerine polycrystalline','belirli wavelengths','kapanan wavelengths','seviyede wavelength','alanda wavelength','eksen wavelength','p wavelength','elektronu bandgap','seviyenin bandgap','doluluk ve bandgap','bantlar ve bandgap','sonra integer'].forEach(function(k){ YASAK[k] = 1; });
+    v = v.filter(function(t){ return t.g === 'temel' || (!enler[t.tr.toLowerCase()] && !YASAK[t.en.toLowerCase()] && !/[çğıöşüÇĞİÖŞÜ]/.test(t.en)); });
     terimCache = { n: stIds().length, v: v };
     return v;
   }
@@ -15180,7 +15226,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   var KEY = 'cip-hatti-gercek-sinav-v1';
   var S = null;          /* { cur, asama, cevap:{no:text}, isaret:{no:[bool]}, claude:{no:{dogruluk,geri}} } */
 
-  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) { if (typeof text === 'string' && /[\^_]\{/.test(text) && Q.tekrarHesap && Q.tekrarHesap.yaz) Q.tekrarHesap.yaz(e, text); else e.textContent = text; } return e; }
   function btn(text, cls, fn){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
   function veri(){ return (Q.data && Q.data.gercekSinav) || { sorular: [] }; }
   function sorular(){ return veri().sorular; }
@@ -15500,7 +15546,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
 
   function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function btn(text, cls, fn){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
-  function kavramAd(k){ return String(k || '?').replace(/_/g, ' '); }
+  function kavramAd(k){ return Q.util.kavramAd ? Q.util.kavramAd(k) : String(k || '?').replace(/_/g, ' '); }
   function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
   function stAd(id){ var s = Q.data.stations[id]; return id.toUpperCase() + ' · ' + (s && s.ad || id); }
   function defter(){ return Q.state.hataDefteri; }
@@ -15882,11 +15928,30 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
 
   /* ^{üst} ve _{alt} işaretlerini sup/sub'a çevirir (innerHTML yok). */
   function yaz(host, metin){
-    var parts = String(metin == null ? '' : metin).split(/([\^_])\{([^{}]*)\}/);
-    for (var i = 0; i < parts.length; i++) {
-      if (i % 3 === 0) { if (parts[i]) host.appendChild(document.createTextNode(parts[i])); }
-      else if (i % 3 === 1) { var t = el(parts[i] === '^' ? 'sup' : 'sub'); t.textContent = parts[i + 1]; host.appendChild(t); i++; }
-    }
+    (function r(h, s){
+      var i = 0, buf = '';
+      while (i < s.length) {
+        var c = s.charAt(i);
+        if ((c === '^' || c === '_') && s.charAt(i + 1) === '{') {
+          var d = 1, j = i + 2;
+          while (j < s.length && d > 0) { var ch = s.charAt(j); if (ch === '{') d++; else if (ch === '}') d--; j++; }
+          if (d === 0) {
+            if (buf) { h.appendChild(document.createTextNode(buf)); buf = ''; }
+            var t = el(c === '^' ? 'sup' : 'sub'); r(t, s.slice(i + 2, j - 1)); h.appendChild(t); i = j; continue;
+          }
+        }
+        if (c === '_' && i > 0 && /[A-Za-z\u0370-\u03ff)\u27e9]/.test(s.charAt(i - 1))) {
+          /* süslüsüz alt indis: φ_1, E_n, E_F, K_max -> sub (harf/rakam öbeği) */
+          var mm = /^[A-Za-z0-9]{1,4}/.exec(s.slice(i + 1));
+          if (mm) {
+            if (buf) { h.appendChild(document.createTextNode(buf)); buf = ''; }
+            h.appendChild(el('sub', null, mm[0])); i += 1 + mm[0].length; continue;
+          }
+        }
+        buf += c; i++;
+      }
+      if (buf) h.appendChild(document.createTextNode(buf));
+    })(host, String(metin == null ? '' : metin));
     return host;
   }
   function p(cls, metin, tag){ return yaz(el(tag || 'div', cls), metin); }

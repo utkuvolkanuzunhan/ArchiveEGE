@@ -89,3 +89,10 @@ Ayrıntılı devam promptu: `oyun/DEVAM.md`. Özet:
 - D2 dil denetimi bitti (denetim/DIL-2.md). Sınav havuzu 86 MCQ + 38 klasik (91-93), SEÇKİ 50 MCQ + 20 klasik varsayılan (denetim/SECKI.md; tahmindir, hoca vurgusu gelirse 93-data-sinav-3.js SECKI_* listeleri güncellenmeli).
 - Testler: veri/sinav doğrulama, core/battle/claude/obs-kopru/runner/obs-patron, smoke 9/9 geçti (smoke düşman adımı Onayla akışına uyarlandı).
 - AÇIK: yanlış-cevap yolu bazı gruplarda denenmedi (s03-C, s08-C, s05-B köprü sürükle-bırak); küçük kozmetik notlar BUG-*.md'de (state.aktif s09'da kalıyor, metin sayacı 288/280, harita kart üstünde boş çubuk, köprü yanlış sıra mesajı kalıbı); s10 + S13 Fermi (kullanıcı cevabı bekleniyor), A7 final, A5c ses.
+
+## SON SÜRÜM NOTU (2026-11-12)
+- Kapsam: s01-s10, Final "Sınav Günü" (hocanın 10 sorusu), Gerçek sınav (10 soru) modu, fabrika şeması + tam ekran harita, 23 kart (13 bonus) + 28 portre, Tekrar Merkezi (Terimler/Biliyorum, Test, Kartlar, Deneme sınavı seçki 50+20, Hata defterini çalış, AI'a sor, Hesap çalıştayı), her istasyon sonunda hesap engeli (örnek panelli), her engel öncesi Nasıl yapılır kartları.
+- Testler (hepsi geçti): veri/sinav doğrulama, hesap-dogrula.py (192 kontrol), core 8, battle 7, claude 11, runner, ui, obs-kopru, kartlar, fabrika, hesap 58, hesap-engel 151, tekrar-hata 27, gercek-sinav, final (claude/mcq/karma/esc), smoke 9/9.
+- Denetimler: denetim/ICERIK-sNN.md, BUG-FINAL-*.md, ACIK-*.md. Kritik hata yok; düşük önemli açıklar o dosyalarda.
+- KULLANICI TEYİDİ GEREKEN: Q5/Q6 şekil değerleri ve Final/Gerçek sınav soru metninin PDF ile harf harf aynılığı; kart tarihleri (denetim/KART-DOGRULUK.md teyit listesi); fabrika mini soruları; ICERIK/ACIK dosyalarındaki 'kullanıcı teyit etsin' maddeleri; s06 tuzak parçası, s07 komütatör/postülat numarası.
+- Bilinen açık: 700 px'te harita zinciri 4. kartta kırpılır (700 destek hedefi mi, teyit); çevrimdışı Windows yazı tipi yedeği test edilemedi; Final'de geri dönünce taslak silinir; Claude puanı yazı düzenlenince eski kalır.
