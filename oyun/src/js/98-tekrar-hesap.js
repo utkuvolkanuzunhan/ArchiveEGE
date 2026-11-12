@@ -23,6 +23,14 @@
             var t = el(c === '^' ? 'sup' : 'sub'); r(t, s.slice(i + 2, j - 1)); h.appendChild(t); i = j; continue;
           }
         }
+        if (c === '_' && i > 0 && /[A-Za-z\u0370-\u03ff)\u27e9]/.test(s.charAt(i - 1))) {
+          /* süslüsüz alt indis: φ_1, E_n, E_F, K_max -> sub (harf/rakam öbeği) */
+          var mm = /^[A-Za-z0-9]{1,4}/.exec(s.slice(i + 1));
+          if (mm) {
+            if (buf) { h.appendChild(document.createTextNode(buf)); buf = ''; }
+            h.appendChild(el('sub', null, mm[0])); i += 1 + mm[0].length; continue;
+          }
+        }
         buf += c; i++;
       }
       if (buf) h.appendChild(document.createTextNode(buf));
