@@ -10672,6 +10672,23 @@ Q.art.PORTRE_IDS = Object.keys(P);
       {
         id: 's03-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Berlin', yil: 1900, rivayet: false,
+        onBilgi: [
+          { baslik: "Foton enerjisi nasıl bulunur", madde: [
+            "Nasıl yapılır: frequency (frekans) f biliniyorsa E = hf kullan; h = 4,14×10⁻¹⁵ eV·s.",
+            "Wavelength (dalga boyu) λ verilmişse E = 1240/λ yaz; λ nanometre (nm), E elektronvolt (eV) çıkar.",
+            "Örnek: λ = 620 nm ise E = 1240/620 = 2,0 eV. λ = 310 nm olsaydı E = 4,0 eV olurdu.",
+            "Kural: λ yarıya inince E iki katına çıkar; kısa wavelength (dalga boyu) büyük photon (foton) energy (enerji) demektir." ] },
+          { baslik: "Eşik kıyası: elektron kopar mı", madde: [
+            "Adımlar: (1) tek photon (foton) energy (enerji) E değerini bul. (2) E değerini work function (iş fonksiyonu) φ ile kıyasla.",
+            "E ≥ φ ise electron (elektron) kopar ve K = E − φ olur; E < φ ise o photon (foton) electron koparamaz.",
+            "Intensity (şiddet) yalnızca saniyede gelen photon (foton) sayısını değiştirir; her electron (elektron) tek bir photon ile etkileşir.",
+            "Örnek: φ = 4,3 eV, λ = 200 nm: E = 6,2 eV, K = 1,9 eV. Şiddet 10 kat artsa K aynı kalır." ] },
+          { baslik: "Mantık zinciri nasıl kurulur", madde: [
+            "Açıklama zincirinde her adım öncekinin sonucunu kullanır; sırayı 'önce neye ihtiyacım var' diye sorarak kur.",
+            "Önce konunun ne olduğu gelir (ışık neyden oluşur). Sonra o parçanın tek başına bir özelliği (enerjisi).",
+            "Sonra bu özelliğin bir koşulla kıyası (eşik) gelir; kıyas yapılmadan sonuç çıkmaz.",
+            "Çoğaltan etken (şiddet) en sona kalır: kaç tane olduğu, ancak olay gerçekleşebiliyorsa anlamlıdır." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Işık-test odası light (ışık) ölçüyor. Classical physics (klasik fizik) burada tökezledi.' },
           { kim: 'planck', metin: 'Energy quantum (enerji paketi) fikriyle infinity (sonsuzluk) kayboldu. Çaresizlikten attığım bir adımdı.' },
@@ -10698,6 +10715,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] }
         ],
         gorev: 'Temperature (sıcaklık) değerini 5000 K yap, classical curve (klasik eğri) açık kalsın.',
+        tanitim: "Yatay eksen wavelength (dalga boyu), dikey eksen yayılan intensity (şiddet). Temperature (sıcaklık) çubuğu Planck eğrisini değiştirir; Classical curve (klasik eğri) düğmesi klasik tahmini açıp kapatır. Kısa wavelength (dalga boyu) tarafına bak.",
         sim: {
           modul: 'karacisim',
           params: { T: 3000 },
@@ -10729,6 +10747,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       {
         id: 's03-o08', tip: 'patron', baslik: 'Photon (Foton) Canavarı', kavram: null, agirlik: 1,
         canavar: 'einstein', canavarAd: 'Photon (Foton) Canavarı',
+        onNot: "Açık cevap şablonu: (1) classical physics (klasik fizik) neyi açıklayamadı, (2) hangi yeni fikir çözdü, (3) deneyle neden uyuştu. Not: classical wave (klasik dalga) modelinde şiddet arttıkça energy (enerji) artar; deneyde ise eşik var ve gecikme yok.",
         giris: 'Ben photon (foton) canavarıyım! Brightness (parlaklık) artırsam da seni threshold (eşik) değerinden geçirmem.',
         fazlar: [
           {
@@ -10914,7 +10933,13 @@ Q.art.PORTRE_IDS = Object.keys(P);
           { baslik: "Sıkışma ve denge", madde: [
             "Electron (elektron) daha küçük bölgeye sıkışırsa Δx azalır, Δp büyür; momentum (momentum) büyüyünce kinetic energy (kinetik enerji) de büyür.",
             "Coulomb attraction (Coulomb çekimi) r küçüldükçe potential energy (potansiyel enerji) değerini düşürür.",
-            "Kinetik ve potansiyel katkıların toplamı sonlu bir r değerinde minimum olabilir; bu denge yarıçapı Bohr radius (Bohr yarıçapı) ile aynı büyüklüktedir." ] }
+            "Kinetik ve potansiyel katkıların toplamı sonlu bir r değerinde minimum olabilir; bu denge yarıçapı Bohr radius (Bohr yarıçapı) ile aynı büyüklüktedir.",
+            "Zincir kurarken sırayı izle: model, getirdiği kısıt, kısıtın enerjiye etkisi, genel sonuç. Gitar teli: uçlar sabit, yalnız belirli dalga boyları sığar." ] },
+          { baslik: "Geçiş ve dalga hesabı nasıl yapılır", madde: [
+            "Geçiş: ΔE = 13,6·|1/n_alt² − 1/n_üst²| eV, sonra λ = 1240/ΔE nm. Örnek 4→3: ΔE = 0,66 eV, λ ≈ 1880 nm (kızıl ötesi).",
+            "λ 380-750 nm arasındaysa görünür renk; daha kısa mor ötesi, daha uzun kızıl ötesi. Büyük energy (enerji) farkı kısa λ verir.",
+            "Matter wave (madde dalgası): önce p = mv, sonra λ = h/p. Örnek: 0,06 kg top, 30 m/s: p = 1,8 kg·m/s, λ ≈ 3,7×10⁻³⁴ m.",
+            "Eₙ = −13,6/n² yalnızca n = 1, 2, 3 gibi tam sayılar için tanımlıdır; seviyeleri bulmak için n yerine bu sayıları yaz." ] }
         ],
         satirlar: [
           { kim: 'selin', metin: 'Atom mikroskobu bir electron (elektron) arıyor. O neden nucleus (çekirdek) içine düşmüyor?' },
@@ -10942,6 +10967,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "Boundary condition (sınır koşulu): hapsolmuş wave (dalga) kenarlarda uygun biçimde sonlanmalıdır; bu yalnızca belirli dalga boylarına izin verir." ] }
         ],
         gorev: 'n=3\'ten n=2\'ye transition (geçiş) rengini bul.',
+        tanitim: "Initial n (başlangıç n) üst seviyeyi, Final m (bitiş m) alt seviyeyi seçer. Photon (foton) düğmesi geçişi oynatır; bilgi satırı ΔE ve λ değerini, çizim rengi gösterir. Doğru n ve m değerlerini seçip düğmeye bas.",
         sim: {
           modul: 'bohr',
           params: { n: 4, m: 1 },
@@ -10962,6 +10988,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       {
         id: 's04-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'atom_kararlilik', agirlik: 1,
         soru: 'Stability (kararlılık) zincirini sıraya diz',
+        onNot: "Zincir kurarken sor: önce elektron nasıl modelleniyor, bu modelin getirdiği kısıt ne, kısıt enerjiyi nasıl etkiliyor, en sonda ne sonuç çıkıyor? Her adım öncekinin sonucunu kullanır; sırayı bu yüzden değiştiremezsin.",
         bloklar: [
           'Electron (elektron) confined wave (hapsolmuş dalga) olarak davranır',
           'Yalnızca belirli wavelengths (dalga boyları) sığar',
@@ -10973,6 +11000,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       {
         id: 's04-o08', tip: 'patron', baslik: 'Orbit (Yörünge) Canavarı', kavram: null, agirlik: 1,
         canavar: 'bohr', canavarAd: 'Orbit (Yörünge) Canavarı',
+        onNot: "Açık cevap şablonu: (1) klasik model ne öngördü, (2) quantum (kuantum) modeli neyi değiştirdi, (3) sonuç. Madde dalgasında λ = h/p: günlük cisimde p büyük olduğundan λ çok küçük, atom ölçeğinde p küçük olduğundan λ ölçülebilir.",
         giris: 'Electron (elektron) nucleus (çekirdek) içine düşecek, hemen göreceksin! Düşemez diyorsan justify (gerekçelendir).',
         fazlar: [
           {
@@ -11672,7 +11700,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
         yer: 'Göttingen', yil: 1926, rivayet: false,
         onBilgi: [
           { baslik: "Born, postülatlar ve ölçüm", madde: [
-            "1926'da Born, |ψ|² değerini probability (olasılık) olarak yorumladı; bu yorum sonradan Nobel aldı.",
+            "1926'da Born, |ψ|² değerini probability (olasılık) olarak yorumladı; Born bu çalışmasıyla 1954'te Nobel aldı.",
             "1927 dolayında Bohr ve Heisenberg'in Copenhagen interpretation (Kopenhag yorumu) şekillendi.",
             "1932'de von Neumann, quantum mechanics (kuantum mekaniği) postulate (postülat) yapısını matematiksel kurdu.",
             "1935'te Schrödinger, kendi cat (kedi) düşünce deneyiyle ölçüm sorununu tartışmaya açtı." ] }
@@ -11689,14 +11717,15 @@ Q.art.PORTRE_IDS = Object.keys(P);
           { baslik: "Observable (gözlenebilir), operator (operatör)", madde: [
             "Observable (gözlenebilir): ölçülebilen büyüklük, örneğin energy (enerji), position (konum), momentum.",
             "Her observable bir operator (operatör) ile temsil edilir; Ĥ enerji operatörüdür.",
-            "Eigenvalue (özdeğer): operatörün izinli sayısı; eigenstate (özdurum): o sayıya ait kesin durum φₙ." ] },
+            "Eigenvalue (özdeğer): operatörün izinli sayısı; eigenstate (özdurum): o sayıya ait kesin durum φₙ.",
+            "Gözlenebilirin operatörü Hermitian (Hermityen) olur; bu yüzden eigenvalue (özdeğer) değerleri gerçel sayıdır." ] },
           { baslik: "Superposition (süperpozisyon), probability", madde: [
             "Superposition (süperpozisyon): durum eigenstate (özdurum) toplamı olabilir: ψ = c₁φ₁ + c₂φ₂ + ...",
             "Her c coefficient (katsayı) ile ölçüm sonucu φₙ için probability (olasılık) = |cₙ|².",
             "Olasılıklar toplanınca 1 eder: Σ|cₙ|² = 1 (normalization, normalizasyon).",
             "Sık karışan nokta: olasılık c'nin kendisi değil karesidir; katsayılar doğrudan toplanmaz." ] },
           { baslik: "Measurement (ölçüm), collapse (çökme)", madde: [
-            "Measurement (ölçüm) yalnızca bir eigenvalue (özdeğer) verir; average (ortalama) tek ölçümde görülmez.",
+            "Measurement (ölçüm) yalnızca bir eigenvalue (özdeğer) verir; expectation value (beklenen değer) ⟨E⟩ = Σ|cₙ|²Eₙ çok ölçümün average (ortalama) değeridir, tek ölçümde görülmez.",
             "Ölçümden sonra ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker); hemen tekrar ölçersen sonuç kararlıdır.",
             "Aralarda Schrödinger equation (denklemi) ψ'yi deterministic (belirlenimci) evriltir; rastgelelik yalnızca ölçümde.",
             "Schrödinger denklemi çökmez; collapse (çökme) ayrı bir postulate (postülat) ve measurement (ölçüm) ile gelir." ] }
