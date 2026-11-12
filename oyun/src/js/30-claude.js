@@ -179,7 +179,7 @@
       throw m;
     }
   }
-  async function callApi(prompt, signal, maxTok){
+  async function callApi(prompt, signal, maxTok, ek){
     var res;
     try {
       res = await root.fetch('https://api.anthropic.com/v1/messages', {
@@ -189,10 +189,15 @@
           'anthropic-version': '2023-06-01',
           'anthropic-dangerous-direct-browser-access': 'true'
         },
-        body: JSON.stringify({ model: modelAdi(), max_tokens: maxTok || 700, messages: [{ role: 'user', content: prompt }] })
+        body: JSON.stringify((function(){
+          var b = { model: modelAdi(), max_tokens: maxTok || 700, messages: (ek && ek.messages) || [{ role: 'user', content: prompt }] };
+          if (ek && ek.system) b.system = ek.system;
+          return b;
+        })())
       });
     } catch (e) {
       if (e && e.name === 'AbortError') throw rej('iptal');
+      if (ek && ek.sohbet) throw rej('ag', 'ağ hatası');
       forcedNone = true; setBackend('none');
       toast('Bu sayfada API anahtarı çalışmıyor. Yerel dosya olarak aç ya da claude.ai\'daki yayını kullan.', 'kotu');
       throw rej('gecici', 'ağ hatası');
@@ -229,6 +234,43 @@
       if (e && e.code) throw e;
       throw rej('gecici', String(e && e.message || e));
     } finally { busy = false; ctl = null; }
+  };
+
+  /* Sohbet: o = {system, messages:[{role:'user'|'assistant', content}], signal, timeoutMs, maxTokens} -> Promise<string>
+   * Hata kodları: yok, iptal, zaman, ag, sinir, gecici. Anahtar hiçbir yere yazılmaz. */
+  var chatBusy = false;
+  C.chat = async function(o){
+    o = o || {};
+    var av = await C.available();
+    if (av.backend === 'none') throw rej('yok', 'Claude kullanılamıyor');
+    if (chatBusy) throw rej('gecici', 'Önceki mesaj sürüyor');
+    var msgs = (o.messages || []).map(function(m){ return { role: m.role === 'assistant' ? 'assistant' : 'user', content: String(m.content == null ? '' : m.content) }; });
+    if (!msgs.length) throw rej('gecici', 'Mesaj yok');
+    chatBusy = true;
+    var c = (typeof AbortController !== 'undefined') ? new AbortController() : { signal: undefined, abort: function(){} };
+    var zaman = false, tm = setTimeout(function(){ zaman = true; try { c.abort(); } catch (e) {} }, o.timeoutMs || 45000);
+    if (o.signal && o.signal.addEventListener) {
+      if (o.signal.aborted) c.abort(); else o.signal.addEventListener('abort', function(){ try { c.abort(); } catch (e) {} });
+    }
+    try {
+      var text;
+      if (av.backend === 'sample') {
+        var pr = (o.system ? o.system + '\n\n' : '') + msgs.map(function(m){ return (m.role === 'user' ? 'ÖĞRENCİ: ' : 'ASİSTAN: ') + m.content; }).join('\n\n') + '\n\nASİSTAN:';
+        try {
+          text = await sampleObj.text(pr, { model: modelAdi(), effort: efor(), modelTier: 'default', cache: false, signal: c.signal });
+        } catch (e) {
+          var m = mapSampleErr(e);
+          if (m.code === 'iptal' && zaman) throw rej('zaman');
+          throw m;
+        }
+      } else {
+        try { text = await callApi('', c.signal, o.maxTokens || 900, { messages: msgs, system: o.system, sohbet: true }); }
+        catch (e) { if (e && e.code === 'iptal' && zaman) throw rej('zaman'); throw e; }
+      }
+      text = String(text == null ? '' : (typeof text === 'object' && text.text ? text.text : text)).trim();
+      if (!text) throw rej('gecici', 'boş yanıt');
+      return text;
+    } finally { clearTimeout(tm); chatBusy = false; }
   };
 
   C.test = async function(){

@@ -23,6 +23,28 @@
   function stAd(id){ var s = Q.data.stations[id]; return id.toUpperCase() + ' · ' + (s && s.ad || id); }
   function mix(a){ return Q.util && Q.util.shuffle ? Q.util.shuffle(a) : a.slice().sort(function(){ return Math.random() - 0.5; }); }
 
+  /* ---------- Biliyorum (Q.state.biliyorum: küçük harfli İngilizce terim listesi; ana kayıtta geriye uyumlu isteğe bağlı alan) ---------- */
+  var biliyorumAtla = true;
+  function bilList(){ if (!Array.isArray(Q.state.biliyorum)) Q.state.biliyorum = []; return Q.state.biliyorum; }
+  function bilMi(en){ return bilList().indexOf(String(en).toLowerCase()) >= 0; }
+  function bilDegis(en, ekle){
+    var k = String(en).toLowerCase(), l = bilList(), i = l.indexOf(k);
+    if (ekle && i < 0) l.push(k); else if (!ekle && i >= 0) l.splice(i, 1);
+    if (Q.save && Q.save.write) Q.save.write();
+  }
+  function atlanir(metin){
+    if (!biliyorumAtla) return false;
+    var m = String(metin || '').toLowerCase(), l = bilList();
+    for (var i = 0; i < l.length; i++) if (l[i].length >= 4 && m.indexOf(l[i]) >= 0) return true;
+    return false;
+  }
+  function atlaKutusu(onDegis){
+    var lbl = el('label', 'tk-row'), cb = el('input'); cb.type = 'checkbox'; cb.checked = biliyorumAtla; cb.className = 'tk-atla';
+    cb.addEventListener('change', function(){ biliyorumAtla = cb.checked; if (onDegis) onDegis(); });
+    lbl.appendChild(cb); lbl.appendChild(el('span', '', 'Biliyorum dediğim terimleri içerenleri atla (' + bilList().length + ' terim)'));
+    return lbl;
+  }
+
   /* ---------- terim çıkarma ---------- */
   var STOP = {}; 've bir ile de da bu şu o en her hiç hic mi ne ya ki ama gibi için icin daha çok cok sadece yalnızca ise olan olarak bunu onu'.split(' ').forEach(function(w){ STOP[w] = 1; });
   var RE = /(?<![\p{L}'\-])([A-Za-z][A-Za-z'\-]*(?: [A-Za-z][A-Za-z'\-]*){0,3}) \(([^()0-9=+\/]{2,48})\)/gu;
@@ -144,7 +166,7 @@
       '.tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}.tk-muted{color:var(--muted)}';
     document.head.appendChild(s);
   }
-  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)']];
+  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)'], ['hata', 'Hata defterini çalış'], ['ai', "AI'a sor"], ['bil', 'Biliyorum']];
   function ac(){
     if (root) { git(aktifSekme); return; }
     css();
@@ -169,10 +191,11 @@
     if (root.parentNode) root.parentNode.removeChild(root);
     root = body = tabsEl = null;
   }
-  function git(s){
+  function git(s, ctx){
     if (!root) return; aktifSekme = s; denemeTok++; denemeDurdur(); body.textContent = '';
     Array.prototype.forEach.call(tabsEl.children, function(b){ b.setAttribute('aria-selected', b.dataset.sekme === s ? 'true' : 'false'); });
-    if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else if (s === 'deneme') denemeSekmesi(); else sinavSekmesi();
+    if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else if (s === 'deneme') denemeSekmesi();
+    else if (s === 'hata') { if (Q.tekrarHata) Q.tekrarHata.hata(body, ctx); } else if (s === 'ai') { if (Q.tekrarHata) Q.tekrarHata.ai(body, ctx); } else if (s === 'bil') bilSekmesi(); else sinavSekmesi();
   }
 
   /* ---------- 1. terimler ---------- */
@@ -186,25 +209,46 @@
     body.appendChild(r); body.appendChild(liste);
     function satir(t){
       var row = el('div', 'tk-t'); row.appendChild(el('b', '', t.en));
+      var bb = btn('Biliyorum', '', function(){ bilDegis(t.en, true); ciz(); }); bb.className += ' tk-bil'; bb.style.marginLeft = 'auto';
       if (cb.checked) {
         var g = el('span', 'tr gizli', 'göster'); g.tabIndex = 0;
         var goster = function(){ g.textContent = t.tr; g.className = 'tr'; };
         g.addEventListener('click', goster); g.addEventListener('keydown', function(e){ if (e.key === 'Enter') goster(); });
         row.appendChild(g);
       } else row.appendChild(el('span', 'tr', t.tr));
+      row.appendChild(bb);
       return row;
     }
     function ciz(){
       liste.textContent = ''; var q = ara.value.trim().toLowerCase(), son = null, n = 0;
-      terimler().filter(function(t){ return (sel.value === 'hepsi' || t.g === sel.value) && (!q || t.en.toLowerCase().indexOf(q) >= 0 || t.tr.toLowerCase().indexOf(q) >= 0); })
+      terimler().filter(function(t){ return !bilMi(t.en) && (sel.value === 'hepsi' || t.g === sel.value) && (!q || t.en.toLowerCase().indexOf(q) >= 0 || t.tr.toLowerCase().indexOf(q) >= 0); })
         .sort(function(a, b){ return a.g === b.g ? a.en.localeCompare(b.en) : ((a.g === 'temel') - (b.g === 'temel')) || (a.g < b.g ? -1 : 1); })
         .forEach(function(t){
           if (t.g !== son) { son = t.g; liste.appendChild(el('div', 'tk-g', t.g === 'temel' ? 'Temel terimler' : stAd(t.g))); }
           liste.appendChild(satir(t)); n++;
         });
-      sayac.textContent = n + ' terim';
+      sayac.textContent = n + ' terim · Biliyorum: ' + bilList().length + ' / ' + terimler().length;
     }
     ara.addEventListener('input', ciz); sel.addEventListener('change', ciz); cb.addEventListener('change', ciz); ciz();
+  }
+
+  function bilSekmesi(){
+    var liste = el('div'), sayac = el('div', 'tk-muted');
+    body.appendChild(sayac); body.appendChild(liste);
+    function ciz(){
+      liste.textContent = '';
+      var tum = terimler(), haritasi = {}; tum.forEach(function(t){ haritasi[t.en.toLowerCase()] = t; });
+      var l = bilList().slice().sort();
+      sayac.textContent = 'Biliyorum: ' + l.length + ' / ' + tum.length;
+      if (!l.length) { liste.appendChild(el('div', 'tk-fb', 'Henüz "Biliyorum" dediğin terim yok. Terimler sayfasında kolay gelen terimlerin yanındaki Biliyorum düğmesine bas; burada birikir ve tekrar listesinde görünmez.')); return; }
+      l.forEach(function(k){
+        var t = haritasi[k] || { en: k, tr: '' }, row = el('div', 'tk-t');
+        row.appendChild(el('b', '', t.en)); row.appendChild(el('span', 'tr', t.tr));
+        var g = btn('Geri al / Tekrar listesine koy', '', function(){ bilDegis(k, false); ciz(); }); g.className += ' tk-geri'; g.style.marginLeft = 'auto';
+        row.appendChild(g); liste.appendChild(row);
+      });
+    }
+    ciz();
   }
 
   /* ---------- 2. test ---------- */
@@ -225,11 +269,11 @@
       sb.push(b); say.appendChild(b);
     });
     var bilgi = el('div', 'tk-muted'), go = btn('Testi başlat', 'primary', null);
-    function secHavuz(){ return h.filter(function(x){ return secili[x.st]; }); }
+    function secHavuz(){ return h.filter(function(x){ return secili[x.st] && !atlanir(x.soru + ' ' + x.secenekler.map(function(o){ return o.t; }).join(' ')); }); }
     function ozet(){ var n = secHavuz().length; bilgi.textContent = 'Havuzda ' + n + ' soru var.' + (k.son ? ' Son skor: ' + k.son.skor + '/' + k.son.toplam + '.' : ''); go.disabled = !n; }
     go.addEventListener('click', function(){ var p = mix(secHavuz()); if (sayiSecim) p = p.slice(0, sayiSecim); basla(p); });
     body.appendChild(el('div', 'tk-muted', 'Sorular istasyonlardaki düşman, tahmin, tuzak ve patron sorularından gelir. Hasar ya da voltaj yok; oyun ilerlemen değişmez.'));
-    body.appendChild(sec); body.appendChild(say); body.appendChild(bilgi);
+    body.appendChild(sec); body.appendChild(say); body.appendChild(atlaKutusu(ozet)); body.appendChild(bilgi);
     var ra = el('div', 'tk-row'); ra.appendChild(go);
     if (k.yanlis.length) ra.appendChild(btn('Kayıtlı yanlışlarım (' + k.yanlis.length + ')', '', function(){ var p = h.filter(function(x){ return k.yanlis.indexOf(x.soru) >= 0; }); if (p.length) basla(mix(p)); }));
     body.appendChild(ra); ozet();
@@ -279,8 +323,8 @@
   function kartSekmesi(){
     var sel = el('select'); sel.setAttribute('aria-label', 'İstasyon');
     stIds().forEach(function(id){ var o = el('option', '', stAd(id)); o.value = id; sel.appendChild(o); });
-    var grid = el('div', 'tk-grid'), r = el('div', 'tk-row'); r.appendChild(sel); body.appendChild(r); body.appendChild(grid);
-    function kart(b, satirlar){ var c = el('div', 'tk-kart'); c.appendChild(el('h4', '', b)); satirlar.forEach(function(t){ if (t) c.appendChild(el('p', '', t)); }); grid.appendChild(c); }
+    var grid = el('div', 'tk-grid'), r = el('div', 'tk-row'); r.appendChild(sel); r.appendChild(atlaKutusu(function(){ ciz(); })); body.appendChild(r); body.appendChild(grid);
+    function kart(b, satirlar){ if (atlanir(b + ' ' + satirlar.join(' '))) return; var c = el('div', 'tk-kart'); c.appendChild(el('h4', '', b)); satirlar.forEach(function(t){ if (t) c.appendChild(el('p', '', t)); }); grid.appendChild(c); }
     function ciz(){
       grid.textContent = ''; var s = Q.data.stations[sel.value]; if (!s) return;
       ((s.temelTur && s.temelTur.kartlar) || []).forEach(function(k){ kart(k.baslik, [k.metin]); });
@@ -346,6 +390,7 @@
     var sm = v.mcq.filter(function(x){ return x.secki; }), sk = v.klasik.filter(function(x){ return x.secki; });
     var kume = (denemeAyar.kume === 'tum' || !sm.length) ? 'tum' : 'secki';
     var hm = kume === 'secki' ? sm : v.mcq, hk = kume === 'secki' ? sk : v.klasik;
+    var jt = function(x){ return !atlanir(JSON.stringify(x)); }; var hm0 = hm, hk0 = hk; hm = hm.filter(jt); hk = hk.filter(jt); if (!hm.length) hm = hm0; if (!hk.length) hk = hk0;
     var nm = Math.min(50, hm.length), nk = Math.min(20, hk.length);
     body.appendChild(el('div', 'tk-muted', 'Gerçek sınav gibi: tüm sorular İngilizce, istasyonlar karışık. Önce çoktan seçmeli (MCQ), sonra klasik (yazılı) sorular. Cevaplarını İngilizce yaz; terim bilmiyorsan sınav sonundaki terim listesine bak.'));
     var kutu = el('div', 'tk-kart'); kutu.appendChild(el('h4', '', 'Bu sınavda'));
@@ -373,6 +418,7 @@
       });
       body.appendChild(rk);
     }
+    body.appendChild(atlaKutusu(function(){ git('deneme'); }));
     secenek('Süre sayacı:', 'sure', 'Açık', 'Kapalı');
     secenek('MCQ geri bildirimi:', 'anlik', 'Her sorudan sonra', 'Sınav sonunda toplu');
     var go = btn('Sınavı başlat', 'primary', function(){ denemeBasla(mix(hm).slice(0, 50), mix(hk).slice(0, 20)); });
@@ -495,5 +541,5 @@
     }
     mcqSor(0);
   }
-  Q.tekrar = { open: ac, close: kapat, terimler: terimler, havuz: havuz };
+  Q.tekrar = { open: ac, close: kapat, git: function(s, ctx){ if (!root) ac(); git(s, ctx); }, terimler: terimler, havuz: havuz };
 })();
