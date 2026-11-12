@@ -43,7 +43,7 @@
         neden: 'Enerji rampa değil merdiven gibidir: basamak basamak. Çipin kuantum fiziği bu fikirle başlar.',
         bagliKavramlar: ['Photon (foton)', 'Photoelectric effect (fotoelektrik olay)', 'Blackbody radiation (kara cisim ışıması)', 'Threshold frequency (eşik frekansı)'],
         miniSoru: {
-          soru: 'Photoelectric effect (fotoelektrik olay) deneyi ışığı hakkında neyi gösterir?',
+          soru: 'Photoelectric effect (fotoelektrik olay) deneyi ışık hakkında neyi gösterir?',
           secenekler: [
             s('Işık photon (foton) paketleridir; eşik frekansının altında, şiddet artsa da elektron kopmaz', true, 'Elektronu koparan şey frekanstır, intensity (şiddet) değil.'),
             s('Işığın şiddeti artınca eşik frekansı düşer', false, 'Threshold frequency (eşik frekansı) metale bağlıdır, şiddete bağlı değildir.'),

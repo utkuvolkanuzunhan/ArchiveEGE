@@ -13,7 +13,7 @@
     soru: 'Ultraviolet catastrophe (mor ötesi felaketi), classical theory (klasik teori) neyi yanlış öngörmesidir?',
     secenekler: [
       sec('Kısa wavelength (dalga boyu) değerinde infinite energy (sonsuz enerji)', true, 'Doğru. Classical theory (klasik teori) yüksek frequency (frekans) değerinde energy (enerji) değerini sonsuz buluyordu.'),
-      sec('No emission (yayılma) of light (ışık)', false, 'Hayır. Sorun infinite energy (sonsuz enerji) öngörüsüydü.'),
+      sec('Light (ışık) hiç yayılmaması', false, 'Hayır. Sorun infinite energy (sonsuz enerji) öngörüsüydü.'),
       sec('Temperature (sıcaklık) hep sabit kalması', false, 'Hayır. Temperature (sıcaklık) ile ilgili bir sorun değildi.')
     ],
     kusurSkin: 'vakans'
@@ -21,7 +21,7 @@
 
   var o04 = {
     id: 's03-o04', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'planck_paket', agirlik: 1,
-    soru: 'Planck\'a göre bir photon (foton) energy (enerji) değeri neye bağlıdır?',
+    soru: 'Planck–Einstein quantum (kuantum) fikrine göre bir photon (foton) energy (enerji) değeri neye bağlıdır?',
     secenekler: [
       sec('Frequency (frekans) değerine (E = hf)', true, 'Doğru. Yüksek frequency (frekans), büyük paket.'),
       sec('Intensity (şiddet) değerine', false, 'Hayır. Intensity (şiddet) paket sayısını belirler.'),
@@ -36,7 +36,7 @@
     secenekler: [
       sec('Çok sayıda electron (elektron)', false, 'Yanlış. Tek photon (foton) yetmezse kaç photon (foton) olursa olsun electron (elektron) kopmaz.'),
       sec('Hiç electron (elektron)', true, 'Doğru. Intensity (şiddet) photon (foton) sayısını artırır, photon başına energy (enerji) değerini değil.'),
-      sec('time delay (gecikme) ile electron (elektron) kopar', false, 'Yanlış. Energy (enerji) birikmez, time delay (gecikme) gözlenmez.')
+      sec('Time delay (gecikme) ile electron (elektron) kopar', false, 'Yanlış. Energy (enerji) birikmez, time delay (gecikme) gözlenmez.')
     ],
     sim: {
       modul: 'fotoelektrik',
@@ -71,18 +71,18 @@
         id: 's03-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'karacisim_felaket', agirlik: 1,
         onBilgi: [
           { baslik: "Tarihçe: ışık ve enerji paketleri", madde: [
-            "Blackbody (kara cisim): üzerine düşen ışığın tamamını soğuran ideal cisim; ısınınca sıcaklığına göre ışık yayar.",
-            "Klasik teori düşük frequency (frekans) değerlerinde deneyle uyuştu, ama yüksek frequency değerlerinde sonsuz energy (enerji) öngördü.",
+            "Blackbody (kara cisim): tüm ışığı soğuran ideal cisim. Klasik teori yüksek frequency (frekans) değerlerinde sonsuz energy (enerji) öngördü: ultraviolet catastrophe (mor ötesi felaketi).",
+            "Atomlar da yalnızca belirli renklerde ışık yayar: discrete atomic spectra (ayrık atom spektrumları). Wave-particle duality (dalga-parçacık ikiliği) sonraki istasyonlarda.",
             "Max Planck (Berlin, 1900): enerji ancak paketler halinde alınıp verilir diyerek ölçümle uyuşan eğriyi buldu.",
             "Hertz (1887) photoelectric effect (fotoelektrik olay) gözledi; Einstein (1905) ışığı foton paketleriyle açıkladı, Nobel 1921." ] },
           { baslik: "Tanımlar ve sezgi", madde: [
             "Quantum (kuantum): enerjinin bölünemeyen en küçük paketi. Photon (foton): ışığın bir kuantumu.",
-            "Intensity (şiddet): saniyede gelen photon sayısıdır; her photon (foton) kendi energy (enerji) değerini taşır.",
+            "Intensity (şiddet): sabit frequency değerinde saniyede gelen photon sayısıyla orantılıdır; her photon (foton) kendi energy (enerji) değerini taşır.",
             "Photoelectric effect (fotoelektrik olay): ışık metalden electron (elektron) koparır. Her electron tek bir photon ile etkileşir.",
             "Work function (iş fonksiyonu) φ: electron (elektron) metalden çıkarmak için gereken en küçük energy (enerji)." ] },
           { baslik: "Formüller ve karışan noktalar", madde: [
             "E = hf; h = 6,626×10⁻³⁴ J·s, f hertz (Hz), E joule (J) veya eV. Threshold frequency (eşik frekansı): f₀ = φ/h.",
-            "Kinetic energy (kinetik enerji): K = hf − φ. Eşik üstünde frequency arttıkça K büyür; sayıyı intensity belirler.",
+            "Maximum kinetic energy (en büyük kinetik enerji): K = hf − φ. Eşik üstünde frequency arttıkça K büyür; sayıyı intensity belirler.",
             "Karışan: wavelength (dalga boyu) kısaldıkça frequency (frekans) ve photon energy (foton enerjisi) artar; λf = c.",
             "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] }
         ],
@@ -126,7 +126,7 @@
             secenekler: [
               sec('Light (ışık) frequency (frekans) değerine (K = hf − φ)', true, 'Doğru. Frequency (frekans) arttıkça kinetic energy (kinetik enerji) artar.'),
               sec('Light (ışık) intensity (şiddet) değerine', false, 'Hayır. Intensity (şiddet) electron (elektron) sayısını etkiler.'),
-              sec('Metal (metal) thickness (kalınlık) değerine', false, 'Hayır. Thickness (kalınlık) energy (enerji) değerini belirlemez.')
+              sec('Metalin thickness (kalınlık) değerine', false, 'Hayır. Thickness (kalınlık) energy (enerji) değerini belirlemez.')
             ],
             alt: {
               soru: 'Frequency (frekans) değerini ikiye katlarsan photon energy (foton enerjisi) ne olur?',
@@ -186,7 +186,7 @@
                 sec('Yeterince parlak light (ışık) her frequency (frekans) değerinde electron (elektron) koparmasını', true, 'Doğru. Deneyde threshold (eşik) altında hiç kopmaz.'),
                 sec('Electron (elektron) hiç kopmaması', false, 'Yanlış. Classical theory (klasik teori) kopacağını söyler.'),
                 sec('Light (ışık) speed (hız) değişmesi', false, 'Yanlış. Speed (hız) konusu değil.'),
-                sec('Metal (metal) melting (erime)', false, 'Yanlış. Melting (erime) konusu değil.')
+                sec('Metalin melting (erime) olması', false, 'Yanlış. Melting (erime) konusu değil.')
               ]
             },
             alt: { soru: 'Threshold frequency (eşik frekans) deneyi wave theory (dalga teorisi) modelini nasıl çürütür? Explain (açıkla).' }
@@ -204,7 +204,7 @@
     temelTur: {
       kartlar: [
         { baslik: 'Ultraviolet catastrophe (mor ötesi felaketi)', metin: 'Classical theory (klasik teori) kısa wavelength (dalga boyu) değerinde infinite energy (sonsuz enerji) buluyordu.' },
-        { baslik: 'Quantized energy (paket enerji)', metin: 'Planck: light (ışık) paket paket yayılır, E = hf.' },
+        { baslik: 'Quantized energy (paket enerji)', metin: 'Planck: energy (enerji) paket paket alınıp verilir, E = hf.' },
         { baslik: 'Threshold (eşik)', metin: 'Tek photon (foton) yetmezse brightness (parlaklık) işe yaramaz.' }
       ],
       sim: { modul: 'fotoelektrik', params: { f: 3.0, I: 1, metal: 'Na' } }
