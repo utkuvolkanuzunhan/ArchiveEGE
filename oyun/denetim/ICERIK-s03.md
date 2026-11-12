@@ -25,3 +25,6 @@ Tüm doğru şıklar tek ve doğru. Tarihçe: Planck 1900 Berlin, Hertz 1887, Ei
 | Stopping potential (V₀ = K_max/e) sınavda (m4, k2) ve istasyon dışı hesapta var, onBilgi'de yok | 90-data-s03.js onBilgi | formüller kartına "eV₀ = K_max" maddesi (şu an kart dolu) | orta |
 | Sınav "photoelectric effect: no time delay" (anlık emisyon) sınavda kullanılıyor, onBilgi'de yalnız tahmin açıklamasında geçiyor | 90-data-s03.js onBilgi | Intensity maddesine "emisyon gecikmesiz" eklemek | düşük |
 | Doğru şık dosyada genellikle 1. sırada; çalışma zamanında karıştırılıyor | - | yok | düşük |
+
+## Oynanis (1366x768, hikayeAtla kapali)
+hikaye, 3 onBilgi karti, karacisim sim (5000 K), o03 ve o04 gercek oyuncu gibi oynandi: tasma/takilma/konsol hatasi yok. Playwright surucusu yavas oldugu icin zaman asimina ugradi; o05..patron ve sandik bu turda yeniden oynanmadi (hesap engeli s03 hesap-engel.test.js ile gecti). Onceki BUG-s03-*.md turlari o05-patron akisini kapsiyor.
