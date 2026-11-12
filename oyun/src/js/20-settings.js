@@ -225,7 +225,7 @@
       var d = doc();
       if (d) {
         var a = d.getElementById('a8-claude-text'); if (a) a.textContent = t;
-        var h = d.getElementById('hud-claude'); if (h) h.textContent = ad;
+        var h = d.getElementById('hud-claude'); if (h) h.textContent = 'Claude: ' + ad;
       }
       return r;
     });

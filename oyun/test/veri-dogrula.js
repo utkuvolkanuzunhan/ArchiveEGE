@@ -61,6 +61,7 @@ function engel(d, st, e, i) {
   if (e.baslik) { if (kelime(e.baslik) > 4) hata(d, a + '.baslik', kelime(e.baslik) + ' kelime (en çok 4)'); } else hata(d, a + '.baslik', 'boş');
   if (e.kavram && st.kavramlar && st.kavramlar.indexOf(e.kavram) < 0) hata(d, a + '.kavram', '"' + e.kavram + '" istasyonun kavramlar listesinde yok');
   var sim = e.sim;
+  if (e.onNot !== undefined) sinir(d, a + '.onNot', e.onNot, 50);
   if (sim && sim.modul && MODULLER.indexOf(sim.modul) < 0) hata(d, a + '.sim.modul', 'bilinmeyen modül "' + sim.modul + '"');
   if (e.onBilgi !== undefined) {
     if (['hikaye', 'kavram'].indexOf(e.tip) < 0) hata(d, a + '.onBilgi', 'yalnızca hikaye/kavram engelinde olur');
@@ -80,6 +81,7 @@ function engel(d, st, e, i) {
     case 'kavram':
       sinir(d, a + '.gorev', e.gorev, 12);
       sinir(d, a + '.ogrenilen', e.ogrenilen, 20);
+      if (e.tanitim !== undefined) sinir(d, a + '.tanitim', e.tanitim, 45);
       if (!sim) hata(d, a + '.sim', 'yok');
       break;
     case 'dusman':

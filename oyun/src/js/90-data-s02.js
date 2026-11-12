@@ -15,6 +15,7 @@
 
   var o04 = {
     id: "s02-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
+    onNot: "Diamond structure (elmas yapı): silisyum ve germanyumun kafesi. Nearest neighbor (en yakın komşu): bir atoma en yakın duran atomlar; sayısı coordination number (koordinasyon sayısı) olur.",
     soru: "diamond structure (elmas yapı) içinde her atom (atom) için nearest neighbor (en yakın komşu) sayısı kaçtır?",
     secenekler: [
       s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 neighbors (komşu) ile."),
@@ -26,6 +27,7 @@
 
   var o05 = {
     id: "s02-o05", tip: "tahmin", baslik: "Tahmin çukuru", kavram: "miller_duzlem", agirlik: 1.5,
+    onNot: "Miller indices (Miller indisleri): düzlemin adı (hkl). Bul: axis intercepts (eksen kesişimleri), reciprocals (tersleri), en küçük integers (tam sayılar). Eksene parallel (paralel) düzlemde intercept ∞, index (indis) 0.",
     soru: "Axes (eksenleri) 2, ∞, ∞ noktasında kesen plane (düzlem) için Miller indices (Miller indisleri) nedir? Determine (belirle).",
     secenekler: [
       s("(200)", false, "Yanlış. Önce reciprocal (ters) al: ½, 0, 0. Sonra integer (tam sayı) yap: (100). Miller indices (Miller indisleri) en küçük integers (tam sayılar) olur."),
@@ -66,7 +68,7 @@
             "Cubic (kübik) türler: sc, bcc, fcc.",
             "Bir köşe atomu 8 hücreyle paylaşılır, yüz atomu 2 hücreyle paylaşılır." ] }
         ],
-        gorev: "fcc unit cell (birim hücre) atom (atom) sayısını determine (belirle).",
+        gorev: "Say düğmesine bas; fcc unit cell (birim hücre) atom sayısını determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
         ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },
       o03,
@@ -88,6 +90,7 @@
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
       { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,
         canavar: "miller", canavarAd: "Plane (Düzlem) Canavarı",
+        onNot: "Gösterim: (hkl) tek plane (düzlem), {hkl} equivalent planes (eşdeğer düzlemler) ailesi, [uvw] bir direction (yön). Wafer (dilim): tek kristal külçeden kesilmiş ince silisyum disk.",
         giris: "Hangi düzlemdeyim? Bil bakalım, yoksa seni yanlış açıdan keserim!",
         fazlar: [
           { tip: "secmeli", kavram: "miller_duzlem",

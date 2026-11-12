@@ -63,7 +63,7 @@
     h.textContent = 'Çip Hattı';
     h.style.margin = '0 0 8px';
     var p = Q.util.el('p');
-    p.textContent = 'Kumdan çipe: istasyonları kur, engelleri geç.';
+    p.textContent = 'Kumdan çipe: istasyonları sırayla geç. Engele varınca soru ya da görev açılır; cevapla, ilerle.';
     kutu.appendChild(h);
     kutu.appendChild(p);
     kutu.appendChild(butonlar([

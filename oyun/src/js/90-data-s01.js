@@ -61,6 +61,7 @@
       {
         id: "s01-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "kati_turleri", agirlik: 1,
         gorev: "Electron (elektron) üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
+        tanitim: "Crystal (kristal): atomlar uzun menzilde düzenli. Polycrystalline (çok kristalli): düzenli taneler, aralarında grain boundary (tane sınırı). Amorphous (amorf): düzen yok. Mean free path (serbest yol): elektronun çarpmadan gittiği mesafe.",
         sim: { modul: "kristal_tur", params: { mod: "tur" }, basari: { hepsiniDene: true } },
         ogrenilen: "Order (düzen) bozuldukça electron (elektron) daha çok saçılır (scattering); single crystal (tek kristal) içinde yolu en açıktır."
       },
@@ -82,6 +83,7 @@
       },
       {
         id: "s01-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "kristal_neden", agirlik: 1,
+        onNot: "Lattice (kafes): atomların tekrar eden dizilimi. Periodic potential (periyodik potansiyel): elektron, kafesin tekrar eden atom çekimini görür. Energy band (enerji bandı): elektronun sahip olabileceği izinli enerji aralığı.",
         soru: "Zinciri sıraya diz",
         bloklar: ["Lattice (kafes) periyodik tekrar eder", "Electron (elektron) periodic potential (periyodik potansiyel) görür", "Energy bands (enerji bantları) net oluşur", "Properties (özellikler) öngörülebilir ve tekrarlanabilir"],
         sonuc: "Periodic lattice (periyodik kafes), periodic potential (periyodik potansiyel), net energy bands (enerji bantları), öngörülebilir device (aygıt)."
@@ -89,6 +91,7 @@
       {
         id: "s01-o08", tip: "patron", baslik: "Grain Boundary (Tane Sınırı) Canavarı", kavram: null, agirlik: 1,
         canavar: "czoch", canavarAd: "Grain Boundary (Tane Sınırı) Canavarı",
+        onNot: "CZ (Czochralski) yöntemi: melt (eriyik) silisyuma seed crystal (tohum kristal) değdirilir, yavaşça döndürülerek yukarı çekilir. Katılaşan atomlar tohumun düzenini sürdürür; ingot (külçe) tek kristal olur. Patronda şıkkın yanında eminliğini de seç.",
         giris: "Ben grain boundary (tane sınırı) canavarıyım! Electron (elektron) saçarım. Beni nasıl yenersin?",
         fazlar: [
           {

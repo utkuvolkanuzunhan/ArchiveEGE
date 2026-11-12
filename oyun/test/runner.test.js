@@ -85,8 +85,8 @@ async function setup(browser, opts){
     ok(res === 'tamam', 'T1 sonuç tamam');
     ok(info.log.length === 9 && info.log.every(function(v, i){ return v === i; }), 'T1 9 engel sırayla');
     var dl = info.i.decelLog;
-    ok(dl.length === 9 && dl.every(function(d){ return Math.abs(d.gameSn - 1.4) <= 0.2 && Math.abs(d.duvarSn - 1.4) <= 0.2; }),
-      'T1 yavaşlama 1.4 ±0.2 sn: ' + dl.map(function(d){ return d.gameSn.toFixed(2) + '/' + d.duvarSn.toFixed(2); }).join(' '));
+    ok(dl.length === 9 && dl.every(function(d){ return Math.abs(d.gameSn - 1.0) <= 0.2 && Math.abs(d.duvarSn - 1.0) <= 0.2; }),
+      'T1 yavaşlama 1.0 ±0.2 sn: ' + dl.map(function(d){ return d.gameSn.toFixed(2) + '/' + d.duvarSn.toFixed(2); }).join(' '));
     ok(dl.every(function(d){ return Math.abs(d.mesafe - 160) <= 20; }), 'T1 durma mesafesi 160±20: ' + dl.map(function(d){ return Math.round(d.mesafe); }).join(' '));
     ok(info.st.tamam === true && info.k.indexOf('t1') >= 0, 'T1 ilerleme.tamam + fabrika.kurulu');
     ok(s.errs.length === 0, 'T1 konsol hatası yok ' + s.errs.join('|'));

@@ -72,11 +72,11 @@
       var grp = document.createElement('div');
       grp.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
       TURLER.forEach(function(t){
-        tBtn[t] = mkBtn(t, function(){ sec(t); });
+        tBtn[t] = mkBtn(t === 'elmas' ? 'diamond (elmas)' : t, function(){ sec(t); });
         grp.appendChild(tBtn[t]);
       });
       bar.appendChild(grp);
-      var sayBtn = mkBtn('Say', function(){ sayModu = !sayModu; sonuc = ''; tahmin = 1; guncelle(); });
+      var sayBtn = mkBtn('Say (Count)', function(){ sayModu = !sayModu; sonuc = ''; tahmin = 1; guncelle(); });
       bar.appendChild(sayBtn);
       var sayGrp = document.createElement('div');
       sayGrp.style.cssText = 'display:flex;gap:6px;align-items:center;';

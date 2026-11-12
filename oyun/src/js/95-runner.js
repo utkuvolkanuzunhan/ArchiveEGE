@@ -4,7 +4,7 @@
 (function(){
   'use strict';
   var R = Q.runner;
-  var H = 720, GY = 600, TRIG = 420, STOPD = 160, DECEL = 1.4, INTRO = 1.2, ACCEL = 0.8, BASE_V = 260;
+  var H = 720, GY = 600, TRIG = 420, STOPD = 160, DECEL = 1.0, INTRO = 0.7, ACCEL = 0.5, BASE_V = 360;
   var GAP = { hikaye: 1000, kavram: 1000, dusman: 900, tahmin: 1000, tuzak: 900, kopru: 1000, patron: 1200, sandik: 1000 };
   var ANIM = { saldir: 0.7, atla: 0.9, dus: 1.6, sendele: 0.8, zafer: 1.2, 'kapi-ac': 0.9, 'kopru-kur': 1.0, 'tuzak-boz': 0.8 };
   var RUNNER_DURUM = { saldir: 'saldir', atla: 'atla', dus: 'dus', sendele: 'sendele', zafer: 'zafer' };
@@ -228,6 +228,27 @@
   }
 
   /* ---------- engel akışı ---------- */
+  /* ob.onNot: soru/engel açılmadan önce tek kartlık kısa tanıtım ("Önce bil"). Devam/Enter ile geçilir; atla/geri isteğinde bırakılır. */
+  function onNotGoster(host, ob, r){
+    var metin = ob && ob.onNot;
+    if (!metin || !host || !host.appendChild || (r && (r.skipReq || r.gotoReq != null))) return Promise.resolve();
+    return new Promise(function(res){
+      var kutu = document.createElement('div'); kutu.className = 'on-bilgi';
+      var b = document.createElement('div'); b.textContent = 'Önce bil';
+      b.style.cssText = 'font-family:var(--font-d);font-size:18px;color:var(--accent,#ffd23f);margin-bottom:4px;';
+      var p = document.createElement('p'); p.className = 'on-bilgi-metin'; p.textContent = metin;
+      p.style.cssText = 'margin:0 0 8px;font-size:18px;line-height:1.4;';
+      var d = document.createElement('button'); d.type = 'button'; d.className = 'btn primary'; d.textContent = 'Anladım';
+      var t0 = Date.now(), bitti = false;
+      function bit(){ if (bitti) return; bitti = true; document.removeEventListener('keydown', key, true); host.textContent = ''; res(); }
+      function key(e){ if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); bit(); } }
+      d.addEventListener('click', bit); document.addEventListener('keydown', key, true);
+      if (r) r.onNotIptal = bit;
+      kutu.appendChild(b); kutu.appendChild(p); kutu.appendChild(d); host.appendChild(kutu);
+      try { d.focus(); } catch (e) {}
+    });
+  }
+
   async function doObstacle(r){
     var it = r.items[r.cur], ob = it.ob, i = r.cur;
     var rw = makeRunwayApi(r, it);
@@ -241,6 +262,7 @@
     try { if (Q.ui && Q.ui.dock) { Q.ui.dock.clear(); host = Q.ui.dock.mount(host) || host; } } catch (e) { console.error(e); }
     var ctx = { stationId: r.id, index: i, istasyon: r.ist, host: host, runway: rw, ui: Q.ui, claude: Q.claude, sim: Q.sim, battle: Q.battle, art: Q.art, state: Q.state };
     rw.setObstacleState('aktif');                          // 5
+    if (ob.onNot) { try { r.onNotIptal = null; await onNotGoster(host, ob, r); } catch (e) { console.error(e); } r.onNotIptal = null; if (!alive(r)) return; }
     var h = Q.obs.handlers && Q.obs.handlers[ob.tip], sonuc = null;
     if (!h || typeof h.enter !== 'function') { toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: '' }; r.skipApply = true; }
     else {
@@ -404,7 +426,7 @@
     var r = run; if (!r) return false;
     if (closeMenu) { closeMenu(); closeMenu = null; }
     paused = false; last = null;
-    r.skipReq = true; if (r.skipRes) r.skipRes('atla');
+    r.skipReq = true; if (r.skipRes) r.skipRes('atla'); if (r.onNotIptal) r.onNotIptal();
     return true;
   };
   R.back = function(n){
@@ -412,7 +434,7 @@
     if (closeMenu) { closeMenu(); closeMenu = null; }
     paused = false; last = null;
     r.gotoReq = Math.max(0, r.cur - Math.max(1, n | 0));
-    if (r.skipRes) r.skipRes('git');
+    if (r.skipRes) r.skipRes('git'); if (r.onNotIptal) r.onNotIptal();
     return true;
   };
   R.abort = function(){ if (run) abort('cikis'); };

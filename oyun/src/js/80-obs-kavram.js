@@ -1,5 +1,5 @@
 /* 80-obs-kavram.js (H3) Engel işleyicisi: "kavram" (kavram kapısı).
- * Dock'ta görev satırı + simülasyon; api.done ile kapı açılır, 45 sn sonra İpucu, 120 sn sonra Geç düğmesi.
+ * Dock'ta görev satırı + simülasyon; api.done ile kapı açılır, 15 sn sonra İpucu, 60 sn sonra Geç düğmesi.
  * Ekler: Q.obs.handlers.kavram. Süreler ctx.sureler ({ipucu, gec} ms) veya Q.obs.sureler ile kısaltılabilir.
  * Bağımlılık: 00-q.js (Q.util, Q.sim, Q.obs); çalışma anında Q.ui.toast, ctx.runway (isteğe bağlı). */
 (function(){
@@ -57,14 +57,20 @@
           host.textContent = '';
         }
         var sure = ctx.sureler || (Q.obs && Q.obs.sureler) || {};
-        var tIpucu = sure.ipucu != null ? sure.ipucu : 45000;
-        var tGec = sure.gec != null ? sure.gec : 120000;
+        var tIpucu = sure.ipucu != null ? sure.ipucu : 15000;
+        var tGec = sure.gec != null ? sure.gec : 60000;
 
         var gorev = U.el('p', 'kavram-gorev'); gorev.textContent = ob.gorev || '';
         var simHost = U.el('div', 'kavram-sim');
         var hintLine = U.el('p', 'kavram-ipucu'); hintLine.hidden = true;
         var butonlar = U.el('div', 'kavram-butonlar');
-        host.appendChild(gorev); host.appendChild(simHost);
+        host.appendChild(gorev);
+        if (ob.tanitim) {
+          var tan = U.el('p', 'kavram-tanitim'); tan.textContent = ob.tanitim;
+          tan.style.cssText = 'margin:2px 0 4px;font-size:14px;line-height:1.3;color:var(--muted,#b9b0e0);';
+          host.appendChild(tan);
+        }
+        host.appendChild(simHost);
         host.appendChild(hintLine); host.appendChild(butonlar);
 
         var sonHint = '', acildi = false, kapandi = false, bitir;

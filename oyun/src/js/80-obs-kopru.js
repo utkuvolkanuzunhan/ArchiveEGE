@@ -53,6 +53,9 @@
       root.style.cssText = 'display:flex;flex-direction:column;gap:4px;';
       var head = el('div', 'kopru-soru', ob.soru || 'Zinciri sıraya diz');
       head.style.cssText = 'font-family:var(--font-d);font-size:17px;';
+      var nasil = el('span', 'kopru-nasil', '  · Kartlara dokun, sırayla dizilir. Dolunca Kontrol.');
+      nasil.style.cssText = 'font-family:inherit;font-size:14px;color:var(--muted,#b9b0e0);';
+      head.appendChild(nasil);
       var poolBox = el('div', 'kopru-havuz');
       poolBox.setAttribute('aria-label', 'Kartlar');
       poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';

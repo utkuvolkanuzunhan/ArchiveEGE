@@ -88,9 +88,9 @@
         void balon.offsetWidth;
         balon.style.opacity = '1';
         try { ctx.runway.say(sr.kim, sr.metin); } catch (e) {}
-        await sleep(400);
+        await sleep(250);
         await new Promise(function(res){
-          var t = setTimeout(function(){ ilerle = null; res(); }, 1800);
+          var t = setTimeout(function(){ ilerle = null; res(); }, 1400);
           ilerle = function(){ clearTimeout(t); ilerle = null; res(); };
         });
       }
