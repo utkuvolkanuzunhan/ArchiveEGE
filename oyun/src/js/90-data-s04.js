@@ -131,6 +131,13 @@
           'Hapsolmuş wave (dalga) kinetic energy (kinetik enerji) sıfır olamaz',
           'Electron (elektron) daha aşağı düşemez, atom stable (kararlı)'
         ],
+        ipucu: 'Model, kısıt, enerjiye etkisi, sonuç: her adım bir öncekinin çıktısını kullanır.',
+        nedenler: [
+          'Zincir elektronun nasıl modellendiğiyle başlar; sonraki kısıtlar bu modelden doğar.',
+          'Dalga çekirdek çevresinde hapsolunca yalnızca kendi üzerine kapanan wavelengths (dalga boyları) sığar.',
+          'Küçük bir bölgeye sıkışan dalganın momentumu sıfır olamaz, dolayısıyla kinetic energy (kinetik enerji) de sıfır olamaz.',
+          'Enerji alt sınırı olduğu için elektron daha aşağı düşemez; kararlılık sonuçtur ve en sona gelir.'
+        ],
         sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), lower limit (alt sınır), stable atom (kararlı atom).'
       },
       {

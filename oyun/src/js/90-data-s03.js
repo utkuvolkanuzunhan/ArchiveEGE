@@ -131,6 +131,13 @@
           'hf, work function (iş fonksiyonu) aşarsa electron (elektron) kopar',
           'Intensity (şiddet) yalnızca electron (elektron) sayısını artırır'
         ],
+        ipucu: 'Önce ışığın doğası, sonra tek bir paketin enerjisi, sonra elektronun kopması, en son şiddetin rolü.',
+        nedenler: [
+          'Her şey ışığın enerjiyi paketler (quanta, kuanta) halinde taşımasına dayanır; model bu fikirle başlar.',
+          'Paketin enerjisi frekansa bağlıdır; bu bilgi olmadan bir paketin elektrona yetip yetmeyeceği söylenemez.',
+          'Tek bir photon (foton) enerjisi iş fonksiyonunu aşarsa elektron kopar; karar paket başına verilir.',
+          'Koparma koşulu sağlandıktan sonra daha fazla photon (foton) yalnızca daha çok elektron koparır; şiddet sayıyı artırır.'
+        ],
         sonuc: 'Photon energy (foton enerjisi) frequency (frekans) ile belirlenir, threshold (eşik) aşılırsa electron (elektron) kopar, intensity (şiddet) sayıyı artırır.'
       },
       {
