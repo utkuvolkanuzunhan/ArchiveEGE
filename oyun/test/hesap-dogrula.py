@@ -100,6 +100,51 @@ def kontroller():
     A['drift-J'] = dict(s=qe * 1e16 * 1350 * 10, a={0: qe * 1e16 * 1350})
     return A
 
+
+def ornek_kontroller():
+    """Örnek çözümlerin (g.ornek) sayıları: id -> dict(s=nihai, a={adım indeksi (0 tabanlı): say}). Hepsi bağımsız hesaplanır."""
+    O = {}
+    O['atom-fcc'] = dict(s=8 / 8 + 1, a={0: 1, 1: 1, 2: 2})
+    Vge = (0.566e-7)**3
+    O['si-yogunluk'] = dict(s=8 / Vge / 1e22, a={0: 8, 1: Vge / 1e-22, 2: 8 / Vge / 1e22})
+    O['pack-fcc'] = dict(s=math.pi / 6, a={0: 1, 1: 0.5, 2: math.pi / 6})
+    O['pack-bcc'] = dict(s=8 * 4 / 3 * math.pi * (math.sqrt(3) / 8)**3, a={0: 8, 1: math.sqrt(3) / 8})
+    O['miller-326'] = dict(s=0.4 / math.sqrt(1 + 1 + 1 + 3), a={0: 2, 1: 4 + 1 + 1})
+    O['miller-210'] = dict(s=0.4 / 1.0, a={0: 1})
+    O['foton-400'] = dict(s=HC / 620, a={1: HC / 620})
+    O['foto-cu'] = dict(s=HC / 200 - 4.3, a={0: HC / 200})
+    O['foto-esik'] = dict(s=HC / 1.9, a={1: HC / 1.9})
+    dE = RY * (1 / 4 - 1 / 16)
+    O['bohr-gecis'] = dict(s=HC / (13.6 * 3 / 16), a={0: 13.6 * 3 / 16})
+    O['bohr-iyon'] = dict(s=13.6 / 9, a={0: -13.6 / 9, 1: 13.6 / 9})
+    O['debroglie-100'] = dict(s=2 * math.pi / (KNM * 5), a={0: KNM * 5})
+    O['debroglie-lam'] = dict(s=(hP / 0.2e-9)**2 / (2 * me) / qe, a={1: (hP / 0.2e-9)**2 / (2 * me) / qe})
+    O['q5-bolgeler'] = dict(s=KNM * 2 * 6, a={3: KNM * 2 * 6})
+    O['q5-bos-kuyu'] = dict(s=PI2C / 400 * 1e3, a={0: math.sqrt(2 / 20), 1: 400, 2: PI2C / 400 * 1e3})
+    Pp = 10 / 30 - (math.sin(2 * math.pi * 20 / 30) - math.sin(2 * math.pi * 10 / 30)) / (2 * math.pi)
+    O['q5-perturbasyon'] = dict(s=0.1 * Pp, a={0: Pp, 1: 0.1 * Pp})
+    O['q5-sayisal'] = dict(s=kuyu_tam(V0=5.0, d=8.0, w=15.0, n=1) * 1e3, a={0: PI2C / 225 * 1e3})
+    O['q5-basit'] = dict(s=3 * PI2C / 400 * 1e3, a={1: 3 * PI2C / 400 * 1e3})
+    O['kuyu-norm'] = dict(s=math.sqrt(2 / 8), a={0: 4})
+    O['kuyu-foton'] = dict(s=HC / (3 * PI2C) / 1000, a={0: PI2C})
+    O['q6-e-gt'] = dict(s=R_basamak(8, 2), a={0: KNM * math.sqrt(8), 1: KNM * math.sqrt(6), 2: (KNM * math.sqrt(8) - KNM * math.sqrt(6)) / (KNM * math.sqrt(8) + KNM * math.sqrt(6)), 3: R_basamak(8, 2)})
+    O['q6-e-lt'] = dict(s=1 / (KNM * 2), a={0: KNM * 2, 1: 4 * 2 / 6, 2: 1 / (KNM * 2)})
+    O['tunel-1nm'] = dict(s=math.exp(-2 * KNM * math.sqrt(3) * 0.6), a={0: KNM * math.sqrt(3)})
+    O['olc-p'] = dict(s=9 / 25, a={0: 1 / 5, 1: 9 / 25})
+    O['olc-E'] = dict(s=0.36 * PI2C + 0.64 * 4 * PI2C, a={0: PI2C})
+    dp = hb / (2 * 1e-9)
+    O['bel-v'] = dict(s=dp / me / 1e3, a={0: dp / 1e-26})
+    O['bel-t'] = dict(s=6.582e-16 / (2 * 1e-8) * 1e6, a={1: 6.582e-16 / (2 * 1e-8) * 1e6})
+    O['bant-si'] = dict(s=HC / 0.66, a={1: HC / 0.66})
+    O['bant-gaas'] = dict(s=HC / 3.4, a={0: HC / 3.4})
+    kT = kB * 300
+    O['fd-100meV'] = dict(s=fermi(0.05, 300), a={0: kT * 1e3, 1: 0.05 / kT, 2: fermi(0.05, 300)})
+    O['fd-orta'] = dict(s=1 / (1 + math.e), a={0: 1, 1: 1 / (1 + math.e)})
+    O['np-ni'] = dict(s=1.5e10**2 / 2e16, a={1: 1.5e10**2 / 2e16})
+    O['drift-v'] = dict(s=480 * 50 / 100, a={0: 480 * 50, 1: 480 * 50 / 100})
+    O['drift-J'] = dict(s=qe * 5e15 * 1000 * 20, a={0: qe * 5e15 * 1000})
+    return O
+
 def esles(a, b, tol=5e-3): return abs(a - b) <= tol * max(abs(b), 1e-300)
 
 def main():
@@ -129,6 +174,30 @@ def main():
     for ad, h, b in lit:
         n += 1
         if not esles(h, b, 1.5e-2 if ad in ('1/kappa', 'Bohr 13.6 kullanimi') else 5e-3): print('HATA metin sayisi', ad, h, b); hata += 1
+    # ---- örnek çözümler (g.ornek): şema + sayılar bağımsız doğrulanır ----
+    O = ornek_kontroller()
+    for g in veriler:
+        n += 1
+        o = g.get('ornek')
+        if not o: print('HATA örnek yok:', g['id']); hata += 1; continue
+        if not (3 <= len(o.get('yontem', [])) <= 5): print('HATA', g['id'], 'yontem 3-5 madde olmalı'); hata += 1
+        if len(o['adimlar']) != len(g['adimlar']): print('HATA', g['id'], 'örnek adım sayısı görevinkiyle aynı olmalı'); hata += 1
+        if not (o.get('baslik') and o.get('soru') and o.get('veriler') and o.get('ipucu') and o['sonuc'].get('metin')): print('HATA', g['id'], 'örnek alanı eksik'); hata += 1
+        for a in o['adimlar']:
+            if not (a.get('baslik') and a.get('metin') is not None and a.get('formul') and a.get('sonuc')): print('HATA', g['id'], 'örnek adım alanı eksik', a.get('baslik')); hata += 1
+        if g['id'] not in O: print('HATA örnek sayısı kontrolsüz:', g['id']); hata += 1; continue
+        k = O[g['id']]
+        if not esles(o['sonuc']['deger'], k['s'], 6e-3): print('HATA %s örnek sonuc: veri=%r hesap=%r' % (g['id'], o['sonuc']['deger'], k['s'])); hata += 1
+        for i, v in k['a'].items():
+            n += 1
+            say = o['adimlar'][i].get('say')
+            if say is None: print('HATA %s örnek adım %d say yok' % (g['id'], i)); hata += 1
+            elif not esles(say, v, 6e-3): print('HATA %s örnek adım %d: veri=%r hesap=%r' % (g['id'], i, say, v)); hata += 1
+        if yaz: print('  ornek %-16s sonuc=%.6g (hesap %.6g)' % (g['id'], o['sonuc']['deger'], k['s']))
+        sq = g.get('sonucSoru')
+        if sq:
+            n += 1
+            if not esles(sq['sayiCevap']['deger'], g['sonuc']['deger'], 5e-3): print('HATA %s sonucSoru != sonuc' % g['id']); hata += 1
     ids = set()
     for g in veriler:
         ids.add(g['id'])

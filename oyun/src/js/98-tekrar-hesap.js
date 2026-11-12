@@ -55,14 +55,94 @@
       '.hc-kod{margin:0;padding:8px 10px;border-radius:6px;background:rgba(0,0,0,.35);font:13px/1.4 monospace;white-space:pre-wrap;overflow:auto}' +
       '.hc-fb{padding:6px 10px;border-radius:8px;border:2px solid var(--line)}.hc-fb.iyi{border-color:var(--lime)}.hc-fb.kotu{border-color:var(--red)}' +
       '.hc-sonuc{padding:10px 12px;border:2px solid var(--lime);border-radius:8px;background:var(--panel2);font-size:18px}.hc-not{padding:10px 12px;border:2px solid var(--yellow);border-radius:8px;background:var(--panel2)}' +
-      '@media (max-width:820px){.hc-wrap{flex-direction:column}.hc-sol{flex:none;max-height:240px}}';
+      '@media (max-width:820px){.hc-wrap{flex-direction:column}.hc-sol{flex:none;max-height:240px}}' +
+      /* örnek çözüm paneli (ho-) */
+      '.hg-kok:has(>.ho-panel){overflow:hidden}.ho-panel{display:flex;flex-direction:column;gap:5px;min-height:0;flex:1 1 auto;overflow:hidden}.ho-ust{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;flex:0 0 auto}' +
+      '.ho-ust b{font-family:var(--font-d);font-size:22px;color:var(--accent,var(--yellow))}.ho-ust span{color:var(--muted);font-size:var(--fs-small,13px)}' +
+      '.ho-govde{flex:1 1 auto;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:6px;padding-right:4px}' +
+      '.ho-kutu{padding:7px 10px;border:2px solid var(--line);border-radius:8px;background:var(--panel2);display:flex;flex-direction:column;gap:4px}' +
+      '.ho-yontem{border-color:var(--yellow)}.ho-yontem h4,.ho-adim h4{margin:0;font-size:16px}.ho-yontem h4{color:var(--yellow)}.ho-adim h4{color:var(--cyan)}' +
+      '.ho-yontem ol{margin:0;padding-left:22px;font-size:15px}.ho-yontem li{margin:0}.ho-soru{font-size:15px;line-height:1.35}' +
+      '.ho-ver{margin:0;padding-left:20px;color:var(--cyan);font-size:14px}.ho-ver li{margin:0}' +
+      '.ho-adim p{margin:0}.ho-adim.vurgu{border-color:var(--yellow);box-shadow:0 0 0 2px rgba(255,220,80,.35)}.ho-adim .ho-sn{color:var(--lime,var(--good));font-weight:700}' +
+      '.ho-formul{font-family:Georgia,"Times New Roman",serif;font-size:17px;padding:3px 10px;border-left:4px solid var(--yellow);background:rgba(255,255,255,.06);overflow-wrap:anywhere}.ho-formul sup,.ho-formul sub{font-size:.7em}' +
+      '.ho-sonuc{border-color:var(--lime,var(--good));font-size:16px}' +
+      '.ho-alt{display:flex;gap:8px;align-items:center;flex-wrap:wrap;flex:0 0 auto;padding-top:4px}.ho-alt .ho-bos{flex:1}' +
+      '.ho-hazir{font-size:17px;min-height:40px;padding:4px 20px}.ho-gec{font-size:12px;min-height:26px;padding:2px 10px;opacity:.8}' +
+      '.hc-ovl{position:absolute;inset:0;z-index:20;background:var(--bg,#101820);padding:8px 10px;display:flex;flex-direction:column;min-height:0;border-radius:8px}' +
+      '.ho-link{background:none;border:0;color:var(--cyan);text-decoration:underline;cursor:pointer;font:inherit;padding:2px 6px}';
     document.head.appendChild(s);
+  }
+
+
+  /* ---------- Örnek çözüm paneli: Yöntem + çözülmüş küçük kardeş, adım adım (ileri/geri). Ceza yok.
+   * host: panelin gireceği kök; g: görev (g.ornek); o: {birincil:'Hazırım, görevi göster', gec:'Örneği geç'|null, bitir(neden:'hazir'|'gec'), adim:N (o adımı vurgula)} */
+  function ornekPanel(host, g, o){
+    css(); o = o || {};
+    var ork = g.ornek, n = ork.adimlar.length;
+    var st = o.adim ? Math.min(o.adim, n) : (o.tam ? n + 1 : 0), vurgu = o.adim || 0;
+    var kok = el('div', 'ho-panel'); kok.dataset.gorev = g.id; host.appendChild(kok);
+    var ust = el('div', 'ho-ust'); ust.appendChild(el('b', '', o.baslik || 'Önce bir örnek'));
+    var alt0 = el('span', '', 'Aynı yöntem, farklı sayılar: önce örneği izle, sonra görevi sen çöz. Bu panelde puan ya da ceza yok.'); ust.appendChild(alt0);
+    var sayac = el('span', 'ho-sayac'); ust.appendChild(sayac); kok.appendChild(ust);
+    var govde = el('div', 'ho-govde'); kok.appendChild(govde);
+    var alt = el('div', 'ho-alt'); kok.appendChild(alt);
+    var geri = btn('◀ Geri', 'ho-geri'), ileri = btn('İleri ▶', 'primary ho-ileri'), bos = el('span', 'ho-bos');
+    alt.appendChild(geri); alt.appendChild(ileri); alt.appendChild(bos);
+    if (o.gec) { var gb = btn(o.gec, 'ho-gec', function(){ o.bitir && o.bitir('gec'); }); alt.appendChild(gb); }
+    var hz = btn(o.birincil || 'Hazırım, görevi göster', 'primary ho-hazir', function(){ o.bitir && o.bitir('hazir'); }); alt.appendChild(hz);
+    function ciz(){
+      govde.textContent = '';
+      var y = el('div', 'ho-kutu ho-yontem'); y.appendChild(el('h4', '', 'Yöntem: kural'));
+      var ol = el('ol'); ork.yontem.forEach(function(m){ ol.appendChild(p('', m, 'li')); }); y.appendChild(ol); govde.appendChild(y);
+      var q = el('div', 'ho-kutu'); q.appendChild(p('', 'Örnek: ' + ork.baslik.replace(/^Worked example:\s*/, ''), 'b'));
+      q.appendChild(p('ho-soru', ork.soru));
+      if (ork.veriler && ork.veriler.length) { var ul = el('ul', 'ho-ver'); ork.veriler.forEach(function(v){ ul.appendChild(p('', v, 'li')); }); q.appendChild(ul); }
+      govde.appendChild(q);
+      var son = null;
+      for (var k = 1; k <= Math.min(st, n); k++) {
+        var a = ork.adimlar[k - 1], c = el('div', 'ho-kutu ho-adim'); c.dataset.adim = String(k);
+        if (k === vurgu) c.className += ' vurgu';
+        c.appendChild(yaz(el('h4'), 'Örnek adım ' + k + '. ' + String(a.baslik).replace(/^\s*\d+\s*[.)]\s*/, '')));
+        if (a.metin) c.appendChild(p('', a.metin));
+        if (a.formul) c.appendChild(p('ho-formul', a.formul));
+        if (a.sonuc) c.appendChild(p('ho-sn', '→ ' + a.sonuc));
+        govde.appendChild(c); son = c;
+      }
+      if (st > n) {
+        var r = el('div', 'ho-kutu ho-sonuc'); r.appendChild(p('', 'Örnek sonuç: ' + ork.sonuc.metin));
+        if (ork.ipucu) r.appendChild(p('', 'İpucu: ' + ork.ipucu)); govde.appendChild(r); son = r;
+      }
+      sayac.textContent = st === 0 ? 'Yöntem' : (st <= n ? 'Örnek adım ' + st + '/' + n : 'Örnek tamam');
+      geri.disabled = st === 0;
+      ileri.disabled = st > n;
+      ileri.textContent = st === 0 ? 'Örneği adım adım göster ▶' : (st < n ? 'Sonraki adım ▶' : (st === n ? 'Örnek sonucu ▶' : 'İleri ▶'));
+      var hedef = vurgu && st >= vurgu && st <= n ? govde.querySelector('.vurgu') : son;
+      if (hedef) { try { hedef.scrollIntoView({ block: 'nearest' }); } catch (e) {} }
+      else govde.scrollTop = 0;
+    }
+    geri.addEventListener('click', function(){ if (st > 0) { st--; vurgu = 0; ciz(); } });
+    ileri.addEventListener('click', function(){ if (st <= n) { st++; vurgu = 0; ciz(); } });
+    ciz();
+    try { (o.tam ? hz : ileri).focus({ preventScroll: true }); } catch (e) {}
+    return { kok: kok, git: function(k){ st = Math.max(0, Math.min(n + 1, k)); ciz(); } };
+  }
+
+  /* Çalışma ekranının üstüne binen örnek paneli (görevi/ilerlemeyi bozmaz). adim: yanlış adımın no'su (örnekteki aynı adım vurgulanır). */
+  function ornekKaplama(kok, g, adim){
+    if (!g.ornek || kok.querySelector(':scope > .hc-ovl')) return null;
+    css();
+    var ov = el('div', 'hc-ovl'); if (getComputedStyle(kok).position === 'static') kok.style.position = 'relative';
+    kok.appendChild(ov);
+    var oz = ornekPanel(ov, g, { adim: adim ? Math.min(adim, g.ornek.adimlar.length) : 0, tam: !adim, birincil: 'Göreve dön', baslik: 'Örnek çözüm',
+      bitir: function(){ if (ov.parentNode) ov.parentNode.removeChild(ov); } });
+    return oz;
   }
 
   var fKonu = 'hepsi', fTip = 'hepsi', fSt = 'hepsi', aktif = null, hostRef = null;
 
   /* Tek adım arayüzü: adimSoru varsa önce ara cevap istenir; doğru ya da "Çözümü göster" ile metin/formül açılır. bitti() çağrılır. */
-  function adimUI(host, adim, bitti, no){
+  function adimUI(host, adim, bitti, no, ornekFn){
     var kutu = el('div', 'hc-adim'); kutu.dataset.adim = String(no || 0);
     kutu.appendChild(yaz(el('h4'), (no ? no + '. ' : '') + adim.baslik));
     var yer = el('div'); kutu.appendChild(yer); host.appendChild(kutu);
@@ -72,6 +152,11 @@
       if (adim.formul) { var f = p('hc-formul', adim.formul); yer.appendChild(f); }
       if (adim.kod) yer.appendChild(el('pre', 'hc-kod', adim.kod));
       if (bitti) bitti();
+    }
+    function ornekLink(fb){
+      if (!ornekFn || !no) return;
+      var b = btn('Örnekteki ' + Math.min(no, ornekFn.n) + '. adıma bak', 'ho-link ho-adim-link', function(){ ornekFn.ac(no); });
+      fb.appendChild(document.createTextNode(' ')); fb.appendChild(b);
     }
     var q = adim.adimSoru;
     if (!q) { ac(); return kutu; }
@@ -85,7 +170,7 @@
         var k = kontrol(gi.value, q.sayiCevap.deger, q.tolerans);
         fb.className = 'hc-fb ' + (k.ok ? 'iyi' : 'kotu');
         if (k.ok) { fb.textContent = 'Doğru. Çözüm açılıyor.'; ac(); }
-        else fb.textContent = k.gecersiz ? 'Bir sayı gir (örnek: 1,5 ya da 2e-4).' : 'Olmadı' + (k.ters ? ' (mertebe/birim hatası olabilir)' : '') + '. Tekrar dene ya da çözümü göster.';
+        else { fb.textContent = k.gecersiz ? 'Bir sayı gir (örnek: 1,5 ya da 2e-4).' : 'Olmadı' + (k.ters ? ' (mertebe/birim hatası olabilir)' : '') + '. Tekrar dene ya da çözümü göster.'; if (!k.gecersiz) ornekLink(fb); }
       });
       sat.appendChild(gi); sat.appendChild(ok);
     } else if (q.secenekler) {
@@ -94,7 +179,7 @@
       sirali.forEach(function(s){
         var b = btn(s.t, '', function(){
           fb.className = 'hc-fb ' + (s.dogru ? 'iyi' : 'kotu');
-          if (s.dogru) { fb.textContent = 'Doğru. Çözüm açılıyor.'; ac(); } else fb.textContent = 'Cevabın yanlış. Tekrar dene ya da çözümü göster.';
+          if (s.dogru) { fb.textContent = 'Doğru. Çözüm açılıyor.'; ac(); } else { fb.textContent = 'Cevabın yanlış. Tekrar dene ya da çözümü göster.'; ornekLink(fb); }
         });
         b.className += ' hc-sec'; dgr.appendChild(b);
       });
@@ -142,9 +227,19 @@
       });
       if (!g.length) liste.appendChild(el('div', 'tk-muted', 'Bu filtreyle görev yok.'));
     }
-    function detay(g){
+    function detay(g, ornekGoruldu){
       sag.textContent = ''; sag.scrollTop = 0;
-      sag.appendChild(p('hc-bas', g.baslik, 'h3'));
+      /* hesap isteyen her görevde önce 'Örnek çözüm' (Yöntem + çözülmüş küçük kardeş); 'Hazırım' ile görev gelir */
+      if (g.ornek && !ornekGoruldu) {
+        sag.style.overflow = 'hidden';
+        ornekPanel(sag, g, { birincil: 'Hazırım, görevi göster', gec: 'Örneği geç', bitir: function(){ sag.style.overflow = ''; detay(g, true); } });
+        return;
+      }
+      sag.style.overflow = '';
+      if (g.ornek) {
+        var ol = btn('Örneği tekrar göster', 'ho-link hc-ornek-tekrar', function(){ ornekKaplama(wrap, g, 0); });
+        var ustSat = el('div', 'hc-gir'); ustSat.appendChild(p('hc-bas', g.baslik, 'h3')); ustSat.appendChild(ol); sag.appendChild(ustSat);
+      } else sag.appendChild(p('hc-bas', g.baslik, 'h3'));
       sag.appendChild(p('tk-muted', Q.hesap.konuAd(g.konu) + ' · ' + g.istasyon.toUpperCase() + ' · ' + (g.tip === 'sinav' ? 'sınav tarzı' : 'alıştırma')));
       sag.appendChild(p('hc-soru', g.soru));
       if (g.veriler && g.veriler.length) {
@@ -184,14 +279,15 @@
         var c1 = btn('Çözdüm', 'primary', function(){ isaretle(g.id, 'cozdum'); durum(); ciz(); }); c1.id = 'hc-cozdum';
         var c2 = btn('Tekrar çalış', '', function(){ isaretle(g.id, 'tekrar'); durum(); ciz(); }); c2.id = 'hc-tekrar';
         r.appendChild(c1); r.appendChild(c2); r.appendChild(dur); sonYer.appendChild(r); durum();
-        var ayni = btn('Adımları yeniden aç', '', function(){ detay(g); }); r.appendChild(ayni);
+        var ayni = btn('Adımları yeniden aç', '', function(){ detay(g, true); }); r.appendChild(ayni);
       }
+      var ornekFn = g.ornek ? { n: g.ornek.adimlar.length, ac: function(no){ ornekKaplama(wrap, g, Math.min(no, g.ornek.adimlar.length)); } } : null;
       function sonraki(){
         if (bekleyen) return;
         if (i >= g.adimlar.length) { sonuc(); return; }
         var a = g.adimlar[i]; i++;
         if (a.adimSoru) { bekleyen = true; ab.disabled = true; }
-        adimUI(adimlarYer, a, function(){ bekleyen = false; ab.disabled = false; if (i >= g.adimlar.length) { ab.textContent = 'Sonucu göster'; } }, i);
+        adimUI(adimlarYer, a, function(){ bekleyen = false; ab.disabled = false; if (i >= g.adimlar.length) { ab.textContent = 'Sonucu göster'; } }, i, ornekFn);
         if (!a.adimSoru && i >= g.adimlar.length) ab.textContent = 'Sonucu göster';
       }
       ab.addEventListener('click', sonraki);
@@ -211,5 +307,5 @@
   /* Hesap çalıştayı sayfası açılırken verilen görevi seç (filtreleri sıfırla); oyun içi ve hata defteri bağlantısı */
   function sec(id){ aktif = id; fKonu = 'hepsi'; fTip = 'hepsi'; fSt = 'hepsi'; }
 
-  Q.tekrarHesap = { sec: sec, sayfa: sayfa, kontrol: kontrol, sayiOku: sayiOku, yaz: yaz, adimUI: adimUI };
+  Q.tekrarHesap = { ornekPanel: ornekPanel, ornekKaplama: ornekKaplama, css: css, sec: sec, sayfa: sayfa, kontrol: kontrol, sayiOku: sayiOku, yaz: yaz, adimUI: adimUI };
 })();

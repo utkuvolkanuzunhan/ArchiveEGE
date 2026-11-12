@@ -1,6 +1,9 @@
 /* 86-obs-hesap.js · Engel işleyicisi: `hesap` (istasyon sonu hesap görevi, adım adım yönlendirmeli, öğretici).
  * Ekler: Q.obs.register('hesap', ...), Q.obsHesap {hataYaz(gorev, adimNo, ob, stId), kontrol}.
  * Veri: engel {id, tip:'hesap', baslik, hesapGorev:'gorevId'} + Q.data.hesap (87-data-hesap.js, Q.hesap.gorev(id)).
+ * Örnek çözüm: görev başlamadan önce 'Önce bir örnek' paneli (Yöntem + FARKLI sayılarla çözülmüş örnek, ileri/geri; Q.tekrarHesap.ornekPanel),
+ *   altta 'Hazırım, görevi göster'. hikayeAtla'dan ETKİLENMEZ (yalnız küçük 'Örneği geç' düğmesi var). Görev sırasında 'Örneği tekrar göster';
+ *   yanlış adımda 'Örnekteki N. adıma bak'. gorev.sonucSoru varsa adımlardan sonra 'Sonuç kontrolü' adımı eklenir.
  * Akış: görev metni (EN) + verilenler solda sürekli görünür; sağda adımlar: her adimSoru sorulur (sayı ya da seçenek),
  *   doğruysa çözüm metni/formülü açılır ve sonraki adım gelir; yanlışsa "Cevabın yanlış. Doğru: ..." + "Adımı göster".
  *   CEZA/CAN KAYBI YOK. Yanlış adım hata defterine yazılır (kavram 'hesap_<konu>', hesap:<gorevId>, adim:<no>).
@@ -81,15 +84,40 @@
         return { dogru: true, eminlik: 1, kavram: null, agirlik: 0, notlar: 'hesap-yok' };
       }
       css();
-      var yanlisAdim = 0, toplam = gorev.adimlar.length;
+      var adimlar = gorev.adimlar.slice();
+      if (gorev.sonucSoru) adimlar.push({ baslik: 'Sonuç kontrolü', metin: 'Hesabın sonunda bulduğun sayıyı kontrol et.', formul: gorev.sonuc.metin, adimSoru: gorev.sonucSoru });
+      var yanlisAdim = 0, toplam = adimlar.length;
       host.textContent = '';
       var kok = el('div', 'hg-kok'); kok.dataset.gorev = gorev.id; host.appendChild(kok);
+      var TH = Q.tekrarHesap;
+      /* kök dock'un iç yüksekliğine sabitlenir: örnek paneli/kaplaması ve görev ızgarası içeride kayar, düğmeler hep görünür */
+      function sigdir(){
+        if (!kok.isConnected) { window.removeEventListener('resize', sigdir); return; }
+        var d = kok.closest('#dock'); if (!d) return;
+        var cs = getComputedStyle(d), h = d.clientHeight - parseFloat(cs.paddingTop || 0) - parseFloat(cs.paddingBottom || 0);
+        if (h > 120) kok.style.height = Math.floor(h) + 'px';
+      }
+      sigdir(); window.addEventListener('resize', sigdir);
+      /* 1) Örnek çözüm: görevden önce (hikayeAtla'ya bakmaz) */
+      if (gorev.ornek && TH && TH.ornekPanel) {
+        TH.css();
+        await new Promise(function(res){
+          kok.dataset.asama = 'ornek';
+          TH.ornekPanel(kok, gorev, { birincil: 'Hazırım, görevi göster', gec: 'Örneği geç', bitir: function(){ res(); } });
+        });
+        if (!kok.isConnected) return { dogru: true, eminlik: 1, kavram: null, agirlik: 0 };
+        kok.textContent = ''; kok.dataset.asama = 'gorev';
+      }
+      function ornekAc(adimNo){ if (gorev.ornek && TH && TH.ornekKaplama) TH.ornekKaplama(kok, gorev, adimNo || 0); }
+      function ovlAcik(){ return !!kok.querySelector(':scope > .hc-ovl'); }
       /* üst şerit */
       var ust = el('div', 'hg-ust');
       ust.appendChild(el('b', '', 'Hesap görevi'));
       var sayac = el('span', '', ''); sayac.id = 'hg-sayac';
       var il = el('div', 'hg-ilerle'), ilI = el('i'); il.appendChild(ilI);
-      ust.appendChild(sayac); ust.appendChild(il); kok.appendChild(ust);
+      ust.appendChild(sayac); ust.appendChild(il);
+      if (gorev.ornek && TH && TH.ornekKaplama) { var ot = el('button', 'ho-link hg-ornek-tekrar', 'Örneği tekrar göster'); ot.type = 'button'; ot.addEventListener('click', function(){ ornekAc(0); }); ust.appendChild(ot); }
+      kok.appendChild(ust);
       var grid = el('div', 'hg-grid'), sol = el('div', 'hg-sol'), sag = el('div', 'hg-sag');
       grid.appendChild(sol); grid.appendChild(sag); kok.appendChild(grid);
       /* sol: görev metni + verilenler (görev bitene kadar kalır) */
@@ -112,7 +140,7 @@
           function fin(){ if (bitti) return; bitti = true; document.removeEventListener('keydown', onKey, true); res(); }
           function onKey(e){
             if (!dugme.isConnected) { document.removeEventListener('keydown', onKey, true); return; }
-            if (e.key === 'Enter' && Date.now() - t0 > 250 && !(e.target && e.target.tagName === 'INPUT' && !sec)) { e.preventDefault(); e.stopPropagation(); fin(); }
+            if (e.key === 'Enter' && !ovlAcik() && Date.now() - t0 > 250 && !(e.target && e.target.tagName === 'INPUT' && !sec)) { e.preventDefault(); e.stopPropagation(); fin(); }
           }
           dugme.addEventListener('click', fin);
           document.addEventListener('keydown', onKey, true);
@@ -129,7 +157,7 @@
 
       /* adım adım */
       for (var i = 0; i < toplam; i++) {
-        var adim = gorev.adimlar[i], q = adim.adimSoru;
+        var adim = adimlar[i], q = adim.adimSoru;
         ilerleme(i);
         var kutu = el('div', 'hg-adim'); kutu.dataset.adim = String(i + 1);
         kutu.appendChild(yaz(el('h4'), (i + 1) + '. ' + String(adim.baslik).replace(/^\s*\d+\s*[.)]\s*/, '')));
@@ -195,7 +223,14 @@
                   var ab = el('button', 'btn hg-adim-goster', 'Adımı göster'); ab.type = 'button';
                   ab.addEventListener('click', function(){ acikla(kutu, adim, cozum); ab.disabled = true; });
                   var dv = el('button', 'btn primary hg-adim-devam', 'Devam'); dv.type = 'button';
-                  yardim.appendChild(ab); yardim.appendChild(dv); yer.appendChild(yardim);
+                  yardim.appendChild(ab);
+                  if (gorev.ornek) {
+                    var no = Math.min(i + 1, gorev.ornek.adimlar.length);
+                    var ob2 = el('button', 'btn hg-ornek-adim', 'Örnekteki ' + no + '. adıma bak'); ob2.type = 'button';
+                    ob2.addEventListener('click', function(){ ornekAc(no); });
+                    yardim.appendChild(ob2);
+                  }
+                  yardim.appendChild(dv); yer.appendChild(yardim);
                   dv.addEventListener('click', function(){ if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; }); dogruSag = true; acikla(kutu, adim, cozum); res(); });
                 }
                 if (giris) { giris.select(); giris.focus(); }
@@ -206,6 +241,7 @@
             else {
               function onNum(e){
                 if (!kutu.isConnected) { document.removeEventListener('keydown', onNum); return; }
+                if (ovlAcik()) return;
                 var n = parseInt(e.key, 10);
                 if (n >= 1 && n <= optBtns.length && !dogruSag) optBtns[n - 1].click();
                 else if (e.key === 'Enter' && !onay.disabled && !dogruSag) { e.preventDefault(); onay.click(); }
@@ -239,7 +275,7 @@
       }
       var sn = p('hg-sonuc', 'Sonuç: ' + gorev.sonuc.metin); sn.id = 'hg-sonuc'; sag.appendChild(sn);
       var oz = el('div', 'hg-adim'); oz.appendChild(el('h4', '', 'Formül özeti'));
-      gorev.adimlar.forEach(function(a){ if (a.formul) oz.appendChild(p('hg-formul', a.formul)); });
+      adimlar.forEach(function(a){ if (a.formul) oz.appendChild(p('hg-formul', a.formul)); });
       sag.appendChild(oz);
       var nt = p('hg-not', 'Sınavda dikkat: ' + gorev.sinavNotu); nt.id = 'hg-not'; sag.appendChild(nt);
       /* Çözdüm işareti */

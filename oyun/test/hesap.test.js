@@ -26,6 +26,7 @@ function bekle(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
       if (!(g.adimlar.length >= 2 && g.adimlar.length <= 4)) hatalar.push(g.id + ' adım sayısı ' + g.adimlar.length);
       if (!g.sonuc || !isFinite(g.sonuc.deger) || !g.sonuc.birim || !g.sinavNotu || !g.soru || !g.baslik) hatalar.push(g.id + ' eksik alan');
       if (['sinav', 'alistirma'].indexOf(g.tip) < 0) hatalar.push(g.id + ' tip');
+      if (!g.ornek || !g.ornek.yontem || g.ornek.yontem.length < 3 || g.ornek.yontem.length > 5 || g.ornek.adimlar.length !== g.adimlar.length || !g.ornek.soru || !g.ornek.sonuc || !isFinite(g.ornek.sonuc.deger)) hatalar.push(g.id + ' ornek');
       if (!Q.hesap.konular[g.konu]) hatalar.push(g.id + ' konu');
       if (g.istasyonSonu) st[g.istasyon] = (st[g.istasyon] || 0) + 1;
     });
@@ -56,6 +57,15 @@ function bekle(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
     ok(await page.locator('.hc-it').count() === 2, vp[0] + ': konu filtresi (basamak = 2)');
     /* Soru 6, E > V0 */
     await page.locator('.hc-it[data-id="q6-e-gt"]').click(); await bekle(150);
+    /* görev seçilince önce örnek çözüm paneli */
+    ok(await page.locator('.hc-sag .ho-panel').count() === 1 && await page.locator('.hc-soru').count() === 0 && /Yöntem: kural/.test(await page.locator('.ho-yontem').innerText()), vp[0] + ': görev seçilince önce "Önce bir örnek" paneli (Yöntem + örnek)');
+    await page.locator('.ho-ileri').click(); await page.locator('.ho-ileri').click(); await bekle(80);
+    ok(await page.locator('.ho-adim').count() === 2, vp[0] + ': örnek adım adım açılır');
+    var tasO = await ev(function(){ var sg = document.querySelector('.hc-sag'), b = document.querySelector('.ho-hazir').getBoundingClientRect(), r = document.getElementById('tk-root').getBoundingClientRect(); return sg.scrollWidth > sg.clientWidth + 1 || b.bottom > r.bottom + 1; });
+    ok(!tasO, vp[0] + ': örnek panelinde taşma yok, "Hazırım" düğmesi görünür');
+    if (vp[0] === 1366) await page.screenshot({ path: path.join(__dirname, 'ciktilar', 'hesap-ornek-tekrar-1366.png') });
+    await page.locator('.ho-hazir').click(); await bekle(120);
+    ok(await page.locator('.hc-ornek-tekrar').count() === 1 && await page.locator('.hc-soru').count() === 1, vp[0] + ': "Hazırım" ile görev gelir; "Örneği tekrar göster" bağlantısı var');
     ok(/potential step/.test(await page.locator('.hc-soru').innerText()), vp[0] + ': soru İngilizce gösterildi');
     await page.fill('#hc-cevap', '0.5'); await page.locator('button', { hasText: 'Kontrol et' }).click();
     ok(/Henüz olmadı/.test(await page.locator('#hc-fb').innerText()), vp[0] + ': yanlış cevap reddedildi');
@@ -63,6 +73,12 @@ function bekle(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
     ok(/Doğru/.test(await page.locator('#hc-fb').innerText()), vp[0] + ': doğru cevap (virgüllü) kabul edildi');
     /* adım adım: ilk adımda ara soru */
     await page.locator('#hc-adim-goster').click(); await bekle(100);
+    await page.fill('.hc-adim-giris', '999'); await page.locator('.hc-adim button', { hasText: 'Kontrol' }).click(); await bekle(80);
+    ok(await page.locator('.ho-adim-link').count() === 1 && /Örnekteki 1\. adıma bak/.test(await page.locator('.ho-adim-link').innerText()), vp[0] + ': yanlış ara cevapta "Örnekteki 1. adıma bak"');
+    await page.locator('.ho-adim-link').click(); await bekle(100);
+    ok(await page.locator('.hc-ovl .ho-adim.vurgu').count() === 1, vp[0] + ': bağlantı örneğin ilgili adımını vurgular');
+    await page.locator('.hc-ovl .ho-hazir').click(); await bekle(80);
+    ok(await page.locator('.hc-ovl').count() === 0 && await page.locator('.hc-adim-giris').count() === 1, vp[0] + ': "Göreve dön" ilerlemeyi korur');
     ok(await page.locator('.hc-adim-giris').count() === 1 && await page.locator('#hc-adim-goster').isDisabled(), vp[0] + ': adım ara cevap ister, sonraki kilitli');
     ok(!/e\^\{ik/.test(await page.locator('.hc-adim').first().innerText()), vp[0] + ': çözüm ara cevaptan önce gizli');
     await page.fill('.hc-adim-giris', '16.2'); await page.locator('.hc-adim button', { hasText: 'Kontrol' }).click(); await bekle(100);
@@ -90,6 +106,7 @@ function bekle(ms){ return new Promise(function(r){ setTimeout(r, ms); }); }
     await page.locator('select[aria-label="İstasyon filtresi"]').last().selectOption('hepsi');
     await page.locator('select[aria-label="Konu filtresi"]').selectOption('kuyu'); await bekle(100);
     await page.locator('.hc-it[data-id="q5-sayisal"]').click(); await bekle(100);
+    await page.locator('.ho-gec').click(); await bekle(100);
     await page.locator('#hc-tumu').click(); await bekle(100);
     ok(/brentq/.test(await page.locator('.hc-kod').innerText()), vp[0] + ': Python kodu gösterildi');
     var tas2 = await ev(function(){ var sag = document.querySelector('.hc-sag'), r = document.getElementById('tk-root'); return sag.scrollWidth > sag.clientWidth + 1 || r.scrollWidth > r.clientWidth + 1; });

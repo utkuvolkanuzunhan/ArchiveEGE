@@ -26,9 +26,12 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
     await page.goto('file://' + DIST); await bekle(700);
     await ev(function(){ Q.settings.closeMap(); Q.settings.set('hikayeAtla', true); Q.settings.set('kilitleriAc', true); Q.state.ayarlar.hiz = 3; });
   }
-  async function basla(sid){
+  /* Görev ekranı önce 'Önce bir örnek' paneli açar (hikayeAtla açık olsa bile); ornek:true ise panelde kalır */
+  async function basla(sid, ornek){
     await ev(function(s){ Q.state.voltaj = 100; Q.runner.start(s, Q.runner.indexOf(s, s + '-h01')); }, sid);
     await page.waitForSelector('#dock .hg-kok', { timeout: 30000 });
+    await page.waitForSelector('#dock .ho-panel', { timeout: 10000 });
+    if (!ornek) { await page.locator('#dock .ho-hazir').click(); await page.waitForSelector('#dock .hg-ust', { timeout: 5000 }); }
     await bekle(150);
   }
   async function kapat(){ await ev(function(){ Q.runner.abort(); }); await bekle(150); await ev(function(){ Q.settings.closeMap(); }); }
@@ -53,7 +56,21 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
 
   /* ---- 2. s01..s10 hepsinde hesap engeli açılır ---- */
   for (var sid of Object.keys(GOREV)) {
-    await basla(sid);
+    await basla(sid, true);
+    var op = await ev(function(){
+      var d = document.getElementById('dock'), pn = d.querySelector('.ho-panel'), g = Q.hesap.gorev(d.querySelector('.hg-kok').dataset.gorev), gb = pn.querySelector('.ho-govde'), bt = pn.querySelector('.ho-hazir').getBoundingClientRect(), dr = d.getBoundingClientRect();
+      return { yontem: pn.querySelectorAll('.ho-yontem li').length, adimSay: pn.querySelectorAll('.ho-adim').length, hazir: /Hazırım, görevi göster/.test(pn.querySelector('.ho-hazir').textContent),
+        gec: !!pn.querySelector('.ho-gec'), gorevGizli: !d.querySelector('#hg-soru'), tasma: d.scrollWidth > d.clientWidth + 1 || gb.scrollWidth > gb.clientWidth + 1,
+        btnGorunur: bt.bottom <= dr.bottom + 1 && bt.top >= dr.top, ornek: g.ornek.baslik, n: g.ornek.adimlar.length };
+    });
+    ok(op.yontem >= 3 && op.yontem <= 5 && op.adimSay === 0 && op.hazir && op.gec && op.gorevGizli && !op.tasma && op.btnGorunur, sid + ': "Önce bir örnek" paneli (Yöntem ' + op.yontem + ' madde, görev gizli, "Hazırım" düğmesi görünür, taşma yok; hikayeAtla açık)');
+    await page.locator('#dock .ho-ileri').click(); await bekle(60);
+    ok(await page.locator('#dock .ho-adim').count() === 1, sid + ': örnek "İleri" ile adım adım açılır');
+    await page.locator('#dock .ho-geri').click(); await bekle(60);
+    ok(await page.locator('#dock .ho-adim').count() === 0, sid + ': örnek "Geri" ile geri sarar');
+    for (var kk = 0; kk <= op.n; kk++) { await page.locator('#dock .ho-ileri').click(); await bekle(30); }
+    ok(await page.locator('#dock .ho-sonuc').count() === 1 && await page.locator('#dock .ho-ileri').isDisabled(), sid + ': örnek sonucu ve ipucu gösterilir');
+    await page.locator('#dock .ho-hazir').click(); await page.waitForSelector('#dock .hg-ust', { timeout: 5000 }); await bekle(100);
     var a = await ev(function(){
       var k = document.querySelector('#dock .hg-kok'), d = document.getElementById('dock');
       return { g: k.dataset.gorev, soru: !!document.getElementById('hg-soru') && document.getElementById('hg-soru').textContent.length > 20,
@@ -68,7 +85,7 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
   async function oynat(sid, opt){
     opt = opt || {};
     await basla(sid);
-    var gorev = await ev(function(s){ var g = Q.hesap.gorev(s); return JSON.parse(JSON.stringify({ id: g.id, konu: g.konu, adimlar: g.adimlar.map(function(a){ return { b: a.baslik, q: a.adimSoru || null }; }) })); }, GOREV[sid]);
+    var gorev = await ev(function(s){ var g = Q.hesap.gorev(s); var ad = g.adimlar.map(function(a){ return { b: a.baslik, q: a.adimSoru || null }; }); if (g.sonucSoru) ad.push({ b: 'Sonuç kontrolü', q: g.sonucSoru }); return JSON.parse(JSON.stringify({ id: g.id, konu: g.konu, adimlar: ad })); }, GOREV[sid]);
     var yanlisSayisi = 0, volt0 = await ev(function(){ return Q.state.voltaj; });
     for (var i = 0; i < gorev.adimlar.length; i++) {
       var kutu = page.locator('.hg-adim[data-adim="' + (i + 1) + '"]');
@@ -83,6 +100,14 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
           var fbt = await kutu.locator('.hg-fb').textContent();
           ok(/^Cevabın yanlış\. Doğru: /.test(fbt), sid + ': yanlış sayı -> "' + fbt.slice(0, 40) + '"');
           ok(await kutu.locator('.hg-adim-goster').isVisible(), sid + ': "Adımı göster" yardım düğmesi var');
+          var ob = kutu.locator('.hg-ornek-adim');
+          ok(await ob.count() === 1 && /^Örnekteki \d+\. adıma bak$/.test(await ob.textContent()), sid + ': yanlışta "Örnekteki N. adıma bak" bağlantısı');
+          await ob.click(); await bekle(120);
+          ok(await page.locator('#dock .hc-ovl .ho-adim.vurgu').count() === 1 && await page.locator('#dock .hc-ovl .ho-hazir').textContent() === 'Göreve dön', sid + ': bağlantı örneğin ilgili adımını vurgulu açar');
+          await page.keyboard.press('Enter'); await bekle(80);
+          ok(await page.locator('.hg-adim[data-adim="2"]').count() === 0 && await page.locator('#dock .hc-ovl').count() === 1, sid + ': örnek açıkken Enter göreve geçmez');
+          await page.locator('#dock .hc-ovl .ho-hazir').click(); await bekle(80);
+          ok(await page.locator('#dock .hc-ovl').count() === 0 && await page.locator('#hg-soru').isVisible(), sid + ': "Göreve dön" görevi bozmadan geri getirir');
           ok(!(await kutu.locator('.hg-formul').count()), sid + ': yanlışta çözüm kendiliğinden açılmaz');
           await kutu.locator('.hg-adim-goster').click(); await bekle(80);
           ok((await kutu.locator('.hg-formul').count()) >= 1, sid + ': "Adımı göster" formülü açar');
@@ -147,7 +172,13 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
 
   /* ---- 5. Esc menüsü: devam / atla / önceki engele dön ---- */
   await ev(function(){ Q.state.ilerleme = {}; Q.state.hesapCalisma = {}; Q.state.hataDefteri = []; });
-  await basla('s02');
+  await basla('s02', true);
+  await page.locator('#dock .ho-gec').click(); await page.waitForSelector('#dock .hg-ust', { timeout: 5000 });
+  ok(await page.locator('#dock .hg-ornek-tekrar').count() === 1 && await page.locator('#dock .hc-ovl').count() === 0, '"Örneği geç" paneli kapatır; görev sırasında "Örneği tekrar göster" bağlantısı var');
+  await page.locator('#dock .hg-ornek-tekrar').click(); await bekle(120);
+  ok(await page.locator('#dock .hc-ovl .ho-sonuc').count() === 1, '"Örneği tekrar göster" örneği tam açar (kaplama)');
+  await page.screenshot({ path: path.join(EKRAN, 'hesap-ornek-tekrar-s02.png') });
+  await page.locator('#dock .hc-ovl .ho-hazir').click(); await bekle(80);
   await page.locator('.hg-giris').click();            // odak giriş kutusunda iken bile Esc çalışmalı
   await page.keyboard.press('Escape'); await bekle(300);
   ok(await page.locator('.runner-menu').count() === 1 && await ev(function(){ return Q.runner.info().paused; }), 'Esc (girişte odakken) duraklatma menüsünü açar');
@@ -180,7 +211,8 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
   ok(sonra.a.stationId === 's05' && sonra.a.index === HI, 'yenileme sonrası aktif istasyon/engel (hesap)');
   await ev(function(){ Q.settings.closeMap(); Q.settings.set('hikayeAtla', true); Q.settings.set('kilitleriAc', true); Q.state.ayarlar.hiz = 3; Q.runner.start('s05', Q.state.aktif.index); });
   await page.waitForSelector('#dock .hg-kok', { timeout: 30000 });
-  ok(await page.locator('.hg-adim[data-adim="1"]').count() === 1, 'yenileme sonrası kaldığı engelden (hesap) devam eder');
+  await page.waitForSelector('#dock .ho-hazir', { timeout: 10000 }); await page.locator('#dock .ho-hazir').click(); await bekle(150);
+  ok(await page.locator('.hg-adim[data-adim="1"]').count() === 1, 'yenileme sonrası kaldığı engelden (hesap) devam eder (önce örnek)');
   await kapat();
 
   /* ---- 7. eski kayıt uyumu (9 engelli dönem): tamamlanmışlar tamam, yarım istasyon kaymaz ---- */
@@ -195,7 +227,7 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
   ok(ek.s1 === true && ek.s2 === 8 && ek.s3 === 3 && ek.hd === 1, 'eski kayıt: s01 tamam kalır, s02/s03 enSon değişmez, hata defteri durur');
   await ev(function(){ Q.settings.closeMap(); Q.settings.set('hikayeAtla', false); Q.settings.set('kilitleriAc', true); Q.state.ayarlar.hiz = 3; Q.runner.start('s02', Q.state.ilerleme.s02.enSon); });
   await page.waitForSelector('#dock .hg-kok', { timeout: 30000 });
-  ok(await ev(function(){ return document.querySelector('#dock .hg-kok').dataset.gorev; }) === 'miller-326', 'eski kayıtta s02 enSon=8 -> hesap engeli açılır (patrondan sonra)');
+  ok(await ev(function(){ return document.querySelector('#dock .hg-kok').dataset.gorev; }) === 'miller-326' && await page.locator('#dock .ho-panel').count() === 1, 'eski kayıtta s02 enSon=8 -> hesap engeli açılır (patrondan sonra)');
   await kapat();
   var haritaEngel = await ev(function(){ Q.settings.openMap(); var b = Array.prototype.slice.call(document.querySelectorAll('button')).filter(function(x){ return /Hesap görevi/.test(x.textContent); }); return b.length; });
   ok(haritaEngel >= 0, 'harita açılır (engel listesi data tabanlı)');
