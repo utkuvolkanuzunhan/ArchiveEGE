@@ -63,7 +63,7 @@
         satirlar: [
           { kim: 'selin', metin: 'Roma, 1926. Fermi bir dağılım yazdı: Fermi level (Fermi seviyesi) E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.' },
           { kim: 'fermi', metin: 'Taşıyıcılar iki türlü: electron (elektron) n ve hole (delik) p. Sıcaklık yükselince f(E) yumuşar, carrier (taşıyıcı) artar.' },
-          { kim: 'fermi', metin: 'Alan E uygulanınca carrier (taşıyıcı) v_d = μE hızıyla drift (sürüklenme) yapar. 1947\'de Shockley\'nin transistörü buna dayandı.' }
+          { kim: 'fermi', metin: 'Alan E uygulanınca carrier (taşıyıcı) v_d = μE hızıyla drift (sürüklenme) yapar. 1947\'de ilk transistör (Bardeen, Brattain, Shockley) buna dayandı.' }
         ]
       },
       {

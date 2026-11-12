@@ -18,7 +18,7 @@
       sure: { toplamSn: 0, oturumBaslangic: 0 },
       ayarlar: {
         kilitleriAc: false, hikayeAtla: false, sadecePatron: false, hiz: 1.0,
-        ses: false, istasyon10: false, claudeBackend: 'auto',
+        ses: false, istasyon10: true, claudeBackend: 'auto',
         modelAdi: 'claude-sonnet-5-5', efor: 'medium'
       }
     };
