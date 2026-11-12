@@ -7246,7 +7246,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
   function goster(host, kartlar, opt){
-    kartlar = (kartlar || []).slice(0, 6);
+    kartlar = (kartlar || []).slice(0, 12);
     if (!kartlar.length) return Promise.resolve();
     opt = opt || {};
     return new Promise(function(res){
@@ -7287,6 +7287,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
       }
       function bit(){
         if (bitti) return; bitti = true;
+        if (opt.ref) opt.ref.bit = null;
         document.removeEventListener('keydown', key, true);
         host.textContent = '';
         res();
@@ -7298,6 +7299,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
         else if (e.key === 'ArrowLeft') { e.preventDefault(); once(); }
         else if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); e.stopPropagation(); sonra(); }
       }
+      if (opt.ref) opt.ref.bit = bit;
       geri.addEventListener('click', once);
       ileri.addEventListener('click', sonra);
       document.addEventListener('keydown', key, true);
@@ -7305,13 +7307,53 @@ Q.art.PORTRE_IDS = Object.keys(P);
     });
   }
 
-  function hepsi(stationId){
+  /* İstasyon engellerinden kart listesi. alan: 'onBilgi' | 'nasil' | ikisi birden (varsayılan, engel sırasıyla).
+   * 'nasil' = kavram engelindeki "Nasıl yapılır" sayfaları (tarif + çözülmüş örnek + sim kullanımı). */
+  function topla(stationId, alanlar){
     var st = Q.data && Q.data.stations && Q.data.stations[stationId], out = [];
-    ((st && st.engeller) || []).forEach(function(o){ if (Array.isArray(o.onBilgi)) out = out.concat(o.onBilgi); });
+    ((st && st.engeller) || []).forEach(function(o){
+      alanlar.forEach(function(a){ if (Array.isArray(o[a])) out = out.concat(o[a]); });
+    });
     return out;
   }
+  function hepsi(stationId){ return topla(stationId, ['onBilgi', 'nasil']); }
+  function nasilKartlari(stationId){ return topla(stationId, ['nasil']); }
+  /* Düğmeyle açılan kart seti: nasil varsa yalnızca onlar, yoksa (hepsi:true ise her zaman) bütün kartlar */
+  function acKartlar(stationId, opt){
+    var n = nasilKartlari(stationId);
+    return (n.length && !(opt && opt.hepsi)) ? n : hepsi(stationId);
+  }
+  var acikOv = null;
+  /* Üstte bir kaplama açar, kartları gezdirir, bitince/Kapat ile kapanır. Alttaki engel durumunu değiştirmez. */
+  function ac(stationId, opt){
+    var kartlar = acKartlar(stationId, opt);
+    if (!kartlar.length || acikOv) return Promise.resolve();
+    var ov = el('div', 'ob-onbilgi-kaplama');
+    ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Bilgi kartları');
+    ov.style.cssText = 'position:fixed;inset:0;z-index:55;background:rgba(11,6,32,.82);display:flex;align-items:center;justify-content:center;padding:12px;';
+    var panel = el('div', 'ob-onbilgi-panel');
+    panel.style.cssText = 'position:relative;background:var(--panel,#1a1033);color:var(--ink,#fff);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);box-shadow:var(--shadow-sm);max-width:780px;width:100%;max-height:94vh;overflow:auto;';
+    var ref = {};
+    var x = el('button', 'btn ob-onbilgi-kapat', '✕ Kapat'); x.type = 'button';
+    x.style.cssText = 'position:absolute;top:8px;right:10px;z-index:2;';
+    x.addEventListener('click', function(){ if (ref.bit) ref.bit(); });
+    panel.appendChild(x);
+    var govde = el('div'); panel.appendChild(govde); ov.appendChild(panel);
+    document.body.appendChild(ov); acikOv = ov;
+    return goster(govde, kartlar, { son: 'Kapat', ref: ref }).then(function(){
+      if (ov.parentNode) ov.parentNode.removeChild(ov); acikOv = null;
+    });
+  }
+  function var_(stationId, opt){ return acKartlar(stationId, opt).length > 0; }
+  /* Küçük "Nasıl yapılır?" düğmesi; tıklayınca ac(). etiket verilmezse 'Nasıl yapılır?' */
+  function dugme(stationId, etiket, opt){
+    var b = el('button', 'btn ob-onbilgi-ac', etiket || 'Nasıl yapılır?'); b.type = 'button';
+    b.setAttribute('aria-haspopup', 'dialog');
+    b.addEventListener('click', function(){ ac(stationId, opt); });
+    return b;
+  }
 
-  Q.onBilgi = { goster: goster, hepsi: hepsi };
+  Q.onBilgi = { goster: goster, hepsi: hepsi, nasil: nasilKartlari, ac: ac, var: var_, dugme: dugme };
 })();
 
 /* 80-obs-dusman.js (H2) `dusman` engel işleyicisi: 1 cümlelik kavram sorusu,
@@ -7594,8 +7636,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
         var host = ctx.host;
         host.textContent = '';
         var ay = (ctx.state && ctx.state.ayarlar) || {};
-        if (ob.onBilgi && ob.onBilgi.length && Q.onBilgi && !ay.hikayeAtla) {
-          await Q.onBilgi.goster(host, ob.onBilgi, { son: 'Göreve geç' });
+        var kartlar = (ob.onBilgi || []).concat(ob.nasil || []);   /* nasil = 'Nasıl yapılır' sayfaları, sim'den ÖNCE */
+        if (kartlar.length && Q.onBilgi && !ay.hikayeAtla) {
+          await Q.onBilgi.goster(host, kartlar, { son: 'Göreve geç' });
           host.textContent = '';
         }
         var sure = ctx.sureler || (Q.obs && Q.obs.sureler) || {};
@@ -7627,6 +7670,10 @@ Q.art.PORTRE_IDS = Object.keys(P);
         if (ob.sim && ob.sim.basari && simPrm.basari == null) simPrm.basari = ob.sim.basari; /* basari veride sim.basari altinda */
         simObj = Q.sim.mount(ob.sim && ob.sim.modul, simHost, simPrm, api);
 
+        /* sim açıkken "Nasıl yapılır?": kartları yeniden açar (kavram kapısının kendi kartları dahil) */
+        if (Q.onBilgi && Q.onBilgi.var && ctx.stationId && Q.onBilgi.var(ctx.stationId)) {
+          butonlar.appendChild(Q.onBilgi.dugme(ctx.stationId, 'Nasıl yapılır?'));
+        }
         var ipBtn = btn('İpucu'); ipBtn.hidden = true;
         var gecBtn = btn('Geç'); gecBtn.hidden = true;
         butonlar.appendChild(ipBtn); butonlar.appendChild(gecBtn);
@@ -7723,6 +7770,17 @@ Q.art.PORTRE_IDS = Object.keys(P);
       var nasil = el('span', 'kopru-nasil', '  · Kartlara dokun, sırayla dizilir. Dolunca Kontrol.');
       nasil.style.cssText = 'font-family:inherit;font-size:14px;color:var(--muted,#b9b0e0);';
       head.appendChild(nasil);
+      /* İpucu satırı + önceki bilgiyi yeniden açan düğme (istasyon kartları) */
+      var ipSatir = el('div', 'kopru-ipucu-satir');
+      ipSatir.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px;line-height:1.3;color:var(--muted,#b9b0e0);';
+      ipSatir.appendChild(el('span', null, 'İpucu: ' + (ob.ipucu || 'Her adım bir öncekinin sonucudur; önce neyin gerektiğini, sonra neyin çıktığını düşün.')));
+      try {
+        if (Q.onBilgi && Q.onBilgi.var && ctx.stationId && Q.onBilgi.var(ctx.stationId, { hepsi: true })) {
+          var ob2 = Q.onBilgi.dugme(ctx.stationId, 'Önceki bilgiyi aç', { hepsi: true });
+          ob2.style.cssText = 'min-height:28px;padding:1px 10px;font-size:14px;';
+          ipSatir.appendChild(ob2);
+        }
+      } catch (e) {}
       var poolBox = el('div', 'kopru-havuz');
       poolBox.setAttribute('aria-label', 'Kartlar');
       poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
@@ -7738,11 +7796,12 @@ Q.art.PORTRE_IDS = Object.keys(P);
       msg.setAttribute('aria-live', 'polite');
       msg.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
       root.appendChild(head);
+      root.appendChild(ipSatir);
       root.appendChild(bar); /* Kontrol her ekranda görünür kalsın (1366x768) */
       root.appendChild(poolBox);
       root.appendChild(slotBox);
       if (tamir(ctx)) {
-        var ip = el('div', 'kopru-ipucu', ob.ipucu || 'Soruyu yeniden oku');
+        var ip = el('div', 'kopru-ipucu', 'Soruyu yeniden oku');
         ip.style.cssText = 'color:var(--muted);font-size:var(--fs-small);';
         root.appendChild(ip);
       }
@@ -7955,7 +8014,12 @@ Q.art.PORTRE_IDS = Object.keys(P);
           yz.appendChild(el('b', null, 'Cevabın yanlış. Doğru sıra:'));
           var ol = el('ol', 'kopru-dogru-sira');
           ol.style.cssText = 'margin:4px 0 0;padding-left:22px;';
-          blocks.forEach(function(t){ ol.appendChild(el('li', null, t)); });
+          var ned = Array.isArray(ob.nedenler) ? ob.nedenler : [];
+          blocks.forEach(function(t, bi){
+            var li = el('li', null, t);
+            if (ned[bi]) { var nd = el('div', 'kopru-neden', 'Neden: ' + ned[bi]); nd.style.cssText = 'font-size:14px;color:var(--muted,#b9b0e0);font-weight:600;'; li.appendChild(nd); }
+            ol.appendChild(li);
+          });
           yz.appendChild(ol);
           msg.appendChild(yz);
           if (ob.sonuc) msg.appendChild(el('div', 'kopru-sonuc', ob.sonuc));
@@ -9461,7 +9525,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     ['w = 20 nm (each side well)', 'd = 10 nm, V_{0} = 9 eV', 'κd ≈ 154 (previous task)'],
     [S('Geçirgen olmayan engel limiti', 'κd ≈ 154 olduğundan engel pratik olarak geçirimsizdir: sistem iki ayrı 20 nm\'lik sonsuz kuyu gibi davranır. E_{n} = 0,3760·n²/w² eV.', 'E_{n} ≈ 0,3760·n² / 20² eV;   E_{1} ≈ 0,9401 meV', N('E₁ (20 nm kuyu) kaç meV?', 0.9401, 'meV')),
      S('Çift katlılık', 'Her seviye iki kez vardır (elektron sol ya da sağ kuyuda); çift/tek birleşimleri ψ_{±} = (ψ_{L} ± ψ_{R})/√2 aralarındaki fark e^{−κd} ~ 10^{-67} mertebesinde, yani sıfır. ψ_{L} = √(2/w) sin(nπx/w) (0 < x < 20 nm); ψ_{R}(x) = ψ_{L}(50 − x) (30 < x < 50 nm); engelde ψ ~ e^{−κ(x−20)} ile sönümlenir.', 'ψ_{±}(x) = [ψ_{L}(x) ± ψ_{R}(x)] / √2'),
-     S('Tam sayısal çözüm (Python)', 'Çift parite koşulunu k cot(kw) + κ tanh(κd/2) = 0 sayısal çözersek (brentq) E₁ = 0,9340 meV, E₂ = 3,7360 meV, E₃ = 8,4059 meV bulunur. Sonsuz kuyu değerinden %0,6 düşüktür: dalga fonksiyonu engelin içine 1/κ = 0,065 nm sızar, etkin genişlik w + 1/κ = 20,065 nm olur (0,3760/20,065² = 0,9340 meV). Sonlu fark yöntemi (FD) aynı sonucu ±%0,5 içinde verir.', 'E_{1} = 0,9340 meV,  E_{2} = 3,736 meV,  E_{3} = 8,406 meV  (her biri ikili)',
+     S('Tam sayısal çözüm (Python)', 'Çift parite koşulunu k cot(kw) + κ tanh(κd/2) = 0 sayısal çözersek (brentq) E₁ = 0,9340 meV, E₂ = 3,7360 meV, E₃ = 8,4059 meV bulunur. Sonsuz kuyu değerinden %0,6 düşüktür: dalga fonksiyonu engelin içine 1/κ = 0,065 nm sızar, etkin genişlik w + 1/κ = 20,065 nm olur (0,3760/20,065² = 0,9340 meV).', 'E_{1} = 0,9340 meV,  E_{2} = 3,736 meV,  E_{3} = 8,406 meV  (her biri ikili)',
        null, 'from scipy.optimize import brentq\nimport numpy as np\nC = 0.0381          # hbar^2/2m, eV nm^2\nV0, d, w = 9.0, 10.0, 20.0\nk  = lambda E: np.sqrt(E/C)\nkp = lambda E: np.sqrt((V0-E)/C)\nf  = lambda E: k(E)/np.tan(k(E)*w) + kp(E)*np.tanh(kp(E)*d/2)\nE0 = (np.pi/w)**2*C            # n = 1, 20 nm well\nprint(brentq(f, 0.9*E0, E0*(1-1e-9))*1e3, "meV")')],
     { deger: 0.934, birim: 'meV', metin: 'E_1 ≈ 0.934 meV (two-fold degenerate); in the impenetrable-barrier limit 0.940 meV' },
     'Sınavda yaklaşımı açıkça yaz: "engel kalın (κd ≈ 154), iki bağımsız 20 nm kuyu". Tam öz değer koşulunu da yazarsan tam puan. Engelsiz 50 nm sonucunu (0,150 meV) engel varken vermek yanlış olur.');
@@ -10102,6 +10166,44 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "Ingot (külçe) dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
             "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir." ] }
         ],
+        nasil: [
+          {
+            "baslik": "Nasıl yapılır: elektron simülasyonu",
+            "madde": [
+              "1) Single (Tek), Poly (Çok) ve Amorphous (Amorf) düğmelerinden birine bas; o malzemeye bir electron (elektron) gönderilir.",
+              "2) Elektronun yoluna bak: düz gidiyorsa az saçılma, sık yön değiştiriyorsa çok saçılma var demektir.",
+              "3) Üç malzemeyi de sırayla dene ve yolları karşılaştır.",
+              "4) Üçünü de denediğinde kapı açılır; elektronun hangi malzemede en uzağa gittiğine dikkat et."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: karşılaştırma sorusu",
+            "madde": [
+              "1) Önce malzemede kaç bozukluk olduğuna bak: tane sınırı (grain boundary) ya da düzensiz atomlar.",
+              "2) Bozukluk çoksa electron (elektron) daha sık saçılır (scattering); bu sebep-sonuç zincirinin ilk halkasıdır.",
+              "3) Saçılma sıklaştıkça iki saçılma arası mesafe, yani mean free path (serbest yol), kısalır.",
+              "4) Örnek: tane boyu 50 nm ise elektron en fazla yaklaşık 50 nm sonra sınıra çarpar; tane 10 nm ise yaklaşık 10 nm sonra."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: atom yoğunluğu",
+            "madde": [
+              "1) Hücre başına atom sayısı N: sc 1, bcc 2, fcc 4, diamond (elmas) 8.",
+              "2) Kenar a'yı cm'ye çevir (1 nm = 10⁻⁷ cm), sonra hacmi bul: V = a³.",
+              "3) Yoğunluk n = N/V. Örnek: germanium (germanyum), a = 0,565 nm, N = 8 → V = 1,80×10⁻²² cm³.",
+              "4) n = 8 / 1,80×10⁻²² ≈ 4,4×10²² atom/cm³. Birimi her zaman yaz."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: sıralama sorusu",
+            "madde": [
+              "1) Önce kök sebebi bul: başka hiçbir adımdan çıkmayan adım en başa gider; sonuç ya da özellik en sona.",
+              "2) Komşu iki adımı 'bu yüzden' ile bağla; bağlanmıyorsa sıra yanlıştır.",
+              "3) Örnek (başka konu): tane sınırı artar → saçılma artar → serbest yol kısalır → direnç büyür.",
+              "4) Yanlış sıra denersen oyun her adımın nedenini gösterir; ilk deneme öğrenme fırsatıdır."
+            ]
+          }
+        ],
         gorev: "Electron (elektron) üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
         tanitim: "Crystal (kristal): atomlar uzun menzilde düzenli. Polycrystalline (çok kristalli): düzenli taneler, aralarında grain boundary (tane sınırı). Amorphous (amorf): düzen yok. Mean free path (serbest yol): elektronun çarpmadan gittiği mesafe.",
         sim: { modul: "kristal_tur", params: { mod: "tur" }, basari: { hepsiniDene: true } },
@@ -10128,6 +10230,13 @@ Q.art.PORTRE_IDS = Object.keys(P);
         onNot: "Lattice (kafes): atomların tekrar eden dizilimi. Periodic potential (periyodik potansiyel): elektron, kafesin tekrar eden atom çekimini görür. Energy band (enerji bandı): elektronun sahip olabileceği izinli enerji aralığı.",
         soru: "Zinciri sıraya diz",
         bloklar: ["Lattice (kafes) periyodik tekrar eder", "Electron (elektron) periodic potential (periyodik potansiyel) görür", "Energy bands (enerji bantları) net oluşur", "Properties (özellikler) öngörülebilir ve tekrarlanabilir"],
+        ipucu: "Kök sebep ilk sırada; ölçülebilir özellik (sonuç) en sonda.",
+        nedenler: [
+          "Her şey atomların tekrar eden dizilişinden başlar; kök sebep budur.",
+          "Tekrar eden kafes, elektrona tekrar eden bir çekim manzarası sunar.",
+          "Periyodik potansiyel, elektronun alabileceği enerjileri net aralıklara (bantlara) ayırır.",
+          "Bantlar net olduğu için özellikler önceden hesaplanır ve her üretimde tekrarlanır."
+        ],
         sonuc: "Periodic lattice (periyodik kafes), periodic potential (periyodik potansiyel), net energy bands (enerji bantları), öngörülebilir device (aygıt)."
       },
       {
@@ -10333,6 +10442,44 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "Cubic (kübik) türler: sc, bcc, fcc.",
             "Bir köşe atomu 8 hücreyle paylaşılır, yüz atomu 2 hücreyle paylaşılır." ] }
         ],
+        nasil: [
+          {
+            "baslik": "Nasıl yapılır: Miller indisi",
+            "madde": [
+              "1) Düzlemin x, y, z eksenlerini kestiği yerleri a birimiyle oku. Eksene paralelse kesişim ∞ olur.",
+              "2) Her kesişimin tersini yaz (1/sayı). 1/∞ = 0 olduğundan paralel eksen indise 0 verir.",
+              "3) Kesir kaldıysa üç sayıyı ortak payda ile çarp; ortak bölen varsa böl. En küçük tam sayılar kalmalı.",
+              "4) Sonucu virgülsüz (hkl) yaz. Negatif kesişim için sayının üstüne çizgi (bar) koy."
+            ]
+          },
+          {
+            "baslik": "Çözülmüş örnek: Miller indisi",
+            "madde": [
+              "Soru: düzlem eksenleri 3, 1 ve 3/2 noktalarında kesiyor (kesişimler).",
+              "Ters: 1/3, 1/1, 2/3 → 1/3, 1, 2/3.",
+              "Ortak payda 3: her sayıyı 3 ile çarp → 1, 3, 2. Başka ortak bölen yok. Sonuç (132).",
+              "Paralel örnek: 3, 3, ∞ → ters 1/3, 1/3, 0 → ×3 → (110)."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: d, atom, yön",
+            "madde": [
+              "d aralığı: d = a/√(h²+k²+l²). Örnek: a = 0,40 nm, (111) → d = 0,40/√3 = 0,231 nm.",
+              "Atom sayma: köşe atomu 8 hücrede, yüz atomu 2 hücrede ortaktır; payları 1/8 ve 1/2, hücre içi atom 1 sayılır.",
+              "Örnek (farazi hücre): 8 köşe, 6 yüz, 1 iç atom → 8·1/8 + 6·1/2 + 1 = 5 atom.",
+              "Yön [uvw]: yön vektörünün bileşenlerini en küçük tam sayılara indir, köşeli parantezle yaz. Örnek: [2 0 0] → [1 0 0]."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: simülasyonlar",
+            "madde": [
+              "Kafes sim'i: sc, bcc, fcc veya diamond (elmas) düğmesiyle kafesi seç, atomlara bak.",
+              "Say (Count) düğmesine bas; − ve + ile sayını ayarla, Kontrol ile sına.",
+              "Miller sim'i: x, y, z satırlarında kesişim için 1, 2, 3 veya ∞ düğmesine bas.",
+              "Üst şerit sırayla Intercept, Reciprocal, Integers, Result adımlarını gösterir; sonuç (hkl) sol üstte yazar."
+            ]
+          }
+        ],
         gorev: "Say düğmesine bas; fcc unit cell (birim hücre) atom sayısını determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
         ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },
@@ -10351,6 +10498,13 @@ Q.art.PORTRE_IDS = Object.keys(P);
           "Reciprocals (tersleri) al",
           "Fractions (kesirleri) en küçük integers (tam sayılara) çevir",
           "Parentheses (parantez) içine yaz: (hkl)"
+        ],
+        ipucu: "Önce ham veri, en son yazım biçimi: elindeki sayı hangi adımda hazır olur?",
+        nedenler: [
+          "Düzlemin yeri bilinmeden hesap başlayamaz; kesişimler tüm hesabın ham verisidir.",
+          "Tersler, ∞ kesişimi 0 yapar ve düzlemin eğimini sayılara dökerek kesirleri ortaya çıkarır.",
+          "Terslerden çıkan kesirler ortak katla çarpılır; indis en küçük tam sayılar olmalıdır.",
+          "Yazım en sonda gelir: tam sayılar hazır olunca (hkl) biçiminde parantez içine alınır."
         ],
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
       { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,
@@ -11018,12 +11172,12 @@ Q.art.PORTRE_IDS = Object.keys(P);
           { baslik: "Wave function (dalga fonksiyonu) ψ", madde: [
             "ψ(x): parçacığı anlatan wave function (dalga fonksiyonu); kendisi doğrudan ölçülemez.",
             "|ψ(x)|² = probability density (olasılık yoğunluğu): parçacığın x civarında bulunma olasılığı.",
-            "ψ konum ya da enerji değeri vermez; yalnızca olasılık dağılımını taşır." ] },
+            "ψ position (konum) ya da energy (enerji) değeri vermez; yalnızca probability distribution (olasılık dağılımı) taşır." ] },
           { baslik: "Schrödinger equation (denklemi)", madde: [
             "Girdi: potential (potansiyel) V(x) ve boundary condition (sınır koşulu). Çıktı: ψ ve izinli E değerleri.",
             "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi).",
             "Time-dependent (zamana bağlı) hâli ψ'yi zamanla düzgün ve deterministic (belirlenimci) evriltir.",
-            "Collapse (çökme) denklemin parçası değildir; ölçüm postülatı ayrıdır ve sonraki istasyonda gelir." ] },
+            "Collapse (çökme) denklemin parçası değildir; measurement postulate (ölçüm postülatı) ayrıdır ve ilerleyen istasyonlarda gelir." ] },
           { baslik: "Infinite well (sonsuz kuyu), quantization", madde: [
             "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
             "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
@@ -11082,7 +11236,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             soru: 'Time-dependent Schrödinger equation (zamana bağlı Schrödinger denklemi) ψ\'yi nasıl değiştirir?',
             secenekler: [
               sec('Smooth and deterministic (düzgün ve belirlenimci) biçimde evriltir', true, 'Doğru. Collapse (çökme) denklemden değil, measurement (ölçüm) postulate (postülat) ile gelir.'),
-              sec('Measurement (ölçüm) yapınca collapse (çökme) olur', false, 'Hayır. Collapse (çökme) ayrı bir postulate (postülat), denklemin işi değil.'),
+              sec('Her adımda ψ\'yi collapse (çökme) ile bir değere indirir', false, 'Hayır. Collapse (çökme) ayrı bir measurement postulate (ölçüm postülatı); denklemin evrimi onu içermez.'),
               sec('Randomly (rastgele) değiştirir', false, 'Hayır. Denklem random (rastgele) değil, deterministic (belirlenimci) yapıdadır.')
             ],
             alt: {
@@ -11135,7 +11289,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
               'Schrödinger equation (Schrödinger denklemi) çöker',
               'Equation (denklem) yalnızca bir probability (olasılık) denklemidir'
             ],
-            yanlisKavramIds: ['schrodinger_cokme', 'schrodinger_cokme'],
+            yanlisKavramIds: ['schrodinger_cokme', 'psi_olasilik'],
             idealCevap: 'Schrödinger equation (Schrödinger denklemi) çökmez; ψ\'yi zamanla düzgün ve deterministic (belirlenimci) biçimde evriltir. Collapse (çökme) ayrı bir postulate (postülat) ve yalnızca measurement (ölçüm) ile olur. Denklemin girdisi potential (potansiyel) V(x) ve boundary conditions (sınır koşulları), çıktısı ψ ve allowed energies (izinli enerjiler) E olur.',
             yedekSecmeli: {
               soru: 'Collapse (çökme) ne zaman olur?',
@@ -13323,6 +13477,13 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     try { if (Q.ui && Q.ui.dock) { Q.ui.dock.clear(); host = Q.ui.dock.mount(host) || host; } } catch (e) { console.error(e); }
     var ctx = { stationId: r.id, index: i, istasyon: r.ist, host: host, runway: rw, ui: Q.ui, claude: Q.claude, sim: Q.sim, battle: Q.battle, art: Q.art, state: Q.state };
     rw.setObstacleState('aktif');                          // 5
+    /* "Nasıl yapılır?" düğmesi: kavram/köprü kendi düğmesini taşır; diğer sorulu engellerde dock köşesinde */
+    try {
+      if (['dusman', 'tahmin', 'tuzak', 'patron'].indexOf(ob.tip) >= 0 && Q.onBilgi && Q.onBilgi.var && Q.onBilgi.var(r.id)) {
+        var dk = document.getElementById('dock');
+        if (dk) { var nb = Q.onBilgi.dugme(r.id, 'Nasıl yapılır?'); nb.style.cssText = 'position:absolute;top:6px;right:10px;z-index:3;min-height:30px;padding:2px 10px;font-size:14px;'; dk.appendChild(nb); }
+      }
+    } catch (e) { console.error(e); }
     if (ob.onNot) { try { r.onNotIptal = null; await onNotGoster(host, ob, r); } catch (e) { console.error(e); } r.onNotIptal = null; if (!alive(r)) return; }
     var h = Q.obs.handlers && Q.obs.handlers[ob.tip], sonuc = null;
     if (!h || typeof h.enter !== 'function') { toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: '' }; r.skipApply = true; }
