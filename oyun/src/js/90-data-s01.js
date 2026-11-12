@@ -73,9 +73,9 @@
             "Scattering (saçılma): electron (elektron) bozuk düzende yön değiştirir; mean free path (serbest yol) iki saçılma arası ortalama mesafedir." ] },
           { baslik: "Neden crystal, nasıl çekilir?", madde: [
             "Lattice (kafes) tekrar ettiği için electron (elektron) periodic potential (periyodik potansiyel) görür; bundan energy band (enerji bandı) doğar.",
-            "CZ: melt (eriyik) silisyuma seed crystal (tohum kristal) batırılır, yavaşça döndürülerek çekilir; ingot (külçe) oluşur.",
-            "Ingot (külçe) dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
-            "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir." ] }
+            "CZ: melt (eriyik) silisyuma seed crystal (tohum kristal) batırılır, yavaşça döndürülerek çekilir; ingot (külçe) oluşur, dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
+            "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir.",
+            "Dopant (katkı atomu): bilerek eklenen yabancı atom. Carrier (taşıyıcı): akım taşıyan yük; mobility (hareketlilik): ne kadar kolay ilerler; lifetime (ömür): ne kadar yaşar." ] }
         ],
         nasil: [
           {
