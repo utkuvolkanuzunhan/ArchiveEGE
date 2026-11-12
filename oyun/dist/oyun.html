@@ -174,6 +174,71 @@ html,body{height:100%;margin:0;overflow:hidden}
 @media (max-height:800px){#dock .opts{gap:5px}#dock .opt{padding:5px 12px;min-height:38px}}  /* 4 şık + Onayla 1366x768 dock içinde kaydırmasız */
 @media (max-height:1000px){#dock .opt{min-height:34px;padding:4px 12px;gap:8px}#dock .opt .num{width:24px;height:24px}}
 
+/* 25-kartlar.css — Kart koleksiyonu (harita) ve bilim insanı detay görünümü (harita sağ paneli, Tekrar Merkezi). */
+.a8-ana-yan{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,380px);gap:16px;align-items:start}
+.a8-ana{min-width:0}
+.a8-yan{position:sticky;top:8px;max-height:calc(100vh - 96px);overflow:auto;min-width:0;display:flex;flex-direction:column;gap:10px}
+.a8-yan:focus{outline:none}
+.a8-yan-bos{color:var(--muted);font-size:var(--fs-small);font-weight:800;padding:12px;border:2px dashed var(--line);border-radius:var(--r);opacity:.8}
+.a8-yan-bar{display:flex;justify-content:flex-end}
+.a8-istasyonlar{display:grid;grid-template-columns:repeat(auto-fill,minmax(128px,1fr));gap:10px;margin:12px 0}
+.a8-istasyonlar>button{width:auto!important;overflow-wrap:anywhere;min-width:0}
+@media (max-width:899px){
+  .a8-ana-yan{grid-template-columns:minmax(0,1fr)}
+  .a8-yan{position:fixed;left:0;right:0;bottom:0;top:auto;max-height:62vh;z-index:5;background:var(--panel);border:var(--bw) solid var(--line);border-bottom:0;border-radius:var(--r) var(--r) 0 0;box-shadow:0 -6px 0 var(--magenta);padding:12px 16px;display:none}
+  .a8-yan[data-acik="1"]{display:flex}
+  .a8-yan-bos{display:none}
+  .a8-yan .panel{border:0;box-shadow:none;padding:0!important;background:transparent}
+}
+
+/* koleksiyon */
+.kk-baslik{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:18px 0 8px}
+.kk-baslik h3{font-size:22px}
+.kk-grup-izgara{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.kk-grup{--kk-renk:var(--cyan);border:var(--bw) solid var(--line);border-radius:var(--r);background:var(--panel);overflow:hidden;box-shadow:var(--shadow-sm);min-width:0}
+.kk-grup-ust{display:flex;align-items:center;gap:8px;padding:6px 10px;background:linear-gradient(90deg,color-mix(in srgb,var(--kk-renk) 34%,var(--panel)),var(--panel));border-bottom:4px solid var(--kk-renk)}
+.kk-grup-ust .a8-icon{flex:0 0 auto;display:inline-flex}
+.kk-grup-ust .a8-icon svg{width:36px;height:30px}
+.kk-grup-ad{font-family:var(--font-d);font-size:17px;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kk-ilerleme{flex:0 0 auto;font-size:var(--fs-small);font-weight:800;padding:1px 9px;border-radius:99px;border:2px solid var(--kk-renk);background:var(--panel2)}
+.kk-grup[data-tam="1"] .kk-ilerleme{background:var(--kk-renk);color:var(--ink-dark)}
+.kk-cubuk{height:5px;background:var(--panel2)}
+.kk-cubuk>i{display:block;height:100%;background:var(--kk-renk)}
+.kk-liste{display:flex;flex-direction:column;gap:8px;padding:8px}
+.kk-kart{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding:8px;border-radius:var(--rs);border:2px solid var(--line);background:var(--panel2);cursor:pointer;min-width:0}
+.kk-kart:hover{box-shadow:var(--glow-cyan)}
+.kk-kart[aria-pressed="true"]{border-color:var(--kk-renk);box-shadow:0 0 0 3px var(--kk-renk)}
+.kk-por{flex:0 0 78px;width:78px;height:78px;border-radius:8px;background:color-mix(in srgb,var(--kk-renk) 22%,var(--panel));border:2px solid var(--kk-renk);overflow:hidden;display:flex;align-items:flex-end;justify-content:center}
+.kk-por svg{width:100%;height:100%;display:block}
+.kk-kart[data-kilitli="1"] .kk-por svg{filter:brightness(0) opacity(.55)}
+.kk-kart[data-kilitli="1"] .kk-por{border-style:dashed}
+.kk-metin{min-width:0;display:flex;flex-direction:column;gap:2px}
+.kk-ad{font-family:var(--font-d);font-size:17px;line-height:1.15}
+.kk-yil{font-size:var(--fs-small);font-weight:800;color:var(--muted)}
+.kk-cumle{font-size:var(--fs-small);line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.kk-ipucu{font-size:var(--fs-small);color:var(--muted);line-height:1.3}
+.kk-kart[data-kilitli="1"] .kk-ad{color:var(--muted)}
+
+/* detay */
+.kd{--kk-renk:var(--cyan);display:flex;flex-direction:column;gap:10px;min-width:0}
+.kd-ust{display:flex;gap:12px;align-items:center}
+.kd-por{flex:0 0 108px;width:108px;height:108px;border-radius:var(--r);background:color-mix(in srgb,var(--kk-renk) 22%,var(--panel));border:3px solid var(--kk-renk);overflow:hidden;display:flex;align-items:flex-end}
+.kd-por svg{width:100%;height:100%;display:block}
+.kd[data-kilitli="1"] .kd-por svg{filter:brightness(0) opacity(.55)}
+.kd-ad{font-family:var(--font-d);font-size:24px;line-height:1.1;margin:0}
+.kd-ad:focus{outline:none}
+.kd-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.kd-meta .chip{border-color:var(--kk-renk)}
+.kd-cumle{font-weight:800}
+.kd h4{margin:2px 0 0;font-family:var(--font-d);font-weight:400;font-size:16px;color:var(--yellow)}
+.kd p{line-height:1.45;font-size:16px}
+.kd-sinav{border:2px solid var(--kk-renk);border-radius:var(--rs);background:var(--panel2);padding:8px 12px}
+.kd-sinav h4{color:var(--lime)}
+.kd-sinav ul{margin:4px 0 0;padding-left:20px}
+.kd-sinav li{margin:3px 0;line-height:1.4;font-size:16px}
+.kd-kilit{padding:10px;border:2px dashed var(--line);border-radius:var(--rs);color:var(--muted);font-weight:800}
+.tk-kart .kd{max-width:900px}
+
 /* 30-runway-overlay.css (A4) Yolun üstündeki DOM katmanı: patron paneli, hasar sayıları, afiş, canavar halleri, sarsıntı. */
 #runway-overlay{position:absolute;inset:0;pointer-events:none;z-index:2}
 #boss-panel,#boss-panel button{pointer-events:auto}
@@ -516,7 +581,7 @@ html,body{height:100%;margin:0;overflow:hidden}
   var PATRON = { s01: 'czoch', s02: 'miller', s03: 'einstein', s04: 'bohr', s05: 'schro', s06: 'broglie', s07: 'born', s08: 'heis', s09: 'pauli', s10: 'fermi' };
   var MODELLER = ['claude-sonnet-5-5', 'claude-opus-4-5', 'claude-haiku-4-5'];
   var oneriGosterildi = false, inited = false, pauseSay = 0, claudeBilgi = null;
-  var settingsEl = null, mapEl = null, panelEl = null, listEl = null, layer = null;
+  var settingsEl = null, mapEl = null, panelEl = null, listEl = null, layer = null, yanEl = null, kartPanelEl = null, kolek = null, sonSecili = null;
 
   function A(){ return Q.state.ayarlar; }
   function doc(){ return (typeof document !== 'undefined') ? document : null; }
@@ -742,6 +807,7 @@ html,body{height:100%;margin:0;overflow:hidden}
         '<circle cx="24" cy="26" r="6" fill="var(--bg)" stroke="var(--ink-dark)" stroke-width="3"/>') + '</svg>';
     return span;
   }
+  S.machineIcon = machineIcon;
   function startStation(s, from){
     var p = Q.state.ilerleme[s.id] = Q.state.ilerleme[s.id] || {};
     if (from != null && from > 0) { p.atladi = true; atlamaEtiketi(true); } else { atlamaEtiketi(false); }
@@ -758,8 +824,44 @@ html,body{height:100%;margin:0;overflow:hidden}
       e = el('span', 'chip', 'Atlamalı mod'); e.id = 'hud-atlamali'; t.appendChild(e);
     } else if (!goster && e && e.parentNode) e.parentNode.removeChild(e);
   }
+  function yanAc(){
+    if (!yanEl) return;
+    var bos = yanEl.querySelector('.a8-yan-bos'); if (bos) bos.style.display = 'none';
+    yanEl.dataset.acik = '1';
+  }
+  function yanKapat(odakKart){
+    if (!yanEl) return false;
+    var acikti = yanEl.dataset.acik === '1';
+    if (panelEl) { panelEl.textContent = ''; panelEl.style.display = 'none'; }
+    if (kartPanelEl) { kartPanelEl.textContent = ''; kartPanelEl.style.display = 'none'; }
+    var bos = yanEl.querySelector('.a8-yan-bos'); if (bos) bos.style.display = '';
+    yanEl.dataset.acik = '0';
+    if (kolek && sonSecili) { kolek.sec(null); if (odakKart && acikti) kolek.odak(sonSecili); }
+    sonSecili = null;
+    return acikti;
+  }
+  function kapatDugme(){
+    var bar = el('div', 'a8-yan-bar'), k = btn('Kapat (Esc)', '', function(){ yanKapat(true); });
+    k.id = 'a8-yan-kapat'; bar.appendChild(k); return bar;
+  }
+  function kartAc(k){
+    if (!kartPanelEl) return;
+    if (panelEl) { panelEl.textContent = ''; panelEl.style.display = 'none'; }
+    sonSecili = k.id;
+    kartPanelEl.textContent = ''; kartPanelEl.style.display = '';
+    kartPanelEl.appendChild(kapatDugme());
+    kartPanelEl.appendChild(Q.kartlar.detayDom(k.id));
+    yanAc();
+    var h = kartPanelEl.querySelector('.kd-ad'); if (h) { try { h.focus({ preventScroll: true }); } catch (e) { /* odak yok */ } }
+    yanEl.scrollTop = 0;
+  }
   function showPanel(s){
+    if (kartPanelEl) { kartPanelEl.textContent = ''; kartPanelEl.style.display = 'none'; }
+    if (kolek) kolek.sec(null);
+    sonSecili = null;
+    yanAc();
     panelEl.textContent = ''; panelEl.style.display = '';
+    panelEl.appendChild(kapatDugme());
     var p = prog(s.id), acik = S.istasyonAcik(s.id);
     panelEl.appendChild(el('h3', '', s.sira + '. ' + s.ad));
     panelEl.appendChild(el('p', '', s.konu));
@@ -813,38 +915,35 @@ html,body{height:100%;margin:0;overflow:hidden}
     box.textContent = '';
     box.appendChild(el('h2', '', 'Fabrika haritası'));
     box.appendChild(el('p', '', 'Üretim: ' + (Q.state.fabrika.kurulu.length * 6) + ' wafer/saat'));
-    listEl = el('div', 'a8-stations'); listEl.style.cssText = 'display:flex;flex-wrap:wrap;gap:12px;margin:12px 0';
+    var cerceve = el('div', 'a8-ana-yan'), ana = el('div', 'a8-ana');
+    yanEl = el('aside', 'a8-yan'); yanEl.id = 'a8-yan'; yanEl.tabIndex = -1; yanEl.dataset.acik = '0';
+    yanEl.setAttribute('aria-label', 'Ayrıntı paneli');
+    yanEl.appendChild(el('div', 'a8-yan-bos', 'Bir istasyon ya da bilim insanı kartı seç; ayrıntısı burada açılır.'));
+    cerceve.appendChild(ana); cerceve.appendChild(yanEl);
+    box.appendChild(cerceve);
+    listEl = el('div', 'a8-stations a8-istasyonlar');
     st.forEach(function(s){
       var d = ozet(s), b = btn('', 'panel');
       b.dataset.id = s.id; b.dataset.durum = d;
-      b.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;width:120px;padding:8px;cursor:pointer;' +
+      b.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;cursor:pointer;' +
         (d === 'tamam' ? 'border-color:var(--lime);' : d === 'sirada' ? 'box-shadow:var(--glow-cyan);border-color:var(--cyan);' : d === 'kilitli' ? 'opacity:.55;border-style:dashed;' : '');
       b.appendChild(machineIcon(s.renk, d === 'kilitli'));
       b.appendChild(el('b', '', s.ad)); b.appendChild(el('span', '', DURUM_AD[d]));
       b.addEventListener('click', function(){ showPanel(s); });
       listEl.appendChild(b);
     });
-    box.appendChild(listEl);
+    ana.appendChild(listEl);
     panelEl = el('div', 'panel'); panelEl.id = 'a8-station-panel'; panelEl.style.padding = '12px'; panelEl.style.display = 'none';
-    box.appendChild(panelEl);
+    kartPanelEl = el('div', 'panel'); kartPanelEl.id = 'a8-kart-panel'; kartPanelEl.style.padding = '12px'; kartPanelEl.style.display = 'none';
+    yanEl.appendChild(panelEl); yanEl.appendChild(kartPanelEl);
     /* kartlar */
-    box.appendChild(el('h3', '', 'Kart koleksiyonu'));
-    var cards = el('div'); cards.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px';
-    st.forEach(function(s){
-      var id = s.patronId, kazandi = Q.state.kartlar.indexOf(id) >= 0, ch = Q.data.chars && Q.data.chars[id] || {};
-      var c = el('div', 'card'); c.dataset.kart = id; c.dataset.kilitli = kazandi ? '0' : '1';
-      c.style.cssText = 'width:80px;min-height:110px;text-align:center' + (kazandi ? '' : ';filter:grayscale(1);opacity:.6');
-      var por = el('div', '');
-      if (kazandi && Q.art.cameo) { try { por.innerHTML = Q.art.cameo(id, {}); } catch (e) { por.textContent = ''; } }
-      else por.textContent = '?';
-      c.appendChild(por); c.appendChild(el('small', '', kazandi ? (ch.kisi || id) : '?'));
-      cards.appendChild(c);
-    });
-    box.appendChild(cards);
+    var kh = el('div'); kh.id = 'a8-kartlar'; ana.appendChild(kh);
+    kolek = Q.kartlar.koleksiyon(kh, { onSec: kartAc });
+    sonSecili = null;
     var h = hataOzeti();
     var hb = btn(h.sayi + ' açık kayıt' + (h.top.length ? ' · ' + h.top.map(function(t){ return kavramAd(t.kavram); }).join(', ') : ''), '', openHata);
     hb.id = 'a8-hata'; hb.style.marginTop = '12px';
-    box.appendChild(hb);
+    ana.appendChild(hb);
     var row = el('div'); row.style.cssText = 'display:flex;gap:8px;margin-top:12px';
     var tb = btn('Tekrar Merkezi', 'primary', function(){ if (Q.tekrar && Q.tekrar.open) Q.tekrar.open(); }); tb.id = 'a10-tekrar'; row.appendChild(tb);
     row.appendChild(btn('Ayarlar', '', function(){ S.open(); }));
@@ -853,13 +952,13 @@ html,body{height:100%;margin:0;overflow:hidden}
       if (!Q.final.acik()) { fb.disabled = true; fb.title = 'Önce 9 istasyonu bitir'; fb.style.opacity = '.55'; }
       row.appendChild(fb);
     }
-    box.appendChild(row);
+    ana.appendChild(row);
   }
   S.openMap = function(){
     var d = doc(); if (!d) return;
     if (mapEl) { renderMap(); return; }
     var L = getLayer(), back = backdrop(true), box = el('div', 'panel modal');
-    box.style.cssText = 'width:100%;overflow:auto;padding:16px;border-radius:0';
+    box.style.cssText = 'width:100%;max-width:1240px;margin:0 auto;overflow:auto;padding:16px;border-radius:0;box-shadow:none;display:block';
     back.appendChild(box); L.appendChild(back); mapEl = back;
     if (pauseSay === 0) { try { if (Q.runner.hold) Q.runner.hold(); } catch (e) { /* motor yok */ } }
     renderMap();
@@ -867,7 +966,7 @@ html,body{height:100%;margin:0;overflow:hidden}
   S.closeMap = function(){
     if (!mapEl) return;
     if (mapEl.parentNode) mapEl.parentNode.removeChild(mapEl);
-    mapEl = null; panelEl = null; listEl = null;
+    mapEl = null; panelEl = null; listEl = null; yanEl = null; kartPanelEl = null; kolek = null; sonSecili = null;
   };
 
   /* ---------- hız önerisi ve süre ---------- */
@@ -907,7 +1006,7 @@ html,body{height:100%;margin:0;overflow:hidden}
       var tg = e.target, tag = tg && tg.tagName;
       if (e.key === 'Escape') {
         if (settingsEl) { S.close(); e.stopPropagation(); e.preventDefault(); }
-        else if (panelEl && panelEl.firstChild) { panelEl.textContent = ''; panelEl.style.display = 'none'; e.stopPropagation(); }
+        else if (yanEl && yanEl.dataset.acik === '1') { yanKapat(true); e.stopPropagation(); e.preventDefault(); }
         return;
       }
       if ((e.key === 's' || e.key === 'S') && !e.ctrlKey && !e.metaKey && !e.altKey &&
@@ -922,6 +1021,166 @@ html,body{height:100%;margin:0;overflow:hidden}
     if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', S.init);
     else S.init();
   }
+})();
+
+/* 21-kartlar.js — Bilim insanı kartları: liste, koleksiyon (istasyonlara göre gruplu) ve detay görünümü.
+ * Ekler: Q.kartlar.liste(opt), Q.kartlar.bul(id), Q.kartlar.detayDom(id, opt), Q.kartlar.koleksiyon(host, opt).
+ * Veri: kart kimliği/yıl/tek cümle sandık engelinden (90-data-sNN.js), derse katkı metni Q.data.kartlar (89-data-kartlar.js).
+ * Kazanılma: Q.state.kartlar (kart.id listesi, kayıt cip-hatti-v1 değişmedi). Çizim: Q.art.cameo (40-art-chars.js). */
+(function(){
+  'use strict';
+  var Q = window.Q;
+  var K = Q.kartlar = Q.kartlar || {};
+
+  function el(tag, cls, text){
+    var e = Q.util.el(tag, cls);
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
+  function sira(id){ return parseInt(String(id).replace(/\D/g, ''), 10) || 0; }
+
+  /* Tüm kartlar: istasyon sırasıyla. opt.hepsi=true -> s10 dahil (ayara bakmadan). */
+  K.liste = function(opt){
+    opt = opt || {};
+    var kaz = (Q.state && Q.state.kartlar) || [], ay = (Q.state && Q.state.ayarlar) || {};
+    var out = [];
+    stIds().forEach(function(sid){
+      var st = Q.data.stations[sid];
+      if (!st) return;
+      (st.engeller || []).forEach(function(e){
+        if (e.tip !== 'sandik' || !e.kart || !e.kart.id) return;
+        var ch = (Q.data.chars && Q.data.chars[e.kart.id]) || {};
+        var kazandi = kaz.indexOf(e.kart.id) >= 0;
+        if (sira(sid) === 10 && !opt.hepsi && !ay.istasyon10 && !kazandi) return;
+        out.push({ id: e.kart.id, ist: sid, istSira: sira(sid), istAd: st.ad || sid, renk: st.renk || '',
+          kisi: ch.kisi || e.kart.id, yil: e.kart.yil, tekCumle: e.kart.tekCumle || '', kazandi: kazandi });
+      });
+    });
+    return out;
+  };
+  K.bul = function(id, opt){
+    var l = K.liste(Object.assign({ hepsi: true }, opt || {}));
+    for (var i = 0; i < l.length; i++) if (l[i].id === id) return l[i];
+    return null;
+  };
+
+  function portre(k, kilitli){
+    var d = el('div', kilitli ? 'kk-por' : 'kk-por');
+    try { if (Q.art && Q.art.cameo) d.innerHTML = Q.art.cameo(k.id, { cls: 'mon kk-cameo' }) || ''; } catch (e) { /* çizim yok */ }
+    d.setAttribute('aria-hidden', 'true');
+    return d;
+  }
+  function ipucu(k){ return '"' + k.istAd + '" istasyonunu bitir (sandığı aç).'; }
+
+  /* Detay: Q.kartlar.detayDom(id, { acik: true }) -> eleman. acik: kilitli olsa da içeriği göster (Tekrar Merkezi). */
+  K.detayDom = function(id, opt){
+    opt = opt || {};
+    var k = K.bul(id);
+    var kok = el('div', 'kd');
+    if (!k) { kok.appendChild(el('p', '', 'Kart bulunamadı.')); return kok; }
+    var kilitli = !k.kazandi && !opt.acik;
+    kok.dataset.kilitli = kilitli ? '1' : '0';
+    kok.dataset.kart = k.id;
+    if (k.renk) kok.style.setProperty('--kk-renk', k.renk);
+    var ust = el('div', 'kd-ust');
+    var por = el('div', 'kd-por');
+    try { if (Q.art && Q.art.cameo) por.innerHTML = Q.art.cameo(k.id, { cls: 'mon kd-cameo' }) || ''; } catch (e) { /* çizim yok */ }
+    por.setAttribute('aria-hidden', 'true');
+    ust.appendChild(por);
+    var yz = el('div');
+    var ad = el('h3', 'kd-ad', kilitli ? 'Gizli bilim insanı' : k.kisi);
+    ad.tabIndex = -1;
+    yz.appendChild(ad);
+    var meta = el('div', 'kd-meta');
+    if (!kilitli) meta.appendChild(el('span', 'chip', String(k.yil)));
+    meta.appendChild(el('span', 'chip', k.istSira + '. ' + k.istAd));
+    meta.appendChild(el('span', 'chip', k.kazandi ? 'Kazanıldı' : 'Kilitli'));
+    yz.appendChild(meta);
+    ust.appendChild(yz);
+    kok.appendChild(ust);
+    if (kilitli) {
+      kok.appendChild(el('div', 'kd-kilit', 'Kilitli kart. ' + ipucu(k)));
+      return kok;
+    }
+    kok.appendChild(el('p', 'kd-cumle', k.tekCumle));
+    var v = (Q.data.kartlar || {})[k.id];
+    if (!v) return kok;
+    var bol = [['Kim, ne zaman, hangi bağlamda?', v.p1], ['Bilime ve çip teknolojisine katkısı', v.p2]];
+    if (v.p3) bol.push(['Sezgi ve yaygın yanılgı', v.p3]);
+    bol.forEach(function(b){ kok.appendChild(el('h4', '', b[0])); kok.appendChild(el('p', '', b[1])); });
+    if (v.sinav && v.sinav.length) {
+      var kt = el('div', 'kd-sinav');
+      kt.appendChild(el('h4', '', 'Sınavda kesin bilmem gereken'));
+      var ul = el('ul');
+      v.sinav.forEach(function(m){ ul.appendChild(el('li', '', m)); });
+      kt.appendChild(ul); kok.appendChild(kt);
+    }
+    return kok;
+  };
+
+  /* Koleksiyon: istasyonlara göre gruplu. opt.onSec(kart), opt.secili (id). Döndürür { yenile, odak }. */
+  K.koleksiyon = function(host, opt){
+    opt = opt || {};
+    host.textContent = '';
+    var liste = K.liste();
+    var kaz = liste.filter(function(k){ return k.kazandi; }).length;
+    var bas = el('div', 'kk-baslik');
+    bas.appendChild(el('h3', '', 'Kart koleksiyonu'));
+    bas.appendChild(el('span', 'chip', kaz + '/' + liste.length + ' kart'));
+    host.appendChild(bas);
+    var izgara = el('div', 'kk-grup-izgara'); izgara.setAttribute('role', 'group'); izgara.setAttribute('aria-label', 'Bilim insanı kartları');
+    var gruplar = {}, sirali = [];
+    liste.forEach(function(k){ (gruplar[k.ist] = gruplar[k.ist] || []).push(k); if (sirali.indexOf(k.ist) < 0) sirali.push(k.ist); });
+    var tuslar = [];
+    sirali.forEach(function(sid){
+      var ks = gruplar[sid], f = ks[0], k0 = ks.filter(function(k){ return k.kazandi; }).length;
+      var g = el('section', 'kk-grup'); g.dataset.ist = sid; g.dataset.tam = k0 === ks.length ? '1' : '0';
+      if (f.renk) g.style.setProperty('--kk-renk', f.renk);
+      var ust = el('div', 'kk-grup-ust');
+      if (Q.settings && Q.settings.machineIcon) ust.appendChild(Q.settings.machineIcon(f.renk, k0 === 0));
+      ust.appendChild(el('span', 'kk-grup-ad', f.istSira + '. ' + f.istAd));
+      var ilr = el('span', 'kk-ilerleme', k0 + '/' + ks.length + ' kart'); ilr.setAttribute('aria-label', ks.length + ' kartın ' + k0 + ' tanesi kazanıldı');
+      ust.appendChild(ilr); g.appendChild(ust);
+      var cb = el('div', 'kk-cubuk'), ic = el('i'); ic.style.width = Math.round(100 * k0 / ks.length) + '%'; cb.appendChild(ic); g.appendChild(cb);
+      var ls = el('div', 'kk-liste');
+      ks.forEach(function(k){
+        var b = el('button', 'kk-kart'); b.type = 'button';
+        b.dataset.kart = k.id; b.dataset.kilitli = k.kazandi ? '0' : '1';
+        b.setAttribute('aria-pressed', opt.secili === k.id ? 'true' : 'false');
+        b.setAttribute('aria-label', k.kazandi ? (k.kisi + ', ' + k.yil + ', ' + k.istAd + '. Ayrıntı için seç.') : ('Kilitli kart. ' + ipucu(k)));
+        b.appendChild(portre(k, !k.kazandi));
+        var m = el('div', 'kk-metin');
+        if (k.kazandi) {
+          m.appendChild(el('span', 'kk-ad', k.kisi)); m.appendChild(el('span', 'kk-yil', String(k.yil)));
+          m.appendChild(el('span', 'kk-cumle', k.tekCumle));
+        } else {
+          m.appendChild(el('span', 'kk-ad', '???')); m.appendChild(el('span', 'kk-ipucu', ipucu(k)));
+        }
+        b.appendChild(m);
+        b.addEventListener('click', function(){
+          tuslar.forEach(function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+          if (opt.onSec) opt.onSec(k);
+        });
+        tuslar.push(b); ls.appendChild(b);
+      });
+      g.appendChild(ls); izgara.appendChild(g);
+    });
+    izgara.addEventListener('keydown', function(e){
+      var yon = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
+      if (!yon) return;
+      var i = tuslar.indexOf(document.activeElement);
+      if (i < 0) return;
+      var j = Math.max(0, Math.min(tuslar.length - 1, i + yon));
+      if (tuslar[j]) tuslar[j].focus();
+      e.preventDefault();
+    });
+    host.appendChild(izgara);
+    return {
+      odak: function(id){ for (var i = 0; i < tuslar.length; i++) if (tuslar[i].dataset.kart === id) { tuslar[i].focus(); return true; } return false; },
+      sec: function(id){ tuslar.forEach(function(x){ x.setAttribute('aria-pressed', x.dataset.kart === id ? 'true' : 'false'); }); }
+    };
+  };
 })();
 
 /* 30-claude.js (A6) Claude istemcisi: Q.claude.available/refresh/grade/cancel/setApiKey/test.
@@ -7553,6 +7812,123 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   });
 })();
 
+/* 89-data-kartlar.js — Bilim insanı kartlarının "derse katkı" metinleri.
+ * Q.data.kartlar[kartId] = { p1, p2, p3?, sinav: [2-3 madde] }
+ *   p1: kim / ne zaman / hangi bağlam (genel özet)
+ *   p2: bilime ve çip teknolojisine katkı (genel özet)
+ *   p3: YALNIZCA gerekliyse sezgi ya da yaygın yanılgı (yoksa alanı hiç yazma)
+ *   sinav: "Sınavda kesin bilmem gereken" maddeleri (kısa, formül/ilişki dahil)
+ * Kart kimlikleri sandık engelindeki kart.id ile aynıdır (s01-s10).
+ * KURAL: yalnızca kesin bilinen gerçekler. Emin olunmayan tarih/ülke/ödül yazılmaz.
+ * Dil: Türkçe anlatım, ders terimleri English (Türkçe). */
+(function(){
+  'use strict';
+  var Q = window.Q;
+  Q.data = Q.data || {};
+  Q.data.kartlar = {
+    czoch: {
+      p1: 'Jan Czochralski, Polonyalı bir kimyager ve metalurjistti. 1916\'da metallerin crystallization (kristalleşme) hızını incelerken, eriyik bir metalin içine daldırılan küçük bir kristalin yavaşça yukarı çekilerek büyütülebileceğini buldu. Bu yönteme bugün Czochralski (CZ) method (CZ yöntemi) denir.',
+      p2: 'CZ yönteminde melt (eriyik) içine seed crystal (tohum kristal) değdirilir, yavaşça döndürülerek yukarı çekilir; eriyik tohumun kristal düzenini sürdürerek katılaşır ve ortaya single crystal (tek kristal) bir ingot (külçe) çıkar. Yarıiletken endüstrisinin kullandığı silicon wafer (silisyum dilim) bu külçeden kesilir. Dopant (katkı) atomları eriyiğe eklenerek büyüme sırasında kristale yerleştirilebilir.',
+      p3: 'Sezgi: polycrystal (çok kristal) içinde her grain (tane) farklı yönde dizilidir. Grain boundary (tane sınırı) electron (elektron) saçar ve defect (kusur) merkezi gibi davranır; bu yüzden aygıt için tek kristal istenir. Yanılgı: wafer\'ın bir fabrikada atom atom "inşa edildiği" sanılır; aslında büyük bir tek kristal külçe çekilir ve dilimlenir.',
+      sinav: [
+        'CZ: seed crystal (tohum kristal) melt (eriyik) içine değer, döndürülerek yavaşça çekilir; sonuç single crystal (tek kristal) ingot (külçe).',
+        'Neden tek kristal: grain boundary (tane sınırı) yok; electron saçılması ve defect (kusur) etkisi azalır.',
+        'Silisyumun melting point (erime noktası) yaklaşık 1414 °C.'
+      ]
+    },
+    miller: {
+      p1: 'William Hallowes Miller, Cambridge\'de çalışan Galli bir mineralogist (mineralog) ve crystallographer (kristalograf) idi. 1839\'da yayımladığı kristalografi kitabında crystal plane (kristal düzlemi) adlandırmak için bugün Miller indices (Miller indisleri) dediğimiz sistemi kullandı.',
+      p2: 'Miller indices (Miller indisleri), bir düzlemin lattice (kafes) içindeki yönelimini üç küçük integer (tam sayı) ile yazmayı sağlar: (hkl). Yarıiletkende wafer yüzeyi bu notasyonla belirtilir, örneğin (100) ve (111). Farklı düzlemlerde atom yoğunluğu farklıdır; bu, etching (aşındırma), oxide (oksit) büyümesi ve surface (yüzey) özelliklerini etkiler.',
+      p3: 'Yanılgı: indisler kesişimin kendisi değildir. Önce intercepts (kesişimler) lattice constant (kafes sabiti) biriminde yazılır, sonra reciprocal (ters) alınır, sonra en küçük integer (tam sayı) oranına getirilir. Düzlem eksene paralelse intercept (kesişim) sonsuzdur ve indis 0 olur.',
+      sinav: [
+        'Adımlar: intercepts (kesişimler) → reciprocals (terslerin) → en küçük integers (tam sayılar) → (hkl).',
+        'Örnek: kesişimler 2, ∞, ∞ ise terslerin 1/2, 0, 0 olur; düzlem (100).',
+        '(hkl) bir plane (düzlem), [uvw] bir direction (yön), {hkl} eş değer düzlemler ailesi; cubic (kübik) kristalde [hkl] ⊥ (hkl).'
+      ]
+    },
+    einstein: {
+      p1: 'Albert Einstein 1905\'te, Max Planck\'ın 1900\'de önerdiği enerji paketleri fikrini ışığın kendisine uyguladı. Photoelectric effect (fotoelektrik olay) için, light (ışık) enerjisinin photon (foton) denen paketler hâlinde taşındığını öne sürdü. Bu çalışmaya Nobel Fizik Ödülü verildi.',
+      p2: 'Bir photon (foton) enerjisi E = hf\'dir. Bir electron (elektron) metalden kopmak için work function (iş fonksiyonu) φ kadar enerji gerektirir; kinetik enerji K_max = hf − φ olur. Eşik frequency (frekans) f₀ = φ/h\'dir. Bu fikir, photodetector (foto algılayıcı), solar cell (güneş pili) ve image sensor (görüntü algılayıcı) gibi ışıkla çalışan aygıtların temelidir ve classical wave theory (klasik dalga teorisi) ile açıklanamayan sonuçları çözdü.',
+      p3: 'Yanılgı: ışığı çok parlatırsak electron mutlaka kopar sanılır. Eşiğin altındaki frequency (frekans) için intensity (şiddet) ne kadar artarsa artsın electron kopmaz; intensity yalnızca kopan electron sayısını (akımı) belirler, her electron\'un enerjisini hf belirler.',
+      sinav: [
+        'E = hf; K_max = hf − φ; eşik f₀ = φ/h.',
+        'Eşiğin altında intensity (şiddet) artsa da emission (salım) olmaz.',
+        'Intensity (şiddet) → electron sayısı (akım); frequency (frekans) → K_max.'
+      ]
+    },
+    bohr: {
+      p1: 'Niels Bohr, Danimarkalı bir fizikçiydi. 1913\'te hydrogen atom (hidrojen atomu) için bir model önerdi ve bu çalışması sayesinde atomik spectrum (spektrum) çizgilerini ilk kez sayısal olarak açıkladı. 1922\'de Nobel Fizik Ödülü\'nü aldı.',
+      p2: 'Modelin ana fikri: electron (elektron) yalnızca belirli discrete energy levels (ayrık enerji seviyeleri) üzerinde bulunabilir ve bu durumlarda ışıma yapmaz; seviyeler arası transition (geçiş) sırasında hf = E_i − E_f enerjili photon (foton) yayılır ya da soğurulur. Hydrogen için E_n = −13,6 eV / n² olur. Bu, atomdaki energy level (enerji seviyesi) fikrinin başlangıcıdır; katılarda bu seviyeler birleşip energy band (enerji bandı) oluşturur.',
+      p3: 'Yanılgı: Bohr modeli "elektron gerçekten yörüngede döner" demek değildir. Sonradan wave function (dalga fonksiyonu) tanımı bu resmin yerini aldı. Sezgi: ground state (temel hâl) n = 1 en düşük seviyedir; electron daha aşağı inemez, bu yüzden atom çöküp yok olmaz.',
+      sinav: [
+        'E_n = −13,6 eV / n²; ground state (temel hâl) n = 1.',
+        'Photon (foton) enerjisi: hf = E_i − E_f.',
+        'Seviyeler discrete (ayrık); spektrum çizgili.'
+      ]
+    },
+    schro: {
+      p1: 'Erwin Schrödinger, Avusturyalı bir fizikçiydi. 1926\'da madde dalgası fikrini bir wave equation (dalga denklemi) hâline getirdi ve 1933\'te Nobel Fizik Ödülü\'nü paylaştı. Ünlü "kedi" düşünce deneyi sonraki yıllarda ortaya atıldı.',
+      p2: 'Time-independent Schrödinger equation (zamandan bağımsız Schrödinger denklemi): −(ħ²/2m) ψ″ + V(x) ψ = E ψ. Potansiyel V(x) ve boundary conditions (sınır koşulları) verildiğinde izin verilen energy levels (enerji seviyeleri) ve wave functions (dalga fonksiyonları) bu denklemden çıkar. Sonsuz potansiyel kuyusunda E_n = n²π²ħ² / (2mL²) olur. Katıların band structure (bant yapısı) hesabı bu denklemin periyodik potansiyelde çözülmesine dayanır.',
+      p3: 'Yanılgı: Schrödinger equation (Schrödinger denklemi) wave function\'ı "çökertir" sanılır. Denklem ψ\'yi deterministic (belirlenimci) olarak zamanla evriltir; collapse (çökme) ise measurement (ölçüm) postülasıdır. Sezgi: en düşük energy (enerji) sıfır olamaz; zero-point energy (sıfır noktası enerjisi) boundary condition (sınır koşulu) sonucudur, n = 0 çözümü ψ = 0 verir.',
+      sinav: [
+        '−(ħ²/2m) ψ″ + Vψ = Eψ; sonsuz kuyuda E_n = n²π²ħ² / (2mL²), n = 1, 2, 3, …',
+        'Energy quantization (enerji nicemlenmesi) boundary condition (sınır koşulu) sonucudur.',
+        'Denklem ψ\'yi çökertmez; collapse (çökme) measurement (ölçüm) ile olur.'
+      ]
+    },
+    broglie: {
+      p1: 'Louis de Broglie, Fransız bir fizikçiydi. 1924\'teki doktora tezinde ışığın hem dalga hem parçacık gibi davranmasının madde için de geçerli olabileceğini önerdi ve 1929\'da Nobel Fizik Ödülü\'nü aldı. Fikir, 1927\'de Davisson ve Germer\'in nikel kristalinden electron diffraction (elektron kırınımı) gözlemesiyle deneysel olarak desteklendi.',
+      p2: 'De Broglie wavelength (de Broglie dalga boyu): λ = h/p. Electron (elektron) gibi küçük kütleli parçacıkların dalga boyu kristal lattice (kafes) aralığıyla karşılaştırılabilir olabilir; bu yüzden kristalden diffraction (kırınım) gösterirler. Bu, Schrödinger\'in wave function (dalga fonksiyonu) yaklaşımının ve electron microscope (elektron mikroskobu) gibi araçların fiziksel temelidir.',
+      p3: 'Sezgi: günlük cisimler için momentum p çok büyüktür, bu yüzden λ = h/p fark edilemeyecek kadar küçüktür ve dalga davranışı görülmez. Dalga boyu momentuma ters orantılıdır: daha hızlı (daha yüksek p) parçacık, daha kısa λ.',
+      sinav: [
+        'λ = h/p; kinetik enerjiden p = √(2mE).',
+        'Electron diffraction (elektron kırınımı) matter wave (madde dalgası) kanıtıdır.',
+        'Büyük p → küçük λ; makroskobik cisimde dalga etkisi ihmal edilir.'
+      ]
+    },
+    born: {
+      p1: 'Max Born, Alman bir fizikçiydi. 1926\'da wave function (dalga fonksiyonu) ψ\'nin kendisinin ölçülemediğini, karesinin ise olasılığı belirlediğini öne sürdü. Bu probabilistic interpretation (olasılıksal yorum) çalışması için 1954\'te Nobel Fizik Ödülü\'nü aldı.',
+      p2: '|ψ(x)|² bir probability density (olasılık yoğunluğu)dur; [a, b] aralığında bulma olasılığı ∫|ψ|² dx ile verilir. Toplam olasılık 1 olmalıdır: normalization (normalizasyon) ∫|ψ|² dx = 1. Bir parçacığın nerede bulunacağı yalnızca olasılıkla söylenir; yarıiletkende electron\'un belirli bölgelerde bulunma olasılığı bu yorumla hesaplanır.',
+      p3: 'Yanılgı: ψ\'nin kendisi olasılıktır sanılır. ψ genel olarak complex (karmaşık) bir fonksiyondur ve doğrudan gözlenemez; gözlenen, |ψ|² ile verilen olasılıktır. Ayrıca |ψ|² olasılık değil, birim uzunluk başına olasılık yoğunluğudur.',
+      sinav: [
+        'P(a ≤ x ≤ b) = ∫ₐᵇ |ψ|² dx.',
+        'Normalization (normalizasyon): ∫ |ψ|² dx = 1.',
+        'Measurement (ölçüm) bir eigenvalue (özdeğer) verir; olasılığı |cₙ|².'
+      ]
+    },
+    heis: {
+      p1: 'Werner Heisenberg, Alman bir fizikçiydi. 1925\'te matrix mechanics (matris mekaniği) yaklaşımını geliştirdi, 1927\'de uncertainty principle (belirsizlik ilkesi)ni yayımladı ve 1932 Nobel Fizik Ödülü\'nü aldı.',
+      p2: 'Uncertainty principle (belirsizlik ilkesi): Δx Δp ≥ ħ/2. Position (konum) ne kadar keskin belirlenirse momentum o kadar belirsizleşir. Bu, confinement (hapsolma) altında zero-point energy (sıfır noktası enerjisi)nin neden sıfır olamadığını açıklar: parçacık küçük bir bölgeye sıkıştırıldıkça momentum yayılımı artar. Nano ölçekli aygıtlarda quantum confinement (kuantum hapsolma) etkisinin temel nedenidir.',
+      p3: 'Yanılgı: ilkenin ölçüm aletinin kusurundan ya da ölçümün sistemi "bozmasından" kaynaklandığı sanılır. Sebep, parçacığın wave nature (dalga doğası)dır: dar bir dalga paketi geniş bir momentum aralığı gerektirir. Günlük cisimlerde ħ çok küçük olduğundan etki fark edilmez.',
+      sinav: [
+        'Δx Δp ≥ ħ/2.',
+        'Neden: wave nature (dalga doğası); alet hatası değil.',
+        'Daha dar confinement (hapsolma) → daha büyük momentum belirsizliği → daha yüksek enerji.'
+      ]
+    },
+    pauli: {
+      p1: 'Wolfgang Pauli, Avusturya doğumlu bir fizikçiydi. 1925\'te exclusion principle (dışlama ilkesi)ni ortaya koydu ve 1945\'te Nobel Fizik Ödülü\'nü aldı.',
+      p2: 'Pauli exclusion principle (Pauli dışlama ilkesi): iki electron (elektron) aynı quantum state (kuantum durumu) içinde bulunamaz. Bir orbital ya da enerji seviyesinde zıt spin (dönü) ile en çok iki electron yer alır. Katıda N atom, N tane yakın enerji seviyesi verir; electron\'lar bu seviyeleri alttan doldurur, böylece energy band (enerji bandı) yapısı ve Fermi level (Fermi seviyesi) ortaya çıkar. Bir bandın dolu olup olmaması malzemenin conductor (iletken), semiconductor (yarıiletken) ya da insulator (yalıtkan) olmasını belirler.',
+      p3: 'Sezgi: dolu bir band (bant)ta boş seviye kalmadığı için electron\'lar enerji kazanıp hareket edemez; bu yüzden tamamen dolu band net akım taşımaz.',
+      sinav: [
+        'İki electron aynı quantum state (kuantum durumu) içinde olamaz; seviye başına en çok 2 electron (zıt spin).',
+        'N atom → N energy level (enerji seviyesi) → band (bant).',
+        'Dolu band akım taşımaz; iletim için kısmen dolu ya da bandgap (yasak enerji aralığı) üstüne uyarılma gerekir.'
+      ]
+    },
+    fermi: {
+      p1: 'Enrico Fermi, İtalyan bir fizikçiydi. 1926\'da electron gibi spin ½ taşıyan parçacıklar için statistics (istatistik) geliştirdi; aynı sonuca Paul Dirac da ulaştı, bu yüzden dağılıma Fermi-Dirac distribution (Fermi-Dirac dağılımı) denir. 1938\'de Nobel Fizik Ödülü\'nü aldı.',
+      p2: 'Fermi-Dirac dağılımı bir enerji seviyesinin dolu olma olasılığını verir: f(E) = 1 / (1 + exp((E − E_F)/kT)). Burada E_F, Fermi level (Fermi seviyesi)dir. Yarıiletkenlerde electron ve hole (delik) yoğunluğu bu dağılımla ve density of states (durum yoğunluğu) ile hesaplanır; Fermi level\'in bandgap (yasak enerji aralığı) içindeki konumu doping (katkılama) türünü belirler.',
+      p3: 'Sezgi: T = 0 K\'de f(E) bir step function (basamak fonksiyonu)dur: E_F altı tamamen dolu, üstü tamamen boş. Yanılgı: Fermi level\'de mutlaka bir enerji durumu bulunması gerekmez; yarıiletkenin bandgap içine düşebilir.',
+      sinav: [
+        'f(E) = 1 / (1 + exp((E − E_F)/kT)); her T için f(E_F) = 1/2.',
+        'T = 0 K\'de f(E) basamak fonksiyonu: E < E_F için 1, E > E_F için 0.',
+        'Oda sıcaklığında kT ≈ 0,0259 eV.'
+      ]
+    }
+  };
+})();
+
 /* 90-data-s01.js · İstasyon 01 · Kristal fırını verisi (E1)
  * Kaynak: oyun/istasyonlar/01-kristal-firini.md, şema: oyun/01-veri-semalari.md §3.
  * Ekler: Q.data.stations.s01
@@ -11721,7 +12097,12 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       ((s.temelTur && s.temelTur.kartlar) || []).forEach(function(k){ kart(k.baslik, [k.metin]); });
       (s.engeller || []).forEach(function(e){
         if (e.tip === 'kavram') kart('Kavram: ' + (e.baslik || ''), [e.gorev, e.ogrenilen]);
-        else if (e.tip === 'sandik') kart('Sandık' + (e.kart ? ' · ' + e.kart.id + ' (' + e.kart.yil + ')' : ''), [e.kart && e.kart.tekCumle].concat(e.ozet || []));
+        else if (e.tip === 'sandik') {
+          if (e.kart && Q.kartlar && Q.kartlar.detayDom && (Q.data.kartlar || {})[e.kart.id]) {
+            var kd = el('div', 'tk-kart'); kd.style.gridColumn = '1 / -1'; kd.appendChild(Q.kartlar.detayDom(e.kart.id, { acik: true }));
+            (e.ozet || []).length && kd.appendChild(el('p', 'tk-muted', 'Sandık özeti: ' + e.ozet.join(' · '))); grid.insertBefore(kd, grid.firstChild);
+          } else kart('Sandık' + (e.kart ? ' · ' + e.kart.id + ' (' + e.kart.yil + ')' : ''), [e.kart && e.kart.tekCumle].concat(e.ozet || []));
+        }
         else if (e.tip === 'kopru') kart('Zincir', [e.sonuc]);
       });
       if (!grid.children.length) grid.appendChild(el('div', 'tk-muted', 'Bu istasyonda kart yok.'));
