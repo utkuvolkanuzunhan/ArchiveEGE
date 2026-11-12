@@ -234,7 +234,7 @@
                     yardim.appendChild(ob2);
                   }
                   yardim.appendChild(dv); yer.appendChild(yardim);
-                  dv.addEventListener('click', function(){ if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; }); dogruSag = true; acikla(kutu, adim, cozum); res(); });
+                  dv.addEventListener('click', function(){ if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; }); dogruSag = true; acikla(kutu, adim, cozum); if (yardim && yardim.parentNode) yardim.parentNode.removeChild(yardim); res(); });
                 }
                 if (giris) { giris.select(); giris.focus(); }
                 sag.scrollTop = sag.scrollHeight;
