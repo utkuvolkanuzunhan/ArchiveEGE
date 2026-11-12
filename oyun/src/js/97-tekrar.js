@@ -330,7 +330,12 @@
       ((s.temelTur && s.temelTur.kartlar) || []).forEach(function(k){ kart(k.baslik, [k.metin]); });
       (s.engeller || []).forEach(function(e){
         if (e.tip === 'kavram') kart('Kavram: ' + (e.baslik || ''), [e.gorev, e.ogrenilen]);
-        else if (e.tip === 'sandik') kart('Sandık' + (e.kart ? ' · ' + e.kart.id + ' (' + e.kart.yil + ')' : ''), [e.kart && e.kart.tekCumle].concat(e.ozet || []));
+        else if (e.tip === 'sandik') {
+          if (e.kart && Q.kartlar && Q.kartlar.detayDom && (Q.data.kartlar || {})[e.kart.id]) {
+            var kd = el('div', 'tk-kart'); kd.style.gridColumn = '1 / -1'; kd.appendChild(Q.kartlar.detayDom(e.kart.id, { acik: true }));
+            (e.ozet || []).length && kd.appendChild(el('p', 'tk-muted', 'Sandık özeti: ' + e.ozet.join(' · '))); grid.insertBefore(kd, grid.firstChild);
+          } else kart('Sandık' + (e.kart ? ' · ' + e.kart.id + ' (' + e.kart.yil + ')' : ''), [e.kart && e.kart.tekCumle].concat(e.ozet || []));
+        }
         else if (e.tip === 'kopru') kart('Zincir', [e.sonuc]);
       });
       if (!grid.children.length) grid.appendChild(el('div', 'tk-muted', 'Bu istasyonda kart yok.'));

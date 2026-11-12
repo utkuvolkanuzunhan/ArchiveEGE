@@ -161,6 +161,34 @@ for (var n = 1; n <= 10; n++) {
   catch (e) { hata(dosya, 'yükleme', e.message); }
 }
 
+/* ---- 89-data-kartlar.js: bilim insanı kartı metinleri ---- */
+(function () {
+  var dosya = '89-data-kartlar.js';
+  if (!fs.existsSync(path.join(JS, dosya))) { uyarilar.push(dosya + ': dosya yok (atlandı)'); return; }
+  var kd;
+  try { kd = yukle(dosya).kartlar; } catch (e) { hata(dosya, 'yükleme', e.message); return; }
+  if (!kd) { hata(dosya, 'Q.data.kartlar', 'tanımlı değil'); return; }
+  var kimlikler = [];
+  for (var n = 1; n <= 10; n++) {
+    var sid = 's' + (n < 10 ? '0' : '') + n, f = '90-data-' + sid + '.js';
+    if (!fs.existsSync(path.join(JS, f))) continue;
+    try {
+      var st = yukle(f).stations[sid];
+      (st.engeller || []).forEach(function (e) { if (e.tip === 'sandik' && e.kart && e.kart.id) kimlikler.push(e.kart.id); });
+    } catch (e) { /* istasyon hatası yukarıda raporlandı */ }
+  }
+  kimlikler.forEach(function (id) {
+    var k = kd[id];
+    if (!k) { hata(dosya, id, 'sandık kartı için metin yok'); return; }
+    ['p1', 'p2'].forEach(function (a) { sinir(dosya, id + '.' + a, k[a], 90); });
+    if (k.p3 !== undefined) sinir(dosya, id + '.p3', k.p3, 90);
+    if (!Array.isArray(k.sinav) || k.sinav.length < 2 || k.sinav.length > 3) hata(dosya, id + '.sinav', '2-3 madde olmalı');
+    else k.sinav.forEach(function (m, i) { sinir(dosya, id + '.sinav[' + i + ']', m, 28); });
+    Object.keys(k).forEach(function (a) { if (['p1', 'p2', 'p3', 'sinav'].indexOf(a) < 0) hata(dosya, id + '.' + a, 'bilinmeyen alan'); });
+  });
+  Object.keys(kd).forEach(function (id) { if (kimlikler.indexOf(id) < 0) hata(dosya, id, 'hiçbir sandık kartına bağlı değil'); });
+})();
+
 uyarilar.forEach(function (u) { process.stdout.write('\x1b[33mUYARI ' + u + '\x1b[0m\n'); });
 if (hatalar.length) {
   hatalar.forEach(function (h) { process.stdout.write('\x1b[31mHATA ' + h + '\x1b[0m\n'); });
