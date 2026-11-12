@@ -74,6 +74,44 @@
             "Cubic (kübik) türler: sc, bcc, fcc.",
             "Bir köşe atomu 8 hücreyle paylaşılır, yüz atomu 2 hücreyle paylaşılır." ] }
         ],
+        nasil: [
+          {
+            "baslik": "Nasıl yapılır: Miller indisi",
+            "madde": [
+              "1) Düzlemin x, y, z eksenlerini kestiği yerleri a birimiyle oku. Eksene paralelse kesişim ∞ olur.",
+              "2) Her kesişimin tersini yaz (1/sayı). 1/∞ = 0 olduğundan paralel eksen indise 0 verir.",
+              "3) Kesir kaldıysa üç sayıyı ortak payda ile çarp; ortak bölen varsa böl. En küçük tam sayılar kalmalı.",
+              "4) Sonucu virgülsüz (hkl) yaz. Negatif kesişim için sayının üstüne çizgi (bar) koy."
+            ]
+          },
+          {
+            "baslik": "Çözülmüş örnek: Miller indisi",
+            "madde": [
+              "Soru: düzlem eksenleri 3, 1 ve 3/2 noktalarında kesiyor (kesişimler).",
+              "Ters: 1/3, 1/1, 2/3 → 1/3, 1, 2/3.",
+              "Ortak payda 3: her sayıyı 3 ile çarp → 1, 3, 2. Başka ortak bölen yok. Sonuç (132).",
+              "Paralel örnek: 3, 3, ∞ → ters 1/3, 1/3, 0 → ×3 → (110)."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: d, atom, yön",
+            "madde": [
+              "d aralığı: d = a/√(h²+k²+l²). Örnek: a = 0,40 nm, (111) → d = 0,40/√3 = 0,231 nm.",
+              "Atom sayma: köşe atomu 8 hücrede, yüz atomu 2 hücrede ortaktır; payları 1/8 ve 1/2, hücre içi atom 1 sayılır.",
+              "Örnek (farazi hücre): 8 köşe, 6 yüz, 1 iç atom → 8·1/8 + 6·1/2 + 1 = 5 atom.",
+              "Yön [uvw]: yön vektörünün bileşenlerini en küçük tam sayılara indir, köşeli parantezle yaz. Örnek: [2 0 0] → [1 0 0]."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: simülasyonlar",
+            "madde": [
+              "Kafes sim'i: sc, bcc, fcc veya diamond (elmas) düğmesiyle kafesi seç, atomlara bak.",
+              "Say (Count) düğmesine bas; − ve + ile sayını ayarla, Kontrol ile sına.",
+              "Miller sim'i: x, y, z satırlarında kesişim için 1, 2, 3 veya ∞ düğmesine bas.",
+              "Üst şerit sırayla Intercept, Reciprocal, Integers, Result adımlarını gösterir; sonuç (hkl) sol üstte yazar."
+            ]
+          }
+        ],
         gorev: "Say düğmesine bas; fcc unit cell (birim hücre) atom sayısını determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
         ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },
@@ -92,6 +130,13 @@
           "Reciprocals (tersleri) al",
           "Fractions (kesirleri) en küçük integers (tam sayılara) çevir",
           "Parentheses (parantez) içine yaz: (hkl)"
+        ],
+        ipucu: "Önce ham veri, en son yazım biçimi: elindeki sayı hangi adımda hazır olur?",
+        nedenler: [
+          "Düzlemin yeri bilinmeden hesap başlayamaz; kesişimler tüm hesabın ham verisidir.",
+          "Tersler, ∞ kesişimi 0 yapar ve düzlemin eğimini sayılara dökerek kesirleri ortaya çıkarır.",
+          "Terslerden çıkan kesirler ortak katla çarpılır; indis en küçük tam sayılar olmalıdır.",
+          "Yazım en sonda gelir: tam sayılar hazır olunca (hkl) biçiminde parantez içine alınır."
         ],
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
       { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,

@@ -56,6 +56,17 @@
       var nasil = el('span', 'kopru-nasil', '  · Kartlara dokun, sırayla dizilir. Dolunca Kontrol.');
       nasil.style.cssText = 'font-family:inherit;font-size:14px;color:var(--muted,#b9b0e0);';
       head.appendChild(nasil);
+      /* İpucu satırı + önceki bilgiyi yeniden açan düğme (istasyon kartları) */
+      var ipSatir = el('div', 'kopru-ipucu-satir');
+      ipSatir.style.cssText = 'display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:14px;line-height:1.3;color:var(--muted,#b9b0e0);';
+      ipSatir.appendChild(el('span', null, 'İpucu: ' + (ob.ipucu || 'Her adım bir öncekinin sonucudur; önce neyin gerektiğini, sonra neyin çıktığını düşün.')));
+      try {
+        if (Q.onBilgi && Q.onBilgi.var && ctx.stationId && Q.onBilgi.var(ctx.stationId, { hepsi: true })) {
+          var ob2 = Q.onBilgi.dugme(ctx.stationId, 'Önceki bilgiyi aç', { hepsi: true });
+          ob2.style.cssText = 'min-height:28px;padding:1px 10px;font-size:14px;';
+          ipSatir.appendChild(ob2);
+        }
+      } catch (e) {}
       var poolBox = el('div', 'kopru-havuz');
       poolBox.setAttribute('aria-label', 'Kartlar');
       poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
@@ -71,11 +82,12 @@
       msg.setAttribute('aria-live', 'polite');
       msg.style.cssText = 'display:flex;flex-direction:column;gap:6px;';
       root.appendChild(head);
+      root.appendChild(ipSatir);
       root.appendChild(bar); /* Kontrol her ekranda görünür kalsın (1366x768) */
       root.appendChild(poolBox);
       root.appendChild(slotBox);
       if (tamir(ctx)) {
-        var ip = el('div', 'kopru-ipucu', ob.ipucu || 'Soruyu yeniden oku');
+        var ip = el('div', 'kopru-ipucu', 'Soruyu yeniden oku');
         ip.style.cssText = 'color:var(--muted);font-size:var(--fs-small);';
         root.appendChild(ip);
       }
@@ -288,7 +300,12 @@
           yz.appendChild(el('b', null, 'Cevabın yanlış. Doğru sıra:'));
           var ol = el('ol', 'kopru-dogru-sira');
           ol.style.cssText = 'margin:4px 0 0;padding-left:22px;';
-          blocks.forEach(function(t){ ol.appendChild(el('li', null, t)); });
+          var ned = Array.isArray(ob.nedenler) ? ob.nedenler : [];
+          blocks.forEach(function(t, bi){
+            var li = el('li', null, t);
+            if (ned[bi]) { var nd = el('div', 'kopru-neden', 'Neden: ' + ned[bi]); nd.style.cssText = 'font-size:14px;color:var(--muted,#b9b0e0);font-weight:600;'; li.appendChild(nd); }
+            ol.appendChild(li);
+          });
           yz.appendChild(ol);
           msg.appendChild(yz);
           if (ob.sonuc) msg.appendChild(el('div', 'kopru-sonuc', ob.sonuc));

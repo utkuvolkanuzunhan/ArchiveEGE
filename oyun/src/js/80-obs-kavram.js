@@ -53,8 +53,9 @@
         var host = ctx.host;
         host.textContent = '';
         var ay = (ctx.state && ctx.state.ayarlar) || {};
-        if (ob.onBilgi && ob.onBilgi.length && Q.onBilgi && !ay.hikayeAtla) {
-          await Q.onBilgi.goster(host, ob.onBilgi, { son: 'Göreve geç' });
+        var kartlar = (ob.onBilgi || []).concat(ob.nasil || []);   /* nasil = 'Nasıl yapılır' sayfaları, sim'den ÖNCE */
+        if (kartlar.length && Q.onBilgi && !ay.hikayeAtla) {
+          await Q.onBilgi.goster(host, kartlar, { son: 'Göreve geç' });
           host.textContent = '';
         }
         var sure = ctx.sureler || (Q.obs && Q.obs.sureler) || {};
@@ -86,6 +87,10 @@
         if (ob.sim && ob.sim.basari && simPrm.basari == null) simPrm.basari = ob.sim.basari; /* basari veride sim.basari altinda */
         simObj = Q.sim.mount(ob.sim && ob.sim.modul, simHost, simPrm, api);
 
+        /* sim açıkken "Nasıl yapılır?": kartları yeniden açar (kavram kapısının kendi kartları dahil) */
+        if (Q.onBilgi && Q.onBilgi.var && ctx.stationId && Q.onBilgi.var(ctx.stationId)) {
+          butonlar.appendChild(Q.onBilgi.dugme(ctx.stationId, 'Nasıl yapılır?'));
+        }
         var ipBtn = btn('İpucu'); ipBtn.hidden = true;
         var gecBtn = btn('Geç'); gecBtn.hidden = true;
         butonlar.appendChild(ipBtn); butonlar.appendChild(gecBtn);

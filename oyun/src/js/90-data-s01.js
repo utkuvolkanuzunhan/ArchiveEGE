@@ -77,6 +77,44 @@
             "Ingot (külçe) dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
             "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir." ] }
         ],
+        nasil: [
+          {
+            "baslik": "Nasıl yapılır: elektron simülasyonu",
+            "madde": [
+              "1) Single (Tek), Poly (Çok) ve Amorphous (Amorf) düğmelerinden birine bas; o malzemeye bir electron (elektron) gönderilir.",
+              "2) Elektronun yoluna bak: düz gidiyorsa az saçılma, sık yön değiştiriyorsa çok saçılma var demektir.",
+              "3) Üç malzemeyi de sırayla dene ve yolları karşılaştır.",
+              "4) Üçünü de denediğinde kapı açılır; elektronun hangi malzemede en uzağa gittiğine dikkat et."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: karşılaştırma sorusu",
+            "madde": [
+              "1) Önce malzemede kaç bozukluk olduğuna bak: tane sınırı (grain boundary) ya da düzensiz atomlar.",
+              "2) Bozukluk çoksa electron (elektron) daha sık saçılır (scattering); bu sebep-sonuç zincirinin ilk halkasıdır.",
+              "3) Saçılma sıklaştıkça iki saçılma arası mesafe, yani mean free path (serbest yol), kısalır.",
+              "4) Örnek: tane boyu 50 nm ise elektron en fazla yaklaşık 50 nm sonra sınıra çarpar; tane 10 nm ise yaklaşık 10 nm sonra."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: atom yoğunluğu",
+            "madde": [
+              "1) Hücre başına atom sayısı N: sc 1, bcc 2, fcc 4, diamond (elmas) 8.",
+              "2) Kenar a'yı cm'ye çevir (1 nm = 10⁻⁷ cm), sonra hacmi bul: V = a³.",
+              "3) Yoğunluk n = N/V. Örnek: germanium (germanyum), a = 0,565 nm, N = 8 → V = 1,80×10⁻²² cm³.",
+              "4) n = 8 / 1,80×10⁻²² ≈ 4,4×10²² atom/cm³. Birimi her zaman yaz."
+            ]
+          },
+          {
+            "baslik": "Nasıl yapılır: sıralama sorusu",
+            "madde": [
+              "1) Önce kök sebebi bul: başka hiçbir adımdan çıkmayan adım en başa gider; sonuç ya da özellik en sona.",
+              "2) Komşu iki adımı 'bu yüzden' ile bağla; bağlanmıyorsa sıra yanlıştır.",
+              "3) Örnek (başka konu): tane sınırı artar → saçılma artar → serbest yol kısalır → direnç büyür.",
+              "4) Yanlış sıra denersen oyun her adımın nedenini gösterir; ilk deneme öğrenme fırsatıdır."
+            ]
+          }
+        ],
         gorev: "Electron (elektron) üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
         tanitim: "Crystal (kristal): atomlar uzun menzilde düzenli. Polycrystalline (çok kristalli): düzenli taneler, aralarında grain boundary (tane sınırı). Amorphous (amorf): düzen yok. Mean free path (serbest yol): elektronun çarpmadan gittiği mesafe.",
         sim: { modul: "kristal_tur", params: { mod: "tur" }, basari: { hepsiniDene: true } },
@@ -103,6 +141,13 @@
         onNot: "Lattice (kafes): atomların tekrar eden dizilimi. Periodic potential (periyodik potansiyel): elektron, kafesin tekrar eden atom çekimini görür. Energy band (enerji bandı): elektronun sahip olabileceği izinli enerji aralığı.",
         soru: "Zinciri sıraya diz",
         bloklar: ["Lattice (kafes) periyodik tekrar eder", "Electron (elektron) periodic potential (periyodik potansiyel) görür", "Energy bands (enerji bantları) net oluşur", "Properties (özellikler) öngörülebilir ve tekrarlanabilir"],
+        ipucu: "Kök sebep ilk sırada; ölçülebilir özellik (sonuç) en sonda.",
+        nedenler: [
+          "Her şey atomların tekrar eden dizilişinden başlar; kök sebep budur.",
+          "Tekrar eden kafes, elektrona tekrar eden bir çekim manzarası sunar.",
+          "Periyodik potansiyel, elektronun alabileceği enerjileri net aralıklara (bantlara) ayırır.",
+          "Bantlar net olduğu için özellikler önceden hesaplanır ve her üretimde tekrarlanır."
+        ],
         sonuc: "Periodic lattice (periyodik kafes), periodic potential (periyodik potansiyel), net energy bands (enerji bantları), öngörülebilir device (aygıt)."
       },
       {

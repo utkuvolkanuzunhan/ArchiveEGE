@@ -8,7 +8,7 @@
   function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
 
   function goster(host, kartlar, opt){
-    kartlar = (kartlar || []).slice(0, 3);
+    kartlar = (kartlar || []).slice(0, 12);
     if (!kartlar.length) return Promise.resolve();
     opt = opt || {};
     return new Promise(function(res){
@@ -49,6 +49,7 @@
       }
       function bit(){
         if (bitti) return; bitti = true;
+        if (opt.ref) opt.ref.bit = null;
         document.removeEventListener('keydown', key, true);
         host.textContent = '';
         res();
@@ -60,6 +61,7 @@
         else if (e.key === 'ArrowLeft') { e.preventDefault(); once(); }
         else if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); e.stopPropagation(); sonra(); }
       }
+      if (opt.ref) opt.ref.bit = bit;
       geri.addEventListener('click', once);
       ileri.addEventListener('click', sonra);
       document.addEventListener('keydown', key, true);
@@ -67,11 +69,51 @@
     });
   }
 
-  function hepsi(stationId){
+  /* İstasyon engellerinden kart listesi. alan: 'onBilgi' | 'nasil' | ikisi birden (varsayılan, engel sırasıyla).
+   * 'nasil' = kavram engelindeki "Nasıl yapılır" sayfaları (tarif + çözülmüş örnek + sim kullanımı). */
+  function topla(stationId, alanlar){
     var st = Q.data && Q.data.stations && Q.data.stations[stationId], out = [];
-    ((st && st.engeller) || []).forEach(function(o){ if (Array.isArray(o.onBilgi)) out = out.concat(o.onBilgi); });
+    ((st && st.engeller) || []).forEach(function(o){
+      alanlar.forEach(function(a){ if (Array.isArray(o[a])) out = out.concat(o[a]); });
+    });
     return out;
   }
+  function hepsi(stationId){ return topla(stationId, ['onBilgi', 'nasil']); }
+  function nasilKartlari(stationId){ return topla(stationId, ['nasil']); }
+  /* Düğmeyle açılan kart seti: nasil varsa yalnızca onlar, yoksa (hepsi:true ise her zaman) bütün kartlar */
+  function acKartlar(stationId, opt){
+    var n = nasilKartlari(stationId);
+    return (n.length && !(opt && opt.hepsi)) ? n : hepsi(stationId);
+  }
+  var acikOv = null;
+  /* Üstte bir kaplama açar, kartları gezdirir, bitince/Kapat ile kapanır. Alttaki engel durumunu değiştirmez. */
+  function ac(stationId, opt){
+    var kartlar = acKartlar(stationId, opt);
+    if (!kartlar.length || acikOv) return Promise.resolve();
+    var ov = el('div', 'ob-onbilgi-kaplama');
+    ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', 'Bilgi kartları');
+    ov.style.cssText = 'position:fixed;inset:0;z-index:55;background:rgba(11,6,32,.82);display:flex;align-items:center;justify-content:center;padding:12px;';
+    var panel = el('div', 'ob-onbilgi-panel');
+    panel.style.cssText = 'position:relative;background:var(--panel,#1a1033);color:var(--ink,#fff);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);box-shadow:var(--shadow-sm);max-width:780px;width:100%;max-height:94vh;overflow:auto;';
+    var ref = {};
+    var x = el('button', 'btn ob-onbilgi-kapat', '✕ Kapat'); x.type = 'button';
+    x.style.cssText = 'position:absolute;top:8px;right:10px;z-index:2;';
+    x.addEventListener('click', function(){ if (ref.bit) ref.bit(); });
+    panel.appendChild(x);
+    var govde = el('div'); panel.appendChild(govde); ov.appendChild(panel);
+    document.body.appendChild(ov); acikOv = ov;
+    return goster(govde, kartlar, { son: 'Kapat', ref: ref }).then(function(){
+      if (ov.parentNode) ov.parentNode.removeChild(ov); acikOv = null;
+    });
+  }
+  function var_(stationId, opt){ return acKartlar(stationId, opt).length > 0; }
+  /* Küçük "Nasıl yapılır?" düğmesi; tıklayınca ac(). etiket verilmezse 'Nasıl yapılır?' */
+  function dugme(stationId, etiket, opt){
+    var b = el('button', 'btn ob-onbilgi-ac', etiket || 'Nasıl yapılır?'); b.type = 'button';
+    b.setAttribute('aria-haspopup', 'dialog');
+    b.addEventListener('click', function(){ ac(stationId, opt); });
+    return b;
+  }
 
-  Q.onBilgi = { goster: goster, hepsi: hepsi };
+  Q.onBilgi = { goster: goster, hepsi: hepsi, nasil: nasilKartlari, ac: ac, var: var_, dugme: dugme };
 })();

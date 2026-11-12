@@ -74,6 +74,16 @@ function engel(d, st, e, i) {
       else p.madde.forEach(function (m, k) { sinir(d, b + '.madde[' + k + ']', m, 25); });
     });
   }
+  if (e.nasil !== undefined) {
+    if (e.tip !== 'kavram') hata(d, a + '.nasil', 'yalnızca kavram engelinde olur');
+    else if (!Array.isArray(e.nasil) || e.nasil.length < 1 || e.nasil.length > 4) hata(d, a + '.nasil', '1-4 sayfa olmalı');
+    else e.nasil.forEach(function (p, j) {
+      var b = a + '.nasil[' + j + ']';
+      sinir(d, b + '.baslik', p && p.baslik, 6);
+      if (!p || !Array.isArray(p.madde) || p.madde.length < 1 || p.madde.length > 4) hata(d, b + '.madde', '1-4 madde olmalı');
+      else p.madde.forEach(function (m, k) { sinir(d, b + '.madde[' + k + ']', m, 25); });
+    });
+  }
   switch (e.tip) {
     case 'hikaye':
       if (!Array.isArray(e.satirlar) || e.satirlar.length !== 3) hata(d, a + '.satirlar', 'tam 3 satır olmalı');
@@ -106,6 +116,11 @@ function engel(d, st, e, i) {
       if (!Array.isArray(e.bloklar) || [4, 5].indexOf(e.bloklar.length) < 0) hata(d, a + '.bloklar', 'uzunluk 4 veya 5 olmalı');
       else e.bloklar.forEach(function (b, j) { sinir(d, a + '.bloklar[' + j + ']', b, 8); });
       sinir(d, a + '.sonuc', e.sonuc, 25);
+      if (e.ipucu !== undefined) sinir(d, a + '.ipucu', e.ipucu, 25);
+      if (e.nedenler !== undefined) {
+        if (!Array.isArray(e.nedenler) || !Array.isArray(e.bloklar) || e.nedenler.length !== e.bloklar.length) hata(d, a + '.nedenler', 'bloklar ile aynı uzunlukta olmalı');
+        else e.nedenler.forEach(function (n, j) { sinir(d, a + '.nedenler[' + j + ']', n, 25); });
+      }
       break;
     case 'patron':
       sinir(d, a + '.giris', e.giris, 14);

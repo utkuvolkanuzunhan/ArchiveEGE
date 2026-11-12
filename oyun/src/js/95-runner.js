@@ -262,6 +262,13 @@
     try { if (Q.ui && Q.ui.dock) { Q.ui.dock.clear(); host = Q.ui.dock.mount(host) || host; } } catch (e) { console.error(e); }
     var ctx = { stationId: r.id, index: i, istasyon: r.ist, host: host, runway: rw, ui: Q.ui, claude: Q.claude, sim: Q.sim, battle: Q.battle, art: Q.art, state: Q.state };
     rw.setObstacleState('aktif');                          // 5
+    /* "Nasıl yapılır?" düğmesi: kavram/köprü kendi düğmesini taşır; diğer sorulu engellerde dock köşesinde */
+    try {
+      if (['dusman', 'tahmin', 'tuzak', 'patron'].indexOf(ob.tip) >= 0 && Q.onBilgi && Q.onBilgi.var && Q.onBilgi.var(r.id)) {
+        var dk = document.getElementById('dock');
+        if (dk) { var nb = Q.onBilgi.dugme(r.id, 'Nasıl yapılır?'); nb.style.cssText = 'position:absolute;top:6px;right:10px;z-index:3;min-height:30px;padding:2px 10px;font-size:14px;'; dk.appendChild(nb); }
+      }
+    } catch (e) { console.error(e); }
     if (ob.onNot) { try { r.onNotIptal = null; await onNotGoster(host, ob, r); } catch (e) { console.error(e); } r.onNotIptal = null; if (!alive(r)) return; }
     var h = Q.obs.handlers && Q.obs.handlers[ob.tip], sonuc = null;
     if (!h || typeof h.enter !== 'function') { toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: '' }; r.skipApply = true; }
