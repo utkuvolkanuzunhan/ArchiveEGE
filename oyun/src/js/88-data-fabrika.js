@@ -125,7 +125,7 @@
         kisa: 'Bant testi',
         rol: 'Çok atom yan yana gelince enerji seviyeleri bantlara dönüşür; aralarında bandgap (yasak enerji aralığı) kalır.',
         neden: 'Malzemenin metal, semiconductor (yarıiletken) ya da insulator (yalıtkan) olması bant yapısına bağlıdır.',
-        bagliKavramlar: ['Energy band (enerji bandı)', 'Bandgap (yasak enerji aralığı)', 'Valence band (değerlik bandı)', 'Conduction band (iletim bandı)'],
+        bagliKavramlar: ['Energy band (enerji bandı)', 'Bandgap (yasak enerji aralığı)', 'Valence band (valans bandı)', 'Conduction band (iletim bandı)'],
         miniSoru: {
           soru: 'Bir kristalde energy bands (enerji bantları) neden oluşur?',
           secenekler: [
@@ -144,7 +144,7 @@
           soru: 'Fermi level (Fermi seviyesi) neyi belirtir?',
           secenekler: [
             s('Seviyenin dolu olma olasılığının 1/2 olduğu enerjiyi', true, 'Fermi-Dirac distribution (Fermi-Dirac dağılımı) bu enerjide 1/2 verir.'),
-            s('Elektronların hep dolu olduğu en üst bandı', false, 'Bu valence band (değerlik bandı) olur, Fermi seviyesi değildir.'),
+            s('Elektronların hep dolu olduğu en üst bandı', false, 'Bu valence band (valans bandı) olur, Fermi seviyesi değildir.'),
             s('Elektronların sürüklenme hızını', false, 'Drift velocity (sürüklenme hızı) ayrı bir kavramdır.')
           ]
         }

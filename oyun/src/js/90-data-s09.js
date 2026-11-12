@@ -28,7 +28,7 @@
       sec('Conduction band (iletim bandı) yarı doludur', false, 'Hayır. Yarı dolu band (bant) metal (metal) özelliğidir.')
     ],
     kusurSkin: 'bant_bosluk',
-    ipucu: "Dolu band ve E_g: \"Nasıl yapılır: malzemeyi belirle\" kartındaki Adım 2-3'e bak."
+    ipucu: "Dolu band ve Eg: \"Nasıl yapılır: malzemeyi belirle\" kartındaki Adım 2-3'e bak."
   };
 
   var o05 = {
@@ -81,7 +81,7 @@
         onBilgi: [
           { baslik: "Energy band (enerji bandı) nasıl oluşur", madde: [
             "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır. Atomlar yaklaştıkça örtüşme artar, band (bant) genişler.",
-            "Yakın seviyeler birleşip energy band (enerji bandı) olur; N ≈ 10^22 için seviye aralığı ısıl enerjiden (kT) çok küçüktür, band sürekli gibi davranır.",
+            "Yakın seviyeler birleşip energy band (enerji bandı) olur; N ≈ 10²² için seviye aralığı ısıl enerjiden (kT) çok küçüktür, band sürekli gibi davranır.",
             "Tek infinite well (sonsuz kuyu) bant vermez; bant, çok atomlu periodic potential (periyodik potansiyel) içinde olur.",
             "Crystal (kristal) düzenli olduğu için bantlar öngörülebilir; amorf yapıda bu düzen bozulur." ] },
           { baslik: "Pauli ilkesi ve doluluk", madde: [
@@ -91,33 +91,33 @@
             "Sık karışan nokta: tam dolu band (bant) boş seviye bırakmadığı için akım taşımaz; yarı dolu band (bant) taşır." ] },
           { baslik: "Bandgap (yasak enerji aralığı), malzeme", madde: [
             "Valence band (valans bandı): dolu üst band. Conduction band (iletim bandı): üstteki, akım taşıyabilen band.",
-            "Bandgap (yasak enerji aralığı) E_g (birim eV): iki band arası; bu enerjide allowed state (izinli durum) yoktur.",
-            "Metal (metal): band yarı dolu ya da örtüşür. Insulator (yalıtkan): büyük E_g (elmas ≈ 5,5 eV).",
-            "Semiconductor (yarıiletken): küçük E_g (silikon ≈ 1,1 eV). Ayrım probability (olasılık) değil, band (bant) yapısıdır." ] }
+            "Bandgap (yasak enerji aralığı) Eg (birim eV): iki band arası; bu enerjide allowed state (izinli durum) yoktur.",
+            "Metal (metal): band yarı dolu ya da örtüşür. Insulator (yalıtkan): büyük Eg (elmas ≈ 5,5 eV).",
+            "Semiconductor (yarıiletken): küçük Eg (silikon ≈ 1,1 eV). Ayrım probability (olasılık) değil, band (bant) yapısıdır." ] }
         ],
         nasil: [
           { baslik: "Nasıl yapılır: malzemeyi belirle", madde: [
             "Adım 1: kapasiteyi bul. N atom (atom) N seviye verir, her seviye 2 electron (elektron) alır; band (bant) kapasitesi 2N olur.",
             "Adım 2: electron (elektron) sayısını kapasiteyle karşılaştır. Band (bant) yarı doluysa metal (metal); tam doluysa Adım 3.",
-            "Adım 3: tam dolu bandın üstündeki bandgap (yasak enerji aralığı) E_g'ye bak: birkaç eV ise insulator (yalıtkan), yaklaşık 1 eV ise semiconductor (yarıiletken).",
-            "Örnek: N = 10, kapasite 20. 10 electron (elektron) varsa band (bant) yarı dolu: metal. 20 electron ve E_g = 6 eV ise insulator (yalıtkan)." ] },
+            "Adım 3: tam dolu bandın üstündeki bandgap (yasak enerji aralığı) Eg'ye bak: birkaç eV ise insulator (yalıtkan), yaklaşık 1 eV ise semiconductor (yarıiletken).",
+            "Örnek: N = 10, kapasite 20. 10 electron (elektron) varsa band (bant) yarı dolu: metal. 20 electron ve Eg = 6 eV ise insulator (yalıtkan)." ] },
           { baslik: "Nasıl yapılır: gap ve foton", madde: [
-            "Foton enerjisi E = hc/λ, hc = 1239,84 eV·nm. Elektronu bandgap (yasak enerji aralığı) üstüne çıkarmak için E ≥ E_g gerekir.",
-            "Adım 1: E_g'yi eV yaz. Adım 2: λ_max = hc / E_g hesapla. Bundan uzun dalga boyu soğurulmaz.",
-            "Örnek: germanium (germanyum) E_g = 0,67 eV. λ_max = 1239,84 / 0,67 ≈ 1850 nm; 2000 nm fotonun enerjisi E_g'den küçüktür, soğurulmaz.",
-            "Tersi: electron (elektron) iletim bandından alta inerse yaklaşık E_g enerjili foton yayılır; dalga boyu aynı formülle bulunur." ] },
+            "Foton enerjisi E = hc/λ, hc = 1239,84 eV·nm. Elektronu bandgap (yasak enerji aralığı) üstüne çıkarmak için E ≥ Eg gerekir.",
+            "Adım 1: Eg'yi eV yaz. Adım 2: λmax = hc / Eg hesapla. Bundan uzun dalga boyu soğurulmaz.",
+            "Örnek: germanium (germanyum) Eg = 0,66 eV. λmax = 1239,84 / 0,66 ≈ 1879 nm; 2000 nm fotonun enerjisi Eg'den küçüktür, soğurulmaz.",
+            "Tersi: electron (elektron) iletim bandından alta inerse yaklaşık Eg enerjili foton yayılır; dalga boyu aynı formülle bulunur." ] },
           { baslik: "Nasıl yapılır: zincir ve cevap", madde: [
             "Zincir sırası nedensellik sırasıdır: atomlar yaklaşır, seviyeler yarılır, çizgiler yığılıp band (bant) olur, bantlar arası boşluk bandgap (yasak enerji aralığı) kalır.",
             "Neden: yarılma atomların etkileşiminden doğar; tek atomda yarılma olmaz. Band (bant) ancak çok yakın çizgi olunca oluşur; gap ise bantlardan sonra kalan boşluktur.",
             "Dolu band (bant) neden akım taşımaz: electron (elektron) hareket için boş seviye ister, tam dolu bandda komşu boş seviye yoktur.",
-            "Açık cevap şablonu: (1) seviyeler yarılır, (2) band (bant) olur, (3) Pauli kapasitesi, (4) doluluk ve E_g ile malzemeyi sınıfla." ] },
+            "Açık cevap şablonu: (1) seviyeler yarılır, (2) band (bant) olur, (3) Pauli kapasitesi, (4) doluluk ve Eg ile malzemeyi sınıfla." ] },
           { baslik: "Nasıl yapılır: bant simülasyonu", madde: [
             "N kaydırıcısı atom (atom) sayısını 1'den 64'e çıkarır; N arttıkça her seviye N çizgiye yarılır ve çizgiler band (bant) oluşturur.",
-            "Üç düğme malzemeyi seçer: Metal, Insulator (yalıtkan), Semiconductor (yarıiletken). Alttaki satırda E_g değeri görünür.",
+            "Üç düğme malzemeyi seçer: Metal, Insulator (yalıtkan), Semiconductor (yarıiletken). Alttaki satırda Eg değeri görünür.",
             "Fill electrons (elektron doldur) düğmesi electron'ları alttan yukarı doldurur; dolum bitince akım taşıyıp taşımadığı yazılır.",
             "Görev sırası: N'yi 32 yap, bir malzeme seç, Fill'e bas; sonra diğer iki malzemede tekrarla." ] }
         ],
-        tanitim: "Kaydırıcı N atom (atom) sayısını değiştirir. Üç düğme malzemeyi seçer. Fill electrons (elektron doldur) alttan doldurur; alttaki satır E_g ve akım durumunu yazar. Kartları Nasıl yapılır? düğmesiyle yeniden açabilirsin.",
+        tanitim: "Kaydırıcı N atom (atom) sayısını değiştirir. Üç düğme malzemeyi seçer. Fill electrons (elektron doldur) alttan doldurur; alttaki satır Eg ve akım durumunu yazar. Kartları Nasıl yapılır? düğmesiyle yeniden açabilirsin.",
         gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {
           modul: 'bant',

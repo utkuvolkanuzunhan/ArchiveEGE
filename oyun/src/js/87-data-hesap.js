@@ -290,7 +290,7 @@
   G('bant-si', 's09', true, 'bant', 'sinav', 1, 'Absorption edge of silicon',
     'Silicon has a bandgap E_g = 1.12 eV. Calculate the longest wavelength of light that can create an electron-hole pair.',
     ['E_{g} = 1,12 eV', 'hc = 1239,84 eV·nm'],
-    [S('Koşul', 'Elektronu valence band (değerlik bandı) → conduction band (iletim bandı) taşımak için hf ≥ E_g. Sınır durumda eşitlik.', 'hf ≥ E_{g}  →  λ ≤ hc/E_{g}', C('Daha uzun dalga boyu (E < E_g)?', 'Soğurulmaz (Si saydam)', ['Daha iyi soğurulur', 'Çift e-h üretir'])),
+    [S('Koşul', 'Elektronu valence band (valans bandı) → conduction band (iletim bandı) taşımak için hf ≥ E_g. Sınır durumda eşitlik.', 'hf ≥ E_{g}  →  λ ≤ hc/E_{g}', C('Daha uzun dalga boyu (E < E_g)?', 'Soğurulmaz (Si saydam)', ['Daha iyi soğurulur', 'Çift e-h üretir'])),
      S('Sayı', '', 'λ_{max} = 1239,84 / 1,12 = 1107 nm  (yakın kızılötesi)', N('λ_max kaç nm? (hc/E_g)', 1107, 'nm'))],
     { deger: 1107.0, birim: 'nm', metin: 'λ_max ≈ 1.11 μm' },
     'Eg\'den küçük enerjili foton soğurulmaz. Soğurma eşiği = bandgap, fotoelektrik eşik ile aynı mantık.');
@@ -573,7 +573,7 @@
   X('bant-si', 'Worked example: absorption edge of germanium', 'Germanium has a bandgap E_g = 0.66 eV. Calculate the longest wavelength that can create an electron-hole pair.',
     ['Koşul: foton enerjisi ≥ E_g.', 'Sınır durumda eşitlik: λ_{max} = 1239,84 / E_g.', 'Daha uzun dalga boyu soğurulmaz.'],
     ['E_{g} = 0,66 eV'],
-    [['Koşul', 'Elektronu valence band\'den conduction band\'e çıkarmak için hf ≥ E_g.', 'λ ≤ hc / E_{g}', 'Koşul yazıldı'],
+    [['Koşul', 'Elektronu valence band (valans bandı) → conduction band (iletim bandı) çıkarmak için hf ≥ E_g.', 'λ ≤ hc / E_{g}', 'Koşul yazıldı'],
      ['Sayı', 'Böl.', 'λ_{max} = 1239,84 / 0,66 = 1879 nm', 'λ_{max} ≈ 1879 nm', 1878.5]],
     'λ_max ≈ 1.88 μm', 1878.5, 'nm', 'Küçük bandgap = uzun dalga boyu eşiği (kızılötesi).');
 

@@ -77,7 +77,7 @@
   var CURATED = [
     ['wave function', 'dalga fonksiyonu'], ['probability density', 'olasılık yoğunluğu'], ['eigenvalue', 'özdeğer'], ['eigenfunction', 'özfonksiyon'],
     ['potential well', 'potansiyel kuyusu'], ['potential barrier', 'potansiyel bariyeri'], ['tunneling', 'tünelleme'], ['bandgap', 'yasak enerji aralığı'],
-    ['valence band', 'değerlik bandı'], ['conduction band', 'iletim bandı'], ['Fermi level', 'Fermi seviyesi'], ['DOS (density of states)', 'durum yoğunluğu'],
+    ['valence band', 'valans bandı'], ['conduction band', 'iletim bandı'], ['Fermi level', 'Fermi seviyesi'], ['DOS (density of states)', 'durum yoğunluğu'],
     ['Miller indices', 'Miller indisleri'], ['unit cell', 'birim hücre'], ['lattice', 'kafes'], ['lattice constant', 'kafes sabiti'], ['crystal structure', 'kristal yapı'],
     ['basis', 'baz (atom grubu)'], ['primitive cell', 'ilkel hücre'], ['simple cubic (SC)', 'basit kübik'], ['body-centered cubic (BCC)', 'cisim merkezli kübik'],
     ['face-centered cubic (FCC)', 'yüzey merkezli kübik'], ['diamond structure', 'elmas yapı'], ['coordination number', 'koordinasyon sayısı'],

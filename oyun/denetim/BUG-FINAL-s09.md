@@ -1,0 +1,19 @@
+# BUG-FINAL-s09 (İstasyon 9 Bant testi, son sürüm öncesi baştan sona oynama)
+
+Yöntem: Playwright, 1366x768, hikayeAtla kapalı, kilitler kapalı, Claude bağlı değil, s01-s08 Q.state ile tamam. Akış: hikaye + bilgi kartı, kavram kartları (7 kart, 4 "Nasıl yapılır") + bant simülasyonu (N=32, 3 malzeme, Fill), o03/o04 doğru ve yanlış, o05 tahmin (doğru + yanlış, sim), o06 tuzak (doğru/yanlış parça), o07 köprü (doğru/ters sıra), patron (faz 1 doğru/yanlış, faz 2-3 yazılı cevap + yedek çoktan seçmeli, KISA DEVRE + "Temelden bir daha" 3 kart + sim + "Anladım" + yeniden başlama), hesap engeli (örnek paneli, yanlış/doğru koşul adımı, yanlış/doğru sayı adımı, "Sonucu göster", Çözdüm), sandık, istasyon sonu, harita, yenileme sonrası kayıt. Ekran görüntüleri gözle kontrol edildi. Konsol/sayfa hatası: yok. Testler: veri-dogrula, hesap-engel (151), hesap (58), tekrar-hata (27), runner geçti.
+
+| sorun | konum | önem | düzeltildi mi |
+|---|---|---|---|
+| Aynı malzeme iki farklı değerle: kart "germanium E_g = 0,67 eV, ≈ 1850 nm", hesap örnek paneli "germanium E_g = 0.66 eV, 1879 nm" | 90-data-s09.js (nasıl yapılır: gap ve foton) | düşük | evet: kart 0,66 eV / ≈ 1879 nm yapıldı (1239,84/0,66 = 1878,5; 2000 nm yine soğurulmaz) |
+| Aynı terim iki çeviriyle: s09'da "valence band (valans bandı)", hesap görevi/fabrika/tekrar sözlüğünde "(değerlik bandı)" (DIL-1: valans bandı) | 87-data-hesap.js, 88-data-fabrika.js, 97-tekrar.js | düşük | evet: "valans bandı" olarak birleştirildi |
+| Hesap örnek adımında terim çevirisiz ve kırık ek: "valence band'den conduction band'e çıkarmak" | 87-data-hesap.js (X bant-si) | düşük | evet: "valence band (valans bandı) → conduction band (iletim bandı) çıkarmak" |
+| Bilgi kartlarında ham alt indis/üs: "E_g", "λ_max", "10^22" olarak görünüyordu | 90-data-s09.js | düşük | evet: "Eg", "λmax", "10²²" (simülasyon etiketleriyle aynı yazım) |
+| Sim N=2 iken durum satırı "2 çizgi, energy band (bant) gibi" diyor (2 çizgi band sayılmaz) | 70-sim-bant.js | düşük | hayır (kullanıcı teyit etsin: eşik N için metin) |
+| Hesap görevi, yanlış cevap geri bildiriminde sağ panel aşağı kayıyor; adımın sorusu görünümden çıkıyor (kaydırınca görünüyor) | hesap paneli | düşük | hayır (tüm istasyonlarda aynı) |
+| Patron faz 2/3: Claude yokken yazılan cevap atılıp çoktan seçmeli yedek soru çıkıyor; faz 2 yazılı sorusu karışık dilde, tam İngilizce pdfSoru "Sınav sorusu" açılır başlığının içinde | 85-obs-patron.js / 90-data-s09.js | düşük | hayır (tasarım/DIL-1 kararı, s07 ile aynı) |
+| s01-s09 tamamsa s09 sandığından sonra harita yerine Sınav Günü (Final) açılıyor | 99-main.js | düşük | hayır (tasarım: tüm istasyonlar tamam; s08 açıkken harita doğru açılıyor) |
+| Kısa devre sonrası s09 en başa (o03) dönüyor | 95-runner.js | düşük | hayır (tasarım) |
+
+Doğrulananlar (hata yok): soru/balon görev bitene kadar ekranda; şık önce seçilir, Onayla ile gider, sonra eminlik; yanlış geri bildirim sade Türkçe ("Cevabın yanlış. Doğru seçenek: ..."); tuzak "Hatalı olan, vurgulanan parça" + düzeltme; köprü yanlışta "Doğru sıra" + her adım için "Neden"; hesap yanlışta "Cevabın yanlış. Doğru: Soğurulmaz (Si saydam)." / "Doğru: 1107 nm." + Adımı göster/Örnekteki adıma bak/Devam; Çözdüm/Tekrar çalış/Tekrar Merkezi'nde aç; sandık kartı Pauli 1925, ilerleme.s09.tamam, kartlar=[pauli], fabrika.kurulu; yenileme sonrası kayıt aynen korunuyor; harita s09 Çalışıyor. Kavram öncesi öğretim: Pauli ilkesi (spin iki değer), doluluk, bandgap/valence/conduction, malzeme ayrımı, N atom N seviye, periodic potential, Nasıl yapılır kartları (kapasite 2N, λmax = hc/Eg, zincir, sim). Öğretilmemiş terim bulunmadı, kart eklenmedi.
+
+Fizik teyidi (kullanıcı yine de gözden geçirsin): Si E_g = 1,12 eV -> 1239,84/1,12 = 1107 nm doğru; Ge 0,66 eV -> 1879 nm doğru; GaAs 1,42 eV -> 873 nm doğru; GaN 3,4 eV -> 365 nm, 400 nm foton 3,10 eV < 3,4 soğurulmaz doğru. Ge için 0,66 (oda sıcaklığı standardı) seçildi; 0,67 de kullanılır.
