@@ -14,7 +14,7 @@
   Q.data.kartlar = {
     czoch: {
       p1: 'Jan Czochralski, Polonyalı bir kimyager ve metalurjistti. 1916\'da metallerin crystallization (kristalleşme) hızını incelerken, eriyik bir metalin içine daldırılan küçük bir kristalin yavaşça yukarı çekilerek büyütülebileceğini buldu. Bu yönteme bugün Czochralski (CZ) method (CZ yöntemi) denir.',
-      p2: 'CZ yönteminde melt (eriyik) içine seed crystal (tohum kristal) değdirilir, yavaşça döndürülerek yukarı çekilir; eriyik tohumun kristal düzenini sürdürerek katılaşır ve ortaya single crystal (tek kristal) bir ingot (külçe) çıkar. Yarıiletken endüstrisinin kullandığı silicon wafer (silisyum dilim) bu külçeden kesilir. Dopant (katkı) atomları eriyiğe eklenerek büyüme sırasında kristale yerleştirilebilir.',
+      p2: 'CZ yönteminde melt (eriyik) içine seed crystal (tohum kristal) değdirilir, yavaşça döndürülerek yukarı çekilir; eriyik tohumun kristal düzenini sürdürerek katılaşır ve ortaya single crystal (tek kristal) bir ingot (külçe) çıkar. Yarıiletken endüstrisinin kullandığı silicon wafer (silisyum dilim) bu külçeden kesilir. Yöntem 1950 dolaylarında Bell Laboratories\'te Gordon Teal ve John Little tarafından önce germanyuma, kısa süre sonra silisyuma uyarlandı. Dopant (katkı) atomları eriyiğe eklenerek kristale yerleştirilebilir.',
       sinav: [
         'CZ: seed crystal (tohum kristal) melt (eriyik) içine değer, döndürülerek yavaşça çekilir; sonuç single crystal (tek kristal) ingot (külçe).',
         'Neden tek kristal: grain boundary (tane sınırı) yok; electron saçılması ve defect (kusur) etkisi azalır.',
@@ -31,7 +31,7 @@
       ]
     },
     einstein: {
-      p1: 'Albert Einstein 1905\'te, Max Planck\'ın 1900\'de önerdiği enerji paketleri fikrini ışığın kendisine uyguladı. Photoelectric effect (fotoelektrik olay) için, light (ışık) enerjisinin photon (foton) denen paketler hâlinde taşındığını öne sürdü. Bu çalışmaya Nobel Fizik Ödülü verildi.',
+      p1: 'Albert Einstein 1905\'te, Max Planck\'ın 1900\'de önerdiği enerji paketleri fikrini ışığın kendisine uyguladı. Photoelectric effect (fotoelektrik olay) için, light (ışık) enerjisinin photon (foton) denen paketler hâlinde taşındığını öne sürdü. Nobel Fizik Ödülü\'nü (1921) photoelectric effect yasasının keşfi için aldı.',
       p2: 'Bir photon (foton) enerjisi E = hf\'dir. Bir electron (elektron) metalden kopmak için work function (iş fonksiyonu) φ kadar enerji gerektirir; kinetik enerji K_max = hf − φ olur. Eşik frequency (frekans) f₀ = φ/h\'dir. Bu fikir, photodetector (foto algılayıcı), solar cell (güneş pili) ve image sensor (görüntü algılayıcı) gibi ışıkla çalışan aygıtların temelidir ve classical wave theory (klasik dalga teorisi) ile açıklanamayan sonuçları çözdü.',
       p3: 'Yanılgı: ışığı çok parlatırsak electron mutlaka kopar sanılır. Eşiğin altındaki frequency (frekans) için intensity (şiddet) ne kadar artarsa artsın electron kopmaz; intensity yalnızca kopan electron sayısını (akımı) belirler, her electron\'un enerjisini hf belirler.',
       sinav: [
@@ -53,7 +53,7 @@
     schro: {
       p1: 'Erwin Schrödinger, Avusturyalı bir fizikçiydi. 1926\'da madde dalgası fikrini bir wave equation (dalga denklemi) hâline getirdi ve 1933\'te Nobel Fizik Ödülü\'nü paylaştı. Ünlü "kedi" düşünce deneyi sonraki yıllarda ortaya atıldı.',
       p2: 'Time-independent Schrödinger equation (zamandan bağımsız Schrödinger denklemi): −(ħ²/2m) ψ″ + V(x) ψ = E ψ. Potansiyel V(x) ve boundary conditions (sınır koşulları) verildiğinde izin verilen energy levels (enerji seviyeleri) ve wave functions (dalga fonksiyonları) bu denklemden çıkar. Sonsuz potansiyel kuyusunda E_n = n²π²ħ² / (2mL²) olur. Katıların band structure (bant yapısı) hesabı bu denklemin periyodik potansiyelde çözülmesine dayanır.',
-      p3: 'Yanılgı: Schrödinger equation (Schrödinger denklemi) wave function\'ı "çökertir" sanılır. Denklem ψ\'yi deterministic (belirlenimci) olarak zamanla evriltir; collapse (çökme) ise measurement (ölçüm) postülasıdır. Sezgi: en düşük energy (enerji) sıfır olamaz; zero-point energy (sıfır noktası enerjisi) boundary condition (sınır koşulu) sonucudur, n = 0 çözümü ψ = 0 verir.',
+      p3: 'Yanılgı: Schrödinger equation (Schrödinger denklemi) wave function\'ı "çökertir" sanılır. Denklem ψ\'yi deterministic (belirlenimci) olarak zamanla evriltir; collapse (çökme) ise measurement (ölçüm) postülatıdır. Sezgi: en düşük energy (enerji) sıfır olamaz; zero-point energy (sıfır noktası enerjisi) boundary condition (sınır koşulu) sonucudur, n = 0 çözümü ψ = 0 verir.',
       sinav: [
         '−(ħ²/2m) ψ″ + Vψ = Eψ; sonsuz kuyuda E_n = n²π²ħ² / (2mL²), n = 1, 2, 3, …',
         'Energy quantization (enerji nicemlenmesi) boundary condition (sınır koşulu) sonucudur.',
@@ -62,7 +62,7 @@
     },
     broglie: {
       p1: 'Louis de Broglie, Fransız bir fizikçiydi. 1924\'teki doktora tezinde ışığın hem dalga hem parçacık gibi davranmasının madde için de geçerli olabileceğini önerdi ve 1929\'da Nobel Fizik Ödülü\'nü aldı. Fikir, 1927\'de Davisson ve Germer\'in nikel kristalinden electron diffraction (elektron kırınımı) gözlemesiyle deneysel olarak desteklendi.',
-      p2: 'De Broglie wavelength (de Broglie dalga boyu): λ = h/p. Electron (elektron) gibi küçük kütleli parçacıkların dalga boyu kristal lattice (kafes) aralığıyla karşılaştırılabilir olabilir; bu yüzden kristalden diffraction (kırınım) gösterirler. Bu, Schrödinger\'in wave function (dalga fonksiyonu) yaklaşımının ve electron microscope (elektron mikroskobu) gibi araçların fiziksel temelidir.',
+      p2: 'De Broglie wavelength (de Broglie dalga boyu): λ = h/p. Electron (elektron) gibi küçük kütleli parçacıkların dalga boyu kristal lattice (kafes) aralığıyla karşılaştırılabilir olabilir; bu yüzden kristalden diffraction (kırınım) gösterirler. Bu fikir Schrödinger\'in wave function (dalga fonksiyonu) yaklaşımına yol açtı; electron microscope (elektron mikroskobu) gibi araçların yüksek çözünürlüğü de küçük dalga boyuna dayanır.',
       sinav: [
         'λ = h/p; kinetik enerjiden p = √(2mE).',
         'Electron diffraction (elektron kırınımı) matter wave (madde dalgası) kanıtıdır.',
@@ -70,7 +70,7 @@
       ]
     },
     born: {
-      p1: 'Max Born, Alman bir fizikçiydi. 1926\'da wave function (dalga fonksiyonu) ψ\'nin kendisinin ölçülemediğini, karesinin ise olasılığı belirlediğini öne sürdü. Bu probabilistic interpretation (olasılıksal yorum) çalışması için 1954\'te Nobel Fizik Ödülü\'nü aldı.',
+      p1: 'Max Born, Alman bir fizikçiydi. 1926\'da wave function (dalga fonksiyonu) ψ\'nin kendisinin ölçülemediğini, karesinin ise olasılığı belirlediğini öne sürdü. Bu probabilistic interpretation (olasılıksal yorum) çalışması için 1954\'te Nobel Fizik Ödülü\'nü Walther Bothe ile paylaştı.',
       p2: '|ψ(x)|² bir probability density (olasılık yoğunluğu)dur; [a, b] aralığında bulma olasılığı ∫|ψ|² dx ile verilir. Toplam olasılık 1 olmalıdır: normalization (normalizasyon) ∫|ψ|² dx = 1. Bir parçacığın nerede bulunacağı yalnızca olasılıkla söylenir; yarıiletkende electron\'un belirli bölgelerde bulunma olasılığı bu yorumla hesaplanır.',
       p3: 'Yanılgı: ψ\'nin kendisi olasılıktır sanılır. ψ genel olarak complex (karmaşık) bir fonksiyondur ve doğrudan gözlenemez; gözlenen, |ψ|² ile verilen olasılıktır. Ayrıca |ψ|² olasılık değil, birim uzunluk başına olasılık yoğunluğudur.',
       sinav: [
@@ -80,8 +80,8 @@
       ]
     },
     heis: {
-      p1: 'Werner Heisenberg, Alman bir fizikçiydi. 1925\'te matrix mechanics (matris mekaniği) yaklaşımını geliştirdi, 1927\'de uncertainty principle (belirsizlik ilkesi)ni yayımladı ve 1932 Nobel Fizik Ödülü\'nü aldı.',
-      p2: 'Uncertainty principle (belirsizlik ilkesi): Δx Δp ≥ ħ/2. Position (konum) ne kadar keskin belirlenirse momentum o kadar belirsizleşir. Bu, confinement (hapsolma) altında zero-point energy (sıfır noktası enerjisi)nin neden sıfır olamadığını açıklar: parçacık küçük bir bölgeye sıkıştırıldıkça momentum yayılımı artar. Nano ölçekli aygıtlarda quantum confinement (kuantum hapsolma) etkisinin temel nedenidir.',
+      p1: 'Werner Heisenberg, Alman bir fizikçiydi. 1925\'te matrix mechanics (matris mekaniği) yaklaşımını geliştirdi, 1927\'de uncertainty principle (belirsizlik ilkesi)ni yayımladı. 1932 Nobel Fizik Ödülü\'nü, quantum mechanics (kuantum mekaniği)nin yaratılması için aldı.',
+      p2: 'Heisenberg ilişkiyi yaklaşık biçimde verdi; kesin biçimi Δx Δp ≥ ħ/2 olup Kennard\'a aittir. Position (konum) ne kadar keskin belirlenirse momentum o kadar belirsizleşir. Bu, confinement (hapsolma) altında zero-point energy (sıfır noktası enerjisi)nin neden sıfır olamadığını açıklar: parçacık küçük bir bölgeye sıkıştırıldıkça momentum yayılımı artar. Nano ölçekli aygıtlarda quantum confinement (kuantum hapsolma) etkisinin arkasındaki nedenlerden biridir.',
       p3: 'Yanılgı: ilkenin ölçüm aletinin kusurundan ya da ölçümün sistemi "bozmasından" kaynaklandığı sanılır. Sebep, parçacığın wave nature (dalga doğası)dır: dar bir dalga paketi geniş bir momentum aralığı gerektirir. Günlük cisimlerde ħ çok küçük olduğundan etki fark edilmez.',
       sinav: [
         'Δx Δp ≥ ħ/2.',
@@ -99,11 +99,11 @@
       ]
     },
     fermi: {
-      p1: 'Enrico Fermi, İtalyan bir fizikçiydi. 1926\'da electron gibi spin ½ taşıyan parçacıklar için statistics (istatistik) geliştirdi; aynı sonuca Paul Dirac da ulaştı, bu yüzden dağılıma Fermi-Dirac distribution (Fermi-Dirac dağılımı) denir. 1938\'de Nobel Fizik Ödülü\'nü aldı.',
-      p2: 'Fermi-Dirac dağılımı bir enerji seviyesinin dolu olma olasılığını verir: f(E) = 1 / (1 + exp((E − E_F)/kT)). Burada E_F, Fermi level (Fermi seviyesi)dir. Yarıiletkenlerde electron ve hole (delik) yoğunluğu bu dağılımla ve density of states (durum yoğunluğu) ile hesaplanır; Fermi level\'in bandgap (yasak enerji aralığı) içindeki konumu doping (katkılama) türünü belirler.',
+      p1: 'Enrico Fermi, İtalyan bir fizikçiydi. 1926\'da electron gibi spin ½ taşıyan parçacıklar için statistics (istatistik) geliştirdi; aynı sonuca Paul Dirac da ulaştı, bu yüzden dağılıma Fermi-Dirac distribution (Fermi-Dirac dağılımı) denir. 1938\'de Nobel Fizik Ödülü\'nü aldı; ödül bu istatistik için değil, neutron (nötron) ışımasıyla elde edilen yeni radyoaktif elementler ve yavaş nötronlarla nükleer tepkimeler içindi.',
+      p2: 'Fermi-Dirac dağılımı bir enerji seviyesinin dolu olma olasılığını verir: f(E) = 1 / (1 + exp((E − E_F)/kT)). Burada E_F, Fermi level (Fermi seviyesi)dir. Yarıiletkenlerde electron ve hole (delik) yoğunluğu bu dağılımla ve density of states (durum yoğunluğu) ile hesaplanır; Fermi level\'in bandgap (yasak enerji aralığı) içindeki konumu doping (katkılama) türünü yansıtır.',
       p3: 'Sezgi: T = 0 K\'de f(E) bir step function (basamak fonksiyonu)dur: E_F altı tamamen dolu, üstü tamamen boş. Yanılgı: Fermi level\'de mutlaka bir enerji durumu bulunması gerekmez; yarıiletkenin bandgap içine düşebilir.',
       sinav: [
-        'f(E) = 1 / (1 + exp((E − E_F)/kT)); her T için f(E_F) = 1/2.',
+        'f(E) = 1 / (1 + exp((E − E_F)/kT)); T > 0 için f(E_F) = 1/2.',
         'T = 0 K\'de f(E) basamak fonksiyonu: E < E_F için 1, E > E_F için 0.',
         'Oda sıcaklığında kT ≈ 0,0259 eV.'
       ]
@@ -136,7 +136,7 @@
     },
     bragg: {
       p1: 'William Henry Bragg ve oğlu William Lawrence Bragg, İngiliz fizikçilerdi. 1912-1913\'te X-ray diffraction (X ışını kırınımı) ile kristal yapıyı çözmeyi başardılar ve 1915\'te Nobel Fizik Ödülü\'nü paylaştılar. X ışınlarının kristalden kırınımını 1912\'de von Laue ve çalışma arkadaşları göstermişti.',
-      p2: 'Bragg law (Bragg yasası): nλ = 2d sinθ; d, parallel planes (paralel düzlemler) arası mesafedir. Dalga boyu bilinen X-ray ile ölçülen açıdan d, dolayısıyla lattice constant (kafes sabiti) bulunur. d, Miller indices (Miller indisleri) ile adlandırılan düzlem aileleri için hesaplanır. X-ray diffraction, kristalin yönelimini ve kalitesini denetlemek için kullanılabilir.',
+      p2: 'Bragg law (Bragg yasası; W. L. Bragg, 1912): nλ = 2d sinθ; d, parallel planes (paralel düzlemler) arası mesafedir. Dalga boyu bilinen X-ray ile ölçülen açıdan d, dolayısıyla lattice constant (kafes sabiti) bulunur. d, Miller indices (Miller indisleri) ile adlandırılan düzlem aileleri için hesaplanır. X-ray diffraction, kristalin yönelimini ve kalitesini denetlemek için kullanılabilir.',
       sinav: [
         'Bragg law (Bragg yasası): nλ = 2d sinθ; θ, gelen ışının düzlemle yaptığı açıdır.',
         'Constructive interference (yapıcı girişim) için yol farkı nλ olmalı; kırınım için λ ≤ 2d.'
@@ -144,11 +144,11 @@
     },
     rutherford: {
       p1: 'Ernest Rutherford, Yeni Zelandalı bir fizikçiydi. Ekibindeki Geiger ve Marsden\'in altın folyoda alpha particle (alfa parçacığı) saçılması deneyini yorumlayarak 1911\'de nuclear atom (çekirdekli atom) modelini önerdi. 1908\'de Nobel Kimya Ödülü\'nü almıştı.',
-      p2: 'Alfa parçacıklarının çoğu folyodan doğrudan geçti, az sayısı büyük açıyla saçıldı. Sonuç: pozitif yük ve kütle küçük bir nucleus (çekirdek)te toplanmıştır, electron lar çevresindedir. Ama classical physics (klasik fizik)e göre çekirdek çevresinde dönen, yani ivmelenen electron ışıma yapar, enerji kaybeder ve çekirdeğe spiral çizerek düşer; atom kararsız çıkar. Bohr 1913\'te discrete energy levels (ayrık enerji seviyeleri) ile çıkış yolunu gösterdi.',
+      p2: 'Alfa parçacıklarının çoğu folyodan doğrudan geçti, az sayısı büyük açıyla saçıldı. Sonuç: pozitif yük ve kütle küçük bir nucleus (çekirdek)te toplanmıştır, electron\'lar çevresindedir. Ama classical physics (klasik fizik)e göre çekirdek çevresinde dönen, yani ivmelenen electron ışıma yapar, enerji kaybeder ve çekirdeğe spiral çizerek düşer; atom kararsız çıkar. Bohr 1913\'te discrete energy levels (ayrık enerji seviyeleri) ile çıkış yolunu gösterdi.',
       sinav: [
         'Rutherford: pozitif yük küçük nucleus (çekirdek)te; atom çoğunlukla boşluk.',
         'Klasik sorun: ivmeli electron ışıma yapar, enerji kaybeder, çekirdeğe düşer; atom kararlı olamaz.',
-        'Çözüm: discrete levels (ayrık seviyeler), ground state (temel hâl) altı yok (Bohr); zero-point energy (Schrödinger).'
+        'Çözüm: discrete levels (ayrık seviyeler), ground state (temel hâl) altı yok (Bohr); uncertainty principle (belirsizlik ilkesi) ve zero-point energy (sıfır noktası enerjisi).'
       ]
     },
     davisson: {
@@ -200,7 +200,7 @@
     },
     kronig: {
       p1: 'Ralph Kronig ve William Penney, 1931\'de kristaldeki electron için basit bir periodic potential (periyodik potansiyel) modeli yayımladılar: dikdörtgen bariyerler ve kuyulardan oluşan tekrar eden bir potansiyel.',
-      p2: 'Schrödinger denklemi bu potansiyel için çözüldüğünde, Bloch theorem (Bloch teoremi) biçimindeki çözümler yalnızca belirli enerji aralıklarında bulunur: allowed energy bands (izinli enerji bantları). Aralarında forbidden gap (yasak aralık) vardır. Bu, bandgap (yasak enerji aralığı)ın ilk basit gösterimidir. Bariyer güçlendikçe bantlar daralır ve izole kuyu seviyelerine yaklaşır.',
+      p2: 'Schrödinger denklemi bu potansiyel için çözüldüğünde, Bloch theorem (Bloch teoremi) biçimindeki çözümler yalnızca belirli enerji aralıklarında bulunur: allowed energy bands (izinli enerji bantları). Aralarında forbidden gap (yasak aralık) vardır. Bu, bandgap (yasak enerji aralığı)ı gösteren klasik basit modeldir. Bariyer güçlendikçe bantlar daralır ve izole kuyu seviyelerine yaklaşır.',
       sinav: [
         'İzinli enerji: |cos(αa) + P sin(αa)/(αa)| ≤ 1, α = √(2mE)/ħ; dışı forbidden gap (yasak aralık).',
         'Periodic potential (periyodik potansiyel) → energy bands (enerji bantları) + bandgap; P büyüdükçe bantlar daralır.',
@@ -208,7 +208,7 @@
       ]
     },
     dirac: {
-      p1: 'Paul Dirac, İngiliz bir fizikçiydi. 1926\'da Fermi\'den bağımsız olarak electron gibi parçacıkların istatistiğini türetti; Fermi-Dirac statistics (Fermi-Dirac istatistiği) adının iki isimli olması bundandır. 1933\'te Schrödinger ile Nobel Fizik Ödülü\'nü paylaştı.',
+      p1: 'Paul Dirac, İngiliz bir fizikçiydi. 1926\'da, Fermi\'nin çalışmasının ardından, electron gibi parçacıkların istatistiğini antisimetrik wave function (dalga fonksiyonu)lardan türetti; Fermi-Dirac statistics (Fermi-Dirac istatistiği) adının iki isimli olması bundandır. 1933\'te Schrödinger ile Nobel Fizik Ödülü\'nü paylaştı.',
       p2: 'Fermi-Dirac distribution (dağılımı), Pauli exclusion principle (dışlama ilkesi)ne uyan identical (özdeş) fermion (fermiyon)ların her state (durum)u en çok bir kez doldurmasının sonucudur: f(E) = 1/(1 + exp((E − E_F)/kT)). Dirac 1928\'de relativistik electron denklemini yazdı; denklem antimatter (karşı madde) öngördü. Dirac delta fonksiyonu, Kronig-Penney gibi modellerde ince bariyerleri temsil eder.',
       sinav: [
         'Fermi-Dirac: fermiyonlar (spin ½, electron) için; Pauli gereği her state\'te en çok 1 parçacık.',
@@ -216,7 +216,7 @@
       ]
     },
     shockley: {
-      p1: 'William Shockley, Bell Laboratories\'te çalışan Amerikalı bir fizikçiydi. 1947\'de ilk transistör orada Bardeen ve Brattain tarafından yapıldı; Shockley 1948\'de junction transistor (eklem transistörü) fikrini ve p-n junction (p-n eklem) kuramını geliştirdi. Üçü 1956\'da Nobel Fizik Ödülü\'nü paylaştı.',
+      p1: 'William Shockley, Bell Laboratories\'te çalışan Amerikalı bir fizikçiydi. 1947\'de ilk transistör orada Bardeen ve Brattain tarafından yapıldı; Shockley 1948\'de junction transistor (eklem transistörü) fikrini geliştirdi; p-n junction (p-n eklem) kuramını 1949\'da yayımladı. Üçü 1956\'da Nobel Fizik Ödülü\'nü paylaştı.',
       p2: 'Transistor, küçük bir gerilimle büyük bir akımı kontrol eden semiconductor (yarıiletken) anahtar ya da yükselticidir. İşlev, doped (katkılı) bölgelerdeki electron ve hole (delik) taşıyıcılarının p-n junction boyunca kontrolüne dayanır; Fermi level (Fermi seviyesi)ın bandgap içindeki konumu doping türünü belirler. Modern integrated circuit (tümleşik devre) milyarlarca transistör içerir.',
       sinav: [
         'n-type: çoğunluk taşıyıcısı electron, Fermi level iletim bandına yakın; p-type: hole, valans bandına yakın.',
@@ -238,7 +238,7 @@
     { id: 'kennard', ist: 's08', kisi: 'Earle H. Kennard', yil: 1927, tekCumle: 'Belirsizlik bağıntısını kesin eşitsizlik olarak türetti: σ_x σ_p ≥ ħ/2.' },
     { id: 'bloch', ist: 's09', kisi: 'Felix Bloch', yil: 1928, tekCumle: 'Periodic potential (periyodik potansiyel) içinde çözüm e^(ikx) çarpı periyodik u(x): Bloch theorem (Bloch teoremi).' },
     { id: 'kronig', ist: 's09', kisi: 'Kronig ve Penney', yil: 1931, tekCumle: 'Tekrar eden bariyer modeliyle energy bands (enerji bantları) ve bandgap (yasak aralık) gösterdiler.' },
-    { id: 'dirac', ist: 's10', kisi: 'Paul Dirac', yil: 1926, tekCumle: 'Fermi-Dirac statistics (Fermi-Dirac istatistiği)ni Fermi\'den bağımsız türetti.' },
+    { id: 'dirac', ist: 's10', kisi: 'Paul Dirac', yil: 1926, tekCumle: 'Fermi-Dirac statistics (Fermi-Dirac istatistiği)ni antisimetrik dalga fonksiyonlarından türetti.' },
     { id: 'shockley', ist: 's10', kisi: 'William Shockley', yil: 1948, tekCumle: 'p-n junction (p-n eklem) kuramı ve junction transistor (eklem transistörü) fikri.' }
   ];
 })();
