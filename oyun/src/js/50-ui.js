@@ -128,6 +128,7 @@
           return b;
         });
         function onkey(ev){
+          if (!wrap.isConnected) { document.removeEventListener('keydown', onkey, true); return; }  /* engel atlanınca sahipsiz kalan dinleyici */
           if (typing(ev) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
           var k = String(ev.key).toLowerCase(), i = '123'.indexOf(k);
           if (i < 0 || k.length !== 1) i = 'qwe'.indexOf(k);
@@ -172,6 +173,7 @@
         });
         ok.addEventListener('click', confirm);
         function onkey(ev){
+          if (!wrap.isConnected) { document.removeEventListener('keydown', onkey, true); return; }  /* engel atlanınca sahipsiz kalan dinleyici */
           if (typing(ev) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
           if (ev.key === 'Enter') { ev.preventDefault(); confirm(); return; }
           var i = '123456789'.indexOf(ev.key);

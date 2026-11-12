@@ -366,7 +366,7 @@ html,body{height:100%;margin:0;overflow:hidden}
 (function(){
   'use strict';
   var KEY = 'cip-hatti-v1';
-  var timer = null;
+  var timer = null, uyarildi = false;
 
   function defaults(){
     return {
@@ -393,8 +393,8 @@ html,body{height:100%;margin:0;overflow:hidden}
     Object.keys(s).forEach(function(k){ delete s[k]; });
     s.v = 1;
     s.ilerleme = isObj(src.ilerleme) ? src.ilerleme : d.ilerleme;
-    s.hataDefteri = Array.isArray(src.hataDefteri) ? src.hataDefteri : d.hataDefteri;
-    s.kartlar = Array.isArray(src.kartlar) ? src.kartlar : d.kartlar;
+    s.hataDefteri = Array.isArray(src.hataDefteri) ? src.hataDefteri.filter(isObj) : d.hataDefteri;
+    s.kartlar = Array.isArray(src.kartlar) ? src.kartlar.filter(function(x){ return x !== null && x !== undefined; }) : d.kartlar;
     s.fabrika = { kurulu: (isObj(src.fabrika) && Array.isArray(src.fabrika.kurulu)) ? src.fabrika.kurulu : [] };
     s.voltaj = (typeof src.voltaj === 'number' && isFinite(src.voltaj)) ? Math.min(100, Math.max(0, src.voltaj)) : 100;
     var a = isObj(src.aktif) ? src.aktif : {};
@@ -422,8 +422,11 @@ html,body{height:100%;margin:0;overflow:hidden}
     Object.keys(src).forEach(function(k){ if (!(k in d)) s[k] = src[k]; });
   }
   function valid(o){
-    return isObj(o) && typeof o.v === 'number' && o.v >= 1 && isObj(o.ilerleme) && Array.isArray(o.hataDefteri) &&
-      Array.isArray(o.kartlar) && isObj(o.fabrika) && Array.isArray(o.fabrika.kurulu);
+    /* eski sürüm kayıtları da kabul: eksik alanlar assign() içinde varsayılanla doldurulur */
+    return isObj(o) && (o.v === undefined || (typeof o.v === 'number' && o.v >= 1)) && isObj(o.ilerleme) &&
+      (o.hataDefteri === undefined || Array.isArray(o.hataDefteri)) &&
+      (o.kartlar === undefined || Array.isArray(o.kartlar)) &&
+      (o.fabrika === undefined || isObj(o.fabrika));
   }
   function store(){
     try { return (typeof localStorage !== 'undefined') ? localStorage : null; } catch (e) { return null; }
@@ -434,12 +437,16 @@ html,body{height:100%;margin:0;overflow:hidden}
   assign(defaults());
 
   Q.save.load = function(){
-    var parsed = null;
+    var parsed = null, raw = null;
     try {
       var ls = store();
-      var raw = ls ? ls.getItem(KEY) : null;
+      raw = ls ? ls.getItem(KEY) : null;
       if (raw) parsed = JSON.parse(raw);
     } catch (e) { parsed = null; }
+    if (raw && !valid(parsed)) {
+      /* bozuk kayıt: üzerine yazılmadan önce yedeğini sakla */
+      try { var ls2 = store(); if (ls2) ls2.setItem(KEY + '-bozuk', String(raw)); } catch (e) { /* yer yok */ }
+    }
     assign(valid(parsed) ? parsed : defaults());
     return Q.state;
   };
@@ -448,7 +455,14 @@ html,body{height:100%;margin:0;overflow:hidden}
     try {
       var ls = store();
       if (ls) ls.setItem(KEY, JSON.stringify(Q.state));
-    } catch (e) { /* kayıt yoksa bellekte devam */ }
+      uyarildi = false;
+    } catch (e) {
+      /* kayıt yoksa bellekte devam; kullanıcıya bir kez haber ver */
+      if (!uyarildi) {
+        uyarildi = true;
+        try { if (Q.ui && Q.ui.toast) Q.ui.toast('İlerleme kaydedilemedi (tarayıcı belleği dolu veya kapalı). Ayarlar\'dan "İlerlemeyi kopyala" ile yedekle.', { tur: 'kotu', ms: 6000 }); } catch (e2) { /* arayüz yok */ }
+      }
+    }
     Q.bus.emit('save:done', {});
   };
   Q.save.write = function(){
@@ -466,10 +480,17 @@ html,body{height:100%;margin:0;overflow:hidden}
       var o = JSON.parse(String(str).trim());
       if (!valid(o)) return false;
       assign(o);
-      Q.save.write();
+      Q.save.flush();
       return true;
     } catch (e) { return false; }
   };
+  /* sayfa kapanırken/yenilenirken bekleyen kayıt kaybolmasın */
+  try {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('pagehide', function(){ if (timer) Q.save.flush(); });
+      window.addEventListener('beforeunload', function(){ if (timer) Q.save.flush(); });
+    }
+  } catch (e) { /* yok say */ }
 })();
 
 /* 20-settings.js (A8) Ayarlar penceresi, harita menüsü (istasyon seçimi), süre sayacı ve hız önerisi.
@@ -767,6 +788,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     return { sayi: acik.length, top: top };
   }
   function kavramAd(k){ return String(k || '?').replace(/_/g, ' '); }
+  var TUR_AD = { 'emin-yanlis': 'Emindin, yanlış', yanlis: 'Yanlış', bilinmeyen: 'Bilmiyordun', sans: 'Şans eseri doğru' };
   function openHata(){
     var L = getLayer(), back = backdrop(false), p = el('div', 'panel modal');
     p.style.cssText = 'width:min(520px,100%);max-height:100%;overflow:auto;padding:16px';
@@ -776,8 +798,8 @@ html,body{height:100%;margin:0;overflow:hidden}
     var renk = { 'emin-yanlis': 'var(--red)', yanlis: 'orange', bilinmeyen: 'var(--yellow)', sans: 'var(--muted)' };
     kayit.forEach(function(h){
       var r = el('div'); r.style.cssText = 'display:flex;justify-content:space-between;gap:8px;margin:6px 0';
-      var c = el('span', 'chip', h.tur); c.style.borderColor = renk[h.tur] || 'var(--line)'; c.style.color = renk[h.tur] || 'var(--ink)';
-      r.appendChild(el('span', '', kavramAd(h.kavram))); r.appendChild(c); r.appendChild(el('span', '', (h.tekrar || 0) + '×'));
+      var c = el('span', 'chip', TUR_AD[h.tur] || String(h.tur || '?')); c.style.borderColor = renk[h.tur] || 'var(--line)'; c.style.color = renk[h.tur] || 'var(--ink)';
+      r.appendChild(el('span', '', kavramAd(h.kavram) + (h.istasyon ? ' · ' + String(h.istasyon).toUpperCase() : ''))); r.appendChild(c); r.appendChild(el('span', '', (h.tekrar || 0) + '×'));
       p.appendChild(r);
     });
     var close = btn('Kapat', 'primary', function(){ if (back.parentNode) back.parentNode.removeChild(back); });
@@ -2074,6 +2096,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           return b;
         });
         function onkey(ev){
+          if (!wrap.isConnected) { document.removeEventListener('keydown', onkey, true); return; }  /* engel atlanınca sahipsiz kalan dinleyici */
           if (typing(ev) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
           var k = String(ev.key).toLowerCase(), i = '123'.indexOf(k);
           if (i < 0 || k.length !== 1) i = 'qwe'.indexOf(k);
@@ -2118,6 +2141,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         });
         ok.addEventListener('click', confirm);
         function onkey(ev){
+          if (!wrap.isConnected) { document.removeEventListener('keydown', onkey, true); return; }  /* engel atlanınca sahipsiz kalan dinleyici */
           if (typing(ev) || ev.ctrlKey || ev.metaKey || ev.altKey) return;
           if (ev.key === 'Enter') { ev.preventDefault(); confirm(); return; }
           var i = '123456789'.indexOf(ev.key);
@@ -6102,7 +6126,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         document.removeEventListener('keydown', onKey);
         res();
       }
-      function onKey(e){ if (e.key === 'Enter') { e.preventDefault(); fin(); } }
+      function onKey(e){ if (!b.isConnected) { document.removeEventListener('keydown', onKey); return; } if (e.key === 'Enter') { e.preventDefault(); fin(); } }
       b.addEventListener('click', fin);
       document.addEventListener('keydown', onKey);
       host.appendChild(b);
@@ -6251,7 +6275,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       host.appendChild(wrap);
 
       var ilerle = null, bitti = false;
-      function onKey(e){ if (e.key === 'Enter' && !bitti && ilerle) { e.preventDefault(); ilerle(); } }
+      function onKey(e){ if (!wrap.isConnected) { document.removeEventListener('keydown', onKey); return; } if (e.key === 'Enter' && !bitti && ilerle) { e.preventDefault(); ilerle(); } }
       document.addEventListener('keydown', onKey);
       wrap.addEventListener('click', function(){ if (!bitti && ilerle) ilerle(); });
 
@@ -6280,7 +6304,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var b = el('button', 'hk-devam', 'Devam');
         b.type = 'button';
         b.style.cssText = 'font-family:var(--font-d);font-size:20px;background:var(--accent);color:var(--accent-ink);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);padding:8px 22px;box-shadow:var(--shadow-sm);cursor:pointer;';
-        function onEnter(e){ if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
+        function onEnter(e){ if (!b.isConnected) { document.removeEventListener('keydown', onEnter); return; } if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
         function bitir(){ document.removeEventListener('keydown', onEnter); res(); }
         b.addEventListener('click', bitir);
         document.addEventListener('keydown', onEnter);
@@ -6328,6 +6352,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         res();
       }
       function key(e){
+        if (!b.isConnected) { document.removeEventListener('keydown', key, true); return; }
         if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); bit(); }
       }
       b.addEventListener('click', bit);
@@ -6631,6 +6656,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         if (sl && Date.now() - lastTapAt > 40) unplace(+sl.getAttribute('data-yuva'));
       }
       function onKey(e){
+        if (!root.isConnected) { document.removeEventListener('keydown', onKey); return; }
         if (e.key === 'Enter' && devamBtn && !e.repeat) {
           e.preventDefault();
           devamBtn.click();
@@ -6694,7 +6720,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           });
           var yz = el('div', 'kopru-duzeltme');
           yz.style.cssText = 'border:3px solid var(--good);border-radius:var(--rs);padding:8px 12px;';
-          yz.appendChild(el('b', null, 'Yanlış. Doğru sıra:'));
+          yz.appendChild(el('b', null, 'Cevabın yanlış. Doğru sıra:'));
           var ol = el('ol', 'kopru-dogru-sira');
           ol.style.cssText = 'margin:4px 0 0;padding-left:22px;';
           blocks.forEach(function(t){ ol.appendChild(el('li', null, t)); });
@@ -6813,7 +6839,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var b = el('button', 'sd-devam', 'Devam');
         b.type = 'button';
         b.style.cssText = 'font-family:var(--font-d);font-size:20px;background:var(--accent);color:var(--accent-ink);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);padding:8px 22px;box-shadow:var(--shadow-sm);cursor:pointer;';
-        function onEnter(e){ if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
+        function onEnter(e){ if (!b.isConnected) { document.removeEventListener('keydown', onEnter); return; } if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
         function bitir(){ document.removeEventListener('keydown', onEnter); res(); }
         b.addEventListener('click', bitir);
         document.addEventListener('keydown', onEnter);
@@ -6856,6 +6882,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         res();
       }
       function key(e){
+        if (!b.isConnected) { document.removeEventListener('keydown', key, true); return; }
         if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); bit(); }
       }
       b.addEventListener('click', bit);
@@ -6929,7 +6956,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonucSatiri.className = 'tahmin-acik ' + (dogru ? 'dogru' : 'yanlis');
         sonucSatiri.textContent = dogru
           ? 'Doğru tahmin. ' + (ob.acik || '')
-          : 'Yanlış. Doğrusu: ' + ob.secenekler[dIdx].t + '. ' + (ob.acik || '');
+          : 'Cevabın yanlış. Doğru seçenek: ' + ob.secenekler[dIdx].t + '. ' + (ob.acik || '');
         await run(ctx, 'anim', dogru ? 'atla' : 'dus');
         Array.prototype.forEach.call(simHost.querySelectorAll('button, input'), function(b){ b.disabled = true; b.style.display = 'none'; });
         await devam(host);
@@ -6972,7 +6999,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         document.removeEventListener('keydown', onKey);
         res();
       }
-      function onKey(e){ if (e.key === 'Enter') { e.preventDefault(); fin(); } }
+      function onKey(e){ if (!b.isConnected) { document.removeEventListener('keydown', onKey); return; } if (e.key === 'Enter') { e.preventDefault(); fin(); } }
       b.addEventListener('click', fin);
       document.addEventListener('keydown', onKey);
       host.appendChild(b);
@@ -7000,6 +7027,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var secim = await new Promise(function(res){
           var kilit = false;
           function onKey(e){
+            if (!cumle.isConnected) { document.removeEventListener('keydown', onKey); return; }
             var n = parseInt(e.key, 10);
             if (n >= 1 && n <= btns.length) btns[n - 1].click();
           }
@@ -7038,7 +7066,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         } else {
           if (runway.anim) safe(function(){ runway.anim('sendele'); });
           host.appendChild(mk('div', 'aciklama kotu',
-            'Yanlış. Seçtiğin parça hatalı değil. Hatalı olan vurgulanan parça. Doğrusu: ' + ob.duzeltme));
+            'Cevabın yanlış. Hatalı olan, vurgulanan parça. Doğru hali: ' + ob.duzeltme));
         }
         await waitContinue(host);
         return { dogru: dogru, eminlik: em, kavram: ob.kavram || null,
@@ -7089,6 +7117,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         resolve(v);
       }
       function onKey(e){
+        if (!row.isConnected) { document.removeEventListener('keydown', onKey, true); return; }
         if (e.key === 'Enter' && enterValue !== undefined) { e.preventDefault(); e.stopPropagation(); fin(enterValue); }
       }
       items.forEach(function(it){
@@ -7311,7 +7340,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         a.notlar = 'bilmiyorum';
         uygula(sonucOf(a));
         area.textContent = '';
-        area.appendChild(box('Yanlış. ' + (faz.idealCevap || ''), 'kotu'));
+        area.appendChild(box('Cevabın yanlış. ' + (faz.idealCevap || ''), 'kotu'));
         await waitContinue(area);
         return a;
       }
@@ -9927,10 +9956,10 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   var SECKI_MCQ = [
     'sv-s01-m1','sv-s01-m2','sv-s01-m3','sv-s01-m4','sv-s01-m5','sv-s01-m6','sv-s01-m7','sv-s01-m8','sv-s01-m9','sv-s01-m10',
     'sv-s02-m1','sv-s02-m2','sv-s02-m3','sv-s02-m4','sv-s02-m5','sv-s02-m6','sv-s02-m7','sv-s02-m8','sv-s02-m9','sv-s02-m10',
-    'sv-s03-m1','sv-s03-m2','sv-s03-m3','sv-s03-m5','sv-s03-m7',
+    'sv-s03-m1','sv-s03-m2','sv-s03-m3','sv-s03-m5',
     'sv-s04-m1','sv-s04-m2','sv-s04-m3','sv-s04-m6',
     's05-m1','s05-m2','s05-m3','s05-m6','s05-m8','s05-m10',
-    's06-m1','s06-m2','s06-m3','s06-m6','s06-m10',
+    's06-m1','s06-m2','s06-m3','s06-m6',
     's07-m1','s07-m3','s07-m4','s07-m5','s07-m10',
     's08-m1','s08-m6','s08-m9',
     'sv-s09-m1','sv-s09-m2'
@@ -9938,7 +9967,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   var SECKI_KLASIK = [
     'sv-s01-k4','sv-s01-k3','sv-s01-k1',
     'sv-s02-k4','sv-s02-k1',
-    'sv-s03-k4','sv-s03-k1',
+    'sv-s03-k4',
     'sv-s04-k4','sv-s04-k1',
     's05-k1','s05-k3','s05-k4',
     's06-k3',
@@ -9952,6 +9981,48 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   }
   isaretle(S.mcq, SECKI_MCQ);
   isaretle(S.klasik, SECKI_KLASIK);
+})();
+
+/* 94-data-sinav-4.js (A14) Mock exam verisi: s10 (Fermi level, carriers, drift) + SEÇKİ işaretleri. TAMAMEN İngilizce.
+ * 93'ten sonra yüklenir (alfabetik). 90-data-s10.js ile tutarlı. Seçki = tahmin: bkz. oyun/denetim/SECKI.md */
+(function(){
+  'use strict';
+  var S = Q.data.sinav = Q.data.sinav || { mcq: [], klasik: [] };
+  var n = 1;
+  function M(id, st, q, c, w, ex){
+    var pos = n++ % 4, opts = w.slice(); opts.splice(pos, 0, c);
+    S.mcq.push({ id: id, station: st, q: q, options: opts, answer: pos, explanation: ex });
+  }
+  function K(id, st, concept, question, modelAnswer, keyPoints){
+    S.klasik.push({ id: id, station: st, question: question, modelAnswer: modelAnswer, keyPoints: keyPoints, concept: concept });
+  }
+
+  /* ---- s10 Fermi level, carriers, drift ---- */
+  M('sv-s10-m1', 's10', 'In the Fermi-Dirac distribution f(E) = 1/(1 + e^((E − E_F)/kT)), what is the value of f at E = E_F for any temperature T > 0?', '1/2', ['1', '0', '1/e'], 'At E = E_F the exponent is zero, so f = 1/(1 + 1) = 1/2. The Fermi level is the energy at which the occupation probability is one half.');
+  M('sv-s10-m2', 's10', 'How does the Fermi function f(E) look at T = 0 K?', 'A step function: f = 1 for E < E_F and f = 0 for E > E_F', ['f = 1/2 for all energies', 'f = 1 for all energies', 'A smooth curve that decreases slowly over several eV'], 'At T = 0 K the exponent goes to −∞ below E_F and +∞ above it, so all states below E_F are filled and all states above are empty.');
+  M('sv-s10-m3', 's10', 'The temperature of a material is raised. What happens to the Fermi function f(E) around E_F?', 'The transition region broadens, so some electrons occupy states above E_F', ['The curve becomes a sharper step', 'f(E_F) increases above 1/2', 'The Fermi level moves to zero energy'], 'The width of the transition region is of the order of kT. A larger kT smooths the curve, but f(E_F) stays 1/2.');
+  M('sv-s10-m4', 's10', 'In thermal equilibrium np = nᵢ². A semiconductor is doped so that the electron density n increases. What happens to the hole density p?', 'p decreases, so that the product np stays equal to nᵢ²', ['p increases by the same factor as n', 'p stays unchanged', 'p becomes equal to n'], 'Extra electrons recombine with holes. The mass-action law keeps the product np fixed at nᵢ² at a given temperature, so p = nᵢ²/n falls.');
+  M('sv-s10-m5', 's10', 'The drift velocity of a carrier in an electric field E is v_d = μE. If the field is doubled, the drift velocity:', 'doubles, because v_d is proportional to E', ['stays the same', 'is halved', 'increases by a factor of four'], 'The mobility μ is the proportionality constant between drift velocity and field (at moderate fields), so doubling E doubles v_d.');
+  M('sv-s10-m6', 's10', 'Why does the carrier velocity not increase without limit under a constant electric field?', 'Scattering by lattice vibrations and impurities limits the average velocity to v_d = μE', ['The electric field becomes zero after some time', 'The carrier mass becomes infinite', 'The Pauli exclusion principle forbids motion'], 'The field accelerates the carrier, but frequent collisions randomise its motion. A balance between acceleration and scattering gives a constant average drift velocity.');
+  M('sv-s10-m7', 's10', 'The current density in a semiconductor is J = q(nμₙ + pμₚ)E. Which statement is correct?', 'Both electrons and holes contribute, and their contributions add', ['Only electrons contribute to the current', 'Electron and hole currents cancel each other', 'J does not depend on the field E'], 'Electrons and holes drift in opposite directions, but because they have opposite charge their currents point the same way and add.');
+  M('sv-s10-m8', 's10', 'A pure (intrinsic) semiconductor is heated. What happens to the carrier density nᵢ?', 'It increases, because thermal energy excites more electrons across the bandgap', ['It decreases, because the bandgap widens', 'It stays constant because it depends only on the lattice', 'It becomes zero'], 'Thermal excitation across the gap grows rapidly with T (roughly e^(−Eg/2kT)), so nᵢ and therefore the conductivity increase.');
+  K('sv-s10-k1', 's10', 'Fermi-Dirac distribution', 'State the Fermi-Dirac distribution. Explain the meaning of the Fermi level E_F and describe how f(E) changes with temperature.',
+    'The Fermi-Dirac distribution f(E) = 1/(1 + e^((E − E_F)/kT)) gives the probability that an electron state of energy E is occupied. The Fermi level E_F is the energy at which this probability is exactly 1/2, so f(E_F) = 1/2 at every temperature T > 0. At T = 0 K the function is a step: all states below E_F are filled and all states above it are empty. When the temperature rises, the transition region around E_F broadens over a width of the order of kT, so a few states above E_F become occupied and a few states below become empty, but f(E_F) stays 1/2.',
+    ['f(E) = 1/(1 + e^((E − E_F)/kT)) is occupation probability', 'f(E_F) = 1/2', 'T = 0 K: step function', 'Higher T: transition region broadens (width ~ kT)']);
+  K('sv-s10-k2', 's10', 'carrier densities', 'What does the relation np = nᵢ² state? What happens to the electron and hole densities when a semiconductor is doped with donors?',
+    'In thermal equilibrium the product of the electron density n and the hole density p equals the square of the intrinsic carrier density nᵢ, which depends on the material and on temperature but not on doping. In an intrinsic semiconductor n = p = nᵢ. If donors are added, the electron density n increases to about the donor density. The extra electrons fill (recombine with) holes, so p decreases to p = nᵢ²/n while the product np stays equal to nᵢ². The semiconductor becomes n-type, with electrons as majority carriers and holes as minority carriers.',
+    ['np = nᵢ² in equilibrium', 'nᵢ depends on material and T, not on doping', 'Donors raise n, p falls to nᵢ²/n', 'Majority and minority carriers']);
+  K('sv-s10-k3', 's10', 'drift current', 'Define the drift velocity and the mobility, and derive the expression for the current density J in a semiconductor with electron density n and hole density p. Why does the drift velocity saturate at a constant value in a constant field?',
+    'When an electric field E is applied, carriers acquire an average drift velocity v_d = μE, where the mobility μ is the proportionality constant. Electrons have mobility μₙ and holes μₚ. The current density is the charge density times the velocity: the electron contribution is q n μₙ E and the hole contribution is q p μₚ E, so J = q(nμₙ + pμₚ)E. The two terms add because electrons and holes move in opposite directions but have opposite charge. The velocity does not grow without limit because the field accelerates the carrier only until it scatters from lattice vibrations or impurities; acceleration and scattering balance, which gives a constant average velocity.',
+    ['v_d = μE; μ is the mobility', 'J = q n μₙ E + q p μₚ E', 'Electron and hole currents add', 'Scattering balances acceleration: constant v_d']);
+
+  /* ---- SEÇKİ: s10 payı 2 MCQ + 1 klasik (TAHMİN; 93'teki listeden 2 MCQ + 1 klasik çıkarıldı, bkz. SECKI.md) ---- */
+  function isaretle(dizi, idler){
+    var map = {}; dizi.forEach(function(x){ map[x.id] = x; });
+    idler.forEach(function(id){ if (map[id]) map[id].secki = true; });
+  }
+  isaretle(S.mcq, ['sv-s10-m1', 'sv-s10-m4']);
+  isaretle(S.klasik, ['sv-s10-k3']);
 })();
 
 /* 95-runner-b.js (A2) Koşu motoru yardımcıları: sahte çizim (Q.art yoksa), yol üstü DOM katmanları
@@ -10321,7 +10392,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       return { tip: it.ob.tip, durum: d };
     });
   }
-  function hudPath(r){ try { if (Q.ui && Q.ui.hud && Q.ui.hud.setPath) Q.ui.hud.setPath(pathNodes(r)); } catch (e) { console.error(e); } }
+  function hudPath(r){ try { if (Q.state.aktif && Q.state.aktif.stationId === r.id && r.cur < r.items.length) Q.state.aktif.index = r.cur; } catch (e) {} try { if (Q.ui && Q.ui.hud && Q.ui.hud.setPath) Q.ui.hud.setPath(pathNodes(r)); } catch (e) { console.error(e); } }
   function prog(r){
     var s = Q.state; s.ilerleme = s.ilerleme || {};
     return (s.ilerleme[r.id] = s.ilerleme[r.id] || { tamam: false, enSon: 0, kontrol: 0, kisaDevre: 0, denendi: true });
@@ -10946,7 +11017,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
         var fb = el('div', 'tk-fb ' + (ok ? 'iyi' : 'kotu')); fb.setAttribute('role', 'status');
         fb.appendChild(el('p', '', ok ? 'Correct.' : 'Incorrect. Correct answer: ' + s.options[s.answer]));
         fb.appendChild(el('p', '', s.explanation));
-        fb.appendChild(el('p', 'tk-muted', ok ? 'Doğru.' : 'Yanlış. Doğru şık: ' + s.options[s.answer] + '. Açıklamayı İngilizce okuyup terimleri not al.'));
+        fb.appendChild(el('p', 'tk-muted', ok ? 'Doğru.' : 'Cevabın yanlış. Doğru seçenek: ' + s.options[s.answer] + '. Açıklamayı İngilizce okuyup terimleri not al.'));
         host.appendChild(fb);
         var dev = btn(i + 1 >= mq.length ? (kq.length ? 'Klasik sorulara geç' : 'Sonucu gör') : 'Sonraki soru', 'primary', function(){ mcqSor(i + 1); });
         host.appendChild(dev); try { dev.focus(); } catch (e) { /* odak yok */ }
@@ -11147,6 +11218,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
         if (Q.ui && Q.ui.toast) Q.ui.toast('Bu istasyonun verisinde sorun var; yine de deniyoruz.', { tur: 'kotu', ms: 3500 });
       }
       try { if (Q.ui && Q.ui.modal) Q.ui.modal.close(); } catch (e) { /* modal yok */ }
+      try { if (Q.settings && Q.settings.closeMap) Q.settings.closeMap(); } catch (e) { /* harita yok */ }
       var p;
       try { p = Promise.resolve(orijinal.call(Q.runner, stationId, fromIndex || 0)); }
       catch (e) { console.error(e); p = Promise.resolve('cikis'); }
@@ -11155,9 +11227,10 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
           finalBasladi = true;
           return Promise.resolve(final()).then(function () { haritaAc(); return sonuc; });
         }
-        haritaAc();
+        /* aynı anda yeni bir koşu başlamışsa (eskisi iptal edilmişti) haritayı üstüne açma */
+        if (!(Q.runner.info && Q.runner.info().aktif)) haritaAc();
         return sonuc;
-      }, function (e) { console.error(e); haritaAc(); return 'cikis'; });
+      }, function (e) { console.error(e); if (!(Q.runner.info && Q.runner.info().aktif)) haritaAc(); return 'cikis'; });
     };
   }
 

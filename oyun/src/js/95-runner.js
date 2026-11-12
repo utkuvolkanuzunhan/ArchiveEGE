@@ -221,7 +221,7 @@
       return { tip: it.ob.tip, durum: d };
     });
   }
-  function hudPath(r){ try { if (Q.ui && Q.ui.hud && Q.ui.hud.setPath) Q.ui.hud.setPath(pathNodes(r)); } catch (e) { console.error(e); } }
+  function hudPath(r){ try { if (Q.state.aktif && Q.state.aktif.stationId === r.id && r.cur < r.items.length) Q.state.aktif.index = r.cur; } catch (e) {} try { if (Q.ui && Q.ui.hud && Q.ui.hud.setPath) Q.ui.hud.setPath(pathNodes(r)); } catch (e) { console.error(e); } }
   function prog(r){
     var s = Q.state; s.ilerleme = s.ilerleme || {};
     return (s.ilerleme[r.id] = s.ilerleme[r.id] || { tamam: false, enSon: 0, kontrol: 0, kisaDevre: 0, denendi: true });

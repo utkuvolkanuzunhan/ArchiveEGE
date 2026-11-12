@@ -23,7 +23,7 @@
         document.removeEventListener('keydown', onKey);
         res();
       }
-      function onKey(e){ if (e.key === 'Enter') { e.preventDefault(); fin(); } }
+      function onKey(e){ if (!b.isConnected) { document.removeEventListener('keydown', onKey); return; } if (e.key === 'Enter') { e.preventDefault(); fin(); } }
       b.addEventListener('click', fin);
       document.addEventListener('keydown', onKey);
       host.appendChild(b);

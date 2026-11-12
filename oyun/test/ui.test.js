@@ -48,7 +48,7 @@ function ok(c, m){ if (!c) { fails++; console.error('FAIL: ' + m); } else consol
   // options: indeks orijinal, tuş
   var idx = await p.evaluate(function(){ return window.__r = undefined; });
   await p.evaluate(function(){ window.demoRun.options().then(function(i){ window.__r = i; }); });
-  var txt = await p.evaluate(function(){ var b = document.querySelectorAll('#dock .opt'); b[1].click(); return { t: b[1].querySelector('.t').textContent, i: +b[1].dataset.i }; });
+  var txt = await p.evaluate(function(){ var b = document.querySelectorAll('#dock .opt'); b[1].click(); document.querySelector('#dock .opt-onay').click(); return { t: b[1].querySelector('.t').textContent, i: +b[1].dataset.i }; });
   await p.waitForFunction('window.__r !== undefined');
   ok((await p.evaluate('window.__r')) === txt.i, 'options orijinal indeks döner (' + txt.t + ')');
   ok(p._errs.length === 0, 'konsol hatası yok ' + p._errs.join('|'));

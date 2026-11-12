@@ -4,7 +4,7 @@
 (function(){
   'use strict';
   var KEY = 'cip-hatti-v1';
-  var timer = null;
+  var timer = null, uyarildi = false;
 
   function defaults(){
     return {
@@ -31,8 +31,8 @@
     Object.keys(s).forEach(function(k){ delete s[k]; });
     s.v = 1;
     s.ilerleme = isObj(src.ilerleme) ? src.ilerleme : d.ilerleme;
-    s.hataDefteri = Array.isArray(src.hataDefteri) ? src.hataDefteri : d.hataDefteri;
-    s.kartlar = Array.isArray(src.kartlar) ? src.kartlar : d.kartlar;
+    s.hataDefteri = Array.isArray(src.hataDefteri) ? src.hataDefteri.filter(isObj) : d.hataDefteri;
+    s.kartlar = Array.isArray(src.kartlar) ? src.kartlar.filter(function(x){ return x !== null && x !== undefined; }) : d.kartlar;
     s.fabrika = { kurulu: (isObj(src.fabrika) && Array.isArray(src.fabrika.kurulu)) ? src.fabrika.kurulu : [] };
     s.voltaj = (typeof src.voltaj === 'number' && isFinite(src.voltaj)) ? Math.min(100, Math.max(0, src.voltaj)) : 100;
     var a = isObj(src.aktif) ? src.aktif : {};
@@ -60,8 +60,11 @@
     Object.keys(src).forEach(function(k){ if (!(k in d)) s[k] = src[k]; });
   }
   function valid(o){
-    return isObj(o) && typeof o.v === 'number' && o.v >= 1 && isObj(o.ilerleme) && Array.isArray(o.hataDefteri) &&
-      Array.isArray(o.kartlar) && isObj(o.fabrika) && Array.isArray(o.fabrika.kurulu);
+    /* eski sürüm kayıtları da kabul: eksik alanlar assign() içinde varsayılanla doldurulur */
+    return isObj(o) && (o.v === undefined || (typeof o.v === 'number' && o.v >= 1)) && isObj(o.ilerleme) &&
+      (o.hataDefteri === undefined || Array.isArray(o.hataDefteri)) &&
+      (o.kartlar === undefined || Array.isArray(o.kartlar)) &&
+      (o.fabrika === undefined || isObj(o.fabrika));
   }
   function store(){
     try { return (typeof localStorage !== 'undefined') ? localStorage : null; } catch (e) { return null; }
@@ -72,12 +75,16 @@
   assign(defaults());
 
   Q.save.load = function(){
-    var parsed = null;
+    var parsed = null, raw = null;
     try {
       var ls = store();
-      var raw = ls ? ls.getItem(KEY) : null;
+      raw = ls ? ls.getItem(KEY) : null;
       if (raw) parsed = JSON.parse(raw);
     } catch (e) { parsed = null; }
+    if (raw && !valid(parsed)) {
+      /* bozuk kayıt: üzerine yazılmadan önce yedeğini sakla */
+      try { var ls2 = store(); if (ls2) ls2.setItem(KEY + '-bozuk', String(raw)); } catch (e) { /* yer yok */ }
+    }
     assign(valid(parsed) ? parsed : defaults());
     return Q.state;
   };
@@ -86,7 +93,14 @@
     try {
       var ls = store();
       if (ls) ls.setItem(KEY, JSON.stringify(Q.state));
-    } catch (e) { /* kayıt yoksa bellekte devam */ }
+      uyarildi = false;
+    } catch (e) {
+      /* kayıt yoksa bellekte devam; kullanıcıya bir kez haber ver */
+      if (!uyarildi) {
+        uyarildi = true;
+        try { if (Q.ui && Q.ui.toast) Q.ui.toast('İlerleme kaydedilemedi (tarayıcı belleği dolu veya kapalı). Ayarlar\'dan "İlerlemeyi kopyala" ile yedekle.', { tur: 'kotu', ms: 6000 }); } catch (e2) { /* arayüz yok */ }
+      }
+    }
     Q.bus.emit('save:done', {});
   };
   Q.save.write = function(){
@@ -104,8 +118,15 @@
       var o = JSON.parse(String(str).trim());
       if (!valid(o)) return false;
       assign(o);
-      Q.save.write();
+      Q.save.flush();
       return true;
     } catch (e) { return false; }
   };
+  /* sayfa kapanırken/yenilenirken bekleyen kayıt kaybolmasın */
+  try {
+    if (typeof window !== 'undefined') {
+      window.addEventListener('pagehide', function(){ if (timer) Q.save.flush(); });
+      window.addEventListener('beforeunload', function(){ if (timer) Q.save.flush(); });
+    }
+  } catch (e) { /* yok say */ }
 })();

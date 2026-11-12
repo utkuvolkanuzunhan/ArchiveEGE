@@ -453,7 +453,7 @@
         var fb = el('div', 'tk-fb ' + (ok ? 'iyi' : 'kotu')); fb.setAttribute('role', 'status');
         fb.appendChild(el('p', '', ok ? 'Correct.' : 'Incorrect. Correct answer: ' + s.options[s.answer]));
         fb.appendChild(el('p', '', s.explanation));
-        fb.appendChild(el('p', 'tk-muted', ok ? 'Doğru.' : 'Yanlış. Doğru şık: ' + s.options[s.answer] + '. Açıklamayı İngilizce okuyup terimleri not al.'));
+        fb.appendChild(el('p', 'tk-muted', ok ? 'Doğru.' : 'Cevabın yanlış. Doğru seçenek: ' + s.options[s.answer] + '. Açıklamayı İngilizce okuyup terimleri not al.'));
         host.appendChild(fb);
         var dev = btn(i + 1 >= mq.length ? (kq.length ? 'Klasik sorulara geç' : 'Sonucu gör') : 'Sonraki soru', 'primary', function(){ mcqSor(i + 1); });
         host.appendChild(dev); try { dev.focus(); } catch (e) { /* odak yok */ }

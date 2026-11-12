@@ -293,6 +293,7 @@
     return { sayi: acik.length, top: top };
   }
   function kavramAd(k){ return String(k || '?').replace(/_/g, ' '); }
+  var TUR_AD = { 'emin-yanlis': 'Emindin, yanlış', yanlis: 'Yanlış', bilinmeyen: 'Bilmiyordun', sans: 'Şans eseri doğru' };
   function openHata(){
     var L = getLayer(), back = backdrop(false), p = el('div', 'panel modal');
     p.style.cssText = 'width:min(520px,100%);max-height:100%;overflow:auto;padding:16px';
@@ -302,8 +303,8 @@
     var renk = { 'emin-yanlis': 'var(--red)', yanlis: 'orange', bilinmeyen: 'var(--yellow)', sans: 'var(--muted)' };
     kayit.forEach(function(h){
       var r = el('div'); r.style.cssText = 'display:flex;justify-content:space-between;gap:8px;margin:6px 0';
-      var c = el('span', 'chip', h.tur); c.style.borderColor = renk[h.tur] || 'var(--line)'; c.style.color = renk[h.tur] || 'var(--ink)';
-      r.appendChild(el('span', '', kavramAd(h.kavram))); r.appendChild(c); r.appendChild(el('span', '', (h.tekrar || 0) + '×'));
+      var c = el('span', 'chip', TUR_AD[h.tur] || String(h.tur || '?')); c.style.borderColor = renk[h.tur] || 'var(--line)'; c.style.color = renk[h.tur] || 'var(--ink)';
+      r.appendChild(el('span', '', kavramAd(h.kavram) + (h.istasyon ? ' · ' + String(h.istasyon).toUpperCase() : ''))); r.appendChild(c); r.appendChild(el('span', '', (h.tekrar || 0) + '×'));
       p.appendChild(r);
     });
     var close = btn('Kapat', 'primary', function(){ if (back.parentNode) back.parentNode.removeChild(back); });

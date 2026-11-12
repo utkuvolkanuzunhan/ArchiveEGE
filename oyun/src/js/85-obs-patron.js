@@ -36,6 +36,7 @@
         resolve(v);
       }
       function onKey(e){
+        if (!row.isConnected) { document.removeEventListener('keydown', onKey, true); return; }
         if (e.key === 'Enter' && enterValue !== undefined) { e.preventDefault(); e.stopPropagation(); fin(enterValue); }
       }
       items.forEach(function(it){
@@ -258,7 +259,7 @@
         a.notlar = 'bilmiyorum';
         uygula(sonucOf(a));
         area.textContent = '';
-        area.appendChild(box('Yanlış. ' + (faz.idealCevap || ''), 'kotu'));
+        area.appendChild(box('Cevabın yanlış. ' + (faz.idealCevap || ''), 'kotu'));
         await waitContinue(area);
         return a;
       }

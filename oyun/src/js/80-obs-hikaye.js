@@ -72,7 +72,7 @@
       host.appendChild(wrap);
 
       var ilerle = null, bitti = false;
-      function onKey(e){ if (e.key === 'Enter' && !bitti && ilerle) { e.preventDefault(); ilerle(); } }
+      function onKey(e){ if (!wrap.isConnected) { document.removeEventListener('keydown', onKey); return; } if (e.key === 'Enter' && !bitti && ilerle) { e.preventDefault(); ilerle(); } }
       document.addEventListener('keydown', onKey);
       wrap.addEventListener('click', function(){ if (!bitti && ilerle) ilerle(); });
 
@@ -106,7 +106,7 @@
         var b = el('button', 'hk-devam', 'Devam');
         b.type = 'button';
         b.style.cssText = 'font-family:var(--font-d);font-size:20px;background:var(--accent);color:var(--accent-ink);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);padding:8px 22px;box-shadow:var(--shadow-sm);cursor:pointer;';
-        function onEnter(e){ if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
+        function onEnter(e){ if (!b.isConnected) { document.removeEventListener('keydown', onEnter); return; } if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
         function bitir(){ document.removeEventListener('keydown', onEnter); res(); }
         b.addEventListener('click', bitir);
         document.addEventListener('keydown', onEnter);

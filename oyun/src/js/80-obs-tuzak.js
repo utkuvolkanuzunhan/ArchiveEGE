@@ -23,7 +23,7 @@
         document.removeEventListener('keydown', onKey);
         res();
       }
-      function onKey(e){ if (e.key === 'Enter') { e.preventDefault(); fin(); } }
+      function onKey(e){ if (!b.isConnected) { document.removeEventListener('keydown', onKey); return; } if (e.key === 'Enter') { e.preventDefault(); fin(); } }
       b.addEventListener('click', fin);
       document.addEventListener('keydown', onKey);
       host.appendChild(b);
@@ -51,6 +51,7 @@
         var secim = await new Promise(function(res){
           var kilit = false;
           function onKey(e){
+            if (!cumle.isConnected) { document.removeEventListener('keydown', onKey); return; }
             var n = parseInt(e.key, 10);
             if (n >= 1 && n <= btns.length) btns[n - 1].click();
           }
@@ -89,7 +90,7 @@
         } else {
           if (runway.anim) safe(function(){ runway.anim('sendele'); });
           host.appendChild(mk('div', 'aciklama kotu',
-            'Yanlış. Seçtiğin parça hatalı değil. Hatalı olan vurgulanan parça. Doğrusu: ' + ob.duzeltme));
+            'Cevabın yanlış. Hatalı olan, vurgulanan parça. Doğru hali: ' + ob.duzeltme));
         }
         await waitContinue(host);
         return { dogru: dogru, eminlik: em, kavram: ob.kavram || null,

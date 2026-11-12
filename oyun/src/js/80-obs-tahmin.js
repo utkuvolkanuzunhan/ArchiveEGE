@@ -24,6 +24,7 @@
         res();
       }
       function key(e){
+        if (!b.isConnected) { document.removeEventListener('keydown', key, true); return; }
         if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); bit(); }
       }
       b.addEventListener('click', bit);

@@ -221,6 +221,7 @@
         if (sl && Date.now() - lastTapAt > 40) unplace(+sl.getAttribute('data-yuva'));
       }
       function onKey(e){
+        if (!root.isConnected) { document.removeEventListener('keydown', onKey); return; }
         if (e.key === 'Enter' && devamBtn && !e.repeat) {
           e.preventDefault();
           devamBtn.click();

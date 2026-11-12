@@ -109,6 +109,7 @@
         if (Q.ui && Q.ui.toast) Q.ui.toast('Bu istasyonun verisinde sorun var; yine de deniyoruz.', { tur: 'kotu', ms: 3500 });
       }
       try { if (Q.ui && Q.ui.modal) Q.ui.modal.close(); } catch (e) { /* modal yok */ }
+      try { if (Q.settings && Q.settings.closeMap) Q.settings.closeMap(); } catch (e) { /* harita yok */ }
       var p;
       try { p = Promise.resolve(orijinal.call(Q.runner, stationId, fromIndex || 0)); }
       catch (e) { console.error(e); p = Promise.resolve('cikis'); }
@@ -117,9 +118,10 @@
           finalBasladi = true;
           return Promise.resolve(final()).then(function () { haritaAc(); return sonuc; });
         }
-        haritaAc();
+        /* aynı anda yeni bir koşu başlamışsa (eskisi iptal edilmişti) haritayı üstüne açma */
+        if (!(Q.runner.info && Q.runner.info().aktif)) haritaAc();
         return sonuc;
-      }, function (e) { console.error(e); haritaAc(); return 'cikis'; });
+      }, function (e) { console.error(e); if (!(Q.runner.info && Q.runner.info().aktif)) haritaAc(); return 'cikis'; });
     };
   }
 

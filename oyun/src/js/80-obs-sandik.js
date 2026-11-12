@@ -89,7 +89,7 @@
         var b = el('button', 'sd-devam', 'Devam');
         b.type = 'button';
         b.style.cssText = 'font-family:var(--font-d);font-size:20px;background:var(--accent);color:var(--accent-ink);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);padding:8px 22px;box-shadow:var(--shadow-sm);cursor:pointer;';
-        function onEnter(e){ if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
+        function onEnter(e){ if (!b.isConnected) { document.removeEventListener('keydown', onEnter); return; } if (e.key === 'Enter') { e.preventDefault(); bitir(); } }
         function bitir(){ document.removeEventListener('keydown', onEnter); res(); }
         b.addEventListener('click', bitir);
         document.addEventListener('keydown', onEnter);
