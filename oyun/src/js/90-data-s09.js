@@ -80,8 +80,8 @@
         id: 's09-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bant_yarilma', agirlik: 1,
         onBilgi: [
           { baslik: "Energy band (enerji bandı) nasıl oluşur", madde: [
-            "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır.",
-            "Yakın seviyeler birleşip energy band (enerji bandı) olur; band içinde seviyeler neredeyse sürekli dizilir.",
+            "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır. Atomlar yaklaştıkça örtüşme artar, band (bant) genişler.",
+            "Yakın seviyeler birleşip energy band (enerji bandı) olur; N ≈ 10^22 için seviye aralığı ısıl enerjiden (kT) çok küçüktür, band sürekli gibi davranır.",
             "Tek infinite well (sonsuz kuyu) bant vermez; bant, çok atomlu periodic potential (periyodik potansiyel) içinde olur.",
             "Crystal (kristal) düzenli olduğu için bantlar öngörülebilir; amorf yapıda bu düzen bozulur." ] },
           { baslik: "Pauli ilkesi ve doluluk", madde: [

@@ -90,8 +90,8 @@ def kontroller():
     A['bel-v'] = dict(s=hb / (2 * 0.1e-9) / me / 1e3, a={0: hb / (2 * 0.1e-9) * 1e25})
     A['bel-t'] = dict(s=hb / (2 * 1e-9) / qe * 1e6, a={})
     # s09
-    A['bant-si'] = dict(s=HC / 1.12, a={})
-    A['bant-gaas'] = dict(s=HC / 1.42, a={})
+    A['bant-si'] = dict(s=HC / 1.12, a={1: HC / 1.12})
+    A['bant-gaas'] = dict(s=HC / 1.42, a={0: HC / 1.42})
     # s10
     A['fd-100meV'] = dict(s=fermi(0.1, 300), a={0: kB * 300 * 1e3, 1: 0.1 / (kB * 300)})
     A['fd-orta'] = dict(s=fermi(0.0, 300), a={})

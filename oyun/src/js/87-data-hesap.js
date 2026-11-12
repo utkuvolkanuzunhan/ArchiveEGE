@@ -291,14 +291,14 @@
     'Silicon has a bandgap E_g = 1.12 eV. Calculate the longest wavelength of light that can create an electron-hole pair.',
     ['E_{g} = 1,12 eV', 'hc = 1239,84 eV·nm'],
     [S('Koşul', 'Elektronu valence band (değerlik bandı) → conduction band (iletim bandı) taşımak için hf ≥ E_g. Sınır durumda eşitlik.', 'hf ≥ E_{g}  →  λ ≤ hc/E_{g}', C('Daha uzun dalga boyu (E < E_g)?', 'Soğurulmaz (Si saydam)', ['Daha iyi soğurulur', 'Çift e-h üretir'])),
-     S('Sayı', '', 'λ_{max} = 1239,84 / 1,12 = 1107 nm  (yakın kızılötesi)')],
+     S('Sayı', '', 'λ_{max} = 1239,84 / 1,12 = 1107 nm  (yakın kızılötesi)', N('λ_max kaç nm? (hc/E_g)', 1107, 'nm'))],
     { deger: 1107.0, birim: 'nm', metin: 'λ_max ≈ 1.11 μm' },
     'Eg\'den küçük enerjili foton soğurulmaz. Soğurma eşiği = bandgap, fotoelektrik eşik ile aynı mantık.');
 
   G('bant-gaas', 's09', true, 'bant', 'alistirma', 1, 'GaAs bandgap and photon wavelength',
     'GaAs has a bandgap E_g = 1.42 eV. Calculate the wavelength of the photon emitted when an electron recombines across the gap, and decide whether a 1000 nm photon can be absorbed.',
     ['E_{g} = 1,42 eV'],
-    [S('Yayılan foton', 'Rekombinasyonda yaklaşık E_g enerjili foton yayılır.', 'λ = 1239,84 / 1,42 = 873 nm'),
+    [S('Yayılan foton', 'Rekombinasyonda yaklaşık E_g enerjili foton yayılır.', 'λ = 1239,84 / 1,42 = 873 nm', N('Yayılan fotonun dalga boyu kaç nm?', 873.1, 'nm')),
      S('1000 nm foton', '1000 nm → E = 1,24 eV < 1,42 eV.', 'E_{foton} = 1,24 eV < E_{g}', C('1000 nm foton GaAs\'ta?', 'Soğurulmaz', ['Soğurulur', 'Yalnızca ısıtırsa soğurulur']))],
     { deger: 873.1, birim: 'nm', metin: 'λ ≈ 873 nm; a 1000 nm photon is not absorbed' },
     'Foton enerjisi E_g\'den küçükse bantlar arası geçiş yok. GaAs doğrudan bant aralığı: verimli ışık yayar.');
