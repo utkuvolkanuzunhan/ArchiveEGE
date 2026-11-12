@@ -81,7 +81,7 @@
     }
     if (durum === 'tamam') { var du = sv('g', { class: 'fb-duman' }, m); sv('circle', { cx: 16, cy: 0, r: 3, fill: '#c4b9ec' }, du); }
   }
-  var DURUM_AD = { tamam: 'çalışıyor', sirada: 'sıradaki', kilitli: 'bozuk · kilitli', acik: 'bozuk' };
+  var DURUM_AD = { tamam: 'Çalışıyor', sirada: 'Sıradaki', kilitli: 'Kilitli', acik: 'Bozuk' };
 
   function dugum(g, o){
     var d = o.durum, p = o.pos;
@@ -165,11 +165,25 @@
       F.panel(panel, s, ctx, function(){ sec(s); });
       if (!ctx.panel) { try { panel.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) { /* eski tarayıcı */ } }
     }
+    if (F._esc && doc()) { document.removeEventListener('keydown', F._esc, true); document.removeEventListener('focusin', F._fin, true); }
+    var panelde = false;
+    F._fin = function(e){ panelde = panel.contains(e.target); };
+    document.addEventListener('focusin', F._fin, true);
+    F._esc = function(e){
+      if (e.key !== 'Escape' || !panelde) return;
+      var cur = Object.keys(nodes).filter(function(k){ return nodes[k].classList.contains('fb-sec'); })[0];
+      if (cur) setTimeout(function(){ try { if (panel.style.display === 'none') { nodes[cur].classList.remove('fb-sec'); nodes[cur].focus(); } } catch (x) { /* düğüm yok */ } }, 0);
+    };
+    document.addEventListener('keydown', F._esc, true);
     st.forEach(function(s){
       var n = nodes[s.id];
       n.addEventListener('click', function(){ sec(s); });
       n.addEventListener('keydown', function(e){
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sec(s); return; }
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault(); sec(s);
+          var hh = panel.querySelector('.fb-p-ad'); if (hh) { try { hh.focus({ preventScroll: true }); } catch (x) { /* odak yok */ } }
+          return;
+        }
         var k = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[e.key];
         if (!k) return;
         e.preventDefault();
@@ -186,48 +200,100 @@
   };
 
   /* ---------- bölüm paneli ---------- */
+  var PANEL_AD = { tamam: 'Çalışıyor', sirada: 'Sıradaki', kilitli: 'Kilitli', acik: 'Onarılabilir' };
+  var IKON = {
+    yapar: ['M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z', 'M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1'],
+    neden: ['M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1', 'M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1'],
+    kavram: ['M20.6 13.4l-7.2 7.2a2 2 0 0 1-2.8 0L3 13V3h10l7.6 7.6a2 2 0 0 1 0 2.8z', 'M7.5 7.5h.01'],
+    sure: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M12 7v5l3 2'],
+    soru: ['M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18z', 'M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.4-1 .9-1 1.7', 'M12 17h.01']
+  };
+  function ikon(ad){
+    var svg = sv('svg', { viewBox: '0 0 24 24', class: 'fb-ikon', 'aria-hidden': 'true', focusable: 'false', fill: 'none', stroke: 'currentColor', 'stroke-width': 2, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' });
+    IKON[ad].forEach(function(d){ sv('path', { d: d }, svg); });
+    return svg;
+  }
+  function kart(cls, ikonAd, baslik){
+    var k = el('section', 'fb-kart ' + cls);
+    var h = el('h4', 'fb-kart-bas'); var ib = el('span', 'fb-kart-ikon'); ib.appendChild(ikon(ikonAd)); h.appendChild(ib); h.appendChild(el('span', '', baslik));
+    k.appendChild(h); return k;
+  }
+  function bant(s, d){
+    var renk = s.renk || '#00e5ff';
+    var b = el('div', 'fb-bant'); b.style.setProperty('--fb-renk', renk);
+    var svg = sv('svg', { viewBox: '0 0 480 84', class: 'fb-bant-svg', 'aria-hidden': 'true', focusable: 'false', preserveAspectRatio: 'xMidYMid meet' });
+    sv('line', { x1: 0, y1: 62, x2: 480, y2: 62, stroke: '#0b0620', 'stroke-width': 14 }, svg);
+    sv('line', { x1: 0, y1: 62, x2: 480, y2: 62, stroke: d === 'tamam' ? renk : '#6d6590', 'stroke-width': 8 }, svg);
+    if (d === 'tamam') sv('line', { x1: 0, y1: 62, x2: 480, y2: 62, stroke: '#fff', 'stroke-width': 2, 'stroke-dasharray': '6 14', class: 'fb-akis' }, svg);
+    var g = sv('g', {}, svg);
+    g.setAttribute('transform', 'translate(209,12) scale(1.35)'); makine(g, renk, d, 0, 0);
+    sv('text', { x: 24, y: 58, class: 'fb-bant-no', fill: '#ffffff', opacity: .9 }, svg).textContent = String(s.sira);
+    b.appendChild(svg);
+    return b;
+  }
   F.panel = function(panel, s, ctx, yenile){
     panel.textContent = ''; panel.style.display = '';
-    if (ctx.ust) panel.appendChild(ctx.ust());
     var vd = veri(s.id) || {}, d = ctx.durum(s), tamam = d === 'tamam', acik = ctx.acik(s);
-    var hd = el('div', 'fb-p-baslik');
-    hd.appendChild(el('h3', '', s.sira + '. ' + s.ad));
-    var ch = el('span', 'chip fb-chip-' + d, DURUM_AD[d]); hd.appendChild(ch);
-    panel.appendChild(hd);
-    var ul = el('ul', 'fb-madde');
-    function li(b, t){ var x = el('li'); x.appendChild(el('b', '', b + ' ')); x.appendChild(document.createTextNode(t)); ul.appendChild(x); return x; }
-    li('Ne işe yarar:', vd.rol || s.konu);
-    if (vd.neden) li('Çipte neden gerekli:', vd.neden);
+    var kok = el('div', 'fb-p fb-p-' + d); kok.style.setProperty('--fb-renk', s.renk || '#00e5ff');
+    var govde = el('div', 'fb-p-govde');
+    govde.appendChild(bant(s, d));
+    var ic = el('div', 'fb-p-ic');
+    var h3 = el('h3', 'fb-p-ad', s.ad); h3.tabIndex = -1; ic.appendChild(h3);
+    var rozetSatir = el('div', 'fb-p-rozet');
+    rozetSatir.appendChild(el('span', 'fb-durum fb-durum-' + d, PANEL_AD[d]));
+    rozetSatir.appendChild(el('span', 'fb-p-sira', 'Bölüm ' + s.sira + ' / ' + ctx.st.length));
+    ic.appendChild(rozetSatir);
+    var k1 = kart('fb-k-yapar', 'yapar', 'Ne yapar'); k1.appendChild(el('p', '', vd.rol || s.konu)); ic.appendChild(k1);
+    if (vd.neden) { var k2 = kart('fb-k-neden', 'neden', 'Çipte neden gerekli'); k2.appendChild(el('p', '', vd.neden)); ic.appendChild(k2); }
     if (vd.bagliKavramlar && vd.bagliKavramlar.length) {
-      var kx = li('Kavramlar:', '');
-      var cl = el('span', 'fb-kav'); vd.bagliKavramlar.forEach(function(t){ cl.appendChild(el('span', 'chip', t)); }); kx.appendChild(cl);
+      var k3 = kart('fb-k-kavram', 'kavram', 'Kavramlar'); var cl = el('div', 'fb-kav');
+      vd.bagliKavramlar.forEach(function(t){ cl.appendChild(el('span', 'chip', t)); });
+      k3.appendChild(cl); ic.appendChild(k3);
     }
-    if (s.sure) li('Süre hedefi:', s.sure + ' dk');
-    panel.appendChild(ul);
-    if (!acik) { panel.appendChild(el('p', 'fb-kilit', 'Bu bölüm kilitli. Önce hattaki önceki bölümü onar.')); return; }
+    if (s.sure) {
+      var su = el('p', 'fb-sure'); var si = el('span', 'fb-kart-ikon'); si.appendChild(ikon('sure')); su.appendChild(si);
+      su.appendChild(el('span', '', 'Süre hedefi: yaklaşık ' + s.sure + ' dk')); ic.appendChild(su);
+    }
     var p = ctx.prog(s.id);
-    var row = el('div', 'fb-p-satir');
-    var b = el('button', 'btn primary', tamam ? 'Yeniden oyna' : (p.enSon ? 'Onar (devam et)' : 'Onar')); b.type = 'button';
-    b.addEventListener('click', function(){ ctx.baslat(s, p.enSon || 0); });
-    row.appendChild(b);
-    panel.appendChild(row);
-    if (tamam && vd.miniSoru) miniSoru(panel, s, vd.miniSoru);
-    if (s.engeller && s.engeller.length) {
-      panel.appendChild(el('h4', '', 'İstediğin engele atla'));
-      var l = el('ol'); l.style.cssText = 'display:flex;flex-wrap:wrap;gap:6px;list-style:none;padding:0';
+    if (acik && tamam && vd.miniSoru) miniSoru(ic, s, vd.miniSoru);
+    if (acik && s.engeller && s.engeller.length) {
+      var det = el('details', 'fb-atla');
+      det.appendChild(el('summary', '', 'İstediğin engele atla'));
+      var l = el('ol', 'fb-atla-liste');
       s.engeller.forEach(function(ob, i){
         var x = el('li'); var eb = el('button', 'btn', (i + 1) + '. ' + (ob.baslik || ob.tip)); eb.type = 'button';
         eb.addEventListener('click', function(){ ctx.engelAtla(s, ob, i); });
         x.appendChild(eb); l.appendChild(x);
       });
-      panel.appendChild(l);
+      det.appendChild(l); ic.appendChild(det);
     }
+    govde.appendChild(ic);
+    kok.appendChild(govde);
+    /* yapışkan alt şerit: birincil eylem büyük, Kapat küçük */
+    var alt = el('div', 'fb-alt');
+    if (acik) {
+      var b = el('button', 'btn primary fb-eylem', tamam ? 'Yeniden oyna' : (p.enSon ? 'Devam et' : 'Onar')); b.type = 'button';
+      b.addEventListener('click', function(){ ctx.baslat(s, p.enSon || 0); });
+      alt.appendChild(b);
+    } else {
+      var i0 = ctx.st.indexOf(s), once = ctx.st[i0 - 1];
+      var ip = el('div', 'fb-kilit'); ip.setAttribute('role', 'note');
+      ip.appendChild(el('p', '', 'Önce önceki bölümü onar: ' + (once ? once.ad : '')));
+      var oz = F.ozet(ctx.st, ctx.tamam);
+      var pb = el('div', 'fb-kilit-bar'); var pd = el('i'); pd.style.width = oz.yuzde + '%'; pb.appendChild(pd); ip.appendChild(pb);
+      ip.appendChild(el('span', 'fb-kilit-not', 'Hat ilerlemesi: ' + oz.tamam + '/' + oz.toplam + ' bölüm onarıldı'));
+      alt.appendChild(ip);
+    }
+    if (ctx.ust) { var ub = ctx.ust(); ub.classList.add('fb-kapat'); alt.appendChild(ub); }
+    kok.appendChild(alt);
+    panel.appendChild(kok);
   };
 
   function miniSoru(panel, s, q){
     var kayit = mini()[s.id] || null;
-    var box = el('div', 'fb-mini'); box.dataset.mini = s.id;
-    box.appendChild(el('h4', '', 'Bu bölümü neden kurduk?'));
+    var box = el('div', 'fb-kart fb-mini'); box.dataset.mini = s.id;
+    var mh = el('h4', 'fb-kart-bas'); var mi = el('span', 'fb-kart-ikon'); mi.appendChild(ikon('soru')); mh.appendChild(mi); mh.appendChild(el('span', '', 'Bu bölümü neden kurduk?'));
+    box.appendChild(mh);
     box.appendChild(el('p', 'fb-mini-soru', q.soru));
     var seciliIdx = -1, bitti = false;
     var opts = el('div', 'opts'), btns = [];

@@ -50,14 +50,14 @@ function ok(c, m){ process.stdout.write((c ? 'ok: ' : 'KALDI: ') + m + '\n'); if
   /* kilitli bölüm paneli: Onar yok */
   await p.locator('.fb-node[data-id=s03]').click();
   r = await p.evaluate(function(){ var pn = document.getElementById('a8-station-panel'); return { gorunur: pn.style.display !== 'none', onar: !!pn.querySelector('.btn.primary'), t: pn.textContent }; });
-  ok(r.gorunur && !r.onar && /kilitli/.test(r.t), 'kilitli bölüm: panel açılır, Onar yok');
+  ok(r.gorunur && !r.onar && /Kilitli/.test(r.t) && /Önce önceki bölümü onar: Kesim testeresi/.test(r.t), 'kilitli bölüm: panel açılır, Onar yok, tek satır ipucu');
   /* sıradaki bölüm paneli */
   await p.locator('.fb-node[data-id=s01]').click();
   r = await p.evaluate(function(){ var pn = document.getElementById('a8-station-panel');
-    return { madde: pn.querySelectorAll('.fb-madde > li').length, kav: pn.querySelectorAll('.fb-kav .chip').length,
+    return { madde: pn.querySelectorAll('.fb-kart:not(.fb-mini)').length, kav: pn.querySelectorAll('.fb-kav .chip').length,
       onar: [].map.call(pn.querySelectorAll('.btn.primary'), function(b){ return b.textContent; }), mini: !!pn.querySelector('.fb-mini'), engel: pn.querySelectorAll('ol li').length, t: pn.textContent }; });
-  ok(r.madde >= 3 && r.madde <= 4, 'panelde 3-4 madde (' + r.madde + ')');
-  ok(r.kav >= 3, 'kavram rozetleri English (Türkçe) (' + r.kav + ')');
+  ok(r.madde === 3, 'panelde 3 bilgi kartı (' + r.madde + ')');
+  ok(r.kav >= 3 && r.kav <= 4, 'kavram çipleri 3-4 (' + r.kav + ')');
   ok(r.onar[0] === 'Onar' && !r.mini && r.engel === 9, 'Onar düğmesi, mini soru henüz yok, 9 engele atla düğmesi');
   await p.locator('#a8-station-panel .btn.primary', { hasText: 'Onar' }).click();
   await p.waitForTimeout(200);
@@ -119,6 +119,7 @@ function ok(c, m){ process.stdout.write((c ? 'ok: ' : 'KALDI: ') + m + '\n'); if
   await p.locator('.fb-node[data-id=s08]').click();
   var onar = await p.locator('#a8-station-panel .btn.primary').count();
   ok(r === true && onar === 1, 'Her yere eriş açıkken kilitli bölüm de onarılabilir (Onar var)');
+  await p.locator('#a8-station-panel .fb-atla summary').click();
   await p.locator('#a8-station-panel ol li button').nth(4).click();
   await p.waitForTimeout(200);
   r = await p.evaluate(function(){ return { s: window.__start, atladi: Q.state.ilerleme.s08 && Q.state.ilerleme.s08.atladi }; });
@@ -176,6 +177,57 @@ function ok(c, m){ process.stdout.write((c ? 'ok: ' : 'KALDI: ') + m + '\n'); if
     await p.keyboard.press('Escape');
     await p.context().close();
   }
+
+  /* 7) okunabilirlik: metin sınırları (veri), yazı boyutu, yapışkan düğme, klavye */
+  p = await ac(1440, 900);
+  r = await p.evaluate(function(){
+    var d = Q.data.fabrika.istasyonlar, kot = [];
+    function kel(t){ return t.trim().split(/\s+/).length; }
+    Object.keys(d).forEach(function(k){
+      var x = d[k];
+      if (kel(x.rol) > 18) kot.push(k + ' rol ' + kel(x.rol));
+      if (kel(x.neden) > 18) kot.push(k + ' neden ' + kel(x.neden));
+      if (x.bagliKavramlar.length < 3 || x.bagliKavramlar.length > 4) kot.push(k + ' çip sayısı');
+      x.bagliKavramlar.forEach(function(c){ if (!/^[^()]+ \([^()]+\)$/.test(c) || c.length > 50 || / ve | and /.test(c)) kot.push(k + ' çip: ' + c); });
+    });
+    return { n: Object.keys(d).length, kot: kot };
+  });
+  ok(r.n === 10 && r.kot.length === 0, 'veri: 10 bölüm, rol/neden <= 18 kelime, çip = tek terim ' + r.kot.join('|'));
+  await p.context().close();
+  var bt = [[1366, 768], [1440, 900], [1920, 1080], [700, 800]];
+  for (var bj = 0; bj < bt.length; bj++) {
+    p = await ac(bt[bj][0], bt[bj][1]);
+    await p.evaluate(function(){ Q.state.ilerleme.s01 = { tamam: true, enSon: 9 }; Q.state.fabrika.kurulu = ['s01']; Q.settings.openMap(); });
+    await p.locator('.fb-node[data-id=s02]').click();
+    await p.waitForTimeout(200);
+    r = await p.evaluate(function(){
+      var pn = document.getElementById('a8-station-panel'), h = pn.querySelector('.fb-p-ad'), pp = pn.querySelector('.fb-kart p');
+      var al = pn.querySelector('.fb-alt'), a = al.getBoundingClientRect(), eb = pn.querySelector('.fb-eylem');
+      var cs = getComputedStyle(pp), hs = getComputedStyle(h);
+      return { h: parseFloat(hs.fontSize), p: parseFloat(cs.fontSize), lh: parseFloat(cs.lineHeight) / parseFloat(cs.fontSize),
+        alt: a.top >= 0 && a.bottom <= innerHeight + 1, eylem: eb && eb.textContent, eh: eb && eb.getBoundingClientRect().height,
+        sx: document.documentElement.scrollWidth - innerWidth, rozet: pn.querySelector('.fb-durum').textContent };
+    });
+    ok(r.h >= 22 && r.p >= 16 && r.lh >= 1.5, bt[bj].join('x') + ' yazı: başlık ' + r.h + ' gövde ' + r.p + ' satır ' + r.lh.toFixed(2));
+    ok(r.alt && r.eylem === 'Onar' && r.eh >= 48 && r.sx <= 0 && r.rozet === 'Sıradaki', bt[bj].join('x') + ' alt şerit ekranda, büyük Onar düğmesi, taşma yok ' + JSON.stringify(r));
+    await p.screenshot({ path: path.join(OUT, 'fabrika-panel-' + bt[bj][0] + '.png') });
+    await p.context().close();
+  }
+  p = await ac(1440, 900);
+  await p.evaluate(function(){ Q.state.ilerleme.s01 = { tamam: true, enSon: 9 }; Q.state.fabrika.kurulu = ['s01']; Q.settings.openMap(); });
+  await p.locator('.fb-node[data-id=s01]').focus();
+  await p.keyboard.press('ArrowRight');
+  r = await p.evaluate(function(){ return document.activeElement.dataset.id; });
+  ok(r === 's02', 'ok tuşu sonraki bölüme odaklar (' + r + ')');
+  await p.keyboard.press('Enter');
+  r = await p.evaluate(function(){ var pn = document.getElementById('a8-station-panel'); return { acik: pn.style.display !== 'none', odak: document.activeElement.className }; });
+  ok(r.acik && /fb-p-ad/.test(r.odak), 'Enter paneli açar ve başlığa odaklanır');
+  await p.keyboard.press('Escape');
+  await p.waitForTimeout(100);
+  r = await p.evaluate(function(){ var pn = document.getElementById('a8-station-panel'); return { kapali: pn.style.display === 'none', odak: document.activeElement.dataset && document.activeElement.dataset.id }; });
+  ok(r.kapali && r.odak === 's02', 'Esc paneli kapatır, odak bölüme döner (' + JSON.stringify(r) + ')');
+  ok(p._errs.length === 0, 'konsol hatası yok ' + p._errs.join('|'));
+  await p.context().close();
 
   await br.close();
   if (kaldi) { process.stdout.write(kaldi + ' KALDI\n'); process.exit(1); }

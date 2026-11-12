@@ -11,41 +11,41 @@
     istasyonlar: {
       s01: {
         kisa: 'Kristal fırını',
-        rol: 'Ham kumdan çıkan silicon (silisyum) eriyiğini Czochralski yöntemiyle tek bir single crystal (tek kristal) külçeye çevirir.',
-        neden: 'Çip, atomları kusursuz dizilmiş tek kristal ister. Grain boundary (tane sınırı) taşıyıcıları saçar ve aygıtı bozar.',
-        bagliKavramlar: ['Amorphous (amorf) / polycrystalline (çok kristalli) / single crystal (tek kristal)', 'Grain boundary (tane sınırı)', 'Czochralski growth (Czochralski büyütme) ve seed (tohum)'],
+        rol: 'Erimiş silicon (silisyum), tek parça kusursuz bir kristal külçeye çevrilir.',
+        neden: 'Çip kusursuz sıralı atomlar ister; bozuk dizilim, kalabalık yolda trafik sıkışması gibi elektronu yavaşlatır.',
+        bagliKavramlar: ['Single crystal (tek kristal)', 'Grain boundary (tane sınırı)', 'Czochralski growth (Czochralski büyütme)', 'Seed (tohum)'],
         miniSoru: {
           soru: 'Fırında neden single crystal (tek kristal) silicon (silisyum) üretiyoruz?',
           secenekler: [
-            s('Çünkü tek kristalde grain boundary (tane sınırı) yoktur ve periyodik düzen tüm parçada sürer', true, 'Düzen bozulmadığı için elektronlar öngörülebilir davranır.'),
-            s('Çünkü amorphous (amorf) silicon (silisyum) daha pahalıdır', false, 'Neden fiyat değil, long-range order (uzun menzilli düzen) gereksinimidir.'),
-            s('Çünkü tek kristal ışık yaymaz', false, 'Seçim, ışıkla değil kristal düzeniyle ilgilidir.')
+            s('Tek kristalde grain boundary (tane sınırı) yoktur; düzen tüm parçada sürer', true, 'Düzen bozulmadığı için elektronlar öngörülebilir davranır.'),
+            s('Amorphous (amorf) silicon (silisyum) daha pahalıdır', false, 'Neden fiyat değil, long-range order (uzun menzilli düzen) gereksinimidir.'),
+            s('Tek kristal ışık yaymaz', false, 'Seçim, ışıkla değil kristal düzeniyle ilgilidir.')
           ]
         }
       },
       s02: {
         kisa: 'Kesim testeresi',
-        rol: 'Külçeyi belirli bir crystal plane (kristal düzlemi) boyunca dilimleyip wafer (dilim) üretir. Düzlem Miller indices (Miller indisleri) ile adlandırılır.',
-        neden: 'Yüzeyin atom dizilimi düzleme göre değişir. Aynı malzeme (100) ve (111) dilimlerinde farklı davranır, o yüzden doğru düzlemi seçmek gerekir.',
-        bagliKavramlar: ['Lattice (kafes) ve unit cell (birim hücre)', 'Miller indices (Miller indisleri) ve reciprocal (ters) alma', 'Atoms per unit cell (birim hücredeki atom sayısı)'],
+        rol: 'Külçe ince dilimlere kesilir; her dilim bir wafer (dilim) olur.',
+        neden: 'Kristal ekmek gibi dilimlenir; hangi düzlemden kestiğin, yüzeydeki atom dizilimini belirler.',
+        bagliKavramlar: ['Lattice (kafes)', 'Unit cell (birim hücre)', 'Miller indices (Miller indisleri)', 'Crystal plane (kristal düzlemi)'],
         miniSoru: {
           soru: 'Wafer (dilim) neden rastgele değil, belirli bir crystal plane (kristal düzlemi) boyunca kesilir?',
           secenekler: [
-            s('Çünkü yüzeydeki atom dizilimi ve yoğunluğu düzleme bağlıdır, aygıt özellikleri de buna bağlıdır', true, 'Düzlem, Miller indices (Miller indisleri) ile belirlenir.'),
-            s('Çünkü her düzlemde atom sayısı aynıdır', false, 'Planar density (düzlemsel yoğunluk) düzleme göre değişir.'),
-            s('Çünkü Miller indices (Miller indisleri) wafer (dilim) kalınlığını belirler', false, 'Miller indices (Miller indisleri) yönelimi verir, kalınlığı vermez.')
+            s('Yüzeydeki atom dizilimi düzleme bağlıdır; aygıt özellikleri de buna bağlıdır', true, 'Düzlem, Miller indices (Miller indisleri) ile belirlenir.'),
+            s('Her düzlemde atom sayısı aynıdır', false, 'Planar density (düzlemsel yoğunluk) düzleme göre değişir.'),
+            s('Miller indices (Miller indisleri) dilim kalınlığını belirler', false, 'Miller indices (Miller indisleri) yönelimi verir, kalınlığı vermez.')
           ]
         }
       },
       s03: {
         kisa: 'Işık-test odası',
-        rol: 'Klasik fiziğin neden yetmediğini gösterir: blackbody (kara cisim) ışıması ve photoelectric effect (fotoelektrik olay) ışığın energy quanta (enerji paketleri) halinde olduğunu kanıtlar.',
-        neden: 'Çipin içi klasik fizikle açıklanamaz. Foton paketleri fikri, elektronun enerjisinin de ayrık olduğu kuantum dünyasına giriş kapısıdır.',
-        bagliKavramlar: ['Blackbody radiation (kara cisim ışıması) ve ultraviolet catastrophe (mor ötesi felaket)', 'Photon (foton) ve E = hν', 'Photoelectric effect (fotoelektrik olay) ve threshold frequency (eşik frekansı)'],
+        rol: 'Işığın enerjisinin photon (foton) denen paketlerle geldiğini deneylerle gösterir.',
+        neden: 'Enerji rampa değil merdiven gibidir: basamak basamak. Çipin kuantum fiziği bu fikirle başlar.',
+        bagliKavramlar: ['Photon (foton)', 'Photoelectric effect (fotoelektrik olay)', 'Blackbody radiation (kara cisim ışıması)', 'Threshold frequency (eşik frekansı)'],
         miniSoru: {
           soru: 'Photoelectric effect (fotoelektrik olay) deneyi ışığı hakkında neyi gösterir?',
           secenekler: [
-            s('Işık enerjisi photon (foton) paketleri halindedir, eşik frekansının altında yoğunluk artsa da elektron kopmaz', true, 'Elektronu koparan şey frekanstır, intensity (şiddet) değil.'),
+            s('Işık photon (foton) paketleridir; eşik frekansının altında, şiddet artsa da elektron kopmaz', true, 'Elektronu koparan şey frekanstır, intensity (şiddet) değil.'),
             s('Işığın şiddeti artınca eşik frekansı düşer', false, 'Threshold frequency (eşik frekansı) metale bağlıdır, şiddete bağlı değildir.'),
             s('Işık yalnızca klasik bir dalgadır', false, 'Klasik dalga resmi bu deneyi açıklayamaz.')
           ]
@@ -53,13 +53,13 @@
       },
       s04: {
         kisa: 'Atom mikroskobu',
-        rol: 'Hydrogen atom (hidrojen atomu) kararlılığını ve discrete energy levels (ayrık enerji seviyelerini) inceler. Matter wave (madde dalgası) fikri burada gelir.',
-        neden: 'Çipteki elektronlar atomlara bağlıdır. Seviyelerin ayrık olması, sonraki bölümlerde kuyu ve bantların temelini kurar.',
-        bagliKavramlar: ['Bohr model (Bohr modeli) ve quantized energy levels (kuantalı enerji seviyeleri)', 'Atomic spectrum (atom spektrumu)', 'de Broglie wavelength (de Broglie dalga boyu)', 'Zero-point energy (sıfır noktası enerjisi)'],
+        rol: 'Hydrogen atom (hidrojen atomu) içindeki elektronun yalnızca belirli enerjilerde durabildiğini gösterir.',
+        neden: 'Elektron bir apartmanda yalnızca belirli katlarda durabilir; çipin enerji bantları bu katlardan doğar.',
+        bagliKavramlar: ['Bohr model (Bohr modeli)', 'Energy level (enerji seviyesi)', 'Atomic spectrum (atom spektrumu)', 'de Broglie wavelength (de Broglie dalga boyu)'],
         miniSoru: {
           soru: 'Atomun discrete spectrum (ayrık spektrumu) neyi gösterir?',
           secenekler: [
-            s('Elektron yalnızca belirli energy levels (enerji seviyelerinde) bulunabilir, atlarken ayrık enerjili photon (foton) yayar', true, 'Bohr bu fikri 1913\'te ortaya koydu.'),
+            s('Elektron yalnızca belirli energy levels (enerji seviyelerinde) bulunur; atlarken photon (foton) yayar', true, 'Bohr bu fikri 1913\'te ortaya koydu.'),
             s('Elektron her enerjiyi alabilir', false, 'Bu klasik beklentidir, spektrum çizgili olduğu için çürür.'),
             s('Çekirdek ışık yayar', false, 'Çizgiler elektron geçişlerinden gelir.')
           ]
@@ -67,9 +67,9 @@
       },
       s05: {
         kisa: 'Dalga odası',
-        rol: 'Schrödinger equation (Schrödinger denklemi) ile wave function (dalga fonksiyonu) ψ\'yi bulur. Infinite well (sonsuz kuyu) örneğinde energy quantization (enerji kuantalaşması) kendiliğinden çıkar.',
-        neden: 'Çipteki elektron bir dalgadır. Kuyu modeli, kristal içindeki elektronu anlamanın en sade örneğidir.',
-        bagliKavramlar: ['Wave function (dalga fonksiyonu) ψ ve probability density (olasılık yoğunluğu) |ψ|²', 'Boundary conditions (sınır koşulları) ve quantization (kuantalaşma)', 'Zero-point energy (sıfır noktası enerjisi)', 'Schrödinger equation (Schrödinger denklemi) ve collapse (çökme) farkı'],
+        rol: 'Elektronu dalga olarak ele alır; kuyuya hapsolunca enerjisi yalnızca belirli değerler alır.',
+        neden: 'Gitar teli gibi: iki ucu tutulu tel belirli notaları çalar, kuyudaki elektron belirli enerjileri alır.',
+        bagliKavramlar: ['Wave function (dalga fonksiyonu)', 'Schrödinger equation (Schrödinger denklemi)', 'Infinite well (sonsuz kuyu)', 'Boundary conditions (sınır koşulları)'],
         miniSoru: {
           soru: 'Infinite well (sonsuz kuyu) içinde energy quantization (enerji kuantalaşması) nereden gelir?',
           secenekler: [
@@ -81,9 +81,9 @@
       },
       s06: {
         kisa: 'Tünel istasyonu',
-        rol: 'Step potential (basamak potansiyeli) ve barrier (bariyer) karşısında wave function (dalga fonksiyonu) yansır, geçer ve tunneling (tünelleme) ile bariyerin içine sızar.',
-        neden: 'Transistör kapılarında ve flash bellekte elektronlar ince bariyerlerden tünelleyerek geçer. Hem hizmet eder hem sızıntı yapar.',
-        bagliKavramlar: ['Reflection (yansıma) ve transmission (geçirme)', 'Evanescent wave (sönümlenen dalga)', 'Tunneling (tünelleme) ve barrier width (bariyer kalınlığı)', 'Continuity of ψ (ψ\'nin sürekliliği)'],
+        rol: 'Elektron dalgasının ince bir bariyerin içine sızıp karşıya geçebildiğini gösterir.',
+        neden: 'Elektron ince bir duvarı aşar gibi geçebilir; transistörde ve flash bellekte bu hem işe yarar hem sızıntı yapar.',
+        bagliKavramlar: ['Tunneling (tünelleme)', 'Barrier (bariyer)', 'Reflection (yansıma)', 'Transmission (geçirme)'],
         miniSoru: {
           soru: 'Barrier (bariyer) kalınlaştıkça tunneling (tünelleme) olasılığına ne olur?',
           secenekler: [
@@ -95,9 +95,9 @@
       },
       s07: {
         kisa: 'Ölçüm lab.',
-        rol: 'Quantum mechanics\'in postulates (postülatlarını) ve measurement (ölçümü) işler. Ölçüm sonucu eigenvalue (özdeğer) olur ve state collapse (hâl çökmesi) yaşanır.',
-        neden: 'Çipin okuma ve yazma işlemleri ölçümdür. Ölçümün durumu nasıl değiştirdiğini bilmeden sonuçlar yanlış okunur.',
-        bagliKavramlar: ['Postulates (postülatlar) ve operator (işlemci)', 'Eigenvalue (özdeğer) ve eigenstate (özdurum)', 'Measurement collapse (ölçümle çökme)', 'Born rule (Born kuralı) ve probability (olasılık)'],
+        rol: 'Bir ölçüm yapınca kuantum durumuna ne olduğunu ve hangi değerlerin çıkabileceğini öğretir.',
+        neden: 'Kuantum dünyasında okumak durumu değiştirir; ölçümü doğru yorumlamazsan sonucu yanlış anlarsın.',
+        bagliKavramlar: ['Measurement (ölçüm)', 'Eigenvalue (özdeğer)', 'Collapse (çökme)', 'Born rule (Born kuralı)'],
         miniSoru: {
           soru: 'Collapse (çökme) neden olur?',
           secenekler: [
@@ -109,27 +109,27 @@
       },
       s08: {
         kisa: 'Kalibrasyon',
-        rol: 'Uncertainty principle (belirsizlik ilkesi) ile conjugate variables (eşlenik değişkenler) arasındaki sınırı gösterir. Konum ne kadar bilinirse momentum o kadar belirsizleşir.',
-        neden: 'Çipin küçülmesinin sınırı budur. Elektronu çok dar bir bölgeye hapsetmek momentumunu ve enerjisini büyütür.',
-        bagliKavramlar: ['Uncertainty principle (belirsizlik ilkesi) Δx Δp ≥ ħ/2', 'Conjugate variables (eşlenik değişkenler)', 'Zero-point energy (sıfır noktası enerjisi)', 'Wave packet (dalga paketi)'],
+        rol: 'Konum ile momentum (momentum) aynı anda keskin bilinemez; aralarında bir sınır vardır.',
+        neden: 'Elektronu ne kadar dar sıkıştırırsan o kadar hızlı kıpırdar; bu, çip küçülmesinin sınırlarından biridir.',
+        bagliKavramlar: ['Uncertainty principle (belirsizlik ilkesi)', 'Conjugate variables (eşlenik değişkenler)', 'Zero-point energy (sıfır noktası enerjisi)'],
         miniSoru: {
           soru: 'Uncertainty principle (belirsizlik ilkesi) neden bir ölçüm aleti hatası değildir?',
           secenekler: [
-            s('Çünkü dalga doğasından gelir, conjugate variables (eşlenik değişkenler) aynı anda keskin olamaz', true, 'Daha iyi alet bu sınırı kaldırmaz.'),
-            s('Çünkü aletler yeterince hassas değildir', false, 'Sınır, ideal aletle bile geçerlidir.'),
-            s('Çünkü yalnızca makroskopik cisimlerde görülür', false, 'Etki makroskopik cisimlerde sadece çok küçüktür.')
+            s('Dalga doğasından gelir; conjugate variables (eşlenik değişkenler) aynı anda keskin olamaz', true, 'Daha iyi alet bu sınırı kaldırmaz.'),
+            s('Aletler yeterince hassas değildir', false, 'Sınır, ideal aletle bile geçerlidir.'),
+            s('Yalnızca makroskopik cisimlerde görülür', false, 'Etki makroskopik cisimlerde sadece çok küçüktür.')
           ]
         }
       },
       s09: {
         kisa: 'Bant testi',
-        rol: 'Periodic structure (periyodik yapı) içinde atom seviyelerinin yarılıp energy bands (enerji bantlarına) dönüşmesini ve band gap (bant aralığını) gösterir.',
-        neden: 'Bir malzemenin metal, semiconductor (yarıiletken) ya da insulator (yalıtkan) olması bant yapısına bağlıdır. Çipin tüm çalışma ilkesi buradadır.',
-        bagliKavramlar: ['Energy bands (enerji bantları) ve band gap (bant aralığı)', 'Pauli exclusion principle (Pauli dışlama ilkesi)', 'Valence band (değerlik bandı) ve conduction band (iletim bandı)', 'Metal (metal) / semiconductor (yarıiletken) / insulator (yalıtkan)'],
+        rol: 'Çok atom yan yana gelince enerji seviyeleri bantlara dönüşür; aralarında band gap (bant aralığı) kalır.',
+        neden: 'Malzemenin metal, semiconductor (yarıiletken) ya da insulator (yalıtkan) olması bant yapısına bağlıdır.',
+        bagliKavramlar: ['Energy band (enerji bandı)', 'Band gap (bant aralığı)', 'Valence band (değerlik bandı)', 'Conduction band (iletim bandı)'],
         miniSoru: {
           soru: 'Bir kristalde energy bands (enerji bantları) neden oluşur?',
           secenekler: [
-            s('Çok sayıda atomun seviyeleri birbirine yaklaşır, Pauli exclusion principle (Pauli dışlama ilkesi) yüzünden yarılıp banda dönüşür', true, 'Yarılan seviyeler pratikte sürekli bir bant gibi görünür.'),
+            s('Atom seviyeleri Pauli exclusion principle (Pauli dışlama ilkesi) yüzünden yarılır ve banda dönüşür', true, 'Yarılan seviyeler pratikte sürekli bir bant gibi görünür.'),
             s('Elektronlar atomlardan tamamen ayrılır', false, 'Elektronlar kristale aittir ama bantlar seviyelerin yarılmasından gelir.'),
             s('Kristal sıcaklığı bandı yaratır', false, 'Bant yapısı periyodik yapıdan gelir, sıcaklıktan değil.')
           ]
@@ -137,9 +137,9 @@
       },
       s10: {
         kisa: 'Paketleme',
-        rol: 'Carriers (taşıyıcılar), Fermi level (Fermi seviyesi) ve drift (sürüklenme) ile bantların çipte akıma nasıl dönüştüğünü gösterir.',
-        neden: 'Bant yapısı elektrik alanıyla birleşince akım oluşur. Çipin sonunda "çalışıyor" demek bu akım demektir.',
-        bagliKavramlar: ['Fermi level (Fermi seviyesi) ve Fermi-Dirac distribution (Fermi-Dirac dağılımı)', 'n-type / p-type carriers (n / p tipi taşıyıcılar)', 'Drift velocity (sürüklenme hızı)'],
+        rol: 'Bantlardaki carrier (taşıyıcı) elektrik alanıyla nasıl akıma dönüşür, onu gösterir.',
+        neden: 'Nehre eğim verince su akar; elektrik alanı verince taşıyıcılar akar ve çip çalışır.',
+        bagliKavramlar: ['Carrier (taşıyıcı)', 'Fermi level (Fermi seviyesi)', 'Drift velocity (sürüklenme hızı)', 'Fermi-Dirac distribution (Fermi-Dirac dağılımı)'],
         miniSoru: {
           soru: 'Fermi level (Fermi seviyesi) neyi belirtir?',
           secenekler: [
