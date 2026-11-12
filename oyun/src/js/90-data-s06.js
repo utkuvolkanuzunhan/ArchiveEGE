@@ -60,6 +60,13 @@
       {
         id: 's06-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Paris', yil: 1924, rivayet: false,
+        onBilgi: [
+          { baslik: "Madde dalgasından tünellemeye", madde: [
+            "1924'te de Broglie, electron (elektron) gibi parçacıklar için matter wave (madde dalgası) önerdi.",
+            "1927'de Davisson ve Germer, electron diffraction (elektron kırınımı) ile dalga davranışını gösterdi.",
+            "1928'de Gamow, alpha decay (alfa bozunumu) olayını tunneling (tünelleme) ile açıkladı.",
+            "Tunneling, tunnel diode (tünel diyodu) ve flash memory (flash bellek) gibi aygıtların temelindedir." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Tünel istasyonunda electron (elektron) bir duvarla karşılaşıyor. Geçer mi?' },
           { kim: 'broglie', metin: 'Matter wave (madde dalgası) ise ışık gibi davranır: engelde hem yansır hem geçebilir.' },
@@ -68,6 +75,23 @@
       },
       {
         id: 's06-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'basamak_yansima', agirlik: 1,
+        onBilgi: [
+          { baslik: "Step potential (basamak potansiyeli)", madde: [
+            "Step potential (basamak potansiyeli): x = 0'da potential (potansiyel) V = 0'dan V₀'a sıçrar.",
+            "Region (bölge) 1 ve region 2 için ayrı ψ yazılır; k₁=√(2mE)/ħ ve k₂=√(2m(E−V₀))/ħ.",
+            "Işığın cam yüzeyinde kısmen yansıması gibi: dalganın ortamı değişince bir kısmı reflect (yansır) olur.",
+            "R = reflection (yansıma) olasılığı, T = transmission (geçiş) olasılığı; R + T = 1." ] },
+          { baslik: "Continuity (süreklilik) ve forbidden region", madde: [
+            "Boundary (sınır) noktasında ψ ve ψ' continuous (sürekli) olmalı; bu şart katsayıları (r, t) belirler.",
+            "Bunun nedeni: equation (denklem) second derivative (ikinci türev) içerir, süreksizlik taşıyamaz.",
+            "E < V₀ ise klasikte yasak olan bölge: forbidden region (yasak bölge).",
+            "Orada ψ oscillate (salınmaz); exponentially decays (üstel sönümlenir) ama bir anda sıfırlanmaz." ] },
+          { baslik: "Tunneling (tünelleme), barrier (bariyer)", madde: [
+            "Barrier (bariyer): V₀ yüksekliğinde, a kalınlığında engel; E < V₀ olsa bile öbür yanda ψ sıfır değildir.",
+            "Tunneling (tünelleme): ψ'nin sönümlenip karşı tarafa ulaşması; parçacık engelin üstünden zıplamaz.",
+            "T ∝ e^(−2κa), κ=√(2m(V₀−E))/ħ: thickness (kalınlık) a arttıkça T exponential (üstel) azalır.",
+            "Sık karışan nokta: tunneling sırasında parçacık energy (enerji) kaybetmez, yalnızca olasılık küçülür." ] }
+        ],
         gorev: 'Energy (enerji) step (basamak) yüksekliğinden büyük kalsın; R\'yi 0,1-0,2 yap.',
         sim: {
           modul: 'basamak',

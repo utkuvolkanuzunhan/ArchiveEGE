@@ -60,6 +60,13 @@
       {
         id: 's07-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Göttingen', yil: 1926, rivayet: false,
+        onBilgi: [
+          { baslik: "Born, postülatlar ve ölçüm", madde: [
+            "1926'da Born, |ψ|² değerini probability (olasılık) olarak yorumladı; bu yorum sonradan Nobel aldı.",
+            "1927 dolayında Bohr ve Heisenberg'in Copenhagen interpretation (Kopenhag yorumu) şekillendi.",
+            "1932'de von Neumann, quantum mechanics (kuantum mekaniği) postulate (postülat) yapısını matematiksel kurdu.",
+            "1935'te Schrödinger, kendi cat (kedi) düşünce deneyiyle ölçüm sorununu tartışmaya açtı." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Measurement (ölçüm) laboratuvarı: bakınca ne oluyor?' },
           { kim: 'born', metin: 'ψ\'nin karesini probability (olasılık) olarak yorumladım. Measurement (ölçüm) result (sonuç) kesin değil, probability (olasılık) ile çıkar.' },
@@ -68,6 +75,22 @@
       },
       {
         id: 's07-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'olcum_cokme', agirlik: 1,
+        onBilgi: [
+          { baslik: "Observable (gözlenebilir), operator (operatör)", madde: [
+            "Observable (gözlenebilir): ölçülebilen büyüklük, örneğin energy (enerji), position (konum), momentum.",
+            "Her observable bir operator (operatör) ile temsil edilir; Ĥ enerji operatörüdür.",
+            "Eigenvalue (özdeğer): operatörün izinli sayısı; eigenstate (özdurum): o sayıya ait kesin durum φₙ." ] },
+          { baslik: "Superposition (süperpozisyon), probability", madde: [
+            "Superposition (süperpozisyon): durum eigenstate (özdurum) toplamı olabilir: ψ = c₁φ₁ + c₂φ₂ + ...",
+            "Her c coefficient (katsayı) ile ölçüm sonucu φₙ için probability (olasılık) = |cₙ|².",
+            "Olasılıklar toplanınca 1 eder: Σ|cₙ|² = 1 (normalization, normalizasyon).",
+            "Sık karışan nokta: olasılık c'nin kendisi değil karesidir; katsayılar doğrudan toplanmaz." ] },
+          { baslik: "Measurement (ölçüm), collapse (çökme)", madde: [
+            "Measurement (ölçüm) yalnızca bir eigenvalue (özdeğer) verir; average (ortalama) tek ölçümde görülmez.",
+            "Ölçümden sonra ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker); hemen tekrar ölçersen sonuç kararlıdır.",
+            "Aralarda Schrödinger equation (denklemi) ψ'yi deterministic (belirlenimci) evriltir; rastgelelik yalnızca ölçümde.",
+            "Schrödinger denklemi çökmez; collapse (çökme) ayrı bir postulate (postülat) ve measurement (ölçüm) ile gelir." ] }
+        ],
         gorev: 'Measure (ölç), sonra tekrar measure (ölç): result (sonuç) ne?',
         sim: {
           modul: 'olcum',

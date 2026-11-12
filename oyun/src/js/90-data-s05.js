@@ -61,6 +61,13 @@
       {
         id: 's05-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Zürih', yil: 1926, rivayet: false,
+        onBilgi: [
+          { baslik: "Schrödinger ve dalga denklemi", madde: [
+            "1924'te de Broglie: parçacıkların da wave (dalga) gibi davranabileceğini önerdi.",
+            "1926'da Schrödinger, wave function (dalga fonksiyonu) ψ için denklemini yazdı.",
+            "Aynı yıl Born, |ψ|² değerini probability density (olasılık yoğunluğu) olarak yorumladı.",
+            "Atomun energy levels (enerji seviyeleri) bu denklemden kendiliğinden çıktı; bu yüzden çok önemlidir." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Dalga odası: burada her şey tek bir denkleme bağlı.' },
           { kim: 'schro', metin: 'Wave function (dalga fonksiyonu) ψ için bir denklem yazdım. Atomun energy levels (enerji seviyeleri) denklemden çıktı.' },
@@ -69,6 +76,22 @@
       },
       {
         id: 's05-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'kuantalasma_sinir', agirlik: 1,
+        onBilgi: [
+          { baslik: "Wave function (dalga fonksiyonu) ψ", madde: [
+            "ψ(x): parçacığı anlatan wave function (dalga fonksiyonu); kendisi doğrudan ölçülemez.",
+            "|ψ(x)|² = probability density (olasılık yoğunluğu): parçacığın x civarında bulunma olasılığı.",
+            "ψ konum ya da enerji değeri vermez; yalnızca olasılık dağılımını taşır." ] },
+          { baslik: "Schrödinger equation (denklemi)", madde: [
+            "Girdi: potential (potansiyel) V(x) ve boundary condition (sınır koşulu). Çıktı: ψ ve izinli E değerleri.",
+            "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi).",
+            "Time-dependent (zamana bağlı) hâli ψ'yi zamanla düzgün ve deterministic (belirlenimci) evriltir.",
+            "Collapse (çökme) denklemin parçası değildir; ölçüm postülatı ayrıdır ve sonraki istasyonda gelir." ] },
+          { baslik: "Infinite well (sonsuz kuyu), quantization", madde: [
+            "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
+            "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
+            "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L yarıya inerse etkisi büyüktür.",
+            "n = 0 dalga yok demektir; en düşük E₁ > 0 olur: zero-point energy (sıfır noktası enerjisi), sınır koşulundan gelir." ] }
+        ],
         gorev: 'Well (kuyu) genişliğini 2\'den 1 nm\'ye indir.',
         sim: {
           modul: 'kuyu',
