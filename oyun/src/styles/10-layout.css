@@ -20,6 +20,6 @@ html,body{height:100%;margin:0;overflow:hidden}
 #toast-layer{position:fixed;left:50%;bottom:calc(clamp(300px,44vh,346px) + 24px);transform:translateX(-50%);z-index:60;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
 @media (max-width:1250px){#hud-voltaj{grid-template-columns:auto 100px 36px}#hud-claude{display:none}}
 @media (max-width:1250px){#hud-path{gap:5px}}
-@media (max-width:900px){#topbar{gap:8px}#hud-station{font-size:16px;flex:0 1 130px}#hud-path{gap:3px;flex:0 0 auto}#hud-path .path-node{width:16px;height:16px}#hud-path .path-node svg{width:9px;height:9px}#hud-voltaj{grid-template-columns:auto 64px 30px;gap:6px}#hud-timer{display:none}}  /* 700x800: üst şerit taşmasın */
+@media (max-width:900px){#topbar{gap:8px}#hud-station{font-size:16px;flex:0 1 220px}#hud-path{gap:3px;flex:0 0 auto}#hud-path .path-node{width:16px;height:16px}#hud-path .path-node svg{width:9px;height:9px}#hud-voltaj{grid-template-columns:auto 64px 30px;gap:6px}#hud-timer{display:none}}  /* 700x800: üst şerit taşmasın */
 @media (max-height:800px){#runway{min-height:0}}  /* 1100x700: 56vh+dock+şerit taşardı; yol kalan alanı alır */
 #dock:empty::before{content:"Engele yaklaşınca görev burada açılır.";margin:auto;color:var(--muted);font-weight:800;font-size:var(--fs-small)}
