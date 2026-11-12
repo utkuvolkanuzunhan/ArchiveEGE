@@ -26,7 +26,9 @@ Object.keys(by).forEach(function(s){ chk(by[s][0] >= 8 && by[s][1] >= 3, s + ' y
 var sm = S.mcq.filter(function(x){ return x.secki; }), sk = S.klasik.filter(function(x){ return x.secki; });
 chk(sm.length === 50, 'seçki MCQ 50 olmalı: ' + sm.length);
 chk(sk.length === 20, 'seçki klasik 20 olmalı: ' + sk.length);
-var hedef = { s01: 10, s02: 10, s03: 5, s04: 4, s05: 6, s06: 5, s07: 5, s08: 3, s09: 2 };
+var hedef = { s01: 10, s02: 10, s03: 4, s04: 4, s05: 6, s06: 4, s07: 5, s08: 3, s09: 2, s10: 2 };
+var hedefK = { s01: 3, s02: 2, s03: 1, s04: 2, s05: 3, s06: 1, s07: 3, s08: 2, s09: 2, s10: 1 };
+Object.keys(hedefK).forEach(function(s){ var c = sk.filter(function(x){ return x.station === s; }).length; chk(c === hedefK[s], 'seçki klasik ' + s + ' = ' + c + ', hedef ' + hedefK[s]); });
 Object.keys(hedef).forEach(function(s){ var c = sm.filter(function(x){ return x.station === s; }).length; chk(c === hedef[s], 'seçki MCQ ' + s + ' = ' + c + ', hedef ' + hedef[s]); });
 console.log('dosyalar:', files.join(', '), '| mcq', S.mcq.length, 'klasik', S.klasik.length, JSON.stringify(by));
 if (err.length) { console.log(err.join('\n')); process.exit(1); }

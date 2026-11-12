@@ -70,10 +70,10 @@
   var SECKI_MCQ = [
     'sv-s01-m1','sv-s01-m2','sv-s01-m3','sv-s01-m4','sv-s01-m5','sv-s01-m6','sv-s01-m7','sv-s01-m8','sv-s01-m9','sv-s01-m10',
     'sv-s02-m1','sv-s02-m2','sv-s02-m3','sv-s02-m4','sv-s02-m5','sv-s02-m6','sv-s02-m7','sv-s02-m8','sv-s02-m9','sv-s02-m10',
-    'sv-s03-m1','sv-s03-m2','sv-s03-m3','sv-s03-m5','sv-s03-m7',
+    'sv-s03-m1','sv-s03-m2','sv-s03-m3','sv-s03-m5',
     'sv-s04-m1','sv-s04-m2','sv-s04-m3','sv-s04-m6',
     's05-m1','s05-m2','s05-m3','s05-m6','s05-m8','s05-m10',
-    's06-m1','s06-m2','s06-m3','s06-m6','s06-m10',
+    's06-m1','s06-m2','s06-m3','s06-m6',
     's07-m1','s07-m3','s07-m4','s07-m5','s07-m10',
     's08-m1','s08-m6','s08-m9',
     'sv-s09-m1','sv-s09-m2'
@@ -81,7 +81,7 @@
   var SECKI_KLASIK = [
     'sv-s01-k4','sv-s01-k3','sv-s01-k1',
     'sv-s02-k4','sv-s02-k1',
-    'sv-s03-k4','sv-s03-k1',
+    'sv-s03-k4',
     'sv-s04-k4','sv-s04-k1',
     's05-k1','s05-k3','s05-k4',
     's06-k3',
