@@ -285,6 +285,7 @@
           cal.appendChild(btn(stAd(c.st) + ' istasyonu', '', function(){ istasyonAc(c.st); }));
           cal.appendChild(btn('Kartlar (' + c.st.toUpperCase() + ')', '', function(){ kartAc(c.st); }));
         });
+        if ((q.no === 5 || q.no === 6) && Q.tekrarHesap) cal.appendChild(btn('Hesap çalıştayı (Q5/Q6 görevleri)', '', function(){ Q.tekrar.git('hesap'); }));
         kutu.appendChild(cal);
         q.calis.forEach(function(c){ kutu.appendChild(el('p', 'tk-muted', c.st.toUpperCase() + ': ' + c.not)); });
       } else kutu.appendChild(el('p', 'tk-muted', 'Tüm anahtar fikirler işaretli.'));

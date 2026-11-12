@@ -3156,11 +3156,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
   ui.textbox = {
     ask: function(o){
       o = o || {};
-      var host = hostOf(o.host), maks = o.maks || 280, kesme = 400;
+      var host = hostOf(o.host), maks = o.maks || 280, kesme = o.kesme || 400;
       return new Promise(function(res){
         var wrap = el('div', 'tb');
         if (o.soru) wrap.appendChild(el('div', 'tb-soru', o.soru));
-        var ta = el('textarea'); ta.maxLength = kesme; ta.rows = 3;
+        var ta = el('textarea'); ta.maxLength = kesme; ta.rows = o.rows || 3;
         ta.setAttribute('aria-label', 'Cevabın');
         var row = el('div', 'row'), sayac = el('span', 'sayac', '0/' + maks);
         var bil = btn('Bilmiyorum', '', function(){ res(null); });
@@ -8509,6 +8509,346 @@ Q.art.PORTRE_IDS = Object.keys(P);
   });
 })();
 
+/* 86-data-gercek-sinav.js · "Gerçek sınav (10 soru)": hocanın örnek sınavındaki 10 klasik soru AYNEN (İngilizce).
+ * Q.data.gercekSinav = { sorular: [ {no, st, text, sekil, kavram, model:[cümleler], anahtar:[], hatalar:[], calis:[{st, not}]} ], not }.
+ * Kullananlar: 98-gercek-sinav.js (sınav arayüzü), 96-final.js (Sınav Günü aynı soru seti).
+ * Sınav metni, model cevaplar ve anahtar fikirler İNGİLİZCE (sınav dili); "hatalar" ve "calis" Türkçe (ders terimleri English (Türkçe)).
+ * Q5 sayıları Python (mpmath + sonlu fark) ile doğrulandı: oyun/denetim/GERCEK-SINAV.md.
+ * Not: Q5/Q6 şekil ayrıntıları (E, V0 sayısal değerleri) bilinmiyor; model çözümler genel parametrelerle yazıldı. */
+(function(){
+  'use strict';
+  Q.data.gercekSinav = {
+    not: 'Q5 ve Q6 şekilleri örnek sınav PDF\'inden yeniden çizilmiştir. Q5 varsayımı: elektron, 0-50 nm sonsuz duvarlı kuyu, 20-30 nm arasında 9 eV\'luk engel, kuyunun geri kalanında V = 0.',
+    sorular: [
+      {
+        no: 1, st: 's01', kavram: 'crystalline solids in industry', sekil: null,
+        text: 'Why are crystalline solids used in the semiconductor industry?',
+        model: [
+          'A crystalline solid has long-range order: a unit cell (a lattice plus a basis) is repeated by translation through the whole sample.',
+          'This periodic arrangement of atoms produces a periodic potential for the electrons.',
+          'Solving the Schrödinger equation in a periodic potential (Bloch theorem) gives allowed energy bands separated by a well-defined bandgap Eg.',
+          'Because the band edges and the bandgap are sharply defined (Si: 1.12 eV, GaAs: 1.42 eV), the electrical and optical properties can be predicted, designed and reproduced from wafer to wafer.',
+          'The crystal lattice also allows controlled doping: donor or acceptor atoms placed on lattice sites give a known density of electrons or holes, which is needed for p-n junctions and transistors.',
+          'A single crystal can be made extremely pure and almost free of defects, which gives high carrier mobility and long carrier lifetime.',
+          'In an amorphous solid there is no long-range order, so there are dangling bonds and localized states in the gap; the carriers are trapped or scatter strongly and the mobility is low.',
+          'In a polycrystalline solid the grain boundaries scatter carriers, act as recombination centres and traps, and let dopants segregate, so the properties change from grain to grain.',
+          'Crystal planes also allow orientation-dependent processing: wafers are cut along (100) or (111) planes, they can be etched or cleaved along planes, and epitaxial layers grow on the crystal as a template.',
+          'Therefore only crystals give predictable, controllable and reproducible device behaviour, which is why the semiconductor industry is built on single-crystal wafers.'
+        ],
+        anahtar: [
+          'Crystal = long-range periodic order (lattice + basis), which gives a periodic potential.',
+          'Periodic potential gives well-defined energy bands and a bandgap, so properties are predictable and reproducible.',
+          'Doping on lattice sites controls the carrier type and density (n-type, p-type).',
+          'Single crystals are pure and defect-free: high mobility and long lifetime.',
+          'Amorphous: no long-range order, dangling bonds, localized states, low mobility.',
+          'Polycrystalline: grain boundaries scatter or trap carriers, so properties vary.'
+        ],
+        hatalar: [
+          'Sadece "kristal daha sağlamdır" demek: asıl neden periyodik potansiyel, bant yapısı ve kontrol edilebilir elektriksel özelliktir.',
+          'Amorf yarıiletkenin hiç kullanılmadığını söylemek: kullanılır (ör. ince film güneş pili), ama taşıyıcı hareketliliği düşüktür; soru yüksek performanslı aygıtları kastediyor.',
+          'Bandgap (yasak enerji aralığı) kavramını yazmamak: cevabın merkezi budur.'
+        ],
+        calis: [
+          { st: 's01', not: 'Kristal = kafes + baz, tek kristal / çok kristalli (polycrystalline) / amorf farkı. Tane sınırı (grain boundary) kartı.' },
+          { st: 's09', not: 'Periyodik potansiyelden bantların doğuşu (Q7 ile bağlantılı).' }
+        ]
+      },
+      {
+        no: 2, st: 's02', kavram: 'single crystal growth', sekil: null,
+        text: 'Explain the main reason for single-crystal growth in the CZ method.',
+        model: [
+          'In the Czochralski (CZ) method, polycrystalline silicon is melted in a quartz crucible just above 1414 °C.',
+          'A small seed crystal with a chosen orientation, for example (100) or (111), is dipped into the melt and pulled upwards slowly while it rotates.',
+          'The silicon atoms of the melt attach to the seed and continue its lattice, so the whole ingot solidifies as one continuous crystal with the orientation of the seed.',
+          'The main reason for growing a single crystal is that it has no grain boundaries; the whole wafer has the same, uninterrupted periodic lattice.',
+          'Grain boundaries contain dangling bonds and defects that scatter carriers and act as traps and recombination centres, which lowers the mobility and carrier lifetime and causes leakage currents.',
+          'In a single crystal the band structure is the same everywhere, so the device properties are uniform, predictable and reproducible over the whole wafer and between wafers.',
+          'A single crystal also allows exact doping control, the choice of the surface orientation, and the growth of epitaxial layers on the wafer.',
+          'Rotation and slow pulling keep the temperature and dopant distribution uniform and the diameter constant, so a large, round, nearly defect-free ingot is obtained and then sliced into wafers.',
+          'Therefore CZ growth is used to turn cheap polycrystalline silicon into the high-quality single-crystal substrate that integrated circuits need.'
+        ],
+        anahtar: [
+          'Seed crystal is dipped into the melt and pulled while rotating.',
+          'The melt solidifies on the seed with the same lattice and orientation (one continuous crystal).',
+          'Main reason: no grain boundaries, so no scattering/trapping of carriers.',
+          'Higher mobility and lifetime, fewer leakage and recombination centres.',
+          'Uniform, predictable, reproducible properties across the wafer; controlled orientation and doping.'
+        ],
+        hatalar: [
+          'CZ yönteminin amacını "silisyumu saflaştırmak" diye yazmak: saflaştırma ayrı bir adımdır, CZ tek kristal büyütür.',
+          'Tohumun (seed) rolünü yazmamak: kristal düzenini eriyiğe aktaran tohumdur.',
+          'Neden sorusuna sadece süreci anlatarak cevap vermek: asıl cevap tane sınırı olmaması ve bunun taşıyıcılara etkisidir.'
+        ],
+        calis: [
+          { st: 's02', not: 'Czochralski yöntemi (simülasyon), wafer yönelimi, tek kristalin nedeni.' },
+          { st: 's01', not: 'Tek kristal / çok kristalli farkı ve tane sınırı.' }
+        ]
+      },
+      {
+        no: 3, st: 's03', kavram: 'why quantum mechanics', sekil: null,
+        text: 'Explain the reasons for the emergence and success of quantum mechanics.',
+        model: [
+          'At the end of the 19th century classical physics (Newton, Maxwell, thermodynamics) failed in several experiments, and these failures led to quantum mechanics.',
+          'Blackbody radiation: the classical Rayleigh-Jeans law predicts that the radiated energy diverges at high frequency (ultraviolet catastrophe); in 1900 Planck removed it by assuming that energy is exchanged in quanta E = hf.',
+          'Photoelectric effect: electrons are emitted only if the frequency is above a threshold, independent of the light intensity, and with no delay; Einstein (1905) explained it with photons, Kmax = hf − φ, which a classical wave cannot do.',
+          'Atomic spectra and atomic stability: atoms emit discrete lines instead of a continuum, and a classical orbiting electron should radiate and spiral into the nucleus; Bohr (1913) introduced quantized energy levels, E = −13.6 eV/n² for hydrogen.',
+          'Other failures were the specific heat of solids at low temperature (Einstein, Debye) and the Compton effect, which shows that light behaves as a particle with momentum p = h/λ.',
+          'De Broglie (1924) proposed that matter also has a wavelength λ = h/p, and the electron diffraction experiment of Davisson and Germer (1927) confirmed wave-particle duality.',
+          'Heisenberg and Schrödinger (1925-26) built the complete theory: the wave function, the Schrödinger equation, operators and probabilities, together with the uncertainty principle.',
+          'Success: it explains the spectrum and stability of the hydrogen atom, the periodic table (Pauli principle), chemical bonding, and the quantized energies of confined particles.',
+          'Success in solids: it explains energy bands, metals, insulators and semiconductors, and therefore transistors, diodes, lasers, LEDs, tunnel devices and the whole semiconductor technology.',
+          'Its predictions agree with experiments to extremely high precision, and it reduces to classical physics for large systems (correspondence principle).'
+        ],
+        anahtar: [
+          'Blackbody radiation / ultraviolet catastrophe solved by Planck quanta E = hf.',
+          'Photoelectric effect: threshold frequency, intensity-independent, photons (Einstein).',
+          'Discrete atomic spectra and atomic stability: Bohr levels; classical atom would collapse.',
+          'Wave-particle duality: de Broglie wavelength, electron diffraction, Compton effect.',
+          'Complete theory: Schrödinger equation, wave function, probability, uncertainty.',
+          'Successes: hydrogen atom, periodic table, bands and semiconductors, transistors, lasers.'
+        ],
+        hatalar: [
+          'Sadece tek bir deney (örneğin fotoelektrik) anlatmak: en az üç klasik başarısızlık istenir.',
+          'Planck sabitini ve E = hf ilişkisini yazmamak.',
+          'Başarı kısmını (yarıiletken, transistör, lazer, periyodik tablo) unutmak: soru hem doğuş hem başarı diyor.'
+        ],
+        calis: [
+          { st: 's03', not: 'Kara cisim, fotoelektrik olay, eşik frekansı. Planck ve Einstein kartları.' },
+          { st: 's04', not: 'Atom spektrumları, Bohr modeli, de Broglie.' }
+        ]
+      },
+      {
+        no: 4, st: 's04', kavram: 'hydrogen atom stability', sekil: null,
+        text: 'Briefly explain the stability of the Hydrogen atom using quantum mechanical theory.',
+        model: [
+          'In classical physics the electron orbits the proton and is therefore accelerating, so it should radiate electromagnetic energy, lose energy and spiral into the nucleus in about 10⁻¹¹ s; the atom could not be stable.',
+          'In quantum mechanics the electron is described by a wave function that solves the Schrödinger equation with the Coulomb potential V = −e²/(4πε₀r).',
+          'The boundary conditions (a normalizable ψ) allow only discrete energies, E_n = −13.6 eV/n² with n = 1, 2, 3, …',
+          'The ground state n = 1 is the lowest allowed state, with E₁ = −13.6 eV, so there is no lower state to which the electron could fall.',
+          'A stationary state has |ψ|² independent of time, so the charge distribution does not change and there is no radiation; light is emitted only in a transition between two levels, hν = E_i − E_f.',
+          'The same result follows from the uncertainty principle: confining the electron to a radius r gives Δp ≈ ħ/r and a kinetic energy of about ħ²/(2mr²), which grows when r decreases.',
+          'The Coulomb potential energy −e²/(4πε₀r) decreases when r decreases, so the total energy E(r) = ħ²/(2mr²) − e²/(4πε₀r) has a minimum.',
+          'Setting dE/dr = 0 gives r = 4πε₀ħ²/(me²) = a₀ = 0.529 Å and E = −13.6 eV, exactly the Bohr radius and the ground-state energy.',
+          'Therefore the electron cannot collapse into the nucleus: collapse would need a very small Δx and therefore a very large kinetic energy.',
+          'The atom is stable because of the wave nature of the electron: quantized stationary states with a lowest energy level.'
+        ],
+        anahtar: [
+          'Classical: accelerating charge radiates and the atom would collapse.',
+          'Schrödinger equation with Coulomb potential gives quantized energies E_n = −13.6 eV/n².',
+          'A lowest state (ground state, n = 1) exists, so the electron cannot fall further.',
+          'Stationary states do not radiate; emission only in transitions between levels.',
+          'Uncertainty/confinement: smaller r raises kinetic energy, which balances the Coulomb attraction at r = a₀.'
+        ],
+        hatalar: [
+          'Kararlılığı "elektron çekirdeğe düşmez çünkü çekim kuvveti yörünge kuvvetine eşit" diye açıklamak: bu klasik argüman, klasik fizikte de radyasyon sorununu çözmez.',
+          'Sıfır noktası enerjisini sıcaklığa bağlamak: enerji sınır koşulundan ve sıkışmadan gelir, ısıdan değil.',
+          'Bohr yörüngelerini kuantum mekaniğinin cevabı saymak: soru Schrödinger dalga mekaniği ile açıklamayı istiyor.'
+        ],
+        calis: [
+          { st: 's04', not: 'Bohr modeli, hidrojen spektrumu, atom kararlılığı kartları.' },
+          { st: 's08', not: 'Belirsizlik ilkesinden minimum enerji tahmini (E ≈ ħ²/(8mL²)).' }
+        ]
+      },
+      {
+        no: 5, st: 's05', kavram: 'finite barrier inside infinite well', sekil: 'q5',
+        text: 'For the given potential below, it is required to calculate the wave function and the allowed energies in electron-volts (eV).',
+        model: [
+          'Assumption (from the figure): an electron of mass m; V = ∞ for x ≤ 0 and x ≥ 50 nm; V = 0 for 0 < x < 20 nm and 30 < x < 50 nm; and a barrier V₀ = 9 eV for 20 < x < 30 nm. We use ħ²/2m = 0.0381 eV·nm².',
+          'Regions and solutions for E < V₀: define k = √(2mE)/ħ and κ = √(2m(V₀ − E))/ħ. Region I (0 < x < 20): ψ = A sin kx, because ψ(0) = 0. Region II (20 < x < 30): ψ = B e^{κx} + C e^{−κx}. Region III (30 < x < 50): ψ = D sin k(50 − x), because ψ(50) = 0.',
+          'Boundary conditions: ψ and dψ/dx are continuous at x = 20 nm and x = 30 nm. These four conditions determine B/A, C/A, D/A and the eigenvalue equation.',
+          'The potential is symmetric about x = 25 nm, so the solutions are even or odd about the centre. Putting x′ = x − 25 nm, region II is ψ = B cosh κx′ (even) or B sinh κx′ (odd).',
+          'Matching ψ′/ψ at x′ = 5 nm (the well side is ψ ∝ sin k(25 − x′), so ψ′/ψ = −k cot 20k with lengths in nm) gives the eigenvalue equations: even: κ tanh(5κ) = −k cot(20k); odd: κ coth(5κ) = −k cot(20k).',
+          'For energies far below the barrier, κ·5 nm ≈ 77 (κ ≈ 15.4 nm⁻¹ at E ≈ 0), so tanh(5κ) = coth(5κ) = 1 to within e^{−150}. Both equations become the same equation, tan(20k) = −k/κ.',
+          'The tunnelling factor is e^{−2κd} with d = 10 nm, κd ≈ 154, so e^{−2κd} ≈ 10⁻¹³⁴: the two 20-nm wells are completely decoupled. Every level is doubly degenerate (the splitting is about 10⁻⁷⁰ eV for n = 1).',
+          'Approximation used: neglect the penetration into the barrier, ψ(20) = ψ(30) = 0. Then each well is an infinite well of width a = 20 nm: φ_n(x) = √(2/a) sin(nπx/a) = √(1/10 nm) sin(nπx/20 nm), n = 1, 2, 3, …, and E_n = n²π²ħ²/(2ma²) = 0.376 n²/a² eV (a in nm) = 0.94 n² meV.',
+          'Wave functions: ψ_n^± = (1/√2)[φ_n(x) ± φ_n(50 nm − x)], with φ_n(x) = √(2/a) sin(nπx/a) for 0 < x < 20 nm and φ_n = 0 elsewhere; ψ⁺ is even and ψ⁻ is odd about x = 25 nm. Any combination, for example the electron localized in the left well, is also an eigenstate. In the barrier ψ decays as e^{−κ(20 nm − x)} and is practically zero.',
+          'Exact eigenvalues (Python check of the equation above): the finite barrier lets the wave penetrate by 1/κ ≈ 0.065 nm, so the effective width is a + 1/κ and E_n ≈ 0.934 n² meV. Numerical values: E₁ = 0.934 meV, E₂ = 3.74 meV, E₃ = 8.41 meV, E₄ = 14.9 meV, E₅ = 23.3 meV, E₁₀ = 0.0934 eV, E₂₀ = 0.374 eV, E₅₀ = 2.33 eV, E₉₀ = 7.55 eV; each is a doublet.',
+          'There are 98 doublets (196 states) below 9 eV; the highest one is about 8.92 eV. For E > 9 eV the electron passes over the barrier: in region II ψ = cos qx′ or sin qx′ with q = √(2m(E − V₀))/ħ, and the levels are no longer degenerate pairs (9.004, 9.015, 9.034, 9.059, 9.090 eV, …).'
+        ],
+        anahtar: [
+          'Divide the potential into three regions; for E < 9 eV use sine waves where V = 0 and exponentials e^{±κx} in the barrier.',
+          'Boundary conditions: ψ = 0 at 0 and 50 nm; ψ and ψ′ continuous at 20 and 30 nm.',
+          'Eigenvalue equation from symmetry: κ tanh(5κ) = −k cot(20k) (even), κ coth(5κ) = −k cot(20k) (odd).',
+          'κd ≈ 154, so the tunnelling is negligible: two independent 20-nm infinite wells, doubly degenerate levels.',
+          'ψ_n = √(2/a) sin(nπx/a) with a = 20 nm (or even/odd combinations of the two wells).',
+          'E_n = n²π²ħ²/(2ma²) = 0.376 n²/a² eV = 0.94 n² meV (E₁ ≈ 0.94 meV).',
+          'The approximation must be stated: valid for E ≪ V₀ (E < 9 eV); above 9 eV the electron is not confined to one well.'
+        ],
+        hatalar: [
+          'Kuyuyu 50 nm genişliğinde tek bir sonsuz kuyu sayıp E_n = 0.376 n²/2500 eV yazmak: 9 eV\'luk engel bunu yalnızca E > 9 eV için doğru yapar.',
+          'Engel içinde ψ = 0 koymak ve bunu yaklaşıklık olarak belirtmemek: sınırda ψ ve ψ\' sürekliliği temel koşuldur, yaklaşımı açıkça yaz.',
+          'Birimleri karıştırmak: 0.376 eV·nm² / (20 nm)² = 0.94 meV, 0.94 eV değil.'
+        ],
+        calis: [
+          { st: 's05', not: 'Sonsuz kuyu, sınır koşulları, E_n ve ψ_n; sıfır noktası enerjisi.' },
+          { st: 's06', not: 'Engel içinde sönümlenme (κ) ve tünelleme çarpanı e^{−2κd}.' }
+        ]
+      },
+      {
+        no: 6, st: 's06', kavram: 'step potential reflection', sekil: 'q6',
+        text: 'Calculate the wave function and the reflection coefficient of the electron for the given potential.',
+        model: [
+          'Potential: V = 0 for x < 0 and V = V₀ for x > 0; an electron of energy E comes from the left. Define k₁ = √(2mE)/ħ for x < 0.',
+          'Case E > V₀: define k₂ = √(2m(E − V₀))/ħ. Region I (x < 0): ψ₁ = e^{ik₁x} + r e^{−ik₁x} (incident + reflected). Region II (x > 0): ψ₂ = t e^{ik₂x} (transmitted only, no wave comes from the right).',
+          'Boundary conditions at x = 0: continuity of ψ gives 1 + r = t; continuity of dψ/dx gives k₁(1 − r) = k₂ t.',
+          'Solving: r = (k₁ − k₂)/(k₁ + k₂) and t = 2k₁/(k₁ + k₂).',
+          'The reflection coefficient is the ratio of the reflected to the incident probability current: R = |r|² = ((k₁ − k₂)/(k₁ + k₂))² = [(√E − √(E − V₀))/(√E + √(E − V₀))]².',
+          'The transmission coefficient uses the current, T = (k₂/k₁)|t|² = 4k₁k₂/(k₁ + k₂)², and R + T = 1 (conservation of probability). T is not |t|², because the velocity changes.',
+          'Example: E = 2V₀ gives k₂/k₁ = 0.707, R = 0.0294 and T = 0.971. Classically R would be 0, so quantum mechanics predicts reflection even though E > V₀ (a wave effect). R → 1 as E → V₀ and R → 0 as E ≫ V₀.',
+          'Case E < V₀: define κ = √(2m(V₀ − E))/ħ. Then ψ₁ = e^{ik₁x} + r e^{−ik₁x} and ψ₂ = t e^{−κx} (decaying, evanescent wave).',
+          'Continuity at x = 0 gives r = (k₁ − iκ)/(k₁ + iκ) and t = 2k₁/(k₁ + iκ), with |t|² = 4E/V₀.',
+          '|r|² = 1, so R = 1 and T = 0: the electron is totally reflected, with only a phase shift. The probability density in x > 0 is |t|² e^{−2κx}, not zero: the wave penetrates a distance of about 1/(2κ) (classically forbidden region), but carries no current.'
+        ],
+        anahtar: [
+          'Two regions: ψ = e^{ik₁x} + r e^{−ik₁x} for x < 0, ψ = t e^{ik₂x} for x > 0 (E > V₀).',
+          'k₁ = √(2mE)/ħ and k₂ = √(2m(E − V₀))/ħ.',
+          'Continuity of ψ and ψ′ at x = 0 gives r = (k₁ − k₂)/(k₁ + k₂), t = 2k₁/(k₁ + k₂).',
+          'R = ((k₁ − k₂)/(k₁ + k₂))², T = 1 − R = 4k₁k₂/(k₁ + k₂)² (current, not |t|²).',
+          'E < V₀: ψ = t e^{−κx} in x > 0, |r| = 1, so R = 1 (total reflection) with penetration depth 1/(2κ).'
+        ],
+        hatalar: [
+          'E > V₀ iken R = 0 demek (klasik düşünce): dalga mekaniğinde R > 0.',
+          'T = |t|² yazmak: geçiş katsayısı akıma göre T = (k₂/k₁)|t|².',
+          'Süreklilik koşulunda sadece ψ\'yi yazıp ψ\' sürekliliğini unutmak; ya da E < V₀ durumunda ψ\'yi x > 0 için sıfır koymak.'
+        ],
+        calis: [
+          { st: 's06', not: 'Basamak potansiyeli simülasyonu, yansıma ve geçiş, E < V₀ ve E > V₀.' },
+          { st: 's05', not: 'Süreklilik koşulları ve dalga sayısı k.' }
+        ]
+      },
+      {
+        no: 7, st: 's09', kavram: 'energy bands', sekil: null,
+        text: 'From a quantum mechanical perspective, why do allowed energies in periodic structures appear as continuous bands?',
+        model: [
+          'An isolated atom has discrete energy levels, because the electron is bound and its wave function must satisfy boundary conditions.',
+          'In a crystal there are about N ~ 10²² atoms per cm³ at distances of a few ångströms, so the wave functions of neighbouring atoms overlap and the electron feels the periodic potential of the whole lattice.',
+          'Tight-binding picture: when N atoms are brought together, the N coupled systems have N slightly different states for each atomic level. Because of the Pauli exclusion principle, no two electrons can occupy the same state, so the original level must split into N distinct levels.',
+          'The width of the band is set by the overlap (coupling) of neighbouring atoms, a few eV, so the spacing between neighbouring levels is about 10⁻²² eV, far below kT = 0.026 eV. The N levels therefore look like a continuous band.',
+          'Wave picture: in a periodic potential V(x + a) = V(x) the solutions are Bloch waves ψ_k(x) = u_k(x) e^{ikx}, with u_k periodic (Bloch theorem), and the energy E(k) is a continuous function of the wave number k.',
+          'Near k = nπ/a the wavelength satisfies the Bragg condition, so the wave is reflected by the lattice and forms standing waves. The two standing waves pile up the charge at different places (on the ions or between them) and have different energies.',
+          'This produces an energy gap at the Brillouin-zone boundary: the allowed energies are continuous bands E(k) and the forbidden regions are the bandgaps (Kronig-Penney model).',
+          'When the atoms are closer, the overlap is bigger and the bands are wider; when the atoms are far apart, the bands shrink back into the sharp atomic levels.',
+          'Result: allowed energies form quasi-continuous bands separated by bandgaps. The filling of the bands (valence band, conduction band) with 2N states per band explains metals, insulators and semiconductors.'
+        ],
+        anahtar: [
+          'Isolated atom: discrete levels; in a crystal neighbouring wave functions overlap.',
+          'Pauli exclusion principle: N atoms give N distinct (slightly shifted) levels for each atomic level.',
+          'N ~ 10²² levels within a few eV: spacing ≪ kT, so the band is quasi-continuous.',
+          'Periodic potential: Bloch waves ψ = u_k(x) e^{ikx} with continuous k and E(k).',
+          'Bragg reflection at k = nπ/a gives standing waves with different energies: a bandgap opens.',
+          'Allowed bands are separated by forbidden bandgaps; each band holds 2N electron states.'
+        ],
+        hatalar: [
+          'Pauli ilkesini yazıp seviyelerin N parçaya neden yarıldığını açıklamamak: komşu atomların dalga fonksiyonlarının örtüşmesi (overlap) mekanizmanın kendisidir.',
+          'Bantların sıcaklık yüzünden oluştuğunu söylemek: bantlar 0 K\'de de vardır, sıcaklık yalnızca doluluğu değiştirir.',
+          'Bant aralığını (bandgap) ve iki yaklaşımı (sıkı bağ, Bloch/Bragg) hiç anmamak.'
+        ],
+        calis: [
+          { st: 's09', not: 'Bant oluşumu simülasyonu: N atom, seviyelerin yarılması, metal/yalıtkan/yarıiletken doluluğu.' },
+          { st: 's05', not: 'Tek kuyuda ayrık seviyeler (başlangıç noktası).' }
+        ]
+      },
+      {
+        no: 8, st: 's07', kavram: 'postulates of quantum mechanics', sekil: null,
+        text: 'Explain the principles of quantum mechanics.',
+        model: [
+          'Postulate 1 (state): the state of a quantum system is described completely by a wave function ψ(x, t), and |ψ(x, t)|² dx is the probability of finding the particle between x and x + dx. ψ must be normalizable, ∫|ψ|² dx = 1.',
+          'Postulate 2 (observables): every measurable physical quantity (observable) is represented by a Hermitian operator, for example x̂ = x, p̂ = −iħ ∂/∂x and the Hamiltonian Ĥ = p̂²/2m + V. Hermitian operators have real eigenvalues. Operators that do not commute, such as [x̂, p̂] = iħ, cannot be measured sharply together.',
+          'Postulate 3 (measurement): the only possible results of a measurement of an observable A are the eigenvalues a_n of its operator, Âφ_n = a_n φ_n.',
+          'If the state is ψ = Σ c_n φ_n, the probability of obtaining a_n is |c_n|² (Born rule), and Σ|c_n|² = 1. The expectation value is ⟨A⟩ = ∫ψ* Â ψ dx = Σ|c_n|² a_n.',
+          'After the measurement the wave function collapses to the eigenfunction φ_n of the result, so an immediate repeated measurement gives the same value.',
+          'Postulate 4 (time evolution): between measurements the wave function evolves deterministically and smoothly according to the time-dependent Schrödinger equation, iħ ∂ψ/∂t = Ĥψ.',
+          'Stationary states ψ(x)e^{−iEt/ħ} come from the time-independent equation Ĥψ = Eψ, an eigenvalue problem whose boundary conditions give the quantization of energy.',
+          'The superposition principle follows: any linear combination of allowed states is also an allowed state.',
+          'Additional principles used with these: the uncertainty principle (a consequence of the commutator), the Pauli exclusion principle for identical fermions, and the correspondence principle, in which quantum mechanics reduces to classical mechanics for large systems.'
+        ],
+        anahtar: [
+          'State is described by a wave function ψ; |ψ|² is the probability density (normalization).',
+          'Observables are Hermitian operators (x̂, p̂ = −iħ d/dx, Ĥ); non-commuting operators cannot be sharp together.',
+          'A measurement gives only an eigenvalue of the operator.',
+          'Probability of a_n is |c_n|² for ψ = Σ c_n φ_n; collapse to φ_n after the measurement.',
+          'Time evolution by the Schrödinger equation iħ ∂ψ/∂t = Ĥψ (deterministic between measurements).',
+          'Superposition principle (and, optionally, the Pauli and uncertainty principles).'
+        ],
+        hatalar: [
+          'Dalga fonksiyonunun fiziksel anlamını atlamak: ψ kendisi ölçülmez, |ψ|² olasılık yoğunluğudur.',
+          'Schrödinger denkleminin dalga fonksiyonunu çökerttiğini yazmak: denklem belirlenimcidir, çökme ölçümle olur.',
+          'Postülat numaralarını karıştırmak: hocanın "3. postülat = ölçüm" dediği sıralamayı kullan (1 durum, 2 operatör, 3 ölçüm, 4 zaman evrimi).'
+        ],
+        calis: [
+          { st: 's07', not: 'Postülatlar, operatörler, özdeğer/özfonksiyon, ölçüm simülasyonu.' },
+          { st: 's05', not: 'Schrödinger denklemi ve ψ\'nin olasılık yorumu.' }
+        ]
+      },
+      {
+        no: 9, st: 's07', kavram: 'measurement of a non-eigenstate', sekil: null,
+        text: 'The third postulate of quantum mechanics concerns measurement; explain how the system changes its state if its current state is not an eigenstate of the observable being measured.',
+        model: [
+          'Postulate 3 says that a measurement of an observable A can only give one of the eigenvalues a_n of its operator Â, where Âφ_n = a_n φ_n.',
+          'If the system is not in an eigenstate of Â, its state is a superposition of the eigenstates, ψ = Σ c_n φ_n, with c_n = ∫φ_n* ψ dx.',
+          'Before the measurement the value of A is not defined; the system has only probabilities for the different results.',
+          'The measurement gives one eigenvalue a_n at random; which one cannot be predicted for a single system, but the probability of a_n is |c_n|² and Σ|c_n|² = 1.',
+          'At the moment of measurement the state changes abruptly: the wave function collapses (is projected) onto the eigenstate of the measured result, ψ → φ_n.',
+          'If the eigenvalue is degenerate, the state is projected onto the subspace of the corresponding eigenfunctions and then normalized.',
+          'Immediately after the measurement the system is in the eigenstate φ_n, so a repeated measurement of A gives the same value a_n with probability 1.',
+          'The collapse is caused by the measurement (interaction with the apparatus), not by the Schrödinger equation: the Schrödinger equation evolves ψ smoothly and deterministically between measurements. This is the difference between postulate 3 and postulate 4.',
+          'Example: for an electron in the superposition ψ = c₁φ₁ + c₂φ₂ of two energy eigenstates of an infinite well, an energy measurement gives E₁ with probability |c₁|² or E₂ with probability |c₂|², and the state becomes φ₁ or φ₂. The average over many identical systems is ⟨E⟩ = |c₁|²E₁ + |c₂|²E₂.',
+          'If the system is already in an eigenstate, the result is certain and the state does not change.'
+        ],
+        anahtar: [
+          'Only eigenvalues of the operator can be obtained as results.',
+          'A non-eigenstate is a superposition ψ = Σ c_n φ_n of eigenstates.',
+          'Probability of the result a_n is |c_n|² (Σ|c_n|² = 1); the individual outcome is random.',
+          'The wave function collapses to the eigenstate φ_n of the measured result.',
+          'Repeating the measurement immediately gives the same result (probability 1).',
+          'Collapse is caused by the measurement, not by the Schrödinger equation (which is deterministic).'
+        ],
+        hatalar: [
+          'Sonucun ⟨A⟩ ortalaması olduğunu söylemek: tek ölçüm yalnızca bir özdeğer verir, ortalama çok sayıda özdeş sistemin ortalamasıdır.',
+          'Çökmeyi Schrödinger denkleminin yaptığını yazmak: çökme ölçümle olur, denklem belirlenimcidir.',
+          'Ölçümden sonra durumun hâlâ süperpozisyon olduğunu düşünmek: ölçümden sonra durum özdurumdur ve tekrar ölçüm aynı sonucu verir.'
+        ],
+        calis: [
+          { st: 's07', not: 'Ölçüm simülasyonu: süperpozisyon, olasılık |c_n|², çökme, tekrarlı ölçüm.' },
+          { st: 's05', not: 'Enerji özdurumları (sonsuz kuyu) ve katsayılar.' }
+        ]
+      },
+      {
+        no: 10, st: 's08', kavram: 'uncertainty principle', sekil: null,
+        text: 'Explain the uncertainty principle and why it is impossible to simultaneously measure conjugate variables with unlimited precision.',
+        model: [
+          'The Heisenberg uncertainty principle states that for position and momentum Δx Δp ≥ ħ/2, where Δx and Δp are the standard deviations of x and p in the same quantum state; ħ = h/2π = 1.055 × 10⁻³⁴ J·s.',
+          'Position and momentum are conjugate variables; the energy-time pair obeys a similar relation, ΔE Δt ≥ ħ/2.',
+          'In general, for any two observables, ΔA ΔB ≥ ½ |⟨[Â, B̂]⟩|. For x and p the commutator is [x̂, p̂] = iħ, which is not zero.',
+          'Operators that do not commute have no common set of eigenfunctions. A state with a sharp position is not an eigenstate of p̂, and a state with a sharp momentum (a plane wave) is not an eigenstate of x̂, so both cannot be sharp at the same time.',
+          'Wave picture: a particle is a wave packet. A plane wave e^{ikx} has a definite momentum p = ħk but is spread over all space (Δx = ∞).',
+          'To localize the particle in a region Δx, many waves of different wavelengths must be added, so the wave number spreads by Δk ≳ 1/(2Δx), and Δp = ħΔk ≳ ħ/(2Δx). Position and momentum distributions are Fourier transforms of each other.',
+          'Therefore the limit is not a defect of the measuring instruments or a disturbance caused by the measurement. It is a property of the quantum state itself, and it holds even for ideal measurements on identically prepared systems.',
+          'Example: for an electron localized to Δx = 0.1 nm, Δp ≥ ħ/(2Δx) = 5.3 × 10⁻²⁵ kg·m/s, so Δv ≈ 5.8 × 10⁵ m/s, comparable with the speed of electrons in atoms. For a baseball (m = 0.145 kg, Δx = 1 mm) Δv ≈ 4 × 10⁻³¹ m/s, so it is unobservable.',
+          'Consequences: confinement raises the kinetic energy (E ≳ ħ²/(8mL²)), so there is a zero-point energy and atoms (hydrogen) are stable; it also gives the natural linewidth of spectral lines through ΔE Δt ≥ ħ/2.'
+        ],
+        anahtar: [
+          'Statement: Δx Δp ≥ ħ/2 (and ΔE Δt ≥ ħ/2).',
+          'Conjugate variables correspond to non-commuting operators, [x̂, p̂] = iħ.',
+          'No common eigenstates, so a state cannot be sharp in both x and p.',
+          'Wave-packet / Fourier argument: narrow in x needs many wavelengths, so Δp is large.',
+          'It is a fundamental property of quantum states, not due to apparatus imperfection or measurement disturbance.',
+          'Consequences or numbers: zero-point energy, hydrogen stability, electron versus macroscopic body.'
+        ],
+        hatalar: [
+          'Belirsizliği "ölçüm aleti ölçülen şeyi bozar" diye açıklamak: bu gözlemci etkisi, ilke ise durumun kendi özelliğidir.',
+          'Δx Δp ≥ ħ/2 yerine eşitlik ya da ħ yerine h yazmak; Δ\'ların standart sapma olduğunu belirtmemek.',
+          'Eşlenik (conjugate) değişken kavramını açıklamamak: komütatör [x, p] = iħ ve ortak özdurum yokluğu cevabın çekirdeğidir.'
+        ],
+        calis: [
+          { st: 's08', not: 'Belirsizlik ilkesi, dalga paketi, ΔxΔp ve minimum enerji hesapları.' },
+          { st: 's07', not: 'Operatörler ve komütatör, ölçüm.' }
+        ]
+      }
+    ]
+  };
+})();
+
 /* 87-data-hesap.js · Hesap çalıştayı (Calculation workshop) verisi + okuma API'si.
  * Ekler: Q.data.hesap (dizi) ve Q.hesap {liste(), gorev(id), istasyonSonu(sNN), konular, konuAd(k)}.
  * Görev: {id, istasyon:'s01'..'s10', istasyonSonu:bool, konu, baslik (EN), soru (EN, sınav tarzı), veriler:[string],
@@ -9281,11 +9621,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
 
   var o03 = {
     id: "s01-o03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kati_turleri", agirlik: 1,
-    soru: "Amorf (amorphous) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
+    soru: "Amorphous (amorf) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
     secenekler: [
-      sec("Evet, crystal (kristal) gibi", false, "Hayır. Long-range order yalnızca crystal (kristal) içinde vardır."),
+      sec("Evet, crystal (kristal) gibi uzak atomlar da düzenlidir", false, "Hayır. Long-range order yalnızca crystal (kristal) içinde vardır."),
       sec("Hayır, order (düzen) yalnızca yakın neighbor (komşu) atomlardadır", true, "Doğru. Amorphous (amorf) katıda yalnızca short-range order (kısa menzilli düzen) vardır."),
-      sec("Yalnızca cooling (soğuma) sonrası düzenlenir", false, "Yanlış. Amorphous (amorf) kalan katıda long-range order hiç oluşmaz.")
+      sec("Yalnızca yavaş cooling (soğuma) sonrası düzenlenir", false, "Yanlış. Amorphous (amorf) kalan katıda long-range order hiç oluşmaz.")
     ],
     kusurSkin: "vakans"
   };
@@ -9295,8 +9635,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
     soru: "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı) nedir?",
     secenekler: [
       sec("İki grain (tane) arasındaki disordered (düzensiz) interface (ara yüz) bölgesi", true, "Doğru. Crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir."),
-      sec("Crystal (kristal) dış surface (yüzey) katmanı", false, "Hayır. Grain boundary (tane sınırı) malzemenin içinde, grain (tane) buluşma yeridir."),
-      sec("dopant atom (katkı atomu) toplanma yeri", false, "Hayır. Grain boundary (tane sınırı), crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir.")
+      sec("Crystal (kristal) dış surface (yüzey) üzerindeki ince katman", false, "Hayır. Grain boundary (tane sınırı) malzemenin içinde, grain (tane) buluşma yeridir."),
+      sec("Dopant atom (katkı atomu) toplanma yeri", false, "Hayır. Grain boundary (tane sınırı), crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir.")
     ],
     kusurSkin: "tane_siniri"
   };
@@ -9321,7 +9661,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     engeller: [
       {
         id: "s01-o01", tip: "hikaye", baslik: "Zaman kapısı", kavram: null, agirlik: 1,
-        yer: "Polonya", yil: 1916, rivayet: true,
+        yer: "Berlin", yil: 1916, rivayet: true,
         satirlar: [
           { kim: "selin", metin: "Sipariş: 10.000 chip (çip). Hammadde sand (kum), ama kum önce crystal (kristal) olmalı." },
           { kim: "selin", metin: "Zaman makinesi hazır. 1916'ya, crystal (kristal) çekmenin doğduğu yere gidiyoruz." },
@@ -9335,7 +9675,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "Katıların atom düzeni 1900'lerin başında X-ray (X-ışını) kırınımıyla anlaşıldı; kristalin düzenli olduğu böyle gösterildi.",
             "Jan Czochralski (1916): eriyik metalden tek kristal çekme yöntemini buldu; yöntem onun adını taşır.",
             "Bell Labs'te 1950 dolaylarında Teal ve Little bu yöntemi yarıiletken kristallere uyguladı.",
-            "Bugün chip (çip) için kullanılan wafer (dilim) neredeyse hep CZ ile çekilen silisyumdan kesilir." ] },
+            "Bugün chip (çip) için kullanılan wafer (dilim) çoğunlukla CZ ile çekilen silisyumdan kesilir." ] },
           { baslik: "Katı türleri ve kusurlar", madde: [
             "Single crystal (tek kristal): düzen tüm parçada kesintisiz sürer; long-range order (uzun menzilli düzen) vardır.",
             "Polycrystalline (çok kristalli): küçük kristal grain (tane) topluluğu; grain boundary (tane sınırı) taneleri ayırır.",
@@ -9385,16 +9725,16 @@ Q.art.PORTRE_IDS = Object.keys(P);
             tip: "secmeli", kavram: "cz_tohum",
             soru: "CZ (Czochralski) yönteminde seed crystal (tohum kristal) görevi nedir?",
             secenekler: [
-              sec("melt (eriyik) ısıtır", false, "Hayır. Heating (ısıtma) işini furnace (fırın) yapar, seed (tohum) değil."),
+              sec("Melt (eriyik) ısıtır", false, "Hayır. Heating (ısıtma) işini furnace (fırın) yapar, seed (tohum) değil."),
               sec("Solidifying (katılaşan) atom üzerine crystal (kristal) order (düzen) aktarır", true, "Doğru. Atom, seed crystal (tohum kristal) düzenini sürdürür."),
-              sec("melt (eriyik) karıştırır", false, "Hayır. Stirring (karıştırma) seed (tohum) işi değil.")
+              sec("Melt (eriyik) karıştırır", false, "Hayır. Stirring (karıştırma) seed (tohum) işi değil.")
             ],
             alt: {
               soru: "CZ'de ingot (külçe) neden yavaşça döndürülerek çekilir?",
               secenekler: [
-                sec("seed (tohum) order (düzen) homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme single crystal (tek kristal) yapısını korur."),
+                sec("Seed (tohum) order (düzen) homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme single crystal (tek kristal) yapısını korur."),
                 sec("Daha hızlı cooling (soğuma) olsun diye", false, "Hayır. Hızlı cooling defect (kusur) yapar."),
-                sec("melt (eriyik) atılsın diye", false, "Hayır. Amaç melt (eriyik) atmak değil.")
+                sec("Seed (tohum) melt (eriyik) içinde erisin diye", false, "Hayır. Seed (tohum) erirse düzeni aktaramaz; amaç onu korumaktır.")
               ]
             }
           },
@@ -9406,11 +9746,11 @@ Q.art.PORTRE_IDS = Object.keys(P);
               "Crystal (kristal) içinde atom periyodik dizilir, periodic potential (periyodik potansiyel) oluşur.",
               "Periyodiklik iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) verir.",
               "Properties (özellikler) öngörülebilir ve tekrarlanabilir, doping (katkılama) ile kontrol edilir.",
-              "Polycrystalline (çok kristalli) veya amorphous (amorf) malzemede carriers (taşıyıcılar) grain boundary üzerinde saçılır."
+              "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı), amorphous (amorf) malzemede dangling bond (sarkık bağ) ve defect (kusur) carriers (taşıyıcılar) saçar veya tuzaklar."
             ],
             yanlisKavramlar: ["Crystal (kristal) pahalı olduğu için tercih edilir", "Crystal (kristal) sadece daha parlak olduğu için kullanılır"],
             yanlisKavramIds: ["kristal_pahali", "kristal_pahali"],
-            idealCevap: "Crystal (kristal) içinde atom periyodik dizilir. Bu periodic potential (periyodik potansiyel) iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) doğurur. Böylece conductivity (iletkenlik) öngörülebilir, doping (katkılama) ile kontrol edilir ve her aygıtta tekrarlanır. Polycrystalline (çok kristalli) veya amorphous (amorf) malzemede grain boundary (tane sınırı) carriers (taşıyıcılar) saçar.",
+            idealCevap: "Crystal (kristal) içinde atom periyodik dizilir. Bu periodic potential (periyodik potansiyel) iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) doğurur. Böylece conductivity (iletkenlik) öngörülebilir, doping (katkılama) ile kontrol edilir ve her aygıtta tekrarlanır. Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı), amorphous (amorf) malzemede dangling bond (sarkık bağ) ve defect (kusur) carriers (taşıyıcılar) saçar veya tuzaklar.",
             yedekSecmeli: {
               soru: "Crystal (kristal) neden semiconductor (yarıiletken) device (aygıt) içinde tercih edilir?",
               secenekler: [
@@ -9457,9 +9797,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
     ],
     temelTur: {
       kartlar: [
-        { baslik: "Crystal (kristal) nedir?", metin: "Atom (atom) long-range order (uzun menzilli düzen) ile dizilir." },
+        { baslik: "Crystal (kristal) nedir?", metin: "Atomlar long-range order (uzun menzilli düzen) ile dizilir." },
         { baslik: "Neden scattering (saçılma)?", metin: "Order (düzen) bozuldukça electron (elektron) daha sık saçılır (scattering)." },
-        { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt içinden yavaşça çekilir, düzen sürer." }
+        { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt (eriyik) içinden yavaşça çekilir, düzen sürer." }
       ],
       sim: { modul: "kristal_tur", params: { mod: "tur" } }
     },
@@ -9481,9 +9821,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
         id: "s01-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "cz_tohum", agirlik: 1,
         soru: "CZ'de seed crystal (tohum kristal) ne işe yarar?",
         secenekler: [
-          sec("Order (düzen) atom üzerine aktarır", true, "Doğru. Solidifying (katılaşan) atom seed crystal (tohum kristal) düzenini sürdürür."),
-          sec("melt (eriyik) soğutur", false, "Hayır. Cooling (soğutma) seed (tohum) işi değil."),
-          sec("melt (eriyik) temizler", false, "Hayır. Cleaning (temizlik) başka süreç.")
+          sec("Order (düzen) katılaşan atomlara aktarır", true, "Doğru. Solidifying (katılaşan) atom seed crystal (tohum kristal) düzenini sürdürür."),
+          sec("Melt (eriyik) soğutur", false, "Hayır. Cooling (soğutma) seed (tohum) işi değil."),
+          sec("Melt (eriyik) temizler", false, "Hayır. Cleaning (temizlik) başka süreç.")
         ],
         kusurSkin: "dislokasyon"
       },
@@ -9491,9 +9831,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
         id: "s01-t05", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kristal_neden", agirlik: 1,
         soru: "Chip (çip) için neden single crystal silicon (tek kristal silisyum) kullanılır?",
         secenekler: [
-          sec("electron (elektron) akışı ordered (düzenli) dizilimde öngörülebilir olur", true, "Doğru. Ordered lattice (düzenli kafes) electron (elektron) rastgele saçmaz."),
-          sec("Daha shiny (parlak) göründüğü için", false, "Hayır. Brightness (parlaklık) seçim nedeni değil."),
-          sec("Her zaman daha cheap (ucuz) olduğu için", false, "Hayır. Single crystal (tek kristal) üretmek pahalıdır.")
+          sec("Electron (elektron) akışı ordered (düzenli) dizilimde öngörülebilir olur", true, "Doğru. Ordered lattice (düzenli kafes) electron (elektron) rastgele saçmaz."),
+          sec("Daha parlak göründüğü için", false, "Hayır. Parlaklık seçim nedeni değil."),
+          sec("Her zaman daha ucuz olduğu için", false, "Hayır. Single crystal (tek kristal) üretmek pahalıdır.")
         ],
         kusurSkin: "vakans"
       }
@@ -11975,7 +12315,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   M('sv-s01-m9', 's01', 'Which statement distinguishes a single crystal from a polycrystalline solid?', 'A single crystal has long-range order throughout; a polycrystal consists of many small crystal grains separated by grain boundaries', ['A single crystal has no periodic arrangement; a polycrystal is perfectly periodic', 'A single crystal contains only one atom; a polycrystal contains many atoms', 'A single crystal has short-range order only; a polycrystal has no order at all'], 'In a single crystal the same lattice continues over the whole sample. A polycrystal is a patchwork of small crystallites with different orientations; the grain boundaries scatter carriers.');
   M('sv-s01-m10', 's01', 'GaAs crystallises in the zincblende structure. How does it compare with the diamond structure?', 'It has the same FCC-based arrangement, but the two atoms of the basis are different (Ga and As)', ['It is a BCC lattice with a one-atom basis', 'It is a simple cubic lattice of Ga atoms only', 'It has a coordination number of 8 instead of 4'], 'Zincblende is the diamond arrangement with two different atoms on the two interpenetrating FCC sublattices. Each atom still has 4 nearest neighbours.');
   K('sv-s01-k4', 's01', 'crystalline solids in industry', 'Explain why crystalline solids are used in the semiconductor industry, and why polycrystalline or amorphous solids are less suitable.',
-    'In a crystal the periodic arrangement of atoms creates a periodic potential, which gives well-defined energy bands and a well-defined bandgap. Electrical properties therefore can be predicted, reproduced and controlled by doping. In polycrystalline solids, grain boundaries scatter or trap carriers; in amorphous solids, dangling bonds and missing long-range order smear the band edges and add defect states. Carrier mobility and lifetime drop and device properties vary from sample to sample, so reproducible devices are difficult.',
+    'In a crystal the periodic arrangement of atoms creates a periodic potential, which gives well-defined energy bands and a well-defined bandgap. Electrical properties can therefore be predicted, reproduced and controlled by doping. In polycrystalline solids, grain boundaries scatter or trap carriers; in amorphous solids, dangling bonds and missing long-range order smear the band edges and add defect states. Carrier mobility and lifetime drop and device properties vary from sample to sample, so reproducible devices are difficult.',
     ['Periodic potential gives well-defined bands and bandgap', 'Predictable, reproducible properties; control by doping', 'Grain boundaries scatter or trap carriers', 'Amorphous: dangling bonds, no long-range order']);
 
   /* ---- s02 ek ---- */
@@ -12761,9 +13101,34 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       yanlisKavramIds: ['fermi_hep_dolu', 'fermi_dagilim'],
       idealCevap: 'The Fermi-Dirac distribution f(E) = 1/(1+exp((E−E_F)/kT)) gives the probability that a state at energy E is occupied. At E = E_F it equals 1/2 for any T. At T = 0 K it is a step function (1 below E_F, 0 above); as T increases the transition region of width about kT broadens and some electrons occupy states above E_F.' }
   ];
+  /* Soru seti: Q.data.gercekSinav (hocanın örnek sınavı, 10 soru AYNEN, sınav sırasıyla). Veri yoksa eski davranış: patron pdfSoru'ları. */
+  function patronOf(stId){
+    var st = Q.data.stations[stId], p = null;
+    ((st && st.engeller) || []).forEach(function(e){ if (!p && e.tip === 'patron') p = e; });
+    return p;
+  }
+  function hazirlaGercek(){
+    var G = Q.data && Q.data.gercekSinav, engeller = [], ilk = null;
+    if (!G || !G.sorular || !G.sorular.length) return null;
+    G.sorular.forEach(function(g){
+      var st = Q.data.stations[g.st], p = patronOf(g.st);
+      if (!st || !p) return;
+      ilk = ilk || st;
+      engeller.push({
+        id: 'final-' + g.no, tip: 'patron', final: true, no: g.no, kaynak: g.st, kaynakAd: st.ad,
+        baslik: 'Question ' + g.no, kavram: null, agirlik: 1, sekil: g.sekil || null,
+        canavar: p.canavar, canavarAd: p.canavarAd, soru: g.text,
+        anahtarFikirler: g.anahtar.slice(), yanlisKavramlar: g.hatalar.slice(),
+        yanlisKavramIds: [], idealCevap: g.model.join(' '),
+        mcq: mcqOf(g.st, g.no)
+      });
+    });
+    return engeller.length ? { engeller: engeller, ilk: ilk } : null;
+  }
   function hazirla(){
-    var engeller = [], n = 0, ilk = null;
-    stIds().forEach(function(id){
+    var engeller = [], n = 0, ilk = null, G = hazirlaGercek();
+    if (G) { engeller = G.engeller; ilk = G.ilk; }
+    (G ? [] : stIds()).forEach(function(id){
       var st = Q.data.stations[id];
       ilk = ilk || st;
       (st.engeller || []).forEach(function(e){
@@ -12812,6 +13177,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       var q = el('div', 'fn-soru', ob.soru);
       q.style.cssText = 'font-weight:800;font-size:17px;line-height:1.35;margin:0 0 8px';
       a.appendChild(q);
+      if (ob.sekil && Q.gercekSinav && Q.gercekSinav.sekilEl) { var sk = Q.gercekSinav.sekilEl(ob.sekil); if (sk) { sk.style.maxWidth = '420px'; a.appendChild(sk); } }
       return a;
     }
     function bekle(area, etiket){
@@ -12868,7 +13234,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
         area.appendChild(it);
         var tb = el('div', 'fn-tb');
         it.appendChild(tb);
-        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 400, deger: cevap });
+        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: 7, deger: cevap });
         if (v == null || !String(v).trim() || /^\s*(bilmiyorum|i don'?t know)\s*\.?\s*$/i.test(String(v))) {
           rec.mod = 'bos'; rec.dogruluk = 0; rec.eminlik = 0; rec.eksik = ob.anahtarFikirler.slice();
           area.textContent = '';
@@ -13289,7 +13655,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       '.tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}.tk-muted{color:var(--muted)}';
     document.head.appendChild(s);
   }
-  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)'], ['hata', 'Hata defterini çalış'], ['hesap', 'Hesap çalıştayı'], ['ai', "AI'a sor"], ['bil', 'Biliyorum']];
+  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)'], ['gercek', 'Gerçek sınav (10 soru)'], ['hata', 'Hata defterini çalış'], ['hesap', 'Hesap çalıştayı'], ['ai', "AI'a sor"], ['bil', 'Biliyorum']];
   function ac(){
     if (root) { git(aktifSekme); return; }
     css();
@@ -13318,6 +13684,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     if (!root) return; aktifSekme = s; denemeTok++; denemeDurdur(); body.textContent = '';
     Array.prototype.forEach.call(tabsEl.children, function(b){ b.setAttribute('aria-selected', b.dataset.sekme === s ? 'true' : 'false'); });
     if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else if (s === 'deneme') denemeSekmesi();
+    else if (s === 'gercek') { if (Q.gercekSinav) Q.gercekSinav.render(body); else body.appendChild(el('div', 'tk-muted', 'Gerçek sınav modülü yüklenemedi.')); }
     else if (s === 'hata') { if (Q.tekrarHata) Q.tekrarHata.hata(body, ctx); } else if (s === 'hesap') { if (Q.tekrarHesap) Q.tekrarHesap.sayfa(body); } else if (s === 'ai') { if (Q.tekrarHata) Q.tekrarHata.ai(body, ctx); } else if (s === 'bil') bilSekmesi(); else sinavSekmesi();
   }
 
@@ -13676,6 +14043,322 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     mcqSor(0);
   }
   Q.tekrar = { open: ac, close: kapat, git: function(s, ctx){ if (!root) ac(); git(s, ctx); }, terimler: terimler, havuz: havuz };
+})();
+
+/* 98-gercek-sinav.js · Tekrar Merkezi > "Gerçek sınav (10 soru)": hocanın örnek sınavı AYNEN (10 klasik soru, İngilizce).
+ * Ekler: Q.gercekSinav {render(host), sekilEl(ad), sorular(), skor(no), sifirla()}. Veri: Q.data.gercekSinav (86-data-gercek-sinav.js).
+ * Akış: yaz (soru gezgini + büyük yazı alanı) -> değerlendir (model cevap + anahtar fikir kontrol listesi, isteğe bağlı Claude puanı)
+ * -> sonuç (eksik fikirler + çalışma bağlantıları). Süre sayacı YOK (kullanıcı kararı).
+ * Kayıt: yalnızca localStorage["cip-hatti-gercek-sinav-v1"] (taslak, işaretler, aşama); try/catch, ana kayda dokunmaz. */
+(function(){
+  'use strict';
+  var KEY = 'cip-hatti-gercek-sinav-v1';
+  var S = null;          /* { cur, asama, cevap:{no:text}, isaret:{no:[bool]}, claude:{no:{dogruluk,geri}} } */
+
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function btn(text, cls, fn){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
+  function veri(){ return (Q.data && Q.data.gercekSinav) || { sorular: [] }; }
+  function sorular(){ return veri().sorular; }
+  function soruNo(no){ return sorular()[no - 1]; }
+
+  /* ---------- kayıt ---------- */
+  function bos(){ return { cur: 1, asama: 'yaz', cevap: {}, isaret: {}, claude: {} }; }
+  function yukle(){
+    var r = null;
+    try { r = JSON.parse(localStorage.getItem(KEY)); } catch (e) { r = null; }
+    var s = bos();
+    if (r && typeof r === 'object') {
+      s.cur = Math.max(1, Math.min(10, +r.cur || 1));
+      s.asama = (r.asama === 'degerlendir' || r.asama === 'sonuc') ? r.asama : 'yaz';
+      if (r.cevap && typeof r.cevap === 'object') s.cevap = r.cevap;
+      if (r.isaret && typeof r.isaret === 'object') s.isaret = r.isaret;
+      if (r.claude && typeof r.claude === 'object') s.claude = r.claude;
+    }
+    return s;
+  }
+  function yaz(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) { /* kapalı: oturum belleğinde kalır */ } }
+  function durum(){ if (!S) S = yukle(); return S; }
+
+  function cevapli(no){ return !!(durum().cevap[no] && String(S.cevap[no]).trim()); }
+  function sayiCevapli(){ var n = 0; sorular().forEach(function(q){ if (cevapli(q.no)) n++; }); return n; }
+  function isaretler(no){
+    var q = soruNo(no), a = durum().isaret[no];
+    if (!Array.isArray(a) || a.length !== q.anahtar.length) a = S.isaret[no] = q.anahtar.map(function(){ return false; });
+    return a;
+  }
+  /* soru puanı 0-100: işaretlenen anahtar fikir oranı; işaret yoksa ve Claude puanı varsa o */
+  function skor(no){
+    var q = soruNo(no), a = isaretler(no), n = a.filter(Boolean).length;
+    if (!n && S.claude[no] && typeof S.claude[no].dogruluk === 'number') return S.claude[no].dogruluk;
+    return Math.round(100 * n / q.anahtar.length);
+  }
+
+  /* ---------- şekiller ---------- */
+  function sekilEl(ad){
+    var w = el('div', 'gs-sekil');
+    var ink = 'var(--ink)', cy = 'var(--cyan)', ye = 'var(--yellow)';
+    var tx = function(x, y, t, ek){ return '<text x="' + x + '" y="' + y + '" fill="' + ink + '" font-size="14" font-family="Nunito,system-ui,sans-serif" ' + (ek || '') + '>' + t + '</text>'; };
+    if (ad === 'q5') {
+      var X = function(nm){ return 60 + nm * 10.8; };
+      w.setAttribute('role', 'img'); w.setAttribute('aria-label', 'Potential V(x): infinite walls at x = 0 and 50 nm, 9 eV barrier between 20 and 30 nm');
+      w.innerHTML = '<svg viewBox="0 0 660 230" width="100%" style="max-width:640px;max-height:200px">' +
+        '<line x1="' + X(0) + '" y1="22" x2="' + X(0) + '" y2="190" stroke="' + ink + '" stroke-width="5"/>' +
+        '<line x1="' + X(50) + '" y1="22" x2="' + X(50) + '" y2="190" stroke="' + ink + '" stroke-width="5"/>' +
+        '<rect x="' + X(20) + '" y="60" width="' + (X(30) - X(20)) + '" height="130" fill="' + cy + '" fill-opacity=".28" stroke="' + cy + '" stroke-width="3"/>' +
+        '<polyline points="' + X(0) + ',190 ' + X(20) + ',190" stroke="' + ye + '" stroke-width="4" fill="none"/>' +
+        '<polyline points="' + X(30) + ',190 ' + X(50) + ',190" stroke="' + ye + '" stroke-width="4" fill="none"/>' +
+        '<line x1="' + X(20) + '" y1="60" x2="' + X(30) + '" y2="60" stroke="' + ye + '" stroke-width="4"/>' +
+        '<line x1="30" y1="190" x2="640" y2="190" stroke="' + ink + '" stroke-width="1.5" stroke-dasharray="3 4" opacity=".6"/>' +
+        '<line x1="42" y1="60" x2="' + X(20) + '" y2="60" stroke="' + ink + '" stroke-width="1" stroke-dasharray="4 4" opacity=".7"/>' +
+        tx(2, 64, '9 eV') + tx(22, 194, '0') + tx(X(0) - 12, 14, 'V = ∞') + tx(X(50) - 12, 14, 'V = ∞') +
+        tx(X(8), 180, 'V = 0') + tx(X(36), 180, 'V = 0') + tx(X(22), 52, 'V = 9 eV') +
+        [0, 20, 30, 50].map(function(n){ return '<line x1="' + X(n) + '" y1="190" x2="' + X(n) + '" y2="198" stroke="' + ink + '" stroke-width="2"/>' + tx(X(n) - 8, 214, n); }).join('') +
+        tx(X(50) - 30, 228, 'x (nm)') + '</svg>';
+    } else if (ad === 'q6') {
+      w.setAttribute('role', 'img'); w.setAttribute('aria-label', 'Step potential: V = 0 for x < 0 and V = V0 for x > 0, electron incident from the left');
+      w.innerHTML = '<svg viewBox="0 0 660 200" width="100%" style="max-width:640px;max-height:180px">' +
+        '<defs><marker id="gsar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="' + ye + '"/></marker></defs>' +
+        '<polyline points="40,160 330,160 330,70 620,70" stroke="' + ye + '" stroke-width="4" fill="none"/>' +
+        '<rect x="330" y="70" width="290" height="90" fill="' + cy + '" fill-opacity=".22"/>' +
+        '<line x1="330" y1="30" x2="330" y2="180" stroke="' + ink + '" stroke-width="1.5" stroke-dasharray="4 4" opacity=".7"/>' +
+        '<line x1="70" y1="105" x2="250" y2="105" stroke="' + ye + '" stroke-width="3" marker-end="url(#gsar)"/>' +
+        '<line x1="250" y1="125" x2="90" y2="125" stroke="' + ye + '" stroke-width="2" stroke-dasharray="6 4" marker-end="url(#gsar)" opacity=".85"/>' +
+        '<circle cx="62" cy="105" r="7" fill="' + cy + '" stroke="' + ink + '" stroke-width="2"/>' +
+        tx(48, 88, 'electron, energy E') + tx(120, 176, 'V = 0  (x &lt; 0)') + tx(440, 56, 'V = V₀  (x &gt; 0)') + tx(321, 194, 'x = 0') +
+        tx(120, 144, 'reflected', 'opacity=".85"') + tx(600, 190, 'x') + tx(8, 74, 'V') + '</svg>';
+    } else return null;
+    return w;
+  }
+
+  /* ---------- stil ---------- */
+  function css(){
+    if (document.getElementById('gs-css')) return;
+    var s = el('style'); s.id = 'gs-css';
+    s.textContent = '.gs-wrap{display:flex;flex-direction:column;gap:8px;min-height:0}' +
+      '.gs-nav{display:flex;gap:6px;flex-wrap:wrap;align-items:center}' +
+      '.gs-n{min-width:42px;padding:6px 8px;border:3px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--ink);font:inherit;font-weight:800;cursor:pointer}' +
+      '.gs-n[data-d=dolu]{border-color:var(--lime)}.gs-n[data-d=bos]{border-style:dashed}.gs-n[aria-current=true]{background:var(--sel);box-shadow:0 0 0 3px var(--cyan)}' +
+      '.gs-n small{display:block;font-size:11px;font-weight:600;color:var(--muted)}' +
+      '.gs-q{font-size:21px;font-weight:800;line-height:1.3}.gs-sekil{background:var(--panel2);border:2px solid var(--line);border-radius:8px;padding:4px 8px;align-self:flex-start;width:100%;max-width:660px;box-sizing:border-box}' +
+      '.gs-ta{width:100%;box-sizing:border-box;min-height:230px;height:36vh;background:var(--panel2);color:var(--ink);border:3px solid var(--line);border-radius:8px;padding:10px 12px;font:inherit;font-size:18px;line-height:1.4;resize:vertical}' +
+      '.gs-row{display:flex;gap:10px;align-items:stretch}.gs-row .gs-sekil{flex:none;width:470px;align-self:flex-start}.gs-row .gs-ta{flex:1;min-width:0;height:300px}' +
+      '.gs-ta:focus{outline:none;border-color:var(--cyan)}' +
+      '.gs-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:900px){.gs-2{grid-template-columns:1fr}}' +
+      '.gs-box{border:2px solid var(--line);border-radius:8px;background:var(--panel2);padding:8px 12px}.gs-box h4{margin:0 0 4px;color:var(--yellow)}.gs-box p{margin:3px 0}' +
+      '.gs-model p{margin:4px 0;line-height:1.35}' +
+      '.gs-chk{display:flex;gap:8px;align-items:flex-start;padding:5px 0;cursor:pointer;border-bottom:1px dashed rgba(255,255,255,.15)}.gs-chk input{width:20px;height:20px;margin-top:2px;flex:none}' +
+      '.gs-bar{height:12px;border-radius:6px;background:var(--panel);border:1px solid var(--line);overflow:hidden}.gs-bar i{display:block;height:100%}' +
+      '.gs-sat{display:flex;justify-content:space-between;gap:8px;margin-top:8px}.gs-uyari{padding:8px 12px;border:2px solid var(--yellow);border-radius:8px}';
+    document.head.appendChild(s);
+  }
+
+  /* ---------- ana çizim ---------- */
+  var host = null, claudeVar = null;
+  function render(h){
+    css(); host = h; durum(); host.textContent = '';
+    if (!sorular().length) { host.appendChild(el('div', 'tk-fb kotu', 'Gerçek sınav verisi bulunamadı.')); return; }
+    if (S.asama === 'sonuc') sonuc(); else if (S.asama === 'degerlendir') degerlendir(); else yazEkrani();
+  }
+  function yenile(){ if (host && host.isConnected) render(host); }
+  function git(a){ S.asama = a; yaz(); yenile(); }
+
+  function gezgin(mod){
+    var nav = el('div', 'gs-nav'); nav.setAttribute('role', 'tablist'); nav.setAttribute('aria-label', 'Soru gezgini');
+    sorular().forEach(function(q){
+      var b = el('button', 'gs-n', 'Q' + q.no); b.type = 'button'; b.dataset.no = q.no;
+      var dolu = cevapli(q.no);
+      b.dataset.d = dolu ? 'dolu' : 'bos';
+      var alt = el('small', '', mod === 'yaz' ? (dolu ? 'yanıtlandı' : 'boş') : '%' + skor(q.no));
+      b.appendChild(alt);
+      if (q.no === S.cur) b.setAttribute('aria-current', 'true');
+      b.addEventListener('click', function(){ S.cur = q.no; yaz(); yenile(); });
+      nav.appendChild(b);
+    });
+    return nav;
+  }
+
+  function yazEkrani(){
+    var q = soruNo(S.cur);
+    var w = el('div', 'gs-wrap'); host.appendChild(w);
+    w.appendChild(el('div', 'tk-muted', 'Gerçek sınav (10 soru) · Hocanın örnek sınavı, soru metinleri aynen. Yanıtlandı: ' + sayiCevapli() + '/10 · Taslak otomatik kaydedilir.'));
+    w.appendChild(gezgin('yaz'));
+    w.appendChild(el('div', 'gs-q', 'Q' + q.no + '. ' + q.text));
+    var se = q.sekil ? sekilEl(q.sekil) : null, satir = el('div', se ? 'gs-row' : ''); w.appendChild(satir); if (se) satir.appendChild(se);
+    var ta = el('textarea', 'gs-ta'); ta.id = 'gs-ta'; ta.maxLength = 12000; ta.value = S.cevap[q.no] || '';
+    ta.placeholder = 'Write your answer in English...'; ta.setAttribute('aria-label', 'Your answer to question ' + q.no);
+    ta.addEventListener('input', function(){
+      S.cevap[q.no] = ta.value; yaz();
+      var b = host.querySelector('.gs-n[data-no="' + q.no + '"]');
+      if (b) { b.dataset.d = ta.value.trim() ? 'dolu' : 'bos'; b.querySelector('small').textContent = ta.value.trim() ? 'yanıtlandı' : 'boş'; }
+    });
+    ta.addEventListener('keydown', function(e){ if (e.key === 'Escape') e.stopPropagation(); });
+    satir.appendChild(ta);
+    var sat = el('div', 'gs-sat'), sol = el('div', 'tk-row'), sag = el('div', 'tk-row');
+    var geri = btn('← Önceki', '', function(){ S.cur = Math.max(1, S.cur - 1); yaz(); yenile(); }); geri.disabled = S.cur <= 1;
+    var ileri = btn('Sonraki →', '', function(){ S.cur = Math.min(10, S.cur + 1); yaz(); yenile(); }); ileri.disabled = S.cur >= 10;
+    sol.appendChild(geri); sol.appendChild(ileri);
+    sag.appendChild(yeniDugme());
+    sag.appendChild(btn('Bitir ve değerlendir', 'primary', function(){ git('degerlendir'); }));
+    sat.appendChild(sol); sat.appendChild(sag); w.appendChild(sat);
+    try { ta.focus(); } catch (e) { /* odak yok */ }
+  }
+
+  function yeniDugme(){
+    var onay = false, b = btn('Yeni sınav (taslağı sil)', '', null);
+    b.addEventListener('click', function(){
+      if (!onay) { onay = true; b.textContent = 'Emin misin? Tüm cevaplar silinir'; b.className += ' danger'; setTimeout(function(){ if (b.isConnected && onay) { onay = false; b.textContent = 'Yeni sınav (taslağı sil)'; b.classList.remove('danger'); } }, 5000); return; }
+      sifirla();
+    });
+    return b;
+  }
+  function sifirla(){ S = bos(); yaz(); yenile(); }
+
+  /* ---------- değerlendirme ---------- */
+  function paragraflar(arr){ var d = el('div', 'gs-model'); arr.forEach(function(t){ d.appendChild(el('p', '', t)); }); return d; }
+  function degerlendir(){
+    var q = soruNo(S.cur), a = isaretler(q.no);
+    var w = el('div', 'gs-wrap'); host.appendChild(w);
+    w.appendChild(el('div', 'tk-muted', 'Değerlendirme: model cevapla karşılaştır, anahtar fikirlerden yazdıklarını işaretle (dürüst ol: kelimeyi değil fikri yazdıysan işaretle).'));
+    w.appendChild(gezgin('deg'));
+    var ust = el('div', 'tk-row');
+    var cb = btn('Claude ile puanla', '', null); cb.id = 'gs-claude'; cb.style.display = 'none'; ust.appendChild(cb);
+    var cd = el('span', 'tk-muted', ''); ust.appendChild(cd);
+    ust.appendChild(btn('← Yazma ekranına dön', '', function(){ git('yaz'); }));
+    ust.appendChild(btn('Sonucu gör', 'primary', function(){ git('sonuc'); }));
+    w.appendChild(ust);
+    claudeHazir(cb, cd);
+    w.appendChild(el('div', 'gs-q', 'Q' + q.no + '. ' + q.text));
+    var se = q.sekil ? sekilEl(q.sekil) : null; if (se) w.appendChild(se);
+    var iki = el('div', 'gs-2'); w.appendChild(iki);
+    var sol = el('div', 'gs-box'); sol.appendChild(el('h4', '', 'Senin cevabın'));
+    sol.appendChild(el('p', cevapli(q.no) ? '' : 'tk-muted', cevapli(q.no) ? S.cevap[q.no] : '(boş bıraktın)')).style.whiteSpace = 'pre-wrap';
+    var cl = S.claude[q.no];
+    if (cl) {
+      var cbk = el('div', 'tk-fb ' + (cl.dogruluk >= 60 ? 'iyi' : 'kotu'), 'Claude puanı: %' + cl.dogruluk + (cl.geri && cl.geri.length ? ' · ' + cl.geri.join(' ') : ''));
+      cbk.style.marginTop = '8px'; sol.appendChild(cbk);
+    }
+    iki.appendChild(sol);
+    var sag = el('div', 'gs-box'); sag.appendChild(el('h4', '', 'Model answer (örnek cevap)')); sag.appendChild(paragraflar(q.model)); iki.appendChild(sag);
+    var kb = el('div', 'gs-box'); w.appendChild(kb);
+    var bas = el('h4', '', ''); kb.appendChild(bas);
+    function say(){ bas.textContent = 'Key ideas (anahtar fikirler): ' + a.filter(Boolean).length + '/' + q.anahtar.length + ' işaretli · Soru puanı %' + skor(q.no); }
+    say();
+    q.anahtar.forEach(function(f, i){
+      var l = el('label', 'gs-chk'), c = el('input'); c.type = 'checkbox'; c.checked = !!a[i];
+      c.addEventListener('change', function(){ a[i] = c.checked; yaz(); say(); var nb = host.querySelector('.gs-n[data-no="' + q.no + '"] small'); if (nb) nb.textContent = '%' + skor(q.no); });
+      l.appendChild(c); l.appendChild(el('span', '', f)); kb.appendChild(l);
+    });
+    kb.appendChild(el('h4', '', 'Sık yapılan hatalar')).style.marginTop = '8px';
+    var ul = el('ul'); ul.style.margin = '2px 0'; q.hatalar.forEach(function(h){ ul.appendChild(el('li', '', h)); }); kb.appendChild(ul);
+    var nav2 = el('div', 'gs-sat'), s1 = el('div', 'tk-row');
+    var g = btn('← Önceki', '', function(){ S.cur = Math.max(1, S.cur - 1); yaz(); yenile(); }); g.disabled = S.cur <= 1;
+    var i2 = btn('Sonraki →', '', function(){ S.cur = Math.min(10, S.cur + 1); yaz(); yenile(); }); i2.disabled = S.cur >= 10;
+    s1.appendChild(g); s1.appendChild(i2); nav2.appendChild(s1); w.appendChild(nav2);
+  }
+
+  /* Claude varsa: cevaplanan sorular sırayla puanlanır; fikir listesi uzunluğu eşleşirse işaretler önceden doldurulur (kullanıcı değiştirebilir) */
+  function claudeHazir(cb, cd){
+    var va = (Q.claude && Q.claude.available && Q.claude.grade);
+    if (!va) { cd.textContent = 'Claude yok: model cevapla kendini değerlendir.'; return; }
+    var tok = {};
+    Promise.resolve(Q.claude.available()).then(function(av){
+      if (!host || !host.isConnected) return;
+      if (!av || av.backend === 'none') { cd.textContent = 'Claude yok (API anahtarı girilmemiş): model cevapla kendini değerlendir.'; return; }
+      cb.style.display = '';
+      cb.addEventListener('click', async function(){
+        cb.disabled = true; var ok = 0, hata = null;
+        var liste = sorular().filter(function(q){ return cevapli(q.no) && !S.claude[q.no]; });
+        for (var i = 0; i < liste.length && !hata; i++) {
+          var q = liste[i], bitti = false;
+          cd.textContent = 'Puanlanıyor: Q' + q.no + ' (' + (i + 1) + '/' + liste.length + ')…';
+          for (var deneme = 0; deneme < 3 && !bitti; deneme++) {
+            try {
+              var pu = await Q.claude.grade({ soru: q.text, anahtarFikirler: q.anahtar, yanlisKavramlar: [], idealCevap: q.model.join(' '), cevap: S.cevap[q.no], eminlik: 1 });
+              S.claude[q.no] = { dogruluk: pu.dogruluk, geri: pu.geriBildirim || [] };
+              if (Array.isArray(pu.fikirler) && pu.fikirler.length === q.anahtar.length) S.isaret[q.no] = pu.fikirler.map(function(f){ return !!f['var']; });
+              yaz(); ok++; bitti = true;
+            } catch (e) {
+              var kod = (e && e.code) || 'gecici';
+              if (kod === 'sinir' || kod === 'gecici') await new Promise(function(r){ setTimeout(r, 2500); }); else break;
+            }
+          }
+          if (!bitti) hata = { code: 'puanlanamadi' };
+        }
+        if (!host || !host.isConnected) return;
+        if (hata) { cd.textContent = 'Claude şu an puanlayamadı (' + ok + ' soru puanlandı); kalanları kendin işaretle.'; cb.disabled = false; }
+        yenile();
+      });
+    }, function(){ cd.textContent = 'Claude yok: model cevapla kendini değerlendir.'; });
+  }
+
+  /* ---------- sonuç ---------- */
+  function istasyonAc(id){
+    try {
+      if (Q.settings && Q.settings.istasyonAcik && !Q.settings.istasyonAcik(id)) { Q.ui.toast('Bu istasyon henüz kilitli (Ayarlar: Her yere eriş).', { tur: 'bilgi' }); return; }
+      if (Q.tekrar && Q.tekrar.close) Q.tekrar.close();
+      if (Q.settings && Q.settings.closeMap) Q.settings.closeMap();
+      Q.state.voltaj = 100;
+      Q.runner.start(id, 0);
+    } catch (e) { console.error('gercek-sinav', e); }
+  }
+  function kartAc(id){
+    if (!Q.tekrar || !Q.tekrar.git) return;
+    Q.tekrar.git('kart');
+    setTimeout(function(){ var s = document.querySelector('#tk-root .tk-body select'); if (s) { s.value = id; s.dispatchEvent(new Event('change')); } }, 0);
+  }
+  function stAd(id){ var s = Q.data.stations && Q.data.stations[id]; return id.toUpperCase() + ' · ' + (s && s.ad || id); }
+
+  function sonuc(){
+    var w = el('div', 'gs-wrap'); host.appendChild(w);
+    var puanlar = sorular().map(function(q){ return skor(q.no); });
+    var ort = Math.round(puanlar.reduce(function(a, b){ return a + b; }, 0) / puanlar.length);
+    w.appendChild(el('div', 'tk-soru', 'Gerçek sınav sonucu: ortalama %' + ort + ' · Yanıtlanan: ' + sayiCevapli() + '/10'));
+    w.appendChild(el('div', 'tk-muted', ort >= 80 ? 'Sınava hazır görünüyorsun; yine de eksik fikirlere bak.' : ort >= 50 ? 'İyi gidiyorsun; eksik fikirleri çalış, sonra yeniden yaz.' : 'Temel fikirleri çalış, model cevabı oku ve cevabı sıfırdan yeniden yaz.'));
+    sorular().forEach(function(q, i){
+      var p = puanlar[i], a = isaretler(q.no);
+      var kutu = el('div', 'gs-box'); kutu.dataset.no = q.no; w.appendChild(kutu);
+      var ust = el('div'); ust.style.cssText = 'display:flex;justify-content:space-between;gap:8px';
+      ust.appendChild(el('b', '', 'Q' + q.no + ' · ' + q.text.slice(0, 90) + (q.text.length > 90 ? '…' : '')));
+      ust.appendChild(el('b', '', '%' + p)); kutu.appendChild(ust);
+      var bar = el('div', 'gs-bar'), dolgu = el('i'); dolgu.style.cssText = 'width:' + Math.max(2, p) + '%;background:var(' + (p >= 70 ? '--lime' : p >= 40 ? '--yellow' : '--red') + ')';
+      bar.appendChild(dolgu); kutu.appendChild(bar);
+      var eksik = q.anahtar.filter(function(f, k){ return !a[k]; });
+      if (eksik.length) {
+        var d = el('details'); d.open = p < 70; d.appendChild(el('summary', '', 'Eksik fikirler (' + eksik.length + ')'));
+        var ul = el('ul'); ul.style.margin = '2px 0'; eksik.forEach(function(f){ ul.appendChild(el('li', '', f)); }); d.appendChild(ul); kutu.appendChild(d);
+        var cal = el('div', 'tk-row'); cal.style.marginTop = '4px';
+        cal.appendChild(el('span', 'tk-muted', 'Çalış:'));
+        q.calis.forEach(function(c){
+          cal.appendChild(btn(stAd(c.st) + ' istasyonu', '', function(){ istasyonAc(c.st); }));
+          cal.appendChild(btn('Kartlar (' + c.st.toUpperCase() + ')', '', function(){ kartAc(c.st); }));
+        });
+        if ((q.no === 5 || q.no === 6) && Q.tekrarHesap) cal.appendChild(btn('Hesap çalıştayı (Q5/Q6 görevleri)', '', function(){ Q.tekrar.git('hesap'); }));
+        kutu.appendChild(cal);
+        q.calis.forEach(function(c){ kutu.appendChild(el('p', 'tk-muted', c.st.toUpperCase() + ': ' + c.not)); });
+      } else kutu.appendChild(el('p', 'tk-muted', 'Tüm anahtar fikirler işaretli.'));
+    });
+    var r = el('div', 'tk-row');
+    r.appendChild(btn('← Değerlendirmeye dön', '', function(){ git('degerlendir'); }));
+    r.appendChild(btn('Yazma ekranına dön', '', function(){ git('yaz'); }));
+    r.appendChild(yeniDugme());
+    w.appendChild(r);
+  }
+
+  /* ---------- harita düğmesi (20-settings.js'ye dokunmadan): Tekrar Merkezi düğmesinin yanına eklenir ---------- */
+  function haritayaEkle(){
+    var t = document.getElementById('a10-tekrar');
+    if (!t || document.getElementById('gs-harita')) return;
+    var b = btn('Gerçek sınav (10 soru)', '', function(){ if (Q.tekrar && Q.tekrar.git) Q.tekrar.git('gercek'); });
+    b.id = 'gs-harita';
+    if (t.parentNode) t.parentNode.insertBefore(b, t.nextSibling);
+  }
+  try {
+    var kok = document.body || document.documentElement;
+    if (kok && typeof MutationObserver !== 'undefined') new MutationObserver(haritayaEkle).observe(kok, { childList: true, subtree: true });
+    haritayaEkle();
+  } catch (e) { /* gözlemci yok */ }
+
+  Q.gercekSinav = { render: render, sekilEl: sekilEl, sorular: sorular, skor: skor, sifirla: sifirla, durum: durum, cevapli: cevapli };
 })();
 
 /* 98-tekrar-hata.js · Tekrar Merkezi: "Hata defterini çalış" ve "AI'a sor" sayfaları.

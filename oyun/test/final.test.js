@@ -73,7 +73,7 @@ async function kos(mod){
   ok(rap.n === 10 && rap.cubuk === 10, mod + ': rapor 10 çubuk');
   ok(!rap.istFinal && !rap.ilFinal, mod + ': final istasyonu/ilerleme kaydı temizlendi');
   if (mod === 'claude') ok(rap.ort.every(function(x){ return x === 95; }), mod + ': hep %95');
-  if (mod === 'karma') ok(rap.ort.filter(function(x){ return x === 95; }).length === 5 && rap.ort.filter(function(x){ return x === 20; }).length === 6, mod + ': 5 iyi 6 kötü');
+  if (mod === 'karma') ok(rap.ort.filter(function(x){ return x === 95; }).length === 5 && rap.ort.filter(function(x){ return x === 20; }).length === 5, mod + ': 5 iyi 5 kötü');
   if (mod === 'mcq') ok(rap.modlar.every(function(x){ return x === 'mcq'; }) && rap.ort.filter(function(x){ return x === 100; }).length === 5, mod + ': yedek MCQ, 5 doğru');
   var tt = page.locator('button', { hasText: 'Temel tura git' }).first();
   if (await tt.count()) {
