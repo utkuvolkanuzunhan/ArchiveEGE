@@ -21,7 +21,7 @@ function ok(c, m){ if (!c) { fails++; console.log('FAIL: ' + m); } else console.
     await page.waitForTimeout(700);
     await page.evaluate(function(){ Q.state.kartlar = ['czoch', 'miller']; Q.state.ilerleme.s01 = { tamam: true }; Q.settings.openMap(); });
     var n = await page.evaluate(function(){ return document.querySelectorAll('.kk-kart').length; });
-    ok(n === 10, tag + ': 10 kart listelendi: ' + n);
+    ok(n === 23, tag + ': 10 sandık + 13 bonus = 23 kart listelendi: ' + n);
     ok(await page.evaluate(function(){ return document.querySelectorAll('.kk-kart[data-kilitli="0"]').length === 2; }), tag + ': 2 kazanılmış, kalanı kilitli');
     ok(await page.evaluate(function(){ var k = document.querySelector('.kk-kart[data-kart="czoch"]'); return /Czochralski/.test(k.textContent) && /1916/.test(k.textContent) && !!k.querySelector('svg'); }), tag + ': kazanılan kartta ad, yıl, çizim');
     ok(await page.evaluate(function(){ var k = document.querySelector('.kk-kart[data-kart="bohr"]'); return /istasyonunu bitir/.test(k.textContent) && /\?\?\?/.test(k.textContent); }), tag + ': kilitli kartta ipucu');
@@ -35,7 +35,7 @@ function ok(c, m){ if (!c) { fails++; console.log('FAIL: ' + m); } else console.
         tasma: y.scrollWidth > y.clientWidth + 1, ad: document.querySelector('#a8-kart-panel .kd-ad').textContent };
     });
     ok(d.acik === '1' && /Miller/.test(d.ad), tag + ': tıklayınca panelde Miller açıldı');
-    ok(d.h4 === 4 && d.li >= 2 && d.li <= 3, tag + ': 3 başlıklı paragraf + sınav kutusu (h4=' + d.h4 + ', madde=' + d.li + ')');
+    ok(d.h4 === 3 && d.li >= 2 && d.li <= 3, tag + ': p1 + p2 + sınav kutusu, gereksiz p3 yok (h4=' + d.h4 + ', madde=' + d.li + ')');
     ok(d.sw <= d.cw && d.sag <= d.vw && d.alt <= d.vh + 1 && !d.tasma, tag + ': taşma yok ' + JSON.stringify([d.sw, d.cw, d.sag, d.alt, d.vh]));
     await page.screenshot({ path: path.join(EKRAN, 'kart-detay-' + tag + '.png') });
     await page.evaluate(function(){ document.getElementById('a8-yan').scrollTop = 99999; });
@@ -47,6 +47,52 @@ function ok(c, m){ if (!c) { fails++; console.log('FAIL: ' + m); } else console.
     await page.screenshot({ path: path.join(EKRAN, 'kart-kilitli-' + tag + '.png') });
     await page.click('#a8-yan-kapat');
     ok(await page.evaluate(function(){ return document.getElementById('a8-yan').dataset.acik === '0'; }), tag + ': Kapat düğmesi çalışır');
+
+    /* ---- bonus kartlar: istasyon bitince otomatik; kilitliyken ipucu; kayda yazılmaz ---- */
+    await page.evaluate(function(){
+      Q.state.kartlar = ['czoch', 'miller', 'einstein']; Q.state.ilerleme.s01 = { tamam: true }; Q.state.ilerleme.s02 = { tamam: true };
+      Q.state.ilerleme.s03 = { tamam: false }; Q.settings.closeMap(); Q.settings.openMap();
+    });
+    var bd = await page.evaluate(function(){
+      function g(id){ return document.querySelector('.kk-kart[data-kart="' + id + '"]'); }
+      return {
+        ilr2: document.querySelector('.kk-grup[data-ist="s02"] .kk-ilerleme').textContent,
+        ilr3: document.querySelector('.kk-grup[data-ist="s03"] .kk-ilerleme').textContent,
+        ilr1: document.querySelector('.kk-grup[data-ist="s01"] .kk-ilerleme').textContent,
+        brAcik: g('bravais').dataset.kilitli === '0' && /Bravais/.test(g('bravais').textContent) && g('bragg').dataset.kilitli === '0',
+        plKilit: g('planck').dataset.kilitli === '1' && /istasyonunu bitir/.test(g('planck').textContent) && !/Planck/.test(g('planck').textContent),
+        bonusIsaret: g('bravais').dataset.bonus === '1' && g('miller').dataset.bonus === '0',
+        kayit: Q.state.kartlar.join(',')
+      };
+    });
+    ok(bd.ilr2 === '3/3 kart' && bd.ilr3 === '1/3 kart' && bd.ilr1 === '1/1 kart', tag + ': grup ilerlemesi x/y: ' + [bd.ilr1, bd.ilr2, bd.ilr3]);
+    ok(bd.brAcik, tag + ': s02 bitince Bravais ve Bragg bonus kartları açıldı');
+    ok(bd.plKilit, tag + ': s03 bitmeden Planck kilitli, ipucu var, ad sızmaz');
+    ok(bd.bonusIsaret && bd.kayit === 'czoch,miller,einstein', tag + ': bonus işareti var, bonus kart kayda yazılmadı');
+    await page.click('.kk-kart[data-kart="bragg"]');
+    var bp = await page.evaluate(function(){
+      var y = document.getElementById('a8-yan'), r = y.getBoundingClientRect();
+      return { ad: document.querySelector('#a8-kart-panel .kd-ad').textContent, bonus: /Bonus kart/.test(document.getElementById('a8-kart-panel').textContent),
+        li: document.querySelectorAll('#a8-kart-panel .kd-sinav li').length, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth, alt: r.bottom, vh: innerHeight };
+    });
+    ok(/Bragg/.test(bp.ad) && bp.bonus && bp.li >= 2, tag + ': bonus kart detayı açıldı (Bonus kart rozeti, sınav maddeleri)');
+    ok(bp.sw <= bp.cw && bp.alt <= bp.vh + 1, tag + ': bonus detayı taşmıyor');
+    await page.keyboard.press('Escape');
+    await page.click('.kk-kart[data-kart="planck"]');
+    ok(await page.evaluate(function(){ var k = document.querySelector('#a8-kart-panel .kd'); return k.dataset.kilitli === '1' && !/Max Planck/.test(k.textContent) && /istasyonunu bitir/.test(k.textContent); }), tag + ': kilitli bonus panelinde içerik sızmaz, ipucu görünür');
+    await page.keyboard.press('Escape');
+    var sg = await page.evaluate(function(){
+      var m = document.getElementById('a8-layer'); var g = document.querySelectorAll('.kk-grup'); var tasan = 0;
+      g.forEach(function(x){ var r = x.getBoundingClientRect(); if (r.right > innerWidth + 1) tasan++; });
+      var sc = m.scrollHeight > m.clientHeight; var k = document.querySelector('.kk-kart[data-kart="bloch"]');
+      return { tasan: tasan, sw: document.documentElement.scrollWidth, cw: document.documentElement.clientWidth };
+    });
+    ok(sg.tasan === 0 && sg.sw <= sg.cw, tag + ': 23 kartlık koleksiyon yatay taşmıyor');
+    await page.screenshot({ path: path.join(EKRAN, 'kart-bonus-' + tag + '.png') });
+    /* eski kayıt uyumu: s09 tamamlanmış, bonus kartlar kayıtta yok -> sonradan görünür */
+    await page.evaluate(function(){ Q.state.ilerleme.s09 = { tamam: true }; Q.settings.closeMap(); Q.settings.openMap(); });
+    ok(await page.evaluate(function(){ return document.querySelector('.kk-kart[data-kart="kronig"]').dataset.kilitli === '0' && document.querySelector('.kk-kart[data-kart="bloch"]').dataset.kilitli === '0'; }), tag + ': eski kayıtta tamamlanmış istasyonun bonus kartları kendiliğinden açık');
+    await page.evaluate(function(){ Q.state.kartlar = ['czoch', 'miller']; Q.state.ilerleme.s01 = { tamam: true }; Q.state.ilerleme.s02 = {}; Q.state.ilerleme.s03 = {}; Q.state.ilerleme.s09 = {}; Q.settings.closeMap(); Q.settings.openMap(); });
     await page.focus('.kk-kart[data-kart="czoch"]');
     await page.keyboard.press('ArrowRight');
     ok(await page.evaluate(function(){ return document.activeElement.dataset.kart === 'miller'; }), tag + ': ok tuşu sonraki karta geçer');

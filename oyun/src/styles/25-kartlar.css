@@ -43,6 +43,13 @@
 .kk-ipucu{font-size:var(--fs-small);color:var(--muted);line-height:1.3}
 .kk-kart[data-kilitli="1"] .kk-ad{color:var(--muted)}
 
+.kk-bonus{padding:5px 8px;gap:10px}
+.kk-bonus .kk-por{flex-basis:50px;width:50px;height:50px}
+.kk-bonus .kk-ad{font-size:15px}
+.kk-bonus .kk-cumle{-webkit-line-clamp:2}
+.kk-bonus .kk-ipucu{font-size:13px}
+.kk-liste{max-height:none}
+
 /* detay */
 .kd{--kk-renk:var(--cyan);display:flex;flex-direction:column;gap:10px;min-width:0}
 .kd-ust{display:flex;gap:12px;align-items:center}

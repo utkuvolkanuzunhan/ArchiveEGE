@@ -89,6 +89,17 @@ var DEFS = [
   { id: 'pauli', kisi: 'Wolfgang Pauli', yil: 1925, canavar: 'Exclusion (Dışlama) Canavarı', konu: 'Pauli dışlama ilkesi', soru: 'İki elektron aynı kuantum halinde olabilir mi?', zayif: 'Zayıf noktası: aynı dört kuantum sayısı iki elektronda olamaz.', hair: 'slick', eyes: 2, front: 'boxes', chest: 'n,l,m,s' },
   { id: 'fermi', kisi: 'Enrico Fermi', yil: 1926, canavar: 'Fermi Canavarı', konu: 'Fermi-Dirac dağılımı', soru: 'Mutlak sıfırda dolu seviyeler nerede biter?', zayif: 'Zayıf noktası: Fermi seviyesinde, basamak gibi.', hair: 'slick', eyes: 2, mous: 'thin', back: 'sigmoid', chest: 'f(E)' },
   { id: 'planck', kisi: 'Max Planck', yil: 1900, canavar: null, konu: 'Kuantum fikri', soru: 'Enerji paket paket verilir.', zayif: null, hair: 'bald', eyes: 2, mous: 'bushy', glasses: true, chest: 'E=hf', cameo: true },
+  { id: 'bravais', kisi: 'Auguste Bravais', yil: 1848, canavar: null, konu: 'Bravais kafesleri', soru: '14 kafes türü.', zayif: null, hair: 'sideburn', eyes: 2, back: 'cube', chest: '14', cameo: true },
+  { id: 'bragg', kisi: 'W. H. Bragg ve W. L. Bragg', yil: 1913, canavar: null, konu: 'X ışını kırınımı', soru: 'nλ = 2d sinθ', zayif: null, hair: 'slick', eyes: 2, mous: 'bushy', chest: 'sinθ', cameo: true },
+  { id: 'hertz', kisi: 'Heinrich Hertz', yil: 1887, canavar: null, konu: 'İlk fotoelektrik gözlem', soru: 'UV ışık kıvılcımı kolaylaştırır.', zayif: null, hair: 'side', eyes: 2, mous: 'bushy', back: 'bolts', chest: 'Hz', cameo: true },
+  { id: 'rutherford', kisi: 'Ernest Rutherford', yil: 1911, canavar: null, konu: 'Çekirdekli atom', soru: 'Pozitif yük küçük çekirdekte.', zayif: null, hair: 'slick', eyes: 2, mous: 'bushy', back: 'orbits', chest: 'α', cameo: true },
+  { id: 'davisson', kisi: 'Davisson ve Germer', yil: 1927, canavar: null, konu: 'Elektron kırınımı', soru: 'Elektron dalga gibi kırınır.', zayif: null, hair: 'side', eyes: 2, glasses: true, back: 'wave', chest: 'e⁻', cameo: true },
+  { id: 'gamow', kisi: 'George Gamow', yil: 1928, canavar: null, konu: 'Alfa bozunması ve tünelleme', soru: 'Bariyerin öbür yanına geçiş.', zayif: null, hair: 'curly', eyes: 2, back: 'ghost', chest: 'T', cameo: true },
+  { id: 'neumann', kisi: 'John von Neumann', yil: 1932, canavar: null, konu: 'Ölçüm postülatı', soru: 'Ölçüm özdeğer verir.', zayif: null, hair: 'slick', eyes: 2, glasses: true, chest: '|ψ⟩', cameo: true },
+  { id: 'kennard', kisi: 'Earle H. Kennard', yil: 1927, canavar: null, konu: 'Kesin belirsizlik bağıntısı', soru: 'σxσp ≥ ħ/2', zayif: null, hair: 'side', eyes: 2, back: 'ghost', chest: 'σσ', cameo: true },
+  { id: 'kronig', kisi: 'Kronig ve Penney', yil: 1931, canavar: null, konu: 'Periyodik potansiyel modeli', soru: 'Bantlar ve yasak aralık.', zayif: null, hair: 'curly', eyes: 2, glasses: true, back: 'sigmoid', chest: 'E(k)', cameo: true },
+  { id: 'dirac', kisi: 'Paul Dirac', yil: 1926, canavar: null, konu: 'Fermi-Dirac istatistiği', soru: 'Fermiyon durumu en çok bir kez doldurur.', zayif: null, hair: 'slick', eyes: 2, mous: 'thin', chest: 'δ(x)', cameo: true },
+  { id: 'shockley', kisi: 'William Shockley', yil: 1948, canavar: null, konu: 'Transistör', soru: 'p-n eklem akımı kontrol eder.', zayif: null, hair: 'bald', eyes: 2, glasses: true, back: 'boxes', chest: 'p-n', cameo: true },
   { id: 'bloch', kisi: 'Felix Bloch', yil: 1928, canavar: null, konu: 'Periyodik yapıda dalga', soru: 'Kristalde dalga periyodik zarf taşır.', zayif: null, hair: 'curly', eyes: 2, back: 'wave', chest: 'ψk', cameo: true }
 ];
 DEFS.forEach(function(d){ registerChar(d.id, d); });

@@ -15,21 +15,34 @@
   function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
   function sira(id){ return parseInt(String(id).replace(/\D/g, ''), 10) || 0; }
 
-  /* Tüm kartlar: istasyon sırasıyla. opt.hepsi=true -> s10 dahil (ayara bakmadan). */
+  /* Tüm kartlar: istasyon sırasıyla; her istasyonda önce sandık kartı, sonra bonus kartlar.
+   * Bonus kartlar (Q.data.bonusKartlar) istasyon bitince (ilerleme[ist].tamam) otomatik kazanılır; kayda yazılmaz,
+   * bu yüzden eski kayıtlarda tamamlanmış istasyonların bonus kartları kendiliğinden görünür.
+   * opt.hepsi=true -> s10 dahil (ayara bakmadan). */
   K.liste = function(opt){
     opt = opt || {};
     var kaz = (Q.state && Q.state.kartlar) || [], ay = (Q.state && Q.state.ayarlar) || {};
+    var il = (Q.state && Q.state.ilerleme) || {};
+    var bonus = Q.data.bonusKartlar || [];
     var out = [];
     stIds().forEach(function(sid){
       var st = Q.data.stations[sid];
       if (!st) return;
+      var tamam = !!(il[sid] && il[sid].tamam);
+      var gizli10 = sira(sid) === 10 && !opt.hepsi && !ay.istasyon10;
       (st.engeller || []).forEach(function(e){
         if (e.tip !== 'sandik' || !e.kart || !e.kart.id) return;
         var ch = (Q.data.chars && Q.data.chars[e.kart.id]) || {};
         var kazandi = kaz.indexOf(e.kart.id) >= 0;
-        if (sira(sid) === 10 && !opt.hepsi && !ay.istasyon10 && !kazandi) return;
+        if (gizli10 && !kazandi) return;
         out.push({ id: e.kart.id, ist: sid, istSira: sira(sid), istAd: st.ad || sid, renk: st.renk || '',
-          kisi: ch.kisi || e.kart.id, yil: e.kart.yil, tekCumle: e.kart.tekCumle || '', kazandi: kazandi });
+          kisi: ch.kisi || e.kart.id, yil: e.kart.yil, tekCumle: e.kart.tekCumle || '', kazandi: kazandi, bonus: false });
+      });
+      bonus.forEach(function(b){
+        if (b.ist !== sid || (gizli10 && !tamam)) return;
+        var ch = (Q.data.chars && Q.data.chars[b.id]) || {};
+        out.push({ id: b.id, ist: sid, istSira: sira(sid), istAd: st.ad || sid, renk: st.renk || '',
+          kisi: b.kisi || ch.kisi || b.id, yil: b.yil, tekCumle: b.tekCumle || '', kazandi: tamam, bonus: true });
       });
     });
     return out;
@@ -46,7 +59,7 @@
     d.setAttribute('aria-hidden', 'true');
     return d;
   }
-  function ipucu(k){ return '"' + k.istAd + '" istasyonunu bitir (sandığı aç).'; }
+  function ipucu(k){ return k.bonus ? '"' + k.istAd + '" istasyonunu bitir (bonus kart).' : '"' + k.istAd + '" istasyonunu bitir (sandığı aç).'; }
 
   /* Detay: Q.kartlar.detayDom(id, { acik: true }) -> eleman. acik: kilitli olsa da içeriği göster (Tekrar Merkezi). */
   K.detayDom = function(id, opt){
@@ -70,6 +83,7 @@
     var meta = el('div', 'kd-meta');
     if (!kilitli) meta.appendChild(el('span', 'chip', String(k.yil)));
     meta.appendChild(el('span', 'chip', k.istSira + '. ' + k.istAd));
+    if (k.bonus) meta.appendChild(el('span', 'chip', 'Bonus kart'));
     meta.appendChild(el('span', 'chip', k.kazandi ? 'Kazanıldı' : 'Kilitli'));
     yz.appendChild(meta);
     ust.appendChild(yz);
@@ -120,8 +134,8 @@
       var cb = el('div', 'kk-cubuk'), ic = el('i'); ic.style.width = Math.round(100 * k0 / ks.length) + '%'; cb.appendChild(ic); g.appendChild(cb);
       var ls = el('div', 'kk-liste');
       ks.forEach(function(k){
-        var b = el('button', 'kk-kart'); b.type = 'button';
-        b.dataset.kart = k.id; b.dataset.kilitli = k.kazandi ? '0' : '1';
+        var b = el('button', k.bonus ? 'kk-kart kk-bonus' : 'kk-kart'); b.type = 'button';
+        b.dataset.kart = k.id; b.dataset.bonus = k.bonus ? '1' : '0'; b.dataset.kilitli = k.kazandi ? '0' : '1';
         b.setAttribute('aria-pressed', opt.secili === k.id ? 'true' : 'false');
         b.setAttribute('aria-label', k.kazandi ? (k.kisi + ', ' + k.yil + ', ' + k.istAd + '. Ayrıntı için seç.') : ('Kilitli kart. ' + ipucu(k)));
         b.appendChild(portre(k, !k.kazandi));

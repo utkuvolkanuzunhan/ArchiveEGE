@@ -334,6 +334,12 @@
           if (e.kart && Q.kartlar && Q.kartlar.detayDom && (Q.data.kartlar || {})[e.kart.id]) {
             var kd = el('div', 'tk-kart'); kd.style.gridColumn = '1 / -1'; kd.appendChild(Q.kartlar.detayDom(e.kart.id, { acik: true }));
             (e.ozet || []).length && kd.appendChild(el('p', 'tk-muted', 'Sandık özeti: ' + e.ozet.join(' · '))); grid.insertBefore(kd, grid.firstChild);
+            var ref = kd.nextSibling;
+            (Q.data.bonusKartlar || []).forEach(function(bk){
+              if (bk.ist !== sel.value || !(Q.data.kartlar || {})[bk.id]) return;
+              var bd = el('div', 'tk-kart'); bd.style.gridColumn = '1 / -1'; bd.appendChild(Q.kartlar.detayDom(bk.id, { acik: true }));
+              grid.insertBefore(bd, ref);
+            });
           } else kart('Sandık' + (e.kart ? ' · ' + e.kart.id + ' (' + e.kart.yil + ')' : ''), [e.kart && e.kart.tekCumle].concat(e.ozet || []));
         }
         else if (e.tip === 'kopru') kart('Zincir', [e.sonuc]);

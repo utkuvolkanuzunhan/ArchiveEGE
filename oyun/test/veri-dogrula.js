@@ -166,7 +166,8 @@ for (var n = 1; n <= 10; n++) {
   var dosya = '89-data-kartlar.js';
   if (!fs.existsSync(path.join(JS, dosya))) { uyarilar.push(dosya + ': dosya yok (atlandı)'); return; }
   var kd;
-  try { kd = yukle(dosya).kartlar; } catch (e) { hata(dosya, 'yükleme', e.message); return; }
+  var bonus = [], yuk;
+  try { yuk = yukle(dosya); kd = yuk.kartlar; bonus = yuk.bonusKartlar || []; } catch (e) { hata(dosya, 'yükleme', e.message); return; }
   if (!kd) { hata(dosya, 'Q.data.kartlar', 'tanımlı değil'); return; }
   var kimlikler = [];
   for (var n = 1; n <= 10; n++) {
@@ -177,6 +178,18 @@ for (var n = 1; n <= 10; n++) {
       (st.engeller || []).forEach(function (e) { if (e.tip === 'sandik' && e.kart && e.kart.id) kimlikler.push(e.kart.id); });
     } catch (e) { /* istasyon hatası yukarıda raporlandı */ }
   }
+  var anaSayisi = kimlikler.length, bonusIds = [];
+  bonus.forEach(function (b, i) {
+    var a = 'bonusKartlar[' + i + ']';
+    if (!b.id) { hata(dosya, a + '.id', 'boş'); return; }
+    if (kimlikler.indexOf(b.id) >= 0 || bonusIds.indexOf(b.id) >= 0) hata(dosya, a + '.id', b.id + ' tekrar (çoğaltma yasak)');
+    if (!/^s(0[1-9]|10)$/.test(b.ist || '')) hata(dosya, a + '.ist', 'geçersiz istasyon: ' + b.ist);
+    if (!b.kisi) hata(dosya, a + '.kisi', 'boş');
+    if (typeof b.yil !== 'number') hata(dosya, a + '.yil', 'sayı olmalı');
+    sinir(dosya, a + '.tekCumle', b.tekCumle, 20);
+    bonusIds.push(b.id);
+  });
+  kimlikler = kimlikler.concat(bonusIds);
   kimlikler.forEach(function (id) {
     var k = kd[id];
     if (!k) { hata(dosya, id, 'sandık kartı için metin yok'); return; }
