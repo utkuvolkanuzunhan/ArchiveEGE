@@ -60,6 +60,13 @@
       {
         id: 's10-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Roma', yil: 1926, rivayet: false,
+        onBilgi: [
+          { baslik: "Fermi-Dirac ve sürüklenme tarihi", madde: [
+            "1900 dolayında Drude, metaldeki electron (elektron) hareketini drift (sürüklenme) ve scattering (saçılma) ile modelledi.",
+            "1926'da Fermi ve Dirac birbirinden bağımsız Fermi-Dirac statistics (Fermi-Dirac istatistiği) kurdu; Pauli ilkesine uyan parçacıklar için.",
+            "1927'de Sommerfeld bu dağılımı metaldeki electron (elektron) gazına uyguladı.",
+            "1947'de ilk transistor yapıldı; Bardeen, Brattain ve Shockley 1956 Nobel Fizik Ödülü'nü aldı." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Roma, 1926. Fermi bir dağılım yazdı: Fermi level (Fermi seviyesi) E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.' },
           { kim: 'fermi', metin: 'Taşıyıcılar iki türlü: electron (elektron) n ve hole (delik) p. Sıcaklık yükselince f(E) yumuşar, carrier (taşıyıcı) artar.' },
@@ -68,6 +75,23 @@
       },
       {
         id: 's10-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'fermi_dagilim', agirlik: 1,
+        onBilgi: [
+          { baslik: "Fermi-Dirac dağılımı, Fermi level", madde: [
+            "f(E) = 1/(1 + e^((E−E_F)/kT)): enerjisi E olan bir seviyenin dolu olma olasılığı (0 ile 1 arası).",
+            "Fermi level (Fermi seviyesi) E_F: doluluk olasılığının tam yarı olduğu enerji. Formülde E = E_F koyup değeri hesapla.",
+            "T = 0 K'de f step function (basamak fonksiyonu) olur; T arttıkça geçiş bölgesi kT mertebesinde genişler.",
+            "k = 8,617×10⁻⁵ eV/K; 300 K'de kT ≈ 0,026 eV. E_F bir seviye olmak zorunda değil, bandgap içinde de olabilir." ] },
+          { baslik: "Carriers (taşıyıcılar): n, p, nᵢ", madde: [
+            "Carriers (taşıyıcılar): n electron (elektron) yoğunluğu, p hole (delik) yoğunluğu (birim cm⁻³).",
+            "Intrinsic (katkısız) yarıiletkende n = p = nᵢ; nᵢ sıcaklık ve bandgap ile değişir (Si için ≈ 10¹⁰ cm⁻³).",
+            "Doping (katkılama): donor n-type (n-tipi), acceptor p-type (p-tipi) yapar. Dengede np = nᵢ² (kütle etkisi yasası).",
+            "Sık karışan nokta: çarpım np sabittir; toplam n+p değil. Katkı bir taşıyıcıyı artırırken diğerini etkiler." ] },
+          { baslik: "Drift (sürüklenme), mobility, akım", madde: [
+            "Drift velocity (sürüklenme hızı): v_d = μE; μ mobility (hareketlilik, cm²/V·s), E alan (V/cm).",
+            "Scattering (saçılma) carrier'ı sürekli yavaşlatır; bu yüzden v_d ivmelenmez, alanla orantılı bir ortalama hıza oturur.",
+            "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); electron (elektron) ve hole (delik) katkıları toplanır.",
+            "Sık karışan nokta: drift, alan etkisiyle olur; diffusion (difüzyon) ise konsantrasyon farkıyla olur." ] }
+        ],
         gorev: 'T\'yi 50 K\'e indir; Fermi eğrisinin basamağa dönüşünü gör.',
         sim: {
           modul: 'fermi',

@@ -60,6 +60,13 @@
       {
         id: 's09-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Zürih', yil: 1928, rivayet: false,
+        onBilgi: [
+          { baslik: "Pauli, Bloch ve bant kuramı", madde: [
+            "1925'te Pauli exclusion principle (Pauli dışlama ilkesi) önerdi; fikir sonra electron spin (spin) ile bağlandı.",
+            "1928'de Bloch, periodic potential (periyodik potansiyel) içindeki dalgalar için Bloch theorem (Bloch teoremi) verdi.",
+            "1931'de A. H. Wilson, band theory (bant kuramı) ile metal (metal), insulator (yalıtkan), semiconductor (yarıiletken) ayrımını açıkladı.",
+            "1947'de Bardeen ve Brattain ilk transistor'u yaptı; bant fikirlerinin pratik sonucu." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Tek atomda energy level (enerji seviyesi) belli. Atomlar bir araya gelince solid (katı) içinde ne olur?' },
           { kim: 'pauli', metin: 'Her energy level N seviyeye yarılır, seviyeler birleşip energy band (enerji bandı) olur. Pauli: seviyeye en çok iki electron (elektron) sığar.' },
@@ -69,15 +76,21 @@
       {
         id: 's09-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bant_yarilma', agirlik: 1,
         onBilgi: [
-          { baslik: 'Energy band (enerji bandı)', madde: [
-            'Tek atomda energy levels (enerji seviyeleri) ayrıktır.',
-            'N atom yaklaşınca her seviye N seviyeye yarılır; bunlar birleşip energy band (enerji bandı) olur.',
-            'Pauli ilkesi: her seviyeye en çok iki electron (elektron) sığar.' ] },
-          { baslik: 'Bandgap (yasak enerji aralığı)', madde: [
-            'Valence band (valans bandı): elektronlarla dolu en üst band.',
-            'Conduction band (iletim bandı): boş, akım taşıyabilen üst band.',
-            'Bandgap (yasak enerji aralığı): iki band arasındaki izinsiz enerji boşluğu.',
-            'Küçük bandgap semiconductor (yarıiletken), büyük olan insulator (yalıtkan) demektir.' ] }
+          { baslik: "Energy band (enerji bandı) nasıl oluşur", madde: [
+            "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır.",
+            "Yakın seviyeler birleşip energy band (enerji bandı) olur; band içinde seviyeler neredeyse sürekli dizilir.",
+            "Tek infinite well (sonsuz kuyu) bant vermez; bant, çok atomlu periodic potential (periyodik potansiyel) içinde olur.",
+            "Crystal (kristal) düzenli olduğu için bantlar öngörülebilir; amorf yapıda bu düzen bozulur." ] },
+          { baslik: "Pauli ilkesi ve doluluk", madde: [
+            "Pauli exclusion principle (Pauli dışlama ilkesi): iki electron (elektron) aynı quantum state (kuantum durumu) paylaşamaz.",
+            "Spin (spin) iki değer alır (yukarı, aşağı); bir seviyedeki durum sayısını buradan çıkar.",
+            "Electron (elektron) seviyeleri alttan yukarı doldurur (Fermi filling, Fermi dolumu).",
+            "Sık karışan nokta: tam dolu band (bant) boş seviye bırakmadığı için akım taşımaz; yarı dolu band (bant) taşır." ] },
+          { baslik: "Bandgap (yasak enerji aralığı), malzeme", madde: [
+            "Valence band (valans bandı): dolu üst band. Conduction band (iletim bandı): üstteki, akım taşıyabilen band.",
+            "Bandgap (yasak enerji aralığı) E_g (birim eV): iki band arası; bu enerjide allowed state (izinli durum) yoktur.",
+            "Metal (metal): band yarı dolu ya da örtüşür. Insulator (yalıtkan): büyük E_g (elmas ≈ 5,5 eV).",
+            "Semiconductor (yarıiletken): küçük E_g (silikon ≈ 1,1 eV). Ayrım probability (olasılık) değil, band (bant) yapısıdır." ] }
         ],
         gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {

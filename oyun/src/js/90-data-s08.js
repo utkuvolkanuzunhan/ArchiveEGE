@@ -60,6 +60,13 @@
       {
         id: 's08-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Kopenhag', yil: 1927, rivayet: false,
+        onBilgi: [
+          { baslik: "Heisenberg ve belirsizlik ilkesi", madde: [
+            "1925'te Heisenberg matrix mechanics (matris mekaniği) kurdu; Born ve Jordan [x,p] = iħ bağıntısını türetti.",
+            "1927'de Heisenberg uncertainty principle (belirsizlik ilkesi) makalesini yayımladı; aynı yıl Kennard ΔxΔp ≥ ħ/2 biçimini verdi.",
+            "1929'da Robertson bunu herhangi iki operator (operatör) için genelleştirdi.",
+            "Bohr ve Heisenberg'in Copenhagen interpretation (Kopenhag yorumu) bu dönemde şekillendi." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Calibration (kalibrasyon) odası: measurement (ölçüm) mükemmelleştirmek istiyoruz.' },
           { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas ölçülemez. Sebep instrument (alet) değil.' },
@@ -68,6 +75,23 @@
       },
       {
         id: 's08-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'belirsizlik_dalga', agirlik: 1,
+        onBilgi: [
+          { baslik: "Uncertainty (belirsizlik), wave packet", madde: [
+            "Wave packet (dalga paketi): konumu sınırlı dalga; keskin konum için çok farklı wavelength (dalga boyu) toplanır.",
+            "Çok wavelength (dalga boyu) geniş momentum (p = h/λ) demektir; Δx ve Δp bu yüzden bağlıdır.",
+            "Δx, Δp: konum ve momentumun spread (yayılma) değeri; σx, σp aynı fikrin standart sapmasıdır.",
+            "ħ = h/2π ≈ 1,05×10⁻³⁴ J·s: çok küçük sabit; ilke her cisimde geçerli ama büyükte görünmez." ] },
+          { baslik: "ΔxΔp ≥ ħ/2 ilişkisi", madde: [
+            "Formül: ΔxΔp ≥ ħ/2 (birim J·s). Çarpımın alt sınırı vardır; ikisi birden sıfıra gitmez.",
+            "Gaussian wave packet (Gauss dalga paketi) sınıra eşit olur: σxσp = ħ/2 (minimum uncertainty, en az belirsizlik).",
+            "Instrument (alet) hatası değildir: ideal aletle de geçerli, çünkü sebep wave nature (dalga doğası).",
+            "Sık karışan nokta: ilke ölçümün parçacığı bozmasından ibaret değildir; ölçüm yapılmasa da geçerlidir." ] },
+          { baslik: "Conjugate variable (eşlenik değişken)", madde: [
+            "Conjugate variables (eşlenik değişkenler): operator'leri commute (değişme) etmeyen çift; örnek x ve p.",
+            "Commutator (komütatör): [x,p] = xp − px = iħ ≠ 0; sıfır olsaydı ortak eigenstate (özdurum) olurdu.",
+            "Ortak eigenstate (özdurum) yoksa iki büyüklük birden keskin değerli olamaz.",
+            "Sık karışan nokta: her büyüklük çifti belirsizlik vermez; kütle ve yük gibi sayılar operator (operatör) değildir." ] }
+        ],
         gorev: 'Position width (konum genişliği) daralt, momentuma bak.',
         sim: {
           modul: 'belirsizlik',
