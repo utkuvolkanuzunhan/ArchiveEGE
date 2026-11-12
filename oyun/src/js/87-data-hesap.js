@@ -327,7 +327,7 @@
     [S('Elektron yoğunluğu', 'N_D ≫ n_i olduğundan n ≈ N_D.', 'n ≈ N_{D} = 10^{16} cm^{-3}', C('Katkılı yarıiletken n tipi mi p tipi mi?', 'n tipi (donör)', ['p tipi (akseptör)', 'özgün (intrinsic)'])),
      S('Delik yoğunluğu', 'Kütle etkisi yasası np = n_i².', 'p = n_{i}²/n = (1,5×10^{10})² / 10^{16} = 2,25×10^{4} cm^{-3}')],
     { deger: 22500, birim: 'cm^{-3} (2.25e4 biçiminde gir)', metin: 'p ≈ 2.25×10^{4} cm^{-3}' },
-    'Çoğunluk taşıyıcı (n) katkıdan, azınlık (p) np = n_i²\'den. Birimler cm^{-3}, n_i değerinin karesi alınırken 10^{20} → 10^{20}×2,25.');
+    'Çoğunluk taşıyıcı (n) katkıdan, azınlık (p) np = n_i²\'den. Birimler cm^{-3}, (1,5×10^{10})² = 2,25×10^{20} (kuvvetler toplanır, katsayı karesi alınır).');
 
   G('drift-v', 's10', false, 'drift', 'alistirma', 1, 'Drift velocity',
     'The electron mobility in silicon is μ_n = 1350 cm²/(V·s). Calculate the drift velocity in an electric field E = 100 V/cm, in m/s.',

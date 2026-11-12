@@ -67,12 +67,12 @@
             "1900 dolayında Drude, metaldeki electron (elektron) hareketini drift (sürüklenme) ve scattering (saçılma) ile modelledi.",
             "1926'da Fermi ve Dirac birbirinden bağımsız Fermi-Dirac statistics (Fermi-Dirac istatistiği) kurdu; Pauli ilkesine uyan parçacıklar için.",
             "1927'de Sommerfeld bu dağılımı metaldeki electron (elektron) gazına uyguladı.",
-            "1947'de ilk transistor yapıldı; Bardeen, Brattain ve Shockley 1956 Nobel Fizik Ödülü'nü aldı." ] }
+            "1947'de Bardeen ve Brattain ilk transistor'u yaptı; ikisi ve Shockley 1956 Nobel Fizik Ödülü'nü paylaştı." ] }
         ],
         satirlar: [
           { kim: 'selin', metin: 'Roma, 1926. Fermi bir dağılım yazdı: Fermi level (Fermi seviyesi) E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.' },
           { kim: 'fermi', metin: 'Taşıyıcılar iki türlü: electron (elektron) n ve hole (delik) p. Sıcaklık yükselince f(E) yumuşar, carrier (taşıyıcı) artar.' },
-          { kim: 'fermi', metin: 'Alan E uygulanınca carrier (taşıyıcı) v_d = μE hızıyla drift (sürüklenme) yapar. 1947\'de ilk transistör (Bardeen, Brattain, Shockley) buna dayandı.' }
+          { kim: 'fermi', metin: 'Alan E uygulanınca carrier (taşıyıcı) v_d = μE hızıyla drift (sürüklenme) yapar. Alanla taşıyıcı akışını denetlemek transistörün temelidir (ilk transistor: 1947).' }
         ]
       },
       {
@@ -85,13 +85,13 @@
             "k = 8,617×10⁻⁵ eV/K; 300 K'de kT ≈ 0,026 eV. E_F bir seviye olmak zorunda değil, bandgap içinde de olabilir." ] },
           { baslik: "Carriers (taşıyıcılar): n, p, nᵢ", madde: [
             "Carriers (taşıyıcılar): n electron (elektron) yoğunluğu, p hole (delik) yoğunluğu (birim cm⁻³).",
-            "Intrinsic (katkısız) yarıiletkende n = p = nᵢ; nᵢ sıcaklık ve bandgap ile değişir (Si için ≈ 10¹⁰ cm⁻³).",
+            "Intrinsic (katkısız) yarıiletkende n = p = nᵢ; nᵢ sıcaklık arttıkça hızla artar, bandgap büyüdükçe azalır (Si için ≈ 10¹⁰ cm⁻³).",
             "Doping (katkılama): donor n-type (n-tipi), acceptor p-type (p-tipi) yapar. Dengede np = nᵢ² (kütle etkisi yasası).",
             "Sık karışan nokta: çarpım np sabittir; toplam n+p değil. Katkı bir taşıyıcıyı artırırken diğerini etkiler." ] },
           { baslik: "Drift (sürüklenme), mobility, akım", madde: [
-            "Drift velocity (sürüklenme hızı): v_d = μE; μ mobility (hareketlilik, cm²/V·s), E alan (V/cm).",
+            "Drift velocity (sürüklenme hızı): v_d = μE; μ mobility (hareketlilik, cm²/V·s), E alan (V/cm). μₙ electron (elektron), μₚ hole (delik) için hareketliliktir.",
             "Scattering (saçılma) carrier'ı sürekli yavaşlatır; bu yüzden v_d ivmelenmez, alanla orantılı bir ortalama hıza oturur.",
-            "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); electron (elektron) ve hole (delik) katkıları toplanır.",
+            "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); q temel yük (1,6×10⁻¹⁹ C). Electron (elektron) ve hole (delik) katkıları toplanır.",
             "Sık karışan nokta: drift, alan etkisiyle olur; diffusion (difüzyon) ise konsantrasyon farkıyla olur." ] }
         ],
         nasil: [

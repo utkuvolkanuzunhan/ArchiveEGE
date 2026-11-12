@@ -16,14 +16,14 @@
 
 Fizik özeti: Fermi-Dirac f(E) = 1/(1+e^((E−E_F)/kT)); f(E_F) = 1/2; T = 0 K'de basamak, T arttıkça geçiş bölgesi genişler. Dengede np = nᵢ² (katkıyla n artarsa p azalır). Drift: v_d = μE, J = q(nμₙ + pμₚ)E.
 
-Kavram tanıtımı: o01 hikâyesi (Roma 1926 Fermi; 1947 Shockley transistörü) Fermi level, carrier ve drift'i soru sorulmadan önce tanıtır; o02 kapısı sim ile pekiştirir.
+Kavram tanıtımı: o01 hikâyesi (Roma 1926 Fermi; 1947 Bardeen-Brattain transistörü) Fermi level, carrier ve drift'i soru sorulmadan önce tanıtır; o02 kapısı sim ile pekiştirir.
 
 ## Engeller
 
 ### o01 · hikaye · "Zaman kapısı" · Roma · 1926
 1. `selin`: Fermi level E_F, doluluk olasılığının yarı olduğu energy değeridir.
 2. `fermi`: Taşıyıcılar electron (n) ve hole (p); sıcaklıkla f(E) yumuşar, carrier artar.
-3. `fermi`: Alan E altında v_d = μE ile drift; 1947'de Shockley'nin transistörü buna dayandı.
+3. `fermi`: Alan E altında v_d = μE ile drift; 1947'de Bardeen ve Brattain ilk transistor'u yaptı.
 
 ### o02 · kavram · `fermi_dagilim`
 - `gorev`: T'yi 50 K'e indir; Fermi eğrisinin basamağa dönüşünü gör.
