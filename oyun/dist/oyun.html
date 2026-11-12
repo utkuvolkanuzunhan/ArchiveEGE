@@ -219,6 +219,13 @@ html,body{height:100%;margin:0;overflow:hidden}
 .kk-ipucu{font-size:var(--fs-small);color:var(--muted);line-height:1.3}
 .kk-kart[data-kilitli="1"] .kk-ad{color:var(--muted)}
 
+.kk-bonus{padding:5px 8px;gap:10px}
+.kk-bonus .kk-por{flex-basis:50px;width:50px;height:50px}
+.kk-bonus .kk-ad{font-size:15px}
+.kk-bonus .kk-cumle{-webkit-line-clamp:2}
+.kk-bonus .kk-ipucu{font-size:13px}
+.kk-liste{max-height:none}
+
 /* detay */
 .kd{--kk-renk:var(--cyan);display:flex;flex-direction:column;gap:10px;min-width:0}
 .kd-ust{display:flex;gap:12px;align-items:center}
@@ -1406,21 +1413,34 @@ html,body{height:100%;margin:0;overflow:hidden}
   function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
   function sira(id){ return parseInt(String(id).replace(/\D/g, ''), 10) || 0; }
 
-  /* Tüm kartlar: istasyon sırasıyla. opt.hepsi=true -> s10 dahil (ayara bakmadan). */
+  /* Tüm kartlar: istasyon sırasıyla; her istasyonda önce sandık kartı, sonra bonus kartlar.
+   * Bonus kartlar (Q.data.bonusKartlar) istasyon bitince (ilerleme[ist].tamam) otomatik kazanılır; kayda yazılmaz,
+   * bu yüzden eski kayıtlarda tamamlanmış istasyonların bonus kartları kendiliğinden görünür.
+   * opt.hepsi=true -> s10 dahil (ayara bakmadan). */
   K.liste = function(opt){
     opt = opt || {};
     var kaz = (Q.state && Q.state.kartlar) || [], ay = (Q.state && Q.state.ayarlar) || {};
+    var il = (Q.state && Q.state.ilerleme) || {};
+    var bonus = Q.data.bonusKartlar || [];
     var out = [];
     stIds().forEach(function(sid){
       var st = Q.data.stations[sid];
       if (!st) return;
+      var tamam = !!(il[sid] && il[sid].tamam);
+      var gizli10 = sira(sid) === 10 && !opt.hepsi && !ay.istasyon10;
       (st.engeller || []).forEach(function(e){
         if (e.tip !== 'sandik' || !e.kart || !e.kart.id) return;
         var ch = (Q.data.chars && Q.data.chars[e.kart.id]) || {};
         var kazandi = kaz.indexOf(e.kart.id) >= 0;
-        if (sira(sid) === 10 && !opt.hepsi && !ay.istasyon10 && !kazandi) return;
+        if (gizli10 && !kazandi) return;
         out.push({ id: e.kart.id, ist: sid, istSira: sira(sid), istAd: st.ad || sid, renk: st.renk || '',
-          kisi: ch.kisi || e.kart.id, yil: e.kart.yil, tekCumle: e.kart.tekCumle || '', kazandi: kazandi });
+          kisi: ch.kisi || e.kart.id, yil: e.kart.yil, tekCumle: e.kart.tekCumle || '', kazandi: kazandi, bonus: false });
+      });
+      bonus.forEach(function(b){
+        if (b.ist !== sid || (gizli10 && !tamam)) return;
+        var ch = (Q.data.chars && Q.data.chars[b.id]) || {};
+        out.push({ id: b.id, ist: sid, istSira: sira(sid), istAd: st.ad || sid, renk: st.renk || '',
+          kisi: b.kisi || ch.kisi || b.id, yil: b.yil, tekCumle: b.tekCumle || '', kazandi: tamam, bonus: true });
       });
     });
     return out;
@@ -1437,7 +1457,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     d.setAttribute('aria-hidden', 'true');
     return d;
   }
-  function ipucu(k){ return '"' + k.istAd + '" istasyonunu bitir (sandığı aç).'; }
+  function ipucu(k){ return k.bonus ? '"' + k.istAd + '" istasyonunu bitir (bonus kart).' : '"' + k.istAd + '" istasyonunu bitir (sandığı aç).'; }
 
   /* Detay: Q.kartlar.detayDom(id, { acik: true }) -> eleman. acik: kilitli olsa da içeriği göster (Tekrar Merkezi). */
   K.detayDom = function(id, opt){
@@ -1461,6 +1481,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     var meta = el('div', 'kd-meta');
     if (!kilitli) meta.appendChild(el('span', 'chip', String(k.yil)));
     meta.appendChild(el('span', 'chip', k.istSira + '. ' + k.istAd));
+    if (k.bonus) meta.appendChild(el('span', 'chip', 'Bonus kart'));
     meta.appendChild(el('span', 'chip', k.kazandi ? 'Kazanıldı' : 'Kilitli'));
     yz.appendChild(meta);
     ust.appendChild(yz);
@@ -1511,8 +1532,8 @@ html,body{height:100%;margin:0;overflow:hidden}
       var cb = el('div', 'kk-cubuk'), ic = el('i'); ic.style.width = Math.round(100 * k0 / ks.length) + '%'; cb.appendChild(ic); g.appendChild(cb);
       var ls = el('div', 'kk-liste');
       ks.forEach(function(k){
-        var b = el('button', 'kk-kart'); b.type = 'button';
-        b.dataset.kart = k.id; b.dataset.kilitli = k.kazandi ? '0' : '1';
+        var b = el('button', k.bonus ? 'kk-kart kk-bonus' : 'kk-kart'); b.type = 'button';
+        b.dataset.kart = k.id; b.dataset.bonus = k.bonus ? '1' : '0'; b.dataset.kilitli = k.kazandi ? '0' : '1';
         b.setAttribute('aria-pressed', opt.secili === k.id ? 'true' : 'false');
         b.setAttribute('aria-label', k.kazandi ? (k.kisi + ', ' + k.yil + ', ' + k.istAd + '. Ayrıntı için seç.') : ('Kilitli kart. ' + ipucu(k)));
         b.appendChild(portre(k, !k.kazandi));
@@ -1933,6 +1954,17 @@ var DEFS = [
   { id: 'pauli', kisi: 'Wolfgang Pauli', yil: 1925, canavar: 'Exclusion (Dışlama) Canavarı', konu: 'Pauli dışlama ilkesi', soru: 'İki elektron aynı kuantum halinde olabilir mi?', zayif: 'Zayıf noktası: aynı dört kuantum sayısı iki elektronda olamaz.', hair: 'slick', eyes: 2, front: 'boxes', chest: 'n,l,m,s' },
   { id: 'fermi', kisi: 'Enrico Fermi', yil: 1926, canavar: 'Fermi Canavarı', konu: 'Fermi-Dirac dağılımı', soru: 'Mutlak sıfırda dolu seviyeler nerede biter?', zayif: 'Zayıf noktası: Fermi seviyesinde, basamak gibi.', hair: 'slick', eyes: 2, mous: 'thin', back: 'sigmoid', chest: 'f(E)' },
   { id: 'planck', kisi: 'Max Planck', yil: 1900, canavar: null, konu: 'Kuantum fikri', soru: 'Enerji paket paket verilir.', zayif: null, hair: 'bald', eyes: 2, mous: 'bushy', glasses: true, chest: 'E=hf', cameo: true },
+  { id: 'bravais', kisi: 'Auguste Bravais', yil: 1848, canavar: null, konu: 'Bravais kafesleri', soru: '14 kafes türü.', zayif: null, hair: 'sideburn', eyes: 2, back: 'cube', chest: '14', cameo: true },
+  { id: 'bragg', kisi: 'W. H. Bragg ve W. L. Bragg', yil: 1913, canavar: null, konu: 'X ışını kırınımı', soru: 'nλ = 2d sinθ', zayif: null, hair: 'slick', eyes: 2, mous: 'bushy', chest: 'sinθ', cameo: true },
+  { id: 'hertz', kisi: 'Heinrich Hertz', yil: 1887, canavar: null, konu: 'İlk fotoelektrik gözlem', soru: 'UV ışık kıvılcımı kolaylaştırır.', zayif: null, hair: 'side', eyes: 2, mous: 'bushy', back: 'bolts', chest: 'Hz', cameo: true },
+  { id: 'rutherford', kisi: 'Ernest Rutherford', yil: 1911, canavar: null, konu: 'Çekirdekli atom', soru: 'Pozitif yük küçük çekirdekte.', zayif: null, hair: 'slick', eyes: 2, mous: 'bushy', back: 'orbits', chest: 'α', cameo: true },
+  { id: 'davisson', kisi: 'Davisson ve Germer', yil: 1927, canavar: null, konu: 'Elektron kırınımı', soru: 'Elektron dalga gibi kırınır.', zayif: null, hair: 'side', eyes: 2, glasses: true, back: 'wave', chest: 'e⁻', cameo: true },
+  { id: 'gamow', kisi: 'George Gamow', yil: 1928, canavar: null, konu: 'Alfa bozunması ve tünelleme', soru: 'Bariyerin öbür yanına geçiş.', zayif: null, hair: 'curly', eyes: 2, back: 'ghost', chest: 'T', cameo: true },
+  { id: 'neumann', kisi: 'John von Neumann', yil: 1932, canavar: null, konu: 'Ölçüm postülatı', soru: 'Ölçüm özdeğer verir.', zayif: null, hair: 'slick', eyes: 2, glasses: true, chest: '|ψ⟩', cameo: true },
+  { id: 'kennard', kisi: 'Earle H. Kennard', yil: 1927, canavar: null, konu: 'Kesin belirsizlik bağıntısı', soru: 'σxσp ≥ ħ/2', zayif: null, hair: 'side', eyes: 2, back: 'ghost', chest: 'σσ', cameo: true },
+  { id: 'kronig', kisi: 'Kronig ve Penney', yil: 1931, canavar: null, konu: 'Periyodik potansiyel modeli', soru: 'Bantlar ve yasak aralık.', zayif: null, hair: 'curly', eyes: 2, glasses: true, back: 'sigmoid', chest: 'E(k)', cameo: true },
+  { id: 'dirac', kisi: 'Paul Dirac', yil: 1926, canavar: null, konu: 'Fermi-Dirac istatistiği', soru: 'Fermiyon durumu en çok bir kez doldurur.', zayif: null, hair: 'slick', eyes: 2, mous: 'thin', chest: 'δ(x)', cameo: true },
+  { id: 'shockley', kisi: 'William Shockley', yil: 1948, canavar: null, konu: 'Transistör', soru: 'p-n eklem akımı kontrol eder.', zayif: null, hair: 'bald', eyes: 2, glasses: true, back: 'boxes', chest: 'p-n', cameo: true },
   { id: 'bloch', kisi: 'Felix Bloch', yil: 1928, canavar: null, konu: 'Periyodik yapıda dalga', soru: 'Kristalde dalga periyodik zarf taşır.', zayif: null, hair: 'curly', eyes: 2, back: 'wave', chest: 'ψk', cameo: true }
 ];
 DEFS.forEach(function(d){ registerChar(d.id, d); });
@@ -4530,6 +4562,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   function logn(EF, T){ return Math.log(NC) / Math.LN10 - (EG - EF) / (KB * T * Math.LN10); }
   function logp(EF, T){ return Math.log(NV) / Math.LN10 - EF / (KB * T * Math.LN10); }
   function ussu(x){ return '10^' + (Math.round(x * 10) / 10).toFixed(1).replace('-', '−'); }
+  /* n/p: 1 cm⁻³'ten az taşıyıcı fiziksel olarak ≈ 0; üssü parantezde göster (öğrenciyi yanıltmasın) */
+  function yogun(x){ return x < 0 ? '≈ 0 (' + ussu(x) + ')' : '= ' + ussu(x); }
   function clamp(v, a, b){ return v < a ? a : (v > b ? b : v); }
 
   var impl = {
@@ -4540,7 +4574,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var T = clamp(+pick('T', 300), TMIN, TMAX);
       var EF = clamp(+pick('EF', EG / 2), 0, EG);
       var Ef = clamp(+pick('E', 0), 0, EMAXF);
-      var T0goruldu = false, bitti = false, destroyed = false, raf = 0, ro = null, onWin = null, tw = 0, lastT = 0;
+      var T0goruldu = false, Egoruldu = false, bitti = false, destroyed = false, raf = 0, ro = null, onWin = null, tw = 0, lastT = 0;
       var parts = [], i;
       for (i = 0; i < NP; i++) parts.push({ x: Math.random(), y: Math.random(), u: Math.random() });
 
@@ -4588,16 +4622,18 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sE.t.textContent = 'E = ' + Math.round(Ef) + ' V/cm';
         if (!tw) { sT.s.value = String(T); sF.s.value = String(EF); sE.s.value = String(Ef); }
         var ln = logn(EF, T), lp = logp(EF, T), vd = MUN * Ef;
-        info.textContent = 'f(E_F) = ½ · n = ' + ussu(ln) + ' · p = ' + ussu(lp) + ' cm⁻³ · np = nᵢ² = ' + ussu(ln + lp)
+        info.textContent = 'f(E_F) = ½ · n ' + yogun(ln) + ' · p ' + yogun(lp) + ' cm⁻³ · np = nᵢ² ' + yogun(ln + lp)
           + ' · drift v_d = μ E = ' + (vd >= 1e5 ? (vd / 1e5).toFixed(1).replace('.', ',') + '×10⁵' : Math.round(vd)) + ' cm/s';
         cv.setAttribute('aria-label', 'Fermi-Dirac f(E) (Fermi-Dirac dağılımı) T=' + Math.round(T) + ' K, E_F=' + EF.toFixed(2) + ' eV, E=' + Math.round(Ef) + ' V/cm');
         if (T <= 60) T0goruldu = true;
+        if (Ef > 0) Egoruldu = true;
         ciz();
         kontrolBasari();
       }
       function kontrolBasari(){
         if (bitti || !params.basari) return;
         if (params.basari.T0 && !T0goruldu) return;
+        if (params.basari.E && !Egoruldu) return;
         bitti = true;
         try { if (api.done) api.done({ basari: true, olcum: { T: T, EF: EF, E: Ef } }); } catch (e) {}
       }
@@ -7688,6 +7724,8 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         var bekle = sure.tahminBekle != null ? sure.tahminBekle : 1500;
 
         var soru = U.el('p', 'tahmin-soru'); soru.textContent = ob.soru || '';
+        /* kaydırılabilir panelde soru hep görünsün (sim aşamasında ilk satır kırpılmasın) */
+        soru.style.cssText = 'position:sticky;top:0;z-index:2;background:var(--panel);margin:0 0 6px;padding:2px 0';
         var opsHost = U.el('div', 'tahmin-secenek');
         var ipucu = U.el('p', 'tahmin-ipucu');
         host.appendChild(soru); host.appendChild(opsHost); host.appendChild(ipucu);
@@ -8709,7 +8747,6 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     czoch: {
       p1: 'Jan Czochralski, Polonyalı bir kimyager ve metalurjistti. 1916\'da metallerin crystallization (kristalleşme) hızını incelerken, eriyik bir metalin içine daldırılan küçük bir kristalin yavaşça yukarı çekilerek büyütülebileceğini buldu. Bu yönteme bugün Czochralski (CZ) method (CZ yöntemi) denir.',
       p2: 'CZ yönteminde melt (eriyik) içine seed crystal (tohum kristal) değdirilir, yavaşça döndürülerek yukarı çekilir; eriyik tohumun kristal düzenini sürdürerek katılaşır ve ortaya single crystal (tek kristal) bir ingot (külçe) çıkar. Yarıiletken endüstrisinin kullandığı silicon wafer (silisyum dilim) bu külçeden kesilir. Dopant (katkı) atomları eriyiğe eklenerek büyüme sırasında kristale yerleştirilebilir.',
-      p3: 'Sezgi: polycrystal (çok kristal) içinde her grain (tane) farklı yönde dizilidir. Grain boundary (tane sınırı) electron (elektron) saçar ve defect (kusur) merkezi gibi davranır; bu yüzden aygıt için tek kristal istenir. Yanılgı: wafer\'ın bir fabrikada atom atom "inşa edildiği" sanılır; aslında büyük bir tek kristal külçe çekilir ve dilimlenir.',
       sinav: [
         'CZ: seed crystal (tohum kristal) melt (eriyik) içine değer, döndürülerek yavaşça çekilir; sonuç single crystal (tek kristal) ingot (külçe).',
         'Neden tek kristal: grain boundary (tane sınırı) yok; electron saçılması ve defect (kusur) etkisi azalır.',
@@ -8719,7 +8756,6 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     miller: {
       p1: 'William Hallowes Miller, Cambridge\'de çalışan Galli bir mineralogist (mineralog) ve crystallographer (kristalograf) idi. 1839\'da yayımladığı kristalografi kitabında crystal plane (kristal düzlemi) adlandırmak için bugün Miller indices (Miller indisleri) dediğimiz sistemi kullandı.',
       p2: 'Miller indices (Miller indisleri), bir düzlemin lattice (kafes) içindeki yönelimini üç küçük integer (tam sayı) ile yazmayı sağlar: (hkl). Yarıiletkende wafer yüzeyi bu notasyonla belirtilir, örneğin (100) ve (111). Farklı düzlemlerde atom yoğunluğu farklıdır; bu, etching (aşındırma), oxide (oksit) büyümesi ve surface (yüzey) özelliklerini etkiler.',
-      p3: 'Yanılgı: indisler kesişimin kendisi değildir. Önce intercepts (kesişimler) lattice constant (kafes sabiti) biriminde yazılır, sonra reciprocal (ters) alınır, sonra en küçük integer (tam sayı) oranına getirilir. Düzlem eksene paralelse intercept (kesişim) sonsuzdur ve indis 0 olur.',
       sinav: [
         'Adımlar: intercepts (kesişimler) → reciprocals (terslerin) → en küçük integers (tam sayılar) → (hkl).',
         'Örnek: kesişimler 2, ∞, ∞ ise terslerin 1/2, 0, 0 olur; düzlem (100).',
@@ -8759,7 +8795,6 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     broglie: {
       p1: 'Louis de Broglie, Fransız bir fizikçiydi. 1924\'teki doktora tezinde ışığın hem dalga hem parçacık gibi davranmasının madde için de geçerli olabileceğini önerdi ve 1929\'da Nobel Fizik Ödülü\'nü aldı. Fikir, 1927\'de Davisson ve Germer\'in nikel kristalinden electron diffraction (elektron kırınımı) gözlemesiyle deneysel olarak desteklendi.',
       p2: 'De Broglie wavelength (de Broglie dalga boyu): λ = h/p. Electron (elektron) gibi küçük kütleli parçacıkların dalga boyu kristal lattice (kafes) aralığıyla karşılaştırılabilir olabilir; bu yüzden kristalden diffraction (kırınım) gösterirler. Bu, Schrödinger\'in wave function (dalga fonksiyonu) yaklaşımının ve electron microscope (elektron mikroskobu) gibi araçların fiziksel temelidir.',
-      p3: 'Sezgi: günlük cisimler için momentum p çok büyüktür, bu yüzden λ = h/p fark edilemeyecek kadar küçüktür ve dalga davranışı görülmez. Dalga boyu momentuma ters orantılıdır: daha hızlı (daha yüksek p) parçacık, daha kısa λ.',
       sinav: [
         'λ = h/p; kinetik enerjiden p = √(2mE).',
         'Electron diffraction (elektron kırınımı) matter wave (madde dalgası) kanıtıdır.',
@@ -8789,7 +8824,6 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
     pauli: {
       p1: 'Wolfgang Pauli, Avusturya doğumlu bir fizikçiydi. 1925\'te exclusion principle (dışlama ilkesi)ni ortaya koydu ve 1945\'te Nobel Fizik Ödülü\'nü aldı.',
       p2: 'Pauli exclusion principle (Pauli dışlama ilkesi): iki electron (elektron) aynı quantum state (kuantum durumu) içinde bulunamaz. Bir orbital ya da enerji seviyesinde zıt spin (dönü) ile en çok iki electron yer alır. Katıda N atom, N tane yakın enerji seviyesi verir; electron\'lar bu seviyeleri alttan doldurur, böylece energy band (enerji bandı) yapısı ve Fermi level (Fermi seviyesi) ortaya çıkar. Bir bandın dolu olup olmaması malzemenin conductor (iletken), semiconductor (yarıiletken) ya da insulator (yalıtkan) olmasını belirler.',
-      p3: 'Sezgi: dolu bir band (bant)ta boş seviye kalmadığı için electron\'lar enerji kazanıp hareket edemez; bu yüzden tamamen dolu band net akım taşımaz.',
       sinav: [
         'İki electron aynı quantum state (kuantum durumu) içinde olamaz; seviye başına en çok 2 electron (zıt spin).',
         'N atom → N energy level (enerji seviyesi) → band (bant).',
@@ -8805,8 +8839,140 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         'T = 0 K\'de f(E) basamak fonksiyonu: E < E_F için 1, E > E_F için 0.',
         'Oda sıcaklığında kT ≈ 0,0259 eV.'
       ]
+    },
+    planck: {
+      p1: 'Max Planck, Alman bir fizikçiydi. 1900\'de blackbody radiation (kara cisim ışıması) spektrumunu açıklamaya çalışırken, ışıyan osilatörlerin enerjiyi yalnızca belirli paketler hâlinde alıp verdiğini varsaydı. Bu varsayım quantum theory (kuantum kuramı)nın başlangıcı sayılır; Planck 1918\'de Nobel Fizik Ödülü\'nü aldı.',
+      p2: 'Planck enerji paketini E = hf ile verdi; h, Planck constant (Planck sabiti) olup yaklaşık 6,63×10⁻³⁴ J·s\'dir. Classical physics (klasik fizik) kısa dalga boylarında toplam enerjinin sonsuz çıkmasını öngörüyordu; Planck yasası ise ölçülen spektrumla uyuştu. Planck paketlemeyi ışımayı alıp veren osilatörlere uygulamıştı; ışığın kendisinin foton olduğunu 1905\'te Einstein öne sürdü.',
+      sinav: [
+        'Classical theory (klasik kuram): kısa dalga boyunda spektrum sonsuza gider; Planck\'ın E = hf paketleri ölçümle uyuşur.',
+        'Planck: osilatörün salım/soğurma enerjisi nicemli; photon (foton) fikri Einstein\'ındır (1905).',
+        'Blackbody (kara cisim): T arttıkça tepe daha kısa dalga boyuna kayar (Wien).'
+      ]
+    },
+    hertz: {
+      p1: 'Heinrich Hertz, Alman bir fizikçiydi. 1880\'lerin sonunda electromagnetic waves (elektromanyetik dalgalar)ı deneyle üretip algıladı. 1887\'de kıvılcım aralığı deneyinde ultraviyole ışığın kıvılcımı kolaylaştırdığını fark etti; bu, photoelectric effect (fotoelektrik olay)ın ilk gözlemidir.',
+      p2: 'Gözlem, ışığın metal yüzeyinden electron (elektron) koparabildiğini gösterdi ama nedenini açıklamadı. Classical wave theory (klasik dalga teorisi) intensity (şiddet) arttıkça kopan electron enerjisinin artmasını beklerdi; deneyler frequency (frekans) eşiği gösterdi. Çelişkiyi 1905\'te Einstein hf paketleriyle çözdü. Frequency birimi hertz (Hz) Hertz\'in adını taşır.',
+      sinav: [
+        'Photoelectric effect (fotoelektrik olay) ilk kez Hertz tarafından gözlendi (1887); açıklamasını Einstein verdi (1905).',
+        'Klasik beklenti: intensity (şiddet) ↑ → K_max ↑. Gözlem: eşik frequency (frekans) var; K_max frekansa bağlı.'
+      ]
+    },
+    bravais: {
+      p1: 'Auguste Bravais, Fransız bir fizikçi ve kristalograftı. 1848\'de uzayda düzenli dizilmiş noktaları sistematik biçimde inceledi ve lattice (kafes) türlerini sınıflandırdı.',
+      p2: 'Üç boyutta 14 Bravais lattice (Bravais kafesi) vardır; bunlar 7 crystal system (kristal sistemi) içinde yer alır. Kübik sistemde simple cubic (basit kübik), body-centered cubic (hacim merkezli kübik, BCC) ve face-centered cubic (yüzey merkezli kübik, FCC) bulunur. Silisyum diamond cubic (elmas kübik) yapıdadır: FCC kafesi ve her kafes noktasında iki atomlu basis (baz). Lattice + basis = crystal structure (kristal yapı).',
+      sinav: [
+        '3B\'de 14 Bravais lattice (Bravais kafesi), 7 crystal system (kristal sistemi).',
+        'Crystal structure (kristal yapı) = lattice (kafes) + basis (baz).',
+        'Cubic (kübik) conventional cell (birim hücre) başına atom: SC 1, BCC 2, FCC 4.'
+      ]
+    },
+    bragg: {
+      p1: 'William Henry Bragg ve oğlu William Lawrence Bragg, İngiliz fizikçilerdi. 1912-1913\'te X-ray diffraction (X ışını kırınımı) ile kristal yapıyı çözmeyi başardılar ve 1915\'te Nobel Fizik Ödülü\'nü paylaştılar. X ışınlarının kristalden kırınımını 1912\'de von Laue ve çalışma arkadaşları göstermişti.',
+      p2: 'Bragg law (Bragg yasası): nλ = 2d sinθ; d, parallel planes (paralel düzlemler) arası mesafedir. Dalga boyu bilinen X-ray ile ölçülen açıdan d, dolayısıyla lattice constant (kafes sabiti) bulunur. d, Miller indices (Miller indisleri) ile adlandırılan düzlem aileleri için hesaplanır. X-ray diffraction, kristalin yönelimini ve kalitesini denetlemek için kullanılabilir.',
+      sinav: [
+        'Bragg law (Bragg yasası): nλ = 2d sinθ; θ, gelen ışının düzlemle yaptığı açıdır.',
+        'Constructive interference (yapıcı girişim) için yol farkı nλ olmalı; kırınım için λ ≤ 2d.'
+      ]
+    },
+    rutherford: {
+      p1: 'Ernest Rutherford, Yeni Zelandalı bir fizikçiydi. Ekibindeki Geiger ve Marsden\'in altın folyoda alpha particle (alfa parçacığı) saçılması deneyini yorumlayarak 1911\'de nuclear atom (çekirdekli atom) modelini önerdi. 1908\'de Nobel Kimya Ödülü\'nü almıştı.',
+      p2: 'Alfa parçacıklarının çoğu folyodan doğrudan geçti, az sayısı büyük açıyla saçıldı. Sonuç: pozitif yük ve kütle küçük bir nucleus (çekirdek)te toplanmıştır, electron lar çevresindedir. Ama classical physics (klasik fizik)e göre çekirdek çevresinde dönen, yani ivmelenen electron ışıma yapar, enerji kaybeder ve çekirdeğe spiral çizerek düşer; atom kararsız çıkar. Bohr 1913\'te discrete energy levels (ayrık enerji seviyeleri) ile çıkış yolunu gösterdi.',
+      sinav: [
+        'Rutherford: pozitif yük küçük nucleus (çekirdek)te; atom çoğunlukla boşluk.',
+        'Klasik sorun: ivmeli electron ışıma yapar, enerji kaybeder, çekirdeğe düşer; atom kararlı olamaz.',
+        'Çözüm: discrete levels (ayrık seviyeler), ground state (temel hâl) altı yok (Bohr); zero-point energy (Schrödinger).'
+      ]
+    },
+    davisson: {
+      p1: 'Clinton Davisson ve Lester Germer, Amerikalı fizikçilerdi ve Bell Telephone Laboratories\'te çalışıyorlardı. 1927\'de nikel kristalinden saçılan electron (elektron) demetinde belirli açılarda şiddet tepeleri gözlediler. Davisson bu çalışma nedeniyle 1937 Nobel Fizik Ödülü\'nü G. P. Thomson ile paylaştı.',
+      p2: 'Tepeler X-ray diffraction (X ışını kırınımı)na benzer bir girişim desenidir; electron\'un wave nature (dalga doğası)nı ve de Broglie\'nin λ = h/p ilişkisini deneysel olarak doğruladı. Kırınım için dalga boyunun kafes aralığıyla karşılaştırılabilir olması gerekir. Sonuç, matter wave (madde dalgası) fikrini ve Schrödinger\'in wave mechanics (dalga mekaniği) yaklaşımını destekledi.',
+      sinav: [
+        'Davisson-Germer: nikel kristalinde electron diffraction (elektron kırınımı); matter wave (madde dalgası) kanıtı.',
+        'Ölçülen kırınım açısı, kristal aralığıyla λ = h/p değerinden beklenenle uyuştu.',
+        'Kuantum mekaniğinin başarısı: wave-particle duality (dalga-parçacık ikiliği) deneyle doğrulandı.'
+      ]
+    },
+    gamow: {
+      p1: 'George Gamow, Odessa doğumlu bir fizikçiydi. 1928\'de alpha decay (alfa bozunması)nı quantum tunneling (kuantum tünelleme) ile açıkladı; Gurney ve Condon aynı sonuca bağımsız olarak ulaştı.',
+      p2: 'Klasik olarak enerjisi yetmeyen parçacık barrier (bariyer)i aşamaz. Kuantum mekaniğinde wave function (dalga fonksiyonu) bariyerin içinde exponentially decaying (üstel sönümlü) sürer ve karşı tarafta sıfır olmayan amplitude (genlik) kalır. Transmission probability (geçirgenlik) yaklaşık T ≈ e^(−2κL), κ = √(2m(V₀−E))/ħ. Tünelleme, flash memory (flaş bellek) ve scanning tunneling microscope (taramalı tünelleme mikroskobu) gibi aygıtlarda rol oynar.',
+      p3: 'Yanılgı: parçacık bariyerin üstünden aşar ya da içinde klasik hareket eder sanılır. E < V₀ iken ψ bariyerde sönümlüdür; geçiş, dalga fonksiyonunun karşı tarafa uzanan kuyruğundandır.',
+      sinav: [
+        'E < V₀ iken bariyerde ψ ∝ e^(−κx); T ≈ e^(−2κL).',
+        'Bariyer kalınlaşırsa, yükselirse ya da parçacık ağırlaşırsa T üstel olarak düşer.'
+      ]
+    },
+    neumann: {
+      p1: 'John von Neumann, Macar doğumlu bir matematikçiydi. 1932\'de yayımladığı kitapta quantum mechanics (kuantum mekaniği)nı Hilbert space (Hilbert uzayı) üzerinde bir matematik çerçeveye oturttu: durumlar vektör, observable (gözlenebilir) nicelikler Hermitian operator (Hermitsel işlemci) olarak ele alındı.',
+      p2: 'Measurement postulate (ölçüm postülatı): bir observable ölçüldüğünde sonuç, işlemcinin eigenvalue (özdeğer)idir; aᵢ sonucunun olasılığı |cᵢ|²dir (Born rule). İdeal ölçümden hemen sonra durum o eigenstate (özdurum)a collapse (çöker); ölçüm hemen tekrarlanırsa aynı sonuç alınır. Ölçüm dışında durum Schrödinger equation (Schrödinger denklemi) ile deterministic (belirlenimci) evrilir.',
+      p3: 'Yanılgı: collapse (çökme) için bilinçli bir gözlemci gerektiği ya da Schrödinger denkleminin çökmeyi ürettiği sanılır. Postülat ölçümü ayrı bir kural olarak koyar; çökmenin mekanizması hâlâ yorum konusudur (measurement problem).',
+      sinav: [
+        'Sonuç yalnızca eigenvalue (özdeğer); ψ = Σcᵢφᵢ ise aᵢ olasılığı |cᵢ|².',
+        'Ölçümden sonra durum ölçülen eigenstate (özdurum)a collapse (çöker); hemen tekrar ölçüm aynı değeri verir.',
+        'Ölçüm dışında evrim Schrödinger equation (Schrödinger denklemi) ile deterministic (belirlenimci) ve linear (doğrusal).'
+      ]
+    },
+    kennard: {
+      p1: 'Earle Hesse Kennard, Amerikalı bir fizikçiydi. Heisenberg 1927\'de uncertainty principle (belirsizlik ilkesi)ni yaklaşık bir bağıntı olarak vermişti; Kennard aynı yıl, standard deviation (standart sapma) cinsinden kesin eşitsizliği türetti.',
+      p2: 'Kesin biçim: σ_x σ_p ≥ ħ/2. Burada σ, |ψ|² dağılımının standart sapmasıdır. Eşitlik yalnızca Gaussian wave packet (Gauss dalga paketi) için sağlanır. Bu sınır, confinement (hapsolma) altındaki minimum enerjiyi belirler: parçacık dar bir bölgeye sıkıştıkça σ_p en az ħ/(2σ_x) olur, bu yüzden kinetic energy (kinetik enerji) sıfır olamaz.',
+      p3: 'Yanılgı: ilkenin ölçüm aletinin yetersizliği olduğu ya da hep σ_x σ_p = ħ/2 olduğu sanılır. Bağıntı bir eşitsizliktir ve hazırlanan ψ durumunun özelliğidir; ölçüm hatası değildir.',
+      sinav: [
+        'σ_x σ_p ≥ ħ/2 (eşitsizlik); eşitlik yalnızca Gaussian wave packet (Gauss dalga paketi).',
+        'Kaynak: x ve p dalga fonksiyonlarının Fourier ilişkisi, yani wave nature (dalga doğası); ölçüm hatası değil.',
+        'Dar confinement (hapsolma) → büyük σ_p → zero-point energy (sıfır noktası enerjisi) > 0.'
+      ]
+    },
+    bloch: {
+      p1: 'Felix Bloch, İsviçre doğumlu bir fizikçiydi. 1928\'de doktora çalışmasında kristaldeki electron (elektron) dalgasının yapısını inceledi ve bugün Bloch theorem (Bloch teoremi) denen sonucu buldu. 1952\'de nükleer manyetik rezonans çalışmaları için Nobel Fizik Ödülü\'nü Edward Purcell ile paylaştı.',
+      p2: 'Teorem: periodic potential (periyodik potansiyel) V(x+a) = V(x) için çözümler ψₖ(x) = e^(ikx) uₖ(x) biçimindedir ve uₖ(x+a) = uₖ(x). Yani electron, plane wave (düzlem dalga) çarpı kafesle periyodik bir zarftır. |ψ|² kafes periyodundadır: electron tek bir atoma ait değil, tüm kristale yayılmıştır. ħk, crystal momentum (kristal momentumu) olup E(k) band structure (bant yapısı)nı verir.',
+      sinav: [
+        'Bloch: ψₖ(x) = e^(ikx) uₖ(x), uₖ(x+a) = uₖ(x).',
+        '|ψ|² kafes periyodundadır; electron kristalde delocalized (yayılmış).',
+        'E(k) bantları verir; ħk crystal momentum (kristal momentumu) olup gerçek momentum değildir.'
+      ]
+    },
+    kronig: {
+      p1: 'Ralph Kronig ve William Penney, 1931\'de kristaldeki electron için basit bir periodic potential (periyodik potansiyel) modeli yayımladılar: dikdörtgen bariyerler ve kuyulardan oluşan tekrar eden bir potansiyel.',
+      p2: 'Schrödinger denklemi bu potansiyel için çözüldüğünde, Bloch theorem (Bloch teoremi) biçimindeki çözümler yalnızca belirli enerji aralıklarında bulunur: allowed energy bands (izinli enerji bantları). Aralarında forbidden gap (yasak aralık) vardır. Bu, bandgap (yasak enerji aralığı)ın ilk basit gösterimidir. Bariyer güçlendikçe bantlar daralır ve izole kuyu seviyelerine yaklaşır.',
+      sinav: [
+        'İzinli enerji: |cos(αa) + P sin(αa)/(αa)| ≤ 1, α = √(2mE)/ħ; dışı forbidden gap (yasak aralık).',
+        'Periodic potential (periyodik potansiyel) → energy bands (enerji bantları) + bandgap; P büyüdükçe bantlar daralır.',
+        'Çözümler Bloch biçimindedir: ψ = e^(ikx) u(x), u periyodik.'
+      ]
+    },
+    dirac: {
+      p1: 'Paul Dirac, İngiliz bir fizikçiydi. 1926\'da Fermi\'den bağımsız olarak electron gibi parçacıkların istatistiğini türetti; Fermi-Dirac statistics (Fermi-Dirac istatistiği) adının iki isimli olması bundandır. 1933\'te Schrödinger ile Nobel Fizik Ödülü\'nü paylaştı.',
+      p2: 'Fermi-Dirac distribution (dağılımı), Pauli exclusion principle (dışlama ilkesi)ne uyan identical (özdeş) fermion (fermiyon)ların her state (durum)u en çok bir kez doldurmasının sonucudur: f(E) = 1/(1 + exp((E − E_F)/kT)). Dirac 1928\'de relativistik electron denklemini yazdı; denklem antimatter (karşı madde) öngördü. Dirac delta fonksiyonu, Kronig-Penney gibi modellerde ince bariyerleri temsil eder.',
+      sinav: [
+        'Fermi-Dirac: fermiyonlar (spin ½, electron) için; Pauli gereği her state\'te en çok 1 parçacık.',
+        'E − E_F ≫ kT iken f(E) ≈ exp(−(E − E_F)/kT) (Boltzmann kuyruğu).'
+      ]
+    },
+    shockley: {
+      p1: 'William Shockley, Bell Laboratories\'te çalışan Amerikalı bir fizikçiydi. 1947\'de ilk transistör orada Bardeen ve Brattain tarafından yapıldı; Shockley 1948\'de junction transistor (eklem transistörü) fikrini ve p-n junction (p-n eklem) kuramını geliştirdi. Üçü 1956\'da Nobel Fizik Ödülü\'nü paylaştı.',
+      p2: 'Transistor, küçük bir gerilimle büyük bir akımı kontrol eden semiconductor (yarıiletken) anahtar ya da yükselticidir. İşlev, doped (katkılı) bölgelerdeki electron ve hole (delik) taşıyıcılarının p-n junction boyunca kontrolüne dayanır; Fermi level (Fermi seviyesi)ın bandgap içindeki konumu doping türünü belirler. Modern integrated circuit (tümleşik devre) milyarlarca transistör içerir.',
+      sinav: [
+        'n-type: çoğunluk taşıyıcısı electron, Fermi level iletim bandına yakın; p-type: hole, valans bandına yakın.',
+        'Junction transistor (eklem transistörü): emitter–base–collector, iki p-n junction.'
+      ]
     }
   };
+  /* Bonus kartlar: istasyon BİTİNCE (ilerleme[ist].tamam) otomatik kazanılır; kayda yazılmaz (cip-hatti-v1 değişmedi).
+   * kisi/yil/tekCumle koleksiyon satırı içindir; ayrıntı metni yukarıdaki Q.data.kartlar[id]. Portre: 40-art-chars.js cameo. */
+  Q.data.bonusKartlar = [
+    { id: 'bravais', ist: 's02', kisi: 'Auguste Bravais', yil: 1848, tekCumle: 'Lattice (kafes) türlerini sınıflandırdı: 3B\'de 14 Bravais lattice (Bravais kafesi).' },
+    { id: 'bragg', ist: 's02', kisi: 'W. H. Bragg ve W. L. Bragg', yil: 1913, tekCumle: 'X-ray diffraction (X ışını kırınımı) ile kristal yapıyı çözdü: nλ = 2d sinθ.' },
+    { id: 'planck', ist: 's03', kisi: 'Max Planck', yil: 1900, tekCumle: 'Enerji E = hf paketleriyle alınıp verilir, diyerek blackbody (kara cisim) spektrumunu açıkladı.' },
+    { id: 'hertz', ist: 's03', kisi: 'Heinrich Hertz', yil: 1887, tekCumle: 'Ultraviyole ışığın kıvılcımı kolaylaştırdığını gördü: photoelectric effect (fotoelektrik olay) ilk gözlem.' },
+    { id: 'rutherford', ist: 's04', kisi: 'Ernest Rutherford', yil: 1911, tekCumle: 'Alfa saçılmasından küçük, yüklü bir nucleus (çekirdek) çıkardı; klasik atom kararsızdı.' },
+    { id: 'davisson', ist: 's04', kisi: 'Davisson ve Germer', yil: 1927, tekCumle: 'Nikel kristalinde electron diffraction (elektron kırınımı) gözleyip matter wave (madde dalgası) fikrini doğruladılar.' },
+    { id: 'gamow', ist: 's06', kisi: 'George Gamow', yil: 1928, tekCumle: 'Alpha decay (alfa bozunması)nı quantum tunneling (kuantum tünelleme) ile açıkladı.' },
+    { id: 'neumann', ist: 's07', kisi: 'John von Neumann', yil: 1932, tekCumle: 'Measurement postulate (ölçüm postülatı): sonuç eigenvalue (özdeğer), ardından collapse (çökme).' },
+    { id: 'kennard', ist: 's08', kisi: 'Earle H. Kennard', yil: 1927, tekCumle: 'Belirsizlik bağıntısını kesin eşitsizlik olarak türetti: σ_x σ_p ≥ ħ/2.' },
+    { id: 'bloch', ist: 's09', kisi: 'Felix Bloch', yil: 1928, tekCumle: 'Periodic potential (periyodik potansiyel) içinde çözüm e^(ikx) çarpı periyodik u(x): Bloch theorem (Bloch teoremi).' },
+    { id: 'kronig', ist: 's09', kisi: 'Kronig ve Penney', yil: 1931, tekCumle: 'Tekrar eden bariyer modeliyle energy bands (enerji bantları) ve bandgap (yasak aralık) gösterdiler.' },
+    { id: 'dirac', ist: 's10', kisi: 'Paul Dirac', yil: 1926, tekCumle: 'Fermi-Dirac statistics (Fermi-Dirac istatistiği)ni Fermi\'den bağımsız türetti.' },
+    { id: 'shockley', ist: 's10', kisi: 'William Shockley', yil: 1948, tekCumle: 'p-n junction (p-n eklem) kuramı ve junction transistor (eklem transistörü) fikri.' }
+  ];
 })();
 
 /* 90-data-s01.js · İstasyon 01 · Kristal fırını verisi (E1)
@@ -9100,6 +9266,12 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           { kim: "selin", metin: "1848'de Bravais: atoms (atomlar) yalnızca 14 lattice (kafes) türünde dizilir. 1913'te Bragg'lar X-ray (X-ışını) ile gördü." },
           { kim: "selin", metin: "Cubic unit cell (kübik birim hücre): sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
+        ],
+        onBilgi: [
+          { baslik: "Miller indices (Miller indisleri): ek notlar", madde: [
+            "Negatif intercept (kesişim) için indisin üstüne çizgi (bar) konur: (1 1 1̄).",
+            "Cubic (kübik) kristalde komşu (hkl) planes (düzlemleri) arası mesafe: d = a/√(h² + k² + l²).",
+            "Wafer (dilim): Czochralski yöntemiyle çekilen tek kristal külçeden kesilir; seed crystal (çekirdek kristal) yönelimi belirler." ] }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
         onBilgi: [
@@ -9119,10 +9291,10 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       o04,
       o05,
       { id: "s02-o06", tip: "tuzak", baslik: "Yanılgı tuzağı", kavram: "miller_duzlem", agirlik: 1,
-        iddia: "Axis (eksen) parallel (paralel) plane (düzlem) için index (indis) sonsuzdur.",
-        parcalar: ["Axis (eksen) parallel (paralel)", "plane (düzlem) için index (indis)", "sonsuzdur."],
+        iddia: "Axis (eksen) ile parallel (paralel) plane (düzlem) için index (indis) sonsuzdur.",
+        parcalar: ["Axis (eksen) ile parallel (paralel)", "plane (düzlem) için index (indis)", "sonsuzdur."],
         yanlisParca: 2,
-        duzeltme: "Axis (eksen) parallel (paralel) plane (düzlem) axis (ekseni) ∞ noktasında keser (intercept, kesişim); index (indis) 0 olur." },
+        duzeltme: "Axis (eksen) ile parallel (paralel) plane (düzlem), o axis (ekseni) ∞ noktasında keser (intercept, kesişim); index (indis) 0 olur." },
       { id: "s02-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "miller_duzlem", agirlik: 1,
         soru: "Miller indices (Miller indisleri) adımlarını sıraya diz",
         bloklar: [
@@ -9134,7 +9306,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
       { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,
         canavar: "miller", canavarAd: "Plane (Düzlem) Canavarı",
-        onNot: "Gösterim: (hkl) tek plane (düzlem), {hkl} equivalent planes (eşdeğer düzlemler) ailesi, [uvw] bir direction (yön). Wafer (dilim): tek kristal külçeden kesilmiş ince silisyum disk.",
+        onNot: "Gösterim: (hkl) tek plane (düzlem), {hkl} equivalent planes (eşdeğer düzlemler) ailesi, [uvw] bir direction (yön); cubic (kübik) yapıda [hkl], (hkl) plane için normaldir (diktir). Wafer (dilim): tek kristal külçeden kesilmiş ince silisyum disk; plane seçimi atomic density (atom yoğunluğu) ve surface (yüzey) özelliklerini değiştirir.",
         giris: "Hangi düzlemdeyim? Bil bakalım, yoksa seni yanlış açıdan keserim!",
         fazlar: [
           { tip: "secmeli", kavram: "miller_duzlem",
@@ -9210,7 +9382,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       kartlar: [
         { baslik: "Unit cell (birim hücre) ve atom (atom)", metin: "Unit cell (birim hücre) tekrar eder. Corner (köşe) 1/8, face (yüz) 1/2, inside (iç) atom 1 sayılır." },
         { baslik: "Miller indices (Miller indisleri) adımları", metin: "Intercept (kesişim) bul, reciprocal (ters) al, integer (tam sayı) yap, (hkl) yaz." },
-        { baslik: "What happens at ∞ (infinity, sonsuz)?", metin: "Axis (eksen) parallel (paralel) plane (düzlem) the axis (eksen) at ∞ keser, index (indis) 0." }
+        { baslik: "What happens at ∞ (infinity, sonsuz)?", metin: "Axis (eksen) ile parallel (paralel) plane (düzlem) o axis (ekseni) ∞ noktasında keser; index (indis) 0 olur." }
       ],
       sim: { modul: "miller", params: { c: [1, 1, 1] } }
     },
@@ -9222,7 +9394,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       { id: "s02-t03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_duzlem", agirlik: 1,
         soru: o05.soru, secenekler: o05.secenekler.map(kopya), kusurSkin: "vakans" },
       { id: "s02-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_yon", agirlik: 1,
-        soru: "[100] direction (yön) hangi axis (eksen) için parallel (paralel) olur?",
+        soru: "[100] direction (yön) hangi axis (eksen) ile parallel (paralel) olur?",
         secenekler: [
           s("x axis (x ekseni)", true, "Doğru. [100] = (1,0,0) vector (vektör), x direction (yön)."),
           s("y axis (y ekseni)", false, "Hayır. y direction (yön) [010]."),
@@ -10938,8 +11110,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       sec('f(E_F) = 1/2', true, 'Doğru. E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.'),
       sec('f(E_F) = 1', false, 'Yanlış. Olasılık 1 olsaydı seviye her zaman dolu olurdu.'),
       sec('f(E_F) = 0', false, 'Yanlış. Seviye E_F üstünde bile kısmen doludur.')
-    ],
-    kusurSkin: 'bant_bosluk'
+    ]
   };
 
   var o04 = {
@@ -11016,11 +11187,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
             "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); electron (elektron) ve hole (delik) katkıları toplanır.",
             "Sık karışan nokta: drift, alan etkisiyle olur; diffusion (difüzyon) ise konsantrasyon farkıyla olur." ] }
         ],
-        gorev: 'T\'yi 50 K\'e indir; Fermi eğrisinin basamağa dönüşünü gör.',
+        gorev: 'T\'yi 50 K\'e indir (Fermi eğrisi basamağa döner), sonra alan E\'yi artır (drift hızı v_d = μE).',
         sim: {
           modul: 'fermi',
           params: { T: 300, E: 0 },
-          basari: { T0: true }
+          basari: { T0: true, E: true }
         },
         ogrenilen: 'T düşünce f(E) basamağa yaklaşır; E_F\'de f = 1/2 kalır. Alan E, carrier (taşıyıcı) hızını v_d = μE yapar.'
       },
@@ -12241,7 +12412,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   document.addEventListener('visibilitychange', onVis);
 })();
 
-/* 96-final.js (A7) Final "Sınav Günü": 10 tek soruluk kapı, sonda Sınav Raporu.
+/* 96-final.js (A7) Final "Sınav Günü": 11 tek soruluk kapı (s01-s10), sonda Sınav Raporu.
  * Ekler: Q.final {start, acik, hazirla, rapor, son}. Bağımlı (çalışma anında): Q.data.stations.s01..s09, Q.data.sinav,
  * Q.runner, Q.obs, Q.ui, Q.claude, Q.settings. Sınav dili İngilizce (DIL-1); arayüz Türkçe.
  * Kalıcı ilerlemeye DOKUNMAZ: 'final' istasyonu yalnızca çalışma anında Q.data.stations içinde bulunur, bitince silinir;
@@ -12289,6 +12460,14 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     var l = ((Q.data.sinav && Q.data.sinav.mcq) || []).filter(function(m){ return m.station === stId; });
     return l.length ? l[n % l.length] : null;
   }
+  /* s10 patron fazlarında pdfSoru yok: klasik (kavramsal) İngilizce sorular, faz sırasıyla; yalnızca ilki (toplam 11 kapı) */
+  var S10_EK = [
+    { soru: 'State the Fermi-Dirac distribution f(E). What is f at E = E_F, and how does the curve change as the temperature falls toward 0 K?',
+      anahtarFikirler: ['f(E) = 1/(1+exp((E−E_F)/kT)) is the occupation probability of a state.', 'At E = E_F, f = 1/2 at any temperature.', 'At T = 0 K, f is a step function: filled below E_F, empty above.', 'As T rises the transition region around E_F widens (about kT).'],
+      yanlisKavramlar: ['f(E_F) equals 1 at every temperature', 'Raising the temperature makes the curve steeper'],
+      yanlisKavramIds: ['fermi_hep_dolu', 'fermi_dagilim'],
+      idealCevap: 'The Fermi-Dirac distribution f(E) = 1/(1+exp((E−E_F)/kT)) gives the probability that a state at energy E is occupied. At E = E_F it equals 1/2 for any T. At T = 0 K it is a step function (1 below E_F, 0 above); as T increases the transition region of width about kT broadens and some electrons occupy states above E_F.' }
+  ];
   function hazirla(){
     var engeller = [], n = 0, ilk = null;
     stIds().forEach(function(id){
@@ -12296,8 +12475,12 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       ilk = ilk || st;
       (st.engeller || []).forEach(function(e){
         if (e.tip !== 'patron') return;
+        var ek = 0;
         (e.fazlar || []).forEach(function(f){
-          if (f.tip !== 'acik' || !f.pdfSoru) return;
+          if (f.tip !== 'acik') return;
+          var x = f.pdfSoru ? null : (id === 's10' ? S10_EK[ek++] : null);
+          if (!f.pdfSoru && !x) return;
+          if (x) f = { kavram: f.kavram, pdfSoru: x.soru, anahtarFikirler: x.anahtarFikirler, yanlisKavramlar: x.yanlisKavramlar, yanlisKavramIds: x.yanlisKavramIds, idealCevap: x.idealCevap };
           n++;
           var soru = f.pdfSoru;
           if (NOTLAR[id]) soru += ' (In this final, explain the reasoning and method step by step; the final number is not required.)';
@@ -12315,7 +12498,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     if (!engeller.length) return null;
     engeller.forEach(function(e){ e.toplam = engeller.length; e.giris = 'Soru ' + e.no + '/' + engeller.length + '. Süre yok, sakin ol.'; });
     return {
-      id: 'final', sira: 0, ad: 'Sınav Günü', konu: 'Final: 10 soru, süre baskısı yok.', renk: (ilk && ilk.renk) || '#ffd166',
+      id: 'final', sira: 0, ad: 'Sınav Günü', konu: 'Final: ' + engeller.length + ' soru, süre baskısı yok.', renk: (ilk && ilk.renk) || '#ffd166',
       sureHedefDk: 30, patronId: engeller[0].canavar, temelTur: null, tekrarHavuzu: [], kavramlar: [], engeller: engeller
     };
   }
@@ -12981,6 +13164,12 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
           if (e.kart && Q.kartlar && Q.kartlar.detayDom && (Q.data.kartlar || {})[e.kart.id]) {
             var kd = el('div', 'tk-kart'); kd.style.gridColumn = '1 / -1'; kd.appendChild(Q.kartlar.detayDom(e.kart.id, { acik: true }));
             (e.ozet || []).length && kd.appendChild(el('p', 'tk-muted', 'Sandık özeti: ' + e.ozet.join(' · '))); grid.insertBefore(kd, grid.firstChild);
+            var ref = kd.nextSibling;
+            (Q.data.bonusKartlar || []).forEach(function(bk){
+              if (bk.ist !== sel.value || !(Q.data.kartlar || {})[bk.id]) return;
+              var bd = el('div', 'tk-kart'); bd.style.gridColumn = '1 / -1'; bd.appendChild(Q.kartlar.detayDom(bk.id, { acik: true }));
+              grid.insertBefore(bd, ref);
+            });
           } else kart('Sandık' + (e.kart ? ' · ' + e.kart.id + ' (' + e.kart.yil + ')' : ''), [e.kart && e.kart.tekCumle].concat(e.ozet || []));
         }
         else if (e.tip === 'kopru') kart('Zincir', [e.sonuc]);
