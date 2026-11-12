@@ -119,7 +119,8 @@ var GOREV = { s01: 'si-yogunluk', s02: 'miller-326', s03: 'foto-cu', s04: 'bohr-
           ok(/^Doğru\./.test(await kutu.locator('.hg-fb').textContent()), sid + ' adım ' + (i + 1) + ': doğru sayı');
         }
       } else if (q && q.secenekler) {
-        var dogru = q.secenekler.filter(function(s){ return s.dogru; })[0].t, yan = q.secenekler.filter(function(s){ return !s.dogru; })[0].t;
+        var duzM = function(t){ return String(t).replace(/[\^_]\{([^{}]*)\}/g, '$1'); };
+        var dogru = duzM(q.secenekler.filter(function(s){ return s.dogru; })[0].t), yan = duzM(q.secenekler.filter(function(s){ return !s.dogru; })[0].t);
         if (opt.yanlis && i === 1) {
           await kutu.locator('.hg-sec', { hasText: yan }).first().click();
           ok(await kutu.locator('.hg-fb').count() === 0, sid + ': şık seçince hemen gitmez (Onayla bekler)');

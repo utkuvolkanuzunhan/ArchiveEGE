@@ -187,7 +187,7 @@
             var sirali = Q.util && Q.util.shuffle ? Q.util.shuffle(q.secenekler.map(function(s){ return s; })) : q.secenekler.slice();
             sirali.forEach(function(s, pos){
               var b = el('button', 'opt hg-sec'); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
-              b.appendChild(el('span', 'num', String(pos + 1))); b.appendChild(el('span', 't', s.t));
+              b.appendChild(el('span', 'num', String(pos + 1))); b.appendChild(yaz(el('span', 't'), s.t));
               b.addEventListener('click', function(){
                 if (dogruSag || b.disabled) return;
                 secili = pos; optBtns.forEach(function(x, j){ x.setAttribute('aria-pressed', j === pos ? 'true' : 'false'); });
