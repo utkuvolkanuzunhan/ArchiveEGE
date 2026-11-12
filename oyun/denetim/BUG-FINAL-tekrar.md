@@ -1,0 +1,21 @@
+# BUG-FINAL-tekrar (Tekrar Merkezi, son sürüm öncesi oyuncu denetimi)
+
+Yöntem: Playwright, 1366x768 ve 1440x900, Google Fonts abort, `api.anthropic.com` sahte route (200 / 429 / 500 / abort / askıda; anahtar yok ve `Q.claude.setApiKey` ile anahtar var). Tüm 10 sekme (Terimler, Test, Açıklama kartları, Sınav tarzı, Deneme sınavı, Gerçek sınav, Hata defteri, Hesap çalıştayı, AI'a sor, Biliyorum) için: yatay taşma taraması (her öğenin sağ kenarı ve `.tk-body` scrollWidth), konsol/sayfa hatası, kayıt kalıcılığı (yenileme sonrası).
+
+Oynananlar:
+- Deneme sınavı: Seçki 50 MCQ + 20 klasik baştan sona (her 4. soru kasten yanlış; "Correct./Incorrect." geri bildirimi her soruda doğru çıktı), klasik boş/dolu/kendini işaretle, sonuç ekranı (skor, zayıf konular, yanlışlar, terim listesi), kayıt yenilemeden sonra "Son deneme" olarak görünüyor; Tüm havuz (50+20), süre sayacı kapalı + "Sınav sonunda toplu" modu, sınav ortasında sekme değiştirme (sayaç sızıntısı yok), Claude ile puanlama (sahte 200: %80) ve Claude hatası (500: "Claude şu an yok; kendin işaretle").
+- Test (10 soru, yanlışlar sayıldı: 6/10 beklenen), Terimler (arama, Biliyorum, geri al), Kartlar (10 istasyonun tümü dolu), Sınav tarzı (Claude'lu ve Claude'suz).
+- Hata defteri: boş durum, 13 kayıt tohumlandı, filtreler, "Görünenleri yeniden çöz" (12 soru, doğru -> "Öğrenildi 1/2", yanlış -> seri sıfır, "Defterde kalıyor"), "AI'a sor" bağlantısı.
+- AI'a sor: anahtar yok ekranı (Ayarlar'a git Tekrar Merkezi'ni kapatıp ayarları açıyor), anahtarla sohbet, 429 / 500 / ağ hatası mesajları ve "Tekrar dene", anahtar localStorage'a yazılmıyor.
+- Hesap çalıştayı: 34 görevin tümü otomatik oynandı (örnek paneli -> Hazırım, kendi cevap kabul/x10 ret, her adımın ara cevabı, "Tümünü göster", Çözdüm işareti); 34/34 doğru, taşma yok, `hesapCalisma` kaydı yenilemeden sonra korunuyor.
+- Gerçek sınav: 10 soru yazma, taslak yenilemeden sonra korunuyor, değerlendirme, Claude'suz ve Claude'lu puanlama, sonuç, "Yeni sınav" iki adımlı silme.
+- Hiçbir sekmede 1366x768 / 1440x900'de yatay taşma, konsol hatası veya sayfa hatası yok. smoke.js 9/9.
+
+| sorun | konum | önem | düzeltildi mi |
+|---|---|---|---|
+| Terimler sekmesinde otomatik çıkarımın ürettiği ~46 anlamsız/yanlış girdi: "say => Count", "bak => \"Infinite well", "olunca => hkl", "gelir => ışık neyden oluşur", "etken => şiddet", "sabit => Wien yasası", "neden => alan", "tepki => hız", "enerjiden => kT", "paketleme => bonus", "kesiyor => kesişimler", "normaldir => diktir", "artar => increase", "of solids", "of information", "K'e indir", "Elektronu bandgap", "seviyenin bandgap", "yerine polycrystalline", "belirli/kapanan wavelengths", "p/eksen wavelength", "single => Tek", "poly => Çok", "equation => Schrödinger denklemi", "exclusion => Dışlama", "quantize => kuantalar", "nanometre/elektronvolt/hertz => birim", vb. (Türkçe kelime kalıntısı, öntakı, birim). Terim sayısı 471 -> 425 | oyun/src/js/97-tekrar.js (terimler) | orta | evet (açık yasak listesi + İngilizce terimde Türkçe harf içerenleri ele) |
+| Gerçek sınav model cevap / anahtar fikirlerde ham üst indis gösterimi: "e^{ikx}", "e^{−κx}", "e^{−2κd}" metin olarak görünüyordu (Q5, Q6, Q9, Q10 vb., 15 yer) | oyun/src/js/98-gercek-sinav.js (el) | orta | evet (`^{}` / `_{}` içeren metin Q.tekrarHesap.yaz ile üst/alt indise çevriliyor; Q1-Q10 değerlendirme ekranında ham gösterim kalmadı) |
+| Hata defteri kartı çözülmeden önce doğru cevabı ve nedenini zaten gösteriyor ("Doğru cevap: ...") | oyun/src/js/98-tekrar-hata.js (kart) | düşük | hayır (pedagoji/tasarım kararı; kullanıcı teyit etsin: çözüm öncesi cevabı gizlemek isteyebilirsin) |
+| Terimler listesinde bazı otomatik girdiler kaba/yarım çeviri: "square => karesini", "dividing => bölerek", "evolve => evriltir", "quantized => paketli", "well => Kuyu" (büyük harf) | 97-tekrar.js otomatik çıkarım | düşük | hayır (içerik; kullanıcı teyit etsin / kürate listeye taşınabilir) |
+| Sekme düğmesi "AI'a sor" yazı tipinde "Al'a" gibi görünüyor (büyük I ile küçük l benzerliği, Inter yazı tipi) | 97-tekrar.js SEKMELER | düşük | hayır (kozmetik) |
+| Hesap sonuç kutusunda ondalık nokta, adımlarda virgül karışık (BUG-FINAL-s10'daki ile aynı, ortak) | 87-data-hesap.js | düşük | hayır |

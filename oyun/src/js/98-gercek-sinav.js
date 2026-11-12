@@ -8,7 +8,7 @@
   var KEY = 'cip-hatti-gercek-sinav-v1';
   var S = null;          /* { cur, asama, cevap:{no:text}, isaret:{no:[bool]}, claude:{no:{dogruluk,geri}} } */
 
-  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) { if (typeof text === 'string' && /[\^_]\{/.test(text) && Q.tekrarHesap && Q.tekrarHesap.yaz) Q.tekrarHesap.yaz(e, text); else e.textContent = text; } return e; }
   function btn(text, cls, fn){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
   function veri(){ return (Q.data && Q.data.gercekSinav) || { sorular: [] }; }
   function sorular(){ return veri().sorular; }

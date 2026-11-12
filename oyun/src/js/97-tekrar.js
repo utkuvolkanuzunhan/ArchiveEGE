@@ -106,7 +106,10 @@
     });
     CURATED.forEach(function(c){ var k = c[0].toLowerCase(); if (gor[k]) return; gor[k] = 1; v.push({ en: c[0], tr: c[1], g: 'temel' }); });
     var enler = {}; v.forEach(function(t){ enler[t.en.toLowerCase()] = 1; });
-    v = v.filter(function(t){ return t.g === 'temel' || !enler[t.tr.toLowerCase()]; });
+    /* otomatik çıkarımın ürettiği yanlış/anlamsız girdiler (Türkçe kelime kalıntısı, birim, öntakı) */
+    var YASAK = {};
+    ['say','bak','olunca','gelir','etken','sabit','neden','tepki','enerjiden','paketleme','kesiyor','normaldir','artar','of solids','of information',"k'e indir",'nanometre','elektronvolt','hertz','electron-volts','single','poly','equation','exclusion','quantize','per unit cell','not instrument','initial n','final m','the same','doubles','halves','hundred percent','atomlar long-range order','yerine polycrystalline','belirli wavelengths','kapanan wavelengths','seviyede wavelength','alanda wavelength','eksen wavelength','p wavelength','elektronu bandgap','seviyenin bandgap','doluluk ve bandgap','bantlar ve bandgap','sonra integer'].forEach(function(k){ YASAK[k] = 1; });
+    v = v.filter(function(t){ return t.g === 'temel' || (!enler[t.tr.toLowerCase()] && !YASAK[t.en.toLowerCase()] && !/[çğıöşüÇĞİÖŞÜ]/.test(t.en)); });
     terimCache = { n: stIds().length, v: v };
     return v;
   }
