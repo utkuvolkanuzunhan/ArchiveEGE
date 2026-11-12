@@ -53,9 +53,17 @@
     return null;
   };
 
+  /* Portre: Q.art.portre (41-art-portre.js); yoksa eski cameo. Kilitliyse gizli silüet. */
+  function portreSvg(id, kilitli, cls){
+    try {
+      if (Q.art && Q.art.portre) return Q.art.portre(id, { cls: cls, sil: !!kilitli }) || '';
+      if (Q.art && Q.art.cameo) return Q.art.cameo(id, { cls: 'mon ' + cls }) || '';
+    } catch (e) { /* çizim yok */ }
+    return '';
+  }
   function portre(k, kilitli){
     var d = el('div', kilitli ? 'kk-por' : 'kk-por');
-    try { if (Q.art && Q.art.cameo) d.innerHTML = Q.art.cameo(k.id, { cls: 'mon kk-cameo' }) || ''; } catch (e) { /* çizim yok */ }
+    d.innerHTML = portreSvg(k.id, kilitli, 'kk-cameo');
     d.setAttribute('aria-hidden', 'true');
     return d;
   }
@@ -73,7 +81,7 @@
     if (k.renk) kok.style.setProperty('--kk-renk', k.renk);
     var ust = el('div', 'kd-ust');
     var por = el('div', 'kd-por');
-    try { if (Q.art && Q.art.cameo) por.innerHTML = Q.art.cameo(k.id, { cls: 'mon kd-cameo' }) || ''; } catch (e) { /* çizim yok */ }
+    por.innerHTML = portreSvg(k.id, kilitli, 'kd-cameo');
     por.setAttribute('aria-hidden', 'true');
     ust.appendChild(por);
     var yz = el('div');
