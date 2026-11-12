@@ -307,7 +307,7 @@
     panelEl.appendChild(el('p', '', s.konu));
     if (s.sure) panelEl.appendChild(el('p', '', 'Süre hedefi: ' + s.sure + ' dk'));
     if (!acik) { panelEl.appendChild(el('p', '', 'Kilitli. Önceki istasyonu bitir.')); return; }
-    var b = btn(p.enSon ? 'Devam et' : 'Başla', 'primary', function(){ startStation(s, p.enSon || 0); });
+    var b = btn(p.tamam ? 'Yeniden oyna' : (p.enSon ? 'Devam et' : 'Başla'), 'primary', function(){ startStation(s, p.tamam ? 0 : (p.enSon || 0)); });
     panelEl.appendChild(b);
     if (s.engeller && s.engeller.length) {
       panelEl.appendChild(el('h4', '', 'İstediğin engele atla'));

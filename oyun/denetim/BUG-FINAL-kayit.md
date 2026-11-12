@@ -1,0 +1,11 @@
+# BUG-FINAL-kayit (kayıt / dayanıklılık, son sürüm öncesi denetim)
+
+Yöntem: Playwright, 1366x768, Google Fonts abort. Denenenler: 14 bozuk/eski kayıt biçimi (bozuk JSON, null, dizi, metin, sayı, ilerleme dizi/içi saçma, hataDefteri/kartlar/ayarlar/aktif/sure/fabrika saçma, v gelecek/metin, olmayan istasyon) ile açılış + Başla/Devam + Ayarlar + Tekrar Merkezi + koşu + Esc + abort (sayfa hatası yok); eski sürüm kaydına (hesapCalisma/fabrikaMini/biliyorum/bonus kart alanları yok) yenileme sonrası ilerleme, voltaj, aktif, süre, ayar korunuyor; localStorage erişimi fırlatınca ve setItem kota hatası verince oyun çökmeden bellekte devam ediyor (kota hatasında tek seferlik "kaydedilemedi" uyarısı çıkıyor); dışa/içe aktarma (biliyorum, fabrikaMini, hesapCalisma, kartlar dahil tüm alanlar geri geliyor; bozuk metin, {"foo":1} ve [1,2] reddediliyor, mevcut ilerleme korunuyor); başlık ekranında çift tık/çift Enter/Esc; koşuda art arda start() ve 6x Esc, yenileme sonrası kayıt; s01 engelleri (hikaye, kavram, 2 düşman, tahmin, tuzak, köprü, patron, hesap) için Esc menüsü: Bu engeli atla / Önceki engele dön / İstasyonun başına dön / Haritaya dön / Devam hepsi çalışıyor, dock temizleniyor, konsol hatası yok.
+
+| sorun | konum | önem | düzeltildi mi |
+|---|---|---|---|
+| Biten istasyonda harita paneli "Devam et" (fabrika panelinde "Yeniden oyna") düğmesi kayıtlı enSon (= engel sayısı) konumundan başlatıyordu; biten istasyonu yeniden oynamak yalnızca son engelden (sandık) başlıyordu | oyun/src/js/20-settings.js (showPanel), oyun/src/js/21-fabrika.js (F.panel) | orta | evet (tamam ise 0'dan başlar, etiket "Yeniden oyna"; Playwright ile doğrulandı: cur=0) |
+| v alanı metin olan kayıt "bozuk" sayılıp ilerleme sıfırlanıyor (yedek cip-hatti-v1-bozuk anahtarına yazılıyor); v>1 kayıt sessizce v:1'e indiriliyor | oyun/src/js/10-state.js valid()/assign() | düşük | hayır (gerçek kayıtlarda v hep 1; yedek var) |
+| Yarıda bırakılan koşuyu "Haritaya dön" ile kapatınca enSon o anki engele çekiliyor (daha ileri gidilmişse geri düşebilir); "Devam et" son bırakılan yerden devam eder | oyun/src/js/95-runner.js abort() | düşük | hayır (tasarım kararı; kullanıcı teyit etsin) |
+
+Konsol/yakalanmamış istisna: hiçbir senaryoda yok (yalnızca abort edilen font isteği). core.test.js 8/8, smoke.js 9/9.

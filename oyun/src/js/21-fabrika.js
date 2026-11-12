@@ -273,7 +273,7 @@
     var alt = el('div', 'fb-alt');
     if (acik) {
       var b = el('button', 'btn primary fb-eylem', tamam ? 'Yeniden oyna' : (p.enSon ? 'Devam et' : 'Onar')); b.type = 'button';
-      b.addEventListener('click', function(){ ctx.baslat(s, p.enSon || 0); });
+      b.addEventListener('click', function(){ ctx.baslat(s, tamam ? 0 : (p.enSon || 0)); });
       alt.appendChild(b);
     } else {
       var i0 = ctx.st.indexOf(s), once = ctx.st[i0 - 1];
