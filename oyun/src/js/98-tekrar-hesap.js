@@ -11,11 +11,22 @@
 
   /* ^{üst} ve _{alt} işaretlerini sup/sub'a çevirir (innerHTML yok). */
   function yaz(host, metin){
-    var parts = String(metin == null ? '' : metin).split(/([\^_])\{([^{}]*)\}/);
-    for (var i = 0; i < parts.length; i++) {
-      if (i % 3 === 0) { if (parts[i]) host.appendChild(document.createTextNode(parts[i])); }
-      else if (i % 3 === 1) { var t = el(parts[i] === '^' ? 'sup' : 'sub'); t.textContent = parts[i + 1]; host.appendChild(t); i++; }
-    }
+    (function r(h, s){
+      var i = 0, buf = '';
+      while (i < s.length) {
+        var c = s.charAt(i);
+        if ((c === '^' || c === '_') && s.charAt(i + 1) === '{') {
+          var d = 1, j = i + 2;
+          while (j < s.length && d > 0) { var ch = s.charAt(j); if (ch === '{') d++; else if (ch === '}') d--; j++; }
+          if (d === 0) {
+            if (buf) { h.appendChild(document.createTextNode(buf)); buf = ''; }
+            var t = el(c === '^' ? 'sup' : 'sub'); r(t, s.slice(i + 2, j - 1)); h.appendChild(t); i = j; continue;
+          }
+        }
+        buf += c; i++;
+      }
+      if (buf) h.appendChild(document.createTextNode(buf));
+    })(host, String(metin == null ? '' : metin));
     return host;
   }
   function p(cls, metin, tag){ return yaz(el(tag || 'div', cls), metin); }
