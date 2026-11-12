@@ -20,9 +20,9 @@
           'The crystal lattice also allows controlled doping: donor or acceptor atoms placed on lattice sites give a known density of electrons or holes, which is needed for p-n junctions and transistors.',
           'A single crystal can be made extremely pure and almost free of defects, which gives high carrier mobility and long carrier lifetime.',
           'In an amorphous solid there is no long-range order, so there are dangling bonds and localized states in the gap; the carriers are trapped or scatter strongly and the mobility is low.',
-          'In a polycrystalline solid the grain boundaries scatter carriers, act as recombination centres and traps, and let dopants segregate, so the properties change from grain to grain.',
+          'In a polycrystalline solid the grain boundaries scatter carriers, act as recombination centers and traps, and let dopants segregate, so the properties change from grain to grain.',
           'Crystal planes also allow orientation-dependent processing: wafers are cut along (100) or (111) planes, they can be etched or cleaved along planes, and epitaxial layers grow on the crystal as a template.',
-          'Therefore only crystals give predictable, controllable and reproducible device behaviour, which is why the semiconductor industry is built on single-crystal wafers.'
+          'Therefore only crystals give predictable, controllable and reproducible device behavior, which is why the semiconductor industry is built on single-crystal wafers.'
         ],
         anahtar: [
           'Crystal = long-range periodic order (lattice + basis), which gives a periodic potential.',
@@ -50,7 +50,7 @@
           'A small seed crystal with a chosen orientation, for example (100) or (111), is dipped into the melt and pulled upwards slowly while it rotates.',
           'The silicon atoms of the melt attach to the seed and continue its lattice, so the whole ingot solidifies as one continuous crystal with the orientation of the seed.',
           'The main reason for growing a single crystal is that it has no grain boundaries; the whole wafer has the same, uninterrupted periodic lattice.',
-          'Grain boundaries contain dangling bonds and defects that scatter carriers and act as traps and recombination centres, which lowers the mobility and carrier lifetime and causes leakage currents.',
+          'Grain boundaries contain dangling bonds and defects that scatter carriers and act as traps and recombination centers, which lowers the mobility and carrier lifetime and causes leakage currents.',
           'In a single crystal the band structure is the same everywhere, so the device properties are uniform, predictable and reproducible over the whole wafer and between wafers.',
           'A single crystal also allows exact doping control, the choice of the surface orientation, and the growth of epitaxial layers on the wafer.',
           'Rotation and slow pulling keep the temperature and dopant distribution uniform and the diameter constant, so a large, round, nearly defect-free ingot is obtained and then sliced into wafers.',
@@ -60,7 +60,7 @@
           'Seed crystal is dipped into the melt and pulled while rotating.',
           'The melt solidifies on the seed with the same lattice and orientation (one continuous crystal).',
           'Main reason: no grain boundaries, so no scattering/trapping of carriers.',
-          'Higher mobility and lifetime, fewer leakage and recombination centres.',
+          'Higher mobility and lifetime, fewer leakage and recombination centers.',
           'Uniform, predictable, reproducible properties across the wafer; controlled orientation and doping.'
         ],
         hatalar: [
@@ -145,10 +145,10 @@
           'Assumption (from the figure): an electron of mass m; V = ∞ for x ≤ 0 and x ≥ 50 nm; V = 0 for 0 < x < 20 nm and 30 < x < 50 nm; and a barrier V₀ = 9 eV for 20 < x < 30 nm. We use ħ²/2m = 0.0381 eV·nm².',
           'Regions and solutions for E < V₀: define k = √(2mE)/ħ and κ = √(2m(V₀ − E))/ħ. Region I (0 < x < 20): ψ = A sin kx, because ψ(0) = 0. Region II (20 < x < 30): ψ = B e^{κx} + C e^{−κx}. Region III (30 < x < 50): ψ = D sin k(50 − x), because ψ(50) = 0.',
           'Boundary conditions: ψ and dψ/dx are continuous at x = 20 nm and x = 30 nm. These four conditions determine B/A, C/A, D/A and the eigenvalue equation.',
-          'The potential is symmetric about x = 25 nm, so the solutions are even or odd about the centre. Putting x′ = x − 25 nm, region II is ψ = B cosh κx′ (even) or B sinh κx′ (odd).',
+          'The potential is symmetric about x = 25 nm, so the solutions are even or odd about the center. Putting x′ = x − 25 nm, region II is ψ = B cosh κx′ (even) or B sinh κx′ (odd).',
           'Matching ψ′/ψ at x′ = 5 nm (the well side is ψ ∝ sin k(25 − x′), so ψ′/ψ = −k cot 20k with lengths in nm) gives the eigenvalue equations: even: κ tanh(5κ) = −k cot(20k); odd: κ coth(5κ) = −k cot(20k).',
           'For energies far below the barrier, κ·5 nm ≈ 77 (κ ≈ 15.4 nm⁻¹ at E ≈ 0), so tanh(5κ) = coth(5κ) = 1 to within e^{−150}. Both equations become the same equation, tan(20k) = −k/κ.',
-          'The tunnelling factor is e^{−2κd} with d = 10 nm, κd ≈ 154, so e^{−2κd} ≈ 10⁻¹³⁴: the two 20-nm wells are completely decoupled. Every level is doubly degenerate (the splitting is about 10⁻⁷⁰ eV for n = 1).',
+          'The tunneling factor is e^{−2κd} with d = 10 nm, κd ≈ 154, so e^{−2κd} ≈ 10⁻¹³⁴: the two 20-nm wells are completely decoupled. Every level is doubly degenerate (the splitting is about 10⁻⁷⁰ eV for n = 1).',
           'Approximation used: neglect the penetration into the barrier, ψ(20) = ψ(30) = 0. Then each well is an infinite well of width a = 20 nm: φ_n(x) = √(2/a) sin(nπx/a) = √(1/10 nm) sin(nπx/20 nm), n = 1, 2, 3, …, and E_n = n²π²ħ²/(2ma²) = 0.376 n²/a² eV (a in nm) = 0.94 n² meV.',
           'Wave functions: ψ_n^± = (1/√2)[φ_n(x) ± φ_n(50 nm − x)], with φ_n(x) = √(2/a) sin(nπx/a) for 0 < x < 20 nm and φ_n = 0 elsewhere; ψ⁺ is even and ψ⁻ is odd about x = 25 nm. Any combination, for example the electron localized in the left well, is also an eigenstate. In the barrier ψ decays as e^{−κ(20 nm − x)} and is practically zero.',
           'Exact eigenvalues (Python check of the equation above): the finite barrier lets the wave penetrate by 1/κ ≈ 0.065 nm, so the effective width is a + 1/κ and E_n ≈ 0.934 n² meV. Numerical values: E₁ = 0.934 meV, E₂ = 3.74 meV, E₃ = 8.41 meV, E₄ = 14.9 meV, E₅ = 23.3 meV, E₁₀ = 0.0934 eV, E₂₀ = 0.374 eV, E₅₀ = 2.33 eV, E₉₀ = 7.55 eV; each is a doublet.',
@@ -158,7 +158,7 @@
           'Divide the potential into three regions; for E < 9 eV use sine waves where V = 0 and exponentials e^{±κx} in the barrier.',
           'Boundary conditions: ψ = 0 at 0 and 50 nm; ψ and ψ′ continuous at 20 and 30 nm.',
           'Eigenvalue equation from symmetry: κ tanh(5κ) = −k cot(20k) (even), κ coth(5κ) = −k cot(20k) (odd).',
-          'κd ≈ 154, so the tunnelling is negligible: two independent 20-nm infinite wells, doubly degenerate levels.',
+          'κd ≈ 154, so the tunneling is negligible: two independent 20-nm infinite wells, doubly degenerate levels.',
           'ψ_n = √(2/a) sin(nπx/a) with a = 20 nm (or even/odd combinations of the two wells).',
           'E_n = n²π²ħ²/(2ma²) = 0.376 n²/a² eV = 0.94 n² meV (E₁ ≈ 0.94 meV).',
           'The approximation must be stated: valid for E ≪ V₀ (E < 9 eV); above 9 eV the electron is not confined to one well.'
@@ -210,9 +210,9 @@
         text: 'From a quantum mechanical perspective, why do allowed energies in periodic structures appear as continuous bands?',
         model: [
           'An isolated atom has discrete energy levels, because the electron is bound and its wave function must satisfy boundary conditions.',
-          'In a crystal there are about N ~ 10²² atoms per cm³ at distances of a few ångströms, so the wave functions of neighbouring atoms overlap and the electron feels the periodic potential of the whole lattice.',
+          'In a crystal there are about N ~ 10²² atoms per cm³ at distances of a few ångströms, so the wave functions of neighboring atoms overlap and the electron feels the periodic potential of the whole lattice.',
           'Tight-binding picture: when N atoms are brought together, the N coupled systems have N slightly different states for each atomic level. Because of the Pauli exclusion principle, no two electrons can occupy the same state, so the original level must split into N distinct levels.',
-          'The width of the band is set by the overlap (coupling) of neighbouring atoms, a few eV, so the spacing between neighbouring levels is about 10⁻²² eV, far below kT = 0.026 eV. The N levels therefore look like a continuous band.',
+          'The width of the band is set by the overlap (coupling) of neighboring atoms, a few eV, so the spacing between neighboring levels is about 10⁻²² eV, far below kT = 0.026 eV. The N levels therefore look like a continuous band.',
           'Wave picture: in a periodic potential V(x + a) = V(x) the solutions are Bloch waves ψ_k(x) = u_k(x) e^{ikx}, with u_k periodic (Bloch theorem), and the energy E(k) is a continuous function of the wave number k.',
           'Near k = nπ/a the wavelength satisfies the Bragg condition, so the wave is reflected by the lattice and forms standing waves. The two standing waves pile up the charge at different places (on the ions or between them) and have different energies.',
           'This produces an energy gap at the Brillouin-zone boundary: the allowed energies are continuous bands E(k) and the forbidden regions are the bandgaps (Kronig-Penney model).',
@@ -220,7 +220,7 @@
           'Result: allowed energies form quasi-continuous bands separated by bandgaps. The filling of the bands (valence band, conduction band) with 2N states per band explains metals, insulators and semiconductors.'
         ],
         anahtar: [
-          'Isolated atom: discrete levels; in a crystal neighbouring wave functions overlap.',
+          'Isolated atom: discrete levels; in a crystal neighboring wave functions overlap.',
           'Pauli exclusion principle: N atoms give N distinct (slightly shifted) levels for each atomic level.',
           'N ~ 10²² levels within a few eV: spacing ≪ kT, so the band is quasi-continuous.',
           'Periodic potential: Bloch waves ψ = u_k(x) e^{ikx} with continuous k and E(k).',

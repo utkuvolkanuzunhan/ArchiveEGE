@@ -101,8 +101,8 @@
             "madde": [
               "1) Hücre başına atom sayısı N: sc 1, bcc 2, fcc 4, diamond (elmas) 8.",
               "2) Kenar a'yı cm'ye çevir (1 nm = 10⁻⁷ cm), sonra hacmi bul: V = a³.",
-              "3) Yoğunluk n = N/V. Örnek: germanium (germanyum), a = 0,565 nm, N = 8 → V = 1,80×10⁻²² cm³.",
-              "4) n = 8 / 1,80×10⁻²² ≈ 4,4×10²² atom/cm³. Birimi her zaman yaz."
+              "3) Yoğunluk n = N/V. Örnek: germanium (germanyum), a = 0,566 nm, N = 8 → V = 1,81×10⁻²² cm³.",
+              "4) n = 8 / 1,81×10⁻²² ≈ 4,4×10²² atom/cm³. Birimi her zaman yaz."
             ]
           },
           {

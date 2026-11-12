@@ -109,7 +109,7 @@
       },
       s08: {
         kisa: 'Kalibrasyon',
-        rol: 'Konum ile momentum (momentum) aynı anda keskin bilinemez; aralarında bir sınır vardır.',
+        rol: 'Position (konum) ile momentum aynı anda keskin bilinemez; aralarında bir sınır vardır.',
         neden: 'Elektronu ne kadar dar sıkıştırırsan o kadar hızlı kıpırdar; bu, çip küçülmesinin sınırlarından biridir.',
         bagliKavramlar: ['Uncertainty principle (belirsizlik ilkesi)', 'Conjugate variables (eşlenik değişkenler)', 'Zero-point energy (sıfır noktası enerjisi)'],
         miniSoru: {

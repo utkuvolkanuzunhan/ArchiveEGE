@@ -12,7 +12,7 @@
 
   function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
   function btn(text, cls, fn){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
-  function kavramAd(k){ return String(k || '?').replace(/_/g, ' '); }
+  function kavramAd(k){ return Q.util.kavramAd ? Q.util.kavramAd(k) : String(k || '?').replace(/_/g, ' '); }
   function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
   function stAd(id){ var s = Q.data.stations[id]; return id.toUpperCase() + ' · ' + (s && s.ad || id); }
   function defter(){ return Q.state.hataDefteri; }

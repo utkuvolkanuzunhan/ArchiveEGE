@@ -88,7 +88,7 @@
         id: 's03-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'karacisim_felaket', agirlik: 1,
         onBilgi: [
           { baslik: "Tarihçe: ışık ve enerji paketleri", madde: [
-            "Blackbody (kara cisim): tüm ışığı soğuran ideal cisim. Klasik teori yüksek frequency (frekans) değerlerinde sonsuz energy (enerji) öngördü: ultraviolet catastrophe (mor ötesi felaketi).",
+            "Blackbody (kara cisim): tüm ışığı soğuran ideal cisim. Klasik teori yüksek frequency (frekans) değerlerinde sonsuz energy (enerji) öngördü: ultraviolet catastrophe (mor ötesi felaketi). Bu klasik tahmin Rayleigh-Jeans law (Rayleigh-Jeans yasası) diye bilinir.",
             "Atomlar da yalnızca belirli renklerde ışık yayar: discrete atomic spectra (ayrık atom spektrumları). Wave-particle duality (dalga-parçacık ikiliği) sonraki istasyonlarda.",
             "Max Planck (Berlin, 1900): enerji ancak paketler halinde alınıp verilir diyerek ölçümle uyuşan eğriyi buldu.",
             "Hertz (1887) photoelectric effect (fotoelektrik olay) gözledi; Einstein (1905) ışığı foton paketleriyle açıkladı, Nobel 1921." ] },
@@ -105,7 +105,7 @@
           { baslik: "Wien kayması, durdurma voltajı", madde: [
             "Blackbody (kara cisim) ısınınca ışık yayar. Sıcaklık T arttıkça eğrinin tepesi kısa wavelength (dalga boyu) tarafına kayar: λ_max·T = sabit (Wien yasası).",
             "Stopping potential (durdurma potansiyeli) V₀: en hızlı electron (elektron) bile durur; eV₀ = K_max. Örnek: K_max = 0,8 eV ise V₀ = 0,8 V.",
-            "Photoelectric effect (fotoelektrik olay) anlıktır: eşik üstünde ışık gelir gelmez electron (elektron) çıkar, gözle görülür gecikme olmaz.",
+            "Photoelectric effect (fotoelektrik olay) anlıktır: eşik üstünde ışık gelir gelmez electron (elektron) çıkar, gözle görülür gecikme olmaz. Photocurrent (fotoakım) intensity ile artar.",
             "Klasik dalga teorisi gecikme ve şiddete bağlı K öngörürdü; deney bunu çürüttü." ] }
         ],
         gorev: 'Temperature (sıcaklık) değerini 5000 K yap, classical curve (klasik eğri) açık kalsın.',

@@ -86,12 +86,12 @@
             "ψ position (konum) ya da energy (enerji) değeri vermez; yalnızca probability distribution (olasılık dağılımı) taşır." ] },
           { baslik: "Schrödinger equation (denklemi)", madde: [
             "Girdi: potential (potansiyel) V(x) ve boundary condition (sınır koşulu). Çıktı: ψ ve izinli E değerleri.",
-            "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi).",
+            "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi); çözümleri eigenfunction (özfonksiyon) ψₙ olur.",
             "Time-dependent (zamana bağlı) hâli ψ'yi zamanla düzgün ve deterministic (belirlenimci) evriltir.",
             "Collapse (çökme) denklemin parçası değildir; measurement postulate (ölçüm postülatı) ayrıdır ve ilerleyen istasyonlarda gelir." ] },
           { baslik: "Infinite well (sonsuz kuyu), quantization", madde: [
             "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
-            "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
+            "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3... ψₙ içinde n − 1 node (düğüm; ψ = 0 olan iç nokta) vardır.",
             "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L küçülürse ya da n büyürse energy (enerji) artar.",
             "n = 0 dalga yok demektir; en düşük E₁ > 0 olur: zero-point energy (sıfır noktası enerjisi), sınır koşulundan gelir." ] },
           { baslik: "Nasıl yapılır: L değişince E", madde: [

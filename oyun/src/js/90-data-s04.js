@@ -64,7 +64,7 @@
           { baslik: "Bohr modeli ve enerji", madde: [
             "Bohr postulates (Bohr varsayımları): electron (elektron) belirli stationary orbits (durağan yörüngeler) üzerinde ışıma yapmadan döner; angular momentum (açısal momentum) L = nħ.",
             "de Broglie bakışı: orbit (yörünge) çevresine tam sayı wave (dalga) sığmalı, 2πr = nλ; buradan mvr = nħ çıkar.",
-            "Ionisation energy (iyonlaşma enerjisi): electron (elektron) n=1'den sonsuza çıkarmak için gereken energy (enerji); hidrojende 13,6 eV.",
+            "Ionization energy (iyonlaşma enerjisi): electron (elektron) n=1'den sonsuza çıkarmak için gereken energy (enerji); hidrojende 13,6 eV.",
             "Foton dalga boyu λ = hc/ΔE ile bulunur; hc ≈ 1240 eV·nm. Bohr radius (Bohr yarıçapı) a₀ ≈ 0,053 nm." ] },
           { baslik: "Sıkışma ve denge", madde: [
             "Electron (elektron) daha küçük bölgeye sıkışırsa Δx azalır, Δp büyür; momentum (momentum) büyüyünce kinetic energy (kinetik enerji) de büyür.",

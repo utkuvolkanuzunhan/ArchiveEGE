@@ -351,7 +351,7 @@
       acikK.forEach(function(h){ by[h.kavram] = (by[h.kavram] || 0) + 1; });
       var kv = Object.keys(by).sort(function(a, b){ return by[b] - by[a]; }).slice(0, 5);
       kok.appendChild(el('h4', null, 'Hata defteri')).style.margin = '12px 0 4px';
-      kok.appendChild(el('p', null, acikK.length ? acikK.length + ' açık kayıt: ' + kv.map(function(k){ return String(k).replace(/_/g, ' ') + ' (' + by[k] + ')'; }).join(', ') : 'Açık kayıt yok.'));
+      kok.appendChild(el('p', null, acikK.length ? acikK.length + ' açık kayıt: ' + kv.map(function(k){ return (Q.util.kavramAd ? Q.util.kavramAd(k) : String(k).replace(/_/g, ' ')) + ' (' + by[k] + ')'; }).join(', ') : 'Açık kayıt yok.'));
       /* tekrar önerisi */
       var zayif = sonuc.sorular.filter(function(r){ return (r.dogruluk || 0) < 80; })
         .sort(function(a, b){ return (a.dogruluk || 0) - (b.dogruluk || 0); });
