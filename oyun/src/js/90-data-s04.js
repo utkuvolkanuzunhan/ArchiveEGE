@@ -69,7 +69,13 @@
           { baslik: "Sıkışma ve denge", madde: [
             "Electron (elektron) daha küçük bölgeye sıkışırsa Δx azalır, Δp büyür; momentum (momentum) büyüyünce kinetic energy (kinetik enerji) de büyür.",
             "Coulomb attraction (Coulomb çekimi) r küçüldükçe potential energy (potansiyel enerji) değerini düşürür.",
-            "Kinetik ve potansiyel katkıların toplamı sonlu bir r değerinde minimum olabilir; bu denge yarıçapı Bohr radius (Bohr yarıçapı) ile aynı büyüklüktedir." ] }
+            "Kinetik ve potansiyel katkıların toplamı sonlu bir r değerinde minimum olabilir; bu denge yarıçapı Bohr radius (Bohr yarıçapı) ile aynı büyüklüktedir.",
+            "Zincir kurarken sırayı izle: model, getirdiği kısıt, kısıtın enerjiye etkisi, genel sonuç. Gitar teli: uçlar sabit, yalnız belirli dalga boyları sığar." ] },
+          { baslik: "Geçiş ve dalga hesabı nasıl yapılır", madde: [
+            "Geçiş: ΔE = 13,6·|1/n_alt² − 1/n_üst²| eV, sonra λ = 1240/ΔE nm. Örnek 4→3: ΔE = 0,66 eV, λ ≈ 1880 nm (kızıl ötesi).",
+            "λ 380-750 nm arasındaysa görünür renk; daha kısa mor ötesi, daha uzun kızıl ötesi. Büyük energy (enerji) farkı kısa λ verir.",
+            "Matter wave (madde dalgası): önce p = mv, sonra λ = h/p. Örnek: 0,06 kg top, 30 m/s: p = 1,8 kg·m/s, λ ≈ 3,7×10⁻³⁴ m.",
+            "Eₙ = −13,6/n² yalnızca n = 1, 2, 3 gibi tam sayılar için tanımlıdır; seviyeleri bulmak için n yerine bu sayıları yaz." ] }
         ],
         satirlar: [
           { kim: 'selin', metin: 'Atom mikroskobu bir electron (elektron) arıyor. O neden nucleus (çekirdek) içine düşmüyor?' },
@@ -97,6 +103,7 @@
             "Boundary condition (sınır koşulu): hapsolmuş wave (dalga) kenarlarda uygun biçimde sonlanmalıdır; bu yalnızca belirli dalga boylarına izin verir." ] }
         ],
         gorev: 'n=3\'ten n=2\'ye transition (geçiş) rengini bul.',
+        tanitim: "Initial n (başlangıç n) üst seviyeyi, Final m (bitiş m) alt seviyeyi seçer. Photon (foton) düğmesi geçişi oynatır; bilgi satırı ΔE ve λ değerini, çizim rengi gösterir. Doğru n ve m değerlerini seçip düğmeye bas.",
         sim: {
           modul: 'bohr',
           params: { n: 4, m: 1 },
@@ -117,6 +124,7 @@
       {
         id: 's04-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'atom_kararlilik', agirlik: 1,
         soru: 'Stability (kararlılık) zincirini sıraya diz',
+        onNot: "Zincir kurarken sor: önce elektron nasıl modelleniyor, bu modelin getirdiği kısıt ne, kısıt enerjiyi nasıl etkiliyor, en sonda ne sonuç çıkıyor? Her adım öncekinin sonucunu kullanır; sırayı bu yüzden değiştiremezsin.",
         bloklar: [
           'Electron (elektron) confined wave (hapsolmuş dalga) olarak davranır',
           'Yalnızca belirli wavelengths (dalga boyları) sığar',
@@ -128,6 +136,7 @@
       {
         id: 's04-o08', tip: 'patron', baslik: 'Orbit (Yörünge) Canavarı', kavram: null, agirlik: 1,
         canavar: 'bohr', canavarAd: 'Orbit (Yörünge) Canavarı',
+        onNot: "Açık cevap şablonu: (1) klasik model ne öngördü, (2) quantum (kuantum) modeli neyi değiştirdi, (3) sonuç. Madde dalgasında λ = h/p: günlük cisimde p büyük olduğundan λ çok küçük, atom ölçeğinde p küçük olduğundan λ ölçülebilir.",
         giris: 'Electron (elektron) nucleus (çekirdek) içine düşecek, hemen göreceksin! Düşemez diyorsan justify (gerekçelendir).',
         fazlar: [
           {

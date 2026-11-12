@@ -61,6 +61,23 @@
       {
         id: 's03-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Berlin', yil: 1900, rivayet: false,
+        onBilgi: [
+          { baslik: "Foton enerjisi nasıl bulunur", madde: [
+            "Nasıl yapılır: frequency (frekans) f biliniyorsa E = hf kullan; h = 4,14×10⁻¹⁵ eV·s.",
+            "Wavelength (dalga boyu) λ verilmişse E = 1240/λ yaz; λ nanometre (nm), E elektronvolt (eV) çıkar.",
+            "Örnek: λ = 620 nm ise E = 1240/620 = 2,0 eV. λ = 310 nm olsaydı E = 4,0 eV olurdu.",
+            "Kural: λ yarıya inince E iki katına çıkar; kısa wavelength (dalga boyu) büyük photon (foton) energy (enerji) demektir." ] },
+          { baslik: "Eşik kıyası: elektron kopar mı", madde: [
+            "Adımlar: (1) tek photon (foton) energy (enerji) E değerini bul. (2) E değerini work function (iş fonksiyonu) φ ile kıyasla.",
+            "E ≥ φ ise electron (elektron) kopar ve K = E − φ olur; E < φ ise o photon (foton) electron koparamaz.",
+            "Intensity (şiddet) yalnızca saniyede gelen photon (foton) sayısını değiştirir; her electron (elektron) tek bir photon ile etkileşir.",
+            "Örnek: φ = 4,3 eV, λ = 200 nm: E = 6,2 eV, K = 1,9 eV. Şiddet 10 kat artsa K aynı kalır." ] },
+          { baslik: "Mantık zinciri nasıl kurulur", madde: [
+            "Açıklama zincirinde her adım öncekinin sonucunu kullanır; sırayı 'önce neye ihtiyacım var' diye sorarak kur.",
+            "Önce konunun ne olduğu gelir (ışık neyden oluşur). Sonra o parçanın tek başına bir özelliği (enerjisi).",
+            "Sonra bu özelliğin bir koşulla kıyası (eşik) gelir; kıyas yapılmadan sonuç çıkmaz.",
+            "Çoğaltan etken (şiddet) en sona kalır: kaç tane olduğu, ancak olay gerçekleşebiliyorsa anlamlıdır." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Işık-test odası light (ışık) ölçüyor. Classical physics (klasik fizik) burada tökezledi.' },
           { kim: 'planck', metin: 'Energy quantum (enerji paketi) fikriyle infinity (sonsuzluk) kayboldu. Çaresizlikten attığım bir adımdı.' },
@@ -87,6 +104,7 @@
             "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] }
         ],
         gorev: 'Temperature (sıcaklık) değerini 5000 K yap, classical curve (klasik eğri) açık kalsın.',
+        tanitim: "Yatay eksen wavelength (dalga boyu), dikey eksen yayılan intensity (şiddet). Temperature (sıcaklık) çubuğu Planck eğrisini değiştirir; Classical curve (klasik eğri) düğmesi klasik tahmini açıp kapatır. Kısa wavelength (dalga boyu) tarafına bak.",
         sim: {
           modul: 'karacisim',
           params: { T: 3000 },
@@ -118,6 +136,7 @@
       {
         id: 's03-o08', tip: 'patron', baslik: 'Photon (Foton) Canavarı', kavram: null, agirlik: 1,
         canavar: 'einstein', canavarAd: 'Photon (Foton) Canavarı',
+        onNot: "Açık cevap şablonu: (1) classical physics (klasik fizik) neyi açıklayamadı, (2) hangi yeni fikir çözdü, (3) deneyle neden uyuştu. Not: classical wave (klasik dalga) modelinde şiddet arttıkça energy (enerji) artar; deneyde ise eşik var ve gecikme yok.",
         giris: 'Ben photon (foton) canavarıyım! Brightness (parlaklık) artırsam da seni threshold (eşik) değerinden geçirmem.',
         fazlar: [
           {
