@@ -47,3 +47,8 @@ Her görevde ara cevap soruları (`adimSoru`) hazırdı; ek veri yazılmadı. (S
 
 ## Test sonuçları
 `test/hesap-engel.test.js` 94 kontrol: 10 istasyonda 10 engel, s01..s10 hepsinde hesap açılır (yatay taşma yok, 1366x768); s02, s05, s06 baştan sona (yanlış sayı/şık + Adımı göster + doğru, Esc menüsü, atla, geri, yenileme, Çözdüm, ceza yok); eski kayıt uyumu; hata defteri sayfası. Ekran görüntüleri `test/ciktilar/hesap-engel-*.png` (commit edilmez).
+
+## Durum: tamamlandı / eksik / bilinen sorun
+- Tamamlandı: engel tipi, 10 istasyonda veri, işleyici, runner/hud/çizim/harita (veri tabanlı), hata defteri, Çözdüm işareti, atlama, eski kayıt uyumu, veri-dogrula, runner/fabrika/hesap-engel testleri (94). veri-dogrula, sinav-dogrula, smoke 9/9, final, hesap, kartlar, fabrika geçer.
+- Eksik: Soru 5 görevinin son adımı soru sormaz (yalnızca çözüm gösterilir); sayısal olmayan sınav gerekçeleri kapsanmadı.
+- Bilinen sorun: `test/tekrar-hata.test.js` "Biliyorum terimi ana listeden çıkarır" kontrolü yukarı akıştaki (GERCEK-SINAV, 97-tekrar.js) değişiklikten beri başarısız; hesap engelinden bağımsız (b12849e üzerinde de kırık).
