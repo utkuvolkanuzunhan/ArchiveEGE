@@ -163,6 +163,7 @@
         kutu.appendChild(yaz(el('h4'), (i + 1) + '. ' + String(adim.baslik).replace(/^\s*\d+\s*[.)]\s*/, '')));
         var yer = el('div'); yer.style.cssText = 'display:flex;flex-direction:column;gap:5px';
         kutu.appendChild(yer); sag.appendChild(kutu);
+        sag.scrollTop = sag.scrollHeight;
         var ilkYanlis = true;
         if (q) {
           yer.appendChild(p('', q.soru));
@@ -200,6 +201,7 @@
             yer.appendChild(ops); sat.appendChild(onay); yer.appendChild(sat);
           }
           yer.appendChild(fb); yer.appendChild(cozum);
+          sag.scrollTop = sag.scrollHeight;
           var yardim = null;
           await new Promise(function(res){
             function dogruCoz(){ dogruSag = true; res(); }
@@ -209,6 +211,7 @@
               if (k.gecersiz) { fb.className = 'hg-fb kotu'; fb.textContent = q.sayiCevap ? 'Bir sayı gir (örnek: 1,5 ya da 2e-4).' : 'Önce bir şık seç.'; return; }
               if (k.ok) {
                 fb.className = 'hg-fb iyi'; fb.textContent = 'Doğru.';
+                if (yardim && yardim.parentNode) yardim.parentNode.removeChild(yardim);
                 if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; });
                 dogruCoz();
               } else {
