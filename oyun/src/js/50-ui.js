@@ -191,11 +191,11 @@
   ui.textbox = {
     ask: function(o){
       o = o || {};
-      var host = hostOf(o.host), maks = o.maks || 280, kesme = 400;
+      var host = hostOf(o.host), maks = o.maks || 280, kesme = o.kesme || 400;
       return new Promise(function(res){
         var wrap = el('div', 'tb');
         if (o.soru) wrap.appendChild(el('div', 'tb-soru', o.soru));
-        var ta = el('textarea'); ta.maxLength = kesme; ta.rows = 3;
+        var ta = el('textarea'); ta.maxLength = kesme; ta.rows = o.rows || 3;
         ta.setAttribute('aria-label', 'Cevabın');
         var row = el('div', 'row'), sayac = el('span', 'sayac', '0/' + maks);
         var bil = btn('Bilmiyorum', '', function(){ res(null); });

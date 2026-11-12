@@ -166,7 +166,7 @@
       '.tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}.tk-muted{color:var(--muted)}';
     document.head.appendChild(s);
   }
-  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)'], ['hata', 'Hata defterini çalış'], ['hesap', 'Hesap çalıştayı'], ['ai', "AI'a sor"], ['bil', 'Biliyorum']];
+  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)'], ['gercek', 'Gerçek sınav (10 soru)'], ['hata', 'Hata defterini çalış'], ['hesap', 'Hesap çalıştayı'], ['ai', "AI'a sor"], ['bil', 'Biliyorum']];
   function ac(){
     if (root) { git(aktifSekme); return; }
     css();
@@ -195,6 +195,7 @@
     if (!root) return; aktifSekme = s; denemeTok++; denemeDurdur(); body.textContent = '';
     Array.prototype.forEach.call(tabsEl.children, function(b){ b.setAttribute('aria-selected', b.dataset.sekme === s ? 'true' : 'false'); });
     if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else if (s === 'deneme') denemeSekmesi();
+    else if (s === 'gercek') { if (Q.gercekSinav) Q.gercekSinav.render(body); else body.appendChild(el('div', 'tk-muted', 'Gerçek sınav modülü yüklenemedi.')); }
     else if (s === 'hata') { if (Q.tekrarHata) Q.tekrarHata.hata(body, ctx); } else if (s === 'hesap') { if (Q.tekrarHesap) Q.tekrarHesap.sayfa(body); } else if (s === 'ai') { if (Q.tekrarHata) Q.tekrarHata.ai(body, ctx); } else if (s === 'bil') bilSekmesi(); else sinavSekmesi();
   }
 

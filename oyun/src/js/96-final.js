@@ -54,9 +54,34 @@
       yanlisKavramIds: ['fermi_hep_dolu', 'fermi_dagilim'],
       idealCevap: 'The Fermi-Dirac distribution f(E) = 1/(1+exp((E−E_F)/kT)) gives the probability that a state at energy E is occupied. At E = E_F it equals 1/2 for any T. At T = 0 K it is a step function (1 below E_F, 0 above); as T increases the transition region of width about kT broadens and some electrons occupy states above E_F.' }
   ];
+  /* Soru seti: Q.data.gercekSinav (hocanın örnek sınavı, 10 soru AYNEN, sınav sırasıyla). Veri yoksa eski davranış: patron pdfSoru'ları. */
+  function patronOf(stId){
+    var st = Q.data.stations[stId], p = null;
+    ((st && st.engeller) || []).forEach(function(e){ if (!p && e.tip === 'patron') p = e; });
+    return p;
+  }
+  function hazirlaGercek(){
+    var G = Q.data && Q.data.gercekSinav, engeller = [], ilk = null;
+    if (!G || !G.sorular || !G.sorular.length) return null;
+    G.sorular.forEach(function(g){
+      var st = Q.data.stations[g.st], p = patronOf(g.st);
+      if (!st || !p) return;
+      ilk = ilk || st;
+      engeller.push({
+        id: 'final-' + g.no, tip: 'patron', final: true, no: g.no, kaynak: g.st, kaynakAd: st.ad,
+        baslik: 'Question ' + g.no, kavram: null, agirlik: 1, sekil: g.sekil || null,
+        canavar: p.canavar, canavarAd: p.canavarAd, soru: g.text,
+        anahtarFikirler: g.anahtar.slice(), yanlisKavramlar: g.hatalar.slice(),
+        yanlisKavramIds: [], idealCevap: g.model.join(' '),
+        mcq: mcqOf(g.st, g.no)
+      });
+    });
+    return engeller.length ? { engeller: engeller, ilk: ilk } : null;
+  }
   function hazirla(){
-    var engeller = [], n = 0, ilk = null;
-    stIds().forEach(function(id){
+    var engeller = [], n = 0, ilk = null, G = hazirlaGercek();
+    if (G) { engeller = G.engeller; ilk = G.ilk; }
+    (G ? [] : stIds()).forEach(function(id){
       var st = Q.data.stations[id];
       ilk = ilk || st;
       (st.engeller || []).forEach(function(e){
@@ -105,6 +130,7 @@
       var q = el('div', 'fn-soru', ob.soru);
       q.style.cssText = 'font-weight:800;font-size:17px;line-height:1.35;margin:0 0 8px';
       a.appendChild(q);
+      if (ob.sekil && Q.gercekSinav && Q.gercekSinav.sekilEl) { var sk = Q.gercekSinav.sekilEl(ob.sekil); if (sk) { sk.style.maxWidth = '420px'; a.appendChild(sk); } }
       return a;
     }
     function bekle(area, etiket){
@@ -161,7 +187,7 @@
         area.appendChild(it);
         var tb = el('div', 'fn-tb');
         it.appendChild(tb);
-        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 400, deger: cevap });
+        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 1500, kesme: 4000, rows: 7, deger: cevap });
         if (v == null || !String(v).trim() || /^\s*(bilmiyorum|i don'?t know)\s*\.?\s*$/i.test(String(v))) {
           rec.mod = 'bos'; rec.dogruluk = 0; rec.eminlik = 0; rec.eksik = ob.anahtarFikirler.slice();
           area.textContent = '';
