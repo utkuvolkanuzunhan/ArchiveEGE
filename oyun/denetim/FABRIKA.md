@@ -17,6 +17,12 @@ Harita ekranındaki istasyon karoları, ham kum > çip hattını gösteren işle
 - Hepsi onarılınca kutlama bandı + (Q.final.acik ise) "Sınav Günü (Final)" düğmesi.
 - Dar ekranda şema yatay kaydırılır (min 1000px), sayfa taşmaz. 1366x768 ve 1440x900 doğrulandı.
 
+## Tam ekran yerleşim (ek istek)
+- Üst çubuk: Fabrika haritası, Üretim (wafer/saat), `n/N bölüm onarıldı`, `Hat %x`, ilerleme çubuğu; düğmeler: Ana menü (`Q.hosGeldin`), Kartlar (kart bölümüne kaydırır), Hata defteri (n), Tekrar Merkezi, Ayarlar, Sınav Günü (Final).
+- >=900px: ekranı doldurur; solda büyük şema + altında kart koleksiyonu (sol sütun kayar, çok kart taşmaz), sağda ayrıntı paneli (bölüm ya da kart). <900px: alt alta, panel alttan açılan sayfa (kart ajanının düzeni).
+- Eski istasyon karo sırası ve boş çerçeve kaldırıldı. Ok tuşları şemada bölümler arası gezer, Esc ayrıntı panelini kapatır.
+- Geri/Kapat düğmesi eklenmedi: harita oyunun ana ekranı, kapatılacak bir üst ekran yok (panel için Kapat (Esc) var).
+
 ## Kayıt
 `cip-hatti-v1` anahtarı korundu, `v:1`. Eklenen tek alan: üst düzey `fabrikaMini: { sNN: { dogru, deneme } }` (yoksa boş sayılır). `fabrika.kurulu`, `ilerleme.tamam`, Her yere eriş, İstediğin engele atla aynen.
 

@@ -161,6 +161,22 @@ function ok(c, m){ process.stdout.write((c ? 'ok: ' : 'KALDI: ') + m + '\n'); if
   await p.screenshot({ path: path.join(OUT, 'fabrika-dar.png') });
   await p.context().close();
 
+  /* 6) tam ekran yerleşim: üst çubuk düğmeleri, 3 çözünürlük */
+  var boy = [[1366, 768], [1440, 900], [1920, 1080]];
+  for (var bi = 0; bi < boy.length; bi++) {
+    p = await ac(boy[bi][0], boy[bi][1]);
+    r = await p.evaluate(function(){
+      var ids = ['fm-ana', 'fm-kartlar', 'a8-hata', 'a10-tekrar', 'fm-ayarlar', 'a7-final'];
+      var b = document.querySelector('.a8-back > .panel'), sm = document.querySelector('.fb-sema');
+      return { ids: ids.filter(function(i){ return !document.getElementById(i); }), sx: document.documentElement.scrollWidth - innerWidth, sy: document.documentElement.scrollHeight - innerHeight,
+        bx: b.scrollWidth - b.clientWidth, sema: sm.scrollWidth - sm.clientWidth, govde: !!document.querySelector('.fm-govde .a8-yan'), eski: document.querySelectorAll('.a8-istasyonlar').length };
+    });
+    ok(r.ids.length === 0 && r.govde && r.eski === 0, boy[bi].join('x') + ' üst çubuk düğmeleri tam, eski karo yok ' + r.ids);
+    ok(r.sx <= 0 && r.sy <= 0 && r.bx <= 0 && r.sema <= 0, boy[bi].join('x') + ' taşma yok ' + JSON.stringify(r));
+    await p.keyboard.press('Escape');
+    await p.context().close();
+  }
+
   await br.close();
   if (kaldi) { process.stdout.write(kaldi + ' KALDI\n'); process.exit(1); }
   process.stdout.write('TÜMÜ GEÇTİ\n');

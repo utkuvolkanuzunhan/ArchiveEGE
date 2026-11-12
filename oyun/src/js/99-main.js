@@ -74,6 +74,8 @@
     else haritaAc();
   }
 
+  Q.hosGeldin = hosGeldin;
+
   function sayaci() {
     if (!Q.state.sure) Q.state.sure = { toplamSn: 0, oturumBaslangic: 0 };
     Q.state.sure.oturumBaslangic = Date.now();

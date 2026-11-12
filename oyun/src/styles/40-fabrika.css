@@ -7,10 +7,10 @@
 .fb-bar{flex:1 1 160px;min-width:120px;height:14px;border-radius:99px;border:2px solid var(--line);background:var(--track);overflow:hidden}
 .fb-bar-dolu{height:100%;background:linear-gradient(90deg,var(--cyan),var(--lime));transition:width .6s ease}
 .fb-sema{overflow-x:auto;overflow-y:hidden;border:var(--bw) solid var(--line);border-radius:var(--r);background:var(--bg);padding:6px}
-.fb-svg{display:block;width:100%;min-width:1000px;height:auto}
+.fb-svg{display:block;width:100%;min-width:940px;height:auto}
 .fb-svg text{font-family:var(--font-b);font-weight:800}
-.fb-ad{font-size:15px}
-.fb-dr{font-size:14px}
+.fb-ad{font-size:16px}
+.fb-dr{font-size:15px}
 .fb-no{font-family:var(--font-d);font-size:20px;font-weight:400}
 .fb-node{cursor:pointer;outline:none}
 .fb-node:hover .fb-kutu,.fb-node:focus-visible .fb-kutu{stroke:var(--yellow)}
@@ -46,3 +46,24 @@
 .fb-geri.kotu{color:#ffb3c1}
 @media (max-height:800px){.fb-mini .opt{padding:6px 12px;min-height:38px}}
 @media (prefers-reduced-motion:reduce){.fb-akis,.fb-kirik,.fb-pervane,.fb-duman,.fb-konfeti,.fb-sirada .fb-kutu{animation:none}}
+
+/* harita ekranı: tam ekran yerleşim (>=900px: üst çubuk + sol şema/kartlar + sağ panel; altında tek sütun) */
+.fm-bar{display:flex;align-items:center;justify-content:space-between;gap:10px 16px;flex-wrap:wrap;padding:6px 0 10px;border-bottom:var(--bw) solid var(--line);margin-bottom:10px}
+.fm-bas{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.fm-baslik{font-family:var(--font-d);font-size:26px;color:var(--yellow);margin:0}
+.fm-bar .fb-baslik{flex:1 1 260px;margin:0;min-width:220px}
+.fm-nav{display:flex;gap:8px;flex-wrap:wrap}
+.fm-nav .btn{min-height:40px;padding:6px 14px}
+.fm-govde .a8-ana{padding-bottom:12px}
+.fb-svg{max-width:1400px;margin:0 auto}
+@media (min-width:900px){
+  .fm-box{display:grid!important;grid-template-rows:auto minmax(0,1fr);overflow:hidden!important}
+  .fm-govde.a8-ana-yan{min-height:0;height:100%;align-items:stretch;grid-template-columns:minmax(0,1fr) minmax(300px,360px)}
+  .fm-govde .a8-ana{overflow:auto;min-height:0;padding-right:8px}
+  .fm-govde .a8-yan{position:static;max-height:none;height:100%;overflow:auto}
+  .fb-svg{min-width:900px}
+}
+@media (max-width:899px){
+  .fm-baslik{font-size:22px}
+  .fm-nav .btn{flex:1 1 auto}
+}

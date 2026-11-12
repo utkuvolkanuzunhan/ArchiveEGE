@@ -353,73 +353,66 @@
     if (!mapEl) return;
     var box = mapEl.firstChild, st = stList();
     box.textContent = '';
-    box.appendChild(el('h2', '', 'Fabrika haritası'));
-    box.appendChild(el('p', '', 'Üretim: ' + (Q.state.fabrika.kurulu.length * 6) + ' wafer/saat'));
-    var cerceve = el('div', 'a8-ana-yan'), ana = el('div', 'a8-ana');
+    box.className = 'panel modal fm-box';
+    /* üst çubuk: başlık, üretim, ilerleme, gezinme */
+    var bar = el('header', 'fm-bar');
+    var bas = el('div', 'fm-bas');
+    bas.appendChild(el('h2', 'fm-baslik', 'Fabrika haritası'));
+    bas.appendChild(el('span', 'chip fm-uretim', 'Üretim: ' + (Q.state.fabrika.kurulu.length * 6) + ' wafer/saat'));
+    bar.appendChild(bas);
+    var nav = el('nav', 'fm-nav'); nav.setAttribute('aria-label', 'Harita gezinmesi');
+    bar.appendChild(nav);
+    box.appendChild(bar);
+    /* gövde: solda şema + kartlar, sağda ayrıntı paneli */
+    var cerceve = el('div', 'a8-ana-yan fm-govde'), ana = el('div', 'a8-ana');
     yanEl = el('aside', 'a8-yan'); yanEl.id = 'a8-yan'; yanEl.tabIndex = -1; yanEl.dataset.acik = '0';
     yanEl.setAttribute('aria-label', 'Ayrıntı paneli');
-    yanEl.appendChild(el('div', 'a8-yan-bos', 'Bir istasyon ya da bilim insanı kartı seç; ayrıntısı burada açılır.'));
+    yanEl.appendChild(el('div', 'a8-yan-bos', 'Bir bölüm ya da bilim insanı kartı seç; ayrıntısı burada açılır.'));
     cerceve.appendChild(ana); cerceve.appendChild(yanEl);
     box.appendChild(cerceve);
     panelEl = el('div', 'panel'); panelEl.id = 'a8-station-panel'; panelEl.style.padding = '12px'; panelEl.style.display = 'none';
     kartPanelEl = el('div', 'panel'); kartPanelEl.id = 'a8-kart-panel'; kartPanelEl.style.padding = '12px'; kartPanelEl.style.display = 'none';
     yanEl.appendChild(panelEl); yanEl.appendChild(kartPanelEl);
-    if (Q.fabrika && Q.fabrika.render && doc()) {
-      /* fabrika şeması tam genişlikte üstte; bölüm paneli yan panelde (kart ayrıntısıyla aynı yer) */
-      var fr = Q.fabrika.render({
-        st: st,
-        durum: ozet,
-        tamam: function(x){ return !!prog(x.id).tamam; },
-        acik: function(x){ return S.istasyonAcik(x.id); },
-        prog: prog,
-        baslat: startStation,
-        engelAtla: function(x, ob, i){ startStation(x, Q.runner.indexOf ? Q.runner.indexOf(x.id, ob.id) : i); },
-        final: function(){ return (Q.final && Q.final.start && Q.final.acik && Q.final.acik()) ? function(){ Q.final.start(); } : null; },
-        panel: panelEl, ust: kapatDugme,
-        onSec: function(){
-          if (kartPanelEl) { kartPanelEl.textContent = ''; kartPanelEl.style.display = 'none'; }
-          try { if (kolek) kolek.sec(null); } catch (e) { /* eski koleksiyon yok */ }
-          sonSecili = null; yanAc();
-        }
-      });
-      box.insertBefore(fr.root, cerceve); listEl = fr.root;
-    } else {
-      listEl = el('div', 'a8-stations a8-istasyonlar');
-      st.forEach(function(s){
-        var d = ozet(s), b = btn('', 'panel');
-        b.dataset.id = s.id; b.dataset.durum = d;
-        b.style.cssText = 'display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px;cursor:pointer;' +
-          (d === 'tamam' ? 'border-color:var(--lime);' : d === 'sirada' ? 'box-shadow:var(--glow-cyan);border-color:var(--cyan);' : d === 'kilitli' ? 'opacity:.55;border-style:dashed;' : '');
-        b.appendChild(machineIcon(s.renk, d === 'kilitli'));
-        b.appendChild(el('b', '', s.ad)); b.appendChild(el('span', '', DURUM_AD[d]));
-        b.addEventListener('click', function(){ showPanel(s); });
-        listEl.appendChild(b);
-      });
-      ana.appendChild(listEl);
-    }
+    var fr = Q.fabrika.render({
+      st: st,
+      durum: ozet,
+      tamam: function(x){ return !!prog(x.id).tamam; },
+      acik: function(x){ return S.istasyonAcik(x.id); },
+      prog: prog,
+      baslat: startStation,
+      engelAtla: function(x, ob, i){ startStation(x, Q.runner.indexOf ? Q.runner.indexOf(x.id, ob.id) : i); },
+      final: function(){ return (Q.final && Q.final.start && Q.final.acik && Q.final.acik()) ? function(){ Q.final.start(); } : null; },
+      panel: panelEl, ust: kapatDugme,
+      onSec: function(){
+        if (kartPanelEl) { kartPanelEl.textContent = ''; kartPanelEl.style.display = 'none'; }
+        try { if (kolek) kolek.sec(null); } catch (e) { /* eski koleksiyon yok */ }
+        sonSecili = null; yanAc();
+      }
+    });
+    bar.insertBefore(fr.header, nav);
+    ana.appendChild(fr.root); listEl = fr.root;
     /* kartlar */
     var kh = el('div'); kh.id = 'a8-kartlar'; ana.appendChild(kh);
     kolek = Q.kartlar.koleksiyon(kh, { onSec: kartAc });
     sonSecili = null;
+    /* gezinme düğmeleri */
     var h = hataOzeti();
-    var hb = btn(h.sayi + ' açık kayıt' + (h.top.length ? ' · ' + h.top.map(function(t){ return kavramAd(t.kavram); }).join(', ') : ''), '', openHata);
-    hb.id = 'a8-hata'; hb.style.marginTop = '12px';
-    ana.appendChild(hb);
-    var row = el('div'); row.style.cssText = 'display:flex;gap:8px;margin-top:12px';
-    var tb = btn('Tekrar Merkezi', 'primary', function(){ if (Q.tekrar && Q.tekrar.open) Q.tekrar.open(); }); tb.id = 'a10-tekrar'; row.appendChild(tb);
-    row.appendChild(btn('Ayarlar', '', function(){ S.open(); }));
+    function nb(t, cls, fn, id){ var b = btn(t, cls, fn); if (id) b.id = id; nav.appendChild(b); return b; }
+    nb('Ana menü', '', function(){ S.closeMap(); if (Q.hosGeldin) Q.hosGeldin(); }, 'fm-ana');
+    nb('Kartlar', '', function(){ try { kh.scrollIntoView({ block: 'start', behavior: 'smooth' }); } catch (e) { kh.scrollIntoView(); } }, 'fm-kartlar');
+    nb('Hata defteri (' + h.sayi + ')', '', openHata, 'a8-hata').title = h.top.length ? h.top.map(function(t){ return kavramAd(t.kavram); }).join(', ') : 'Defter temiz';
+    nb('Tekrar Merkezi', 'primary', function(){ if (Q.tekrar && Q.tekrar.open) Q.tekrar.open(); }, 'a10-tekrar');
+    nb('Ayarlar', '', function(){ S.open(); }, 'fm-ayarlar');
     if (Q.final && Q.final.start) {
-      var fb = btn('Sınav Günü (Final)', '', function(){ Q.final.start(); }); fb.id = 'a7-final';
+      var fb = nb('Sınav Günü (Final)', '', function(){ Q.final.start(); }, 'a7-final');
       if (!Q.final.acik()) { fb.disabled = true; fb.title = 'Önce 9 istasyonu bitir'; fb.style.opacity = '.55'; }
-      row.appendChild(fb);
     }
-    ana.appendChild(row);
   }
   S.openMap = function(){
     var d = doc(); if (!d) return;
     if (mapEl) { renderMap(); return; }
     var L = getLayer(), back = backdrop(true), box = el('div', 'panel modal');
-    box.style.cssText = 'width:100%;max-width:1240px;margin:0 auto;overflow:auto;padding:16px;border-radius:0;box-shadow:none;display:block';
+    box.style.cssText = 'width:100%;max-width:none;height:100%;margin:0;overflow:auto;padding:12px 16px;border-radius:0;box-shadow:none;display:block';
     back.appendChild(box); L.appendChild(back); mapEl = back;
     if (pauseSay === 0) { try { if (Q.runner.hold) Q.runner.hold(); } catch (e) { /* motor yok */ } }
     renderMap();
