@@ -11,11 +11,11 @@
 
   var o03 = {
     id: "s01-o03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kati_turleri", agirlik: 1,
-    soru: "Amorf (amorphous) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
+    soru: "Amorphous (amorf) katıda atomlar long-range order (uzun menzilli düzen) gösterir mi?",
     secenekler: [
-      sec("Evet, crystal (kristal) gibi", false, "Hayır. Long-range order yalnızca crystal (kristal) içinde vardır."),
+      sec("Evet, crystal (kristal) gibi uzak atomlar da düzenlidir", false, "Hayır. Long-range order yalnızca crystal (kristal) içinde vardır."),
       sec("Hayır, order (düzen) yalnızca yakın neighbor (komşu) atomlardadır", true, "Doğru. Amorphous (amorf) katıda yalnızca short-range order (kısa menzilli düzen) vardır."),
-      sec("Yalnızca cooling (soğuma) sonrası düzenlenir", false, "Yanlış. Amorphous (amorf) kalan katıda long-range order hiç oluşmaz.")
+      sec("Yalnızca yavaş cooling (soğuma) sonrası düzenlenir", false, "Yanlış. Amorphous (amorf) kalan katıda long-range order hiç oluşmaz.")
     ],
     kusurSkin: "vakans"
   };
@@ -25,8 +25,8 @@
     soru: "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı) nedir?",
     secenekler: [
       sec("İki grain (tane) arasındaki disordered (düzensiz) interface (ara yüz) bölgesi", true, "Doğru. Crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir."),
-      sec("Crystal (kristal) dış surface (yüzey) katmanı", false, "Hayır. Grain boundary (tane sınırı) malzemenin içinde, grain (tane) buluşma yeridir."),
-      sec("dopant atom (katkı atomu) toplanma yeri", false, "Hayır. Grain boundary (tane sınırı), crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir.")
+      sec("Crystal (kristal) dış surface (yüzey) üzerindeki ince katman", false, "Hayır. Grain boundary (tane sınırı) malzemenin içinde, grain (tane) buluşma yeridir."),
+      sec("Dopant atom (katkı atomu) toplanma yeri", false, "Hayır. Grain boundary (tane sınırı), crystal (kristal) yönünün değiştiği interface (ara yüz) bölgesidir.")
     ],
     kusurSkin: "tane_siniri"
   };
@@ -51,7 +51,7 @@
     engeller: [
       {
         id: "s01-o01", tip: "hikaye", baslik: "Zaman kapısı", kavram: null, agirlik: 1,
-        yer: "Polonya", yil: 1916, rivayet: true,
+        yer: "Berlin", yil: 1916, rivayet: true,
         satirlar: [
           { kim: "selin", metin: "Sipariş: 10.000 chip (çip). Hammadde sand (kum), ama kum önce crystal (kristal) olmalı." },
           { kim: "selin", metin: "Zaman makinesi hazır. 1916'ya, crystal (kristal) çekmenin doğduğu yere gidiyoruz." },
@@ -65,7 +65,7 @@
             "Katıların atom düzeni 1900'lerin başında X-ray (X-ışını) kırınımıyla anlaşıldı; kristalin düzenli olduğu böyle gösterildi.",
             "Jan Czochralski (1916): eriyik metalden tek kristal çekme yöntemini buldu; yöntem onun adını taşır.",
             "Bell Labs'te 1950 dolaylarında Teal ve Little bu yöntemi yarıiletken kristallere uyguladı.",
-            "Bugün chip (çip) için kullanılan wafer (dilim) neredeyse hep CZ ile çekilen silisyumdan kesilir." ] },
+            "Bugün chip (çip) için kullanılan wafer (dilim) çoğunlukla CZ ile çekilen silisyumdan kesilir." ] },
           { baslik: "Katı türleri ve kusurlar", madde: [
             "Single crystal (tek kristal): düzen tüm parçada kesintisiz sürer; long-range order (uzun menzilli düzen) vardır.",
             "Polycrystalline (çok kristalli): küçük kristal grain (tane) topluluğu; grain boundary (tane sınırı) taneleri ayırır.",
@@ -115,16 +115,16 @@
             tip: "secmeli", kavram: "cz_tohum",
             soru: "CZ (Czochralski) yönteminde seed crystal (tohum kristal) görevi nedir?",
             secenekler: [
-              sec("melt (eriyik) ısıtır", false, "Hayır. Heating (ısıtma) işini furnace (fırın) yapar, seed (tohum) değil."),
+              sec("Melt (eriyik) ısıtır", false, "Hayır. Heating (ısıtma) işini furnace (fırın) yapar, seed (tohum) değil."),
               sec("Solidifying (katılaşan) atom üzerine crystal (kristal) order (düzen) aktarır", true, "Doğru. Atom, seed crystal (tohum kristal) düzenini sürdürür."),
-              sec("melt (eriyik) karıştırır", false, "Hayır. Stirring (karıştırma) seed (tohum) işi değil.")
+              sec("Melt (eriyik) karıştırır", false, "Hayır. Stirring (karıştırma) seed (tohum) işi değil.")
             ],
             alt: {
               soru: "CZ'de ingot (külçe) neden yavaşça döndürülerek çekilir?",
               secenekler: [
-                sec("seed (tohum) order (düzen) homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme single crystal (tek kristal) yapısını korur."),
+                sec("Seed (tohum) order (düzen) homojen sürsün diye", true, "Doğru. Yavaş ve düzgün çekme single crystal (tek kristal) yapısını korur."),
                 sec("Daha hızlı cooling (soğuma) olsun diye", false, "Hayır. Hızlı cooling defect (kusur) yapar."),
-                sec("melt (eriyik) atılsın diye", false, "Hayır. Amaç melt (eriyik) atmak değil.")
+                sec("Seed (tohum) melt (eriyik) içinde erisin diye", false, "Hayır. Seed (tohum) erirse düzeni aktaramaz; amaç onu korumaktır.")
               ]
             }
           },
@@ -136,11 +136,11 @@
               "Crystal (kristal) içinde atom periyodik dizilir, periodic potential (periyodik potansiyel) oluşur.",
               "Periyodiklik iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) verir.",
               "Properties (özellikler) öngörülebilir ve tekrarlanabilir, doping (katkılama) ile kontrol edilir.",
-              "Polycrystalline (çok kristalli) veya amorphous (amorf) malzemede carriers (taşıyıcılar) grain boundary üzerinde saçılır."
+              "Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı), amorphous (amorf) malzemede dangling bond (sarkık bağ) ve defect (kusur) carriers (taşıyıcılar) saçar veya tuzaklar."
             ],
             yanlisKavramlar: ["Crystal (kristal) pahalı olduğu için tercih edilir", "Crystal (kristal) sadece daha parlak olduğu için kullanılır"],
             yanlisKavramIds: ["kristal_pahali", "kristal_pahali"],
-            idealCevap: "Crystal (kristal) içinde atom periyodik dizilir. Bu periodic potential (periyodik potansiyel) iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) doğurur. Böylece conductivity (iletkenlik) öngörülebilir, doping (katkılama) ile kontrol edilir ve her aygıtta tekrarlanır. Polycrystalline (çok kristalli) veya amorphous (amorf) malzemede grain boundary (tane sınırı) carriers (taşıyıcılar) saçar.",
+            idealCevap: "Crystal (kristal) içinde atom periyodik dizilir. Bu periodic potential (periyodik potansiyel) iyi tanımlı energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) doğurur. Böylece conductivity (iletkenlik) öngörülebilir, doping (katkılama) ile kontrol edilir ve her aygıtta tekrarlanır. Polycrystalline (çok kristalli) malzemede grain boundary (tane sınırı), amorphous (amorf) malzemede dangling bond (sarkık bağ) ve defect (kusur) carriers (taşıyıcılar) saçar veya tuzaklar.",
             yedekSecmeli: {
               soru: "Crystal (kristal) neden semiconductor (yarıiletken) device (aygıt) içinde tercih edilir?",
               secenekler: [
@@ -187,9 +187,9 @@
     ],
     temelTur: {
       kartlar: [
-        { baslik: "Crystal (kristal) nedir?", metin: "Atom (atom) long-range order (uzun menzilli düzen) ile dizilir." },
+        { baslik: "Crystal (kristal) nedir?", metin: "Atomlar long-range order (uzun menzilli düzen) ile dizilir." },
         { baslik: "Neden scattering (saçılma)?", metin: "Order (düzen) bozuldukça electron (elektron) daha sık saçılır (scattering)." },
-        { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt içinden yavaşça çekilir, düzen sürer." }
+        { baslik: "CZ nedir?", metin: "Seed crystal (tohum kristal) melt (eriyik) içinden yavaşça çekilir, düzen sürer." }
       ],
       sim: { modul: "kristal_tur", params: { mod: "tur" } }
     },
@@ -211,9 +211,9 @@
         id: "s01-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "cz_tohum", agirlik: 1,
         soru: "CZ'de seed crystal (tohum kristal) ne işe yarar?",
         secenekler: [
-          sec("Order (düzen) atom üzerine aktarır", true, "Doğru. Solidifying (katılaşan) atom seed crystal (tohum kristal) düzenini sürdürür."),
-          sec("melt (eriyik) soğutur", false, "Hayır. Cooling (soğutma) seed (tohum) işi değil."),
-          sec("melt (eriyik) temizler", false, "Hayır. Cleaning (temizlik) başka süreç.")
+          sec("Order (düzen) katılaşan atomlara aktarır", true, "Doğru. Solidifying (katılaşan) atom seed crystal (tohum kristal) düzenini sürdürür."),
+          sec("Melt (eriyik) soğutur", false, "Hayır. Cooling (soğutma) seed (tohum) işi değil."),
+          sec("Melt (eriyik) temizler", false, "Hayır. Cleaning (temizlik) başka süreç.")
         ],
         kusurSkin: "dislokasyon"
       },
@@ -221,9 +221,9 @@
         id: "s01-t05", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "kristal_neden", agirlik: 1,
         soru: "Chip (çip) için neden single crystal silicon (tek kristal silisyum) kullanılır?",
         secenekler: [
-          sec("electron (elektron) akışı ordered (düzenli) dizilimde öngörülebilir olur", true, "Doğru. Ordered lattice (düzenli kafes) electron (elektron) rastgele saçmaz."),
-          sec("Daha shiny (parlak) göründüğü için", false, "Hayır. Brightness (parlaklık) seçim nedeni değil."),
-          sec("Her zaman daha cheap (ucuz) olduğu için", false, "Hayır. Single crystal (tek kristal) üretmek pahalıdır.")
+          sec("Electron (elektron) akışı ordered (düzenli) dizilimde öngörülebilir olur", true, "Doğru. Ordered lattice (düzenli kafes) electron (elektron) rastgele saçmaz."),
+          sec("Daha parlak göründüğü için", false, "Hayır. Parlaklık seçim nedeni değil."),
+          sec("Her zaman daha ucuz olduğu için", false, "Hayır. Single crystal (tek kristal) üretmek pahalıdır.")
         ],
         kusurSkin: "vakans"
       }
