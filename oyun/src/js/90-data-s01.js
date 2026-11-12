@@ -60,6 +60,23 @@
       },
       {
         id: "s01-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "kati_turleri", agirlik: 1,
+        onBilgi: [
+          { baslik: "Tarihçe: kristal ve CZ", madde: [
+            "Katıların atom düzeni 1900'lerin başında X-ray (X-ışını) kırınımıyla anlaşıldı; kristalin düzenli olduğu böyle gösterildi.",
+            "Jan Czochralski (1916): eriyik metalden tek kristal çekme yöntemini buldu; yöntem onun adını taşır.",
+            "Bell Labs'te 1950 dolaylarında Teal ve Little bu yöntemi yarıiletken kristallere uyguladı.",
+            "Bugün chip (çip) için kullanılan wafer (dilim) neredeyse hep CZ ile çekilen silisyumdan kesilir." ] },
+          { baslik: "Katı türleri ve kusurlar", madde: [
+            "Single crystal (tek kristal): düzen tüm parçada kesintisiz sürer; long-range order (uzun menzilli düzen) vardır.",
+            "Polycrystalline (çok kristalli): küçük kristal grain (tane) topluluğu; grain boundary (tane sınırı) taneleri ayırır.",
+            "Amorphous (amorf): yalnızca yakın komşular düzenli; short-range order (kısa menzilli düzen) vardır, uzakta düzen kaybolur.",
+            "Scattering (saçılma): electron (elektron) bozuk düzende yön değiştirir; mean free path (serbest yol) iki saçılma arası ortalama mesafedir." ] },
+          { baslik: "Neden crystal, nasıl çekilir?", madde: [
+            "Lattice (kafes) tekrar ettiği için electron (elektron) periodic potential (periyodik potansiyel) görür; bundan energy band (enerji bandı) doğar.",
+            "CZ: melt (eriyik) silisyuma seed crystal (tohum kristal) batırılır, yavaşça döndürülerek çekilir; ingot (külçe) oluşur.",
+            "Ingot (külçe) dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
+            "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir." ] }
+        ],
         gorev: "Electron (elektron) üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
         tanitim: "Crystal (kristal): atomlar uzun menzilde düzenli. Polycrystalline (çok kristalli): düzenli taneler, aralarında grain boundary (tane sınırı). Amorphous (amorf): düzen yok. Mean free path (serbest yol): elektronun çarpmadan gittiği mesafe.",
         sim: { modul: "kristal_tur", params: { mod: "tur" }, basari: { hepsiniDene: true } },

@@ -68,6 +68,23 @@
       },
       {
         id: 's04-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bohr_seviye', agirlik: 1,
+        onBilgi: [
+          { baslik: "Tarihçe: atomdan spektruma", madde: [
+            "Balmer (1885): hidrojenin görünür ışık çizgilerini basit bir formülle verdi; neden öyle olduğunu kimse bilmiyordu.",
+            "Rutherford (1911): atomun merkezinde küçük, yüklü bir nucleus (çekirdek) var, electron (elektron) çevresinde dolaşır.",
+            "Klasik fiziğe göre dönen electron ışıma yapıp enerji kaybeder; bu atom kararlılığı sorununu doğurdu.",
+            "Niels Bohr (1913): electron yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir dedi; çizgileri açıkladı." ] },
+          { baslik: "Tanımlar ve sezgi", madde: [
+            "Energy level (enerji seviyesi): atomda electron (elektron) için izinli enerji değerleri; n = 1, 2, 3 ile sayılır.",
+            "Ground state (temel hâl): atomun en düşük enerjili hâli. Excited state (uyarılmış hâl): daha yüksek seviyedeki hâl.",
+            "Transition (geçiş): electron seviye değiştirirken seviye farkı kadar energy (enerji) taşıyan photon (foton) alır veya verir.",
+            "Discrete spectrum (ayrık spektrum): atom yalnızca belirli renkleri yayar; her çizgi bir seviye farkına karşılık gelir." ] },
+          { baslik: "Madde dalgası ve hapsolma", madde: [
+            "de Broglie (1924): her particle (parçacık) bir wave (dalga) gibi davranır. Davisson ve Germer (1927) electron diffraction (elektron kırınımı) gösterdi.",
+            "Matter wave (madde dalgası): λ = h/p; p momentum (momentum), λ metre (m), h = 6,626×10⁻³⁴ J·s.",
+            "Hidrojen: Eₙ = −13,6 eV / n². Foton: hf = E_üst − E_alt. Uncertainty principle (belirsizlik ilkesi): Δx·Δp ≥ ħ/2.",
+            "Boundary condition (sınır koşulu): hapsolmuş wave (dalga) kenarlarda uygun biçimde sonlanmalıdır; bu yalnızca belirli dalga boylarına izin verir." ] }
+        ],
         gorev: 'n=3\'ten n=2\'ye transition (geçiş) rengini bul.',
         sim: {
           modul: 'bohr',

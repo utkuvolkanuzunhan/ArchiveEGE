@@ -69,6 +69,23 @@
       },
       {
         id: 's03-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'karacisim_felaket', agirlik: 1,
+        onBilgi: [
+          { baslik: "Tarihçe: ışık ve enerji paketleri", madde: [
+            "Blackbody (kara cisim): üzerine düşen ışığın tamamını soğuran ideal cisim; ısınınca sıcaklığına göre ışık yayar.",
+            "Klasik teori düşük frequency (frekans) değerlerinde deneyle uyuştu, ama yüksek frequency değerlerinde sonsuz energy (enerji) öngördü.",
+            "Max Planck (Berlin, 1900): enerji ancak paketler halinde alınıp verilir diyerek ölçümle uyuşan eğriyi buldu.",
+            "Hertz (1887) photoelectric effect (fotoelektrik olay) gözledi; Einstein (1905) ışığı foton paketleriyle açıkladı, Nobel 1921." ] },
+          { baslik: "Tanımlar ve sezgi", madde: [
+            "Quantum (kuantum): enerjinin bölünemeyen en küçük paketi. Photon (foton): ışığın bir kuantumu.",
+            "Intensity (şiddet): saniyede gelen photon sayısıdır; her photon (foton) kendi energy (enerji) değerini taşır.",
+            "Photoelectric effect (fotoelektrik olay): ışık metalden electron (elektron) koparır. Her electron tek bir photon ile etkileşir.",
+            "Work function (iş fonksiyonu) φ: electron (elektron) metalden çıkarmak için gereken en küçük energy (enerji)." ] },
+          { baslik: "Formüller ve karışan noktalar", madde: [
+            "E = hf; h = 6,626×10⁻³⁴ J·s, f hertz (Hz), E joule (J) veya eV. Threshold frequency (eşik frekansı): f₀ = φ/h.",
+            "Kinetic energy (kinetik enerji): K = hf − φ. Eşik üstünde frequency arttıkça K büyür; sayıyı intensity belirler.",
+            "Karışan: wavelength (dalga boyu) kısaldıkça frequency (frekans) ve photon energy (foton enerjisi) artar; λf = c.",
+            "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] }
+        ],
         gorev: 'Temperature (sıcaklık) değerini 5000 K yap, classical curve (klasik eğri) açık kalsın.',
         sim: {
           modul: 'karacisim',
