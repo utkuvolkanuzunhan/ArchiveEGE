@@ -15,7 +15,8 @@
       sec('Sınırsız electron (elektron)', false, 'Yanlış. Pauli exclusion principle (Pauli dışlama ilkesi) bunu yasaklar.'),
       sec('Yalnızca bir electron (elektron), spin (spin) fark etmez', false, 'Yanlış. Zıt spin (spin) ile iki electron (elektron) sığar.')
     ],
-    kusurSkin: 'pauli_cift'
+    kusurSkin: 'pauli_cift',
+    ipucu: "Spin kaç değer alır? \"Pauli ilkesi ve doluluk\" kartına bak."
   };
 
   var o04 = {
@@ -26,7 +27,8 @@
       sec('Atom (atom) hiç electron (elektron) içermez', false, 'Hayır. Electron (elektron) vardır, ama hareket edemez.'),
       sec('Conduction band (iletim bandı) yarı doludur', false, 'Hayır. Yarı dolu band (bant) metal (metal) özelliğidir.')
     ],
-    kusurSkin: 'bant_bosluk'
+    kusurSkin: 'bant_bosluk',
+    ipucu: "Dolu band ve E_g: \"Nasıl yapılır: malzemeyi belirle\" kartındaki Adım 2-3'e bak."
   };
 
   var o05 = {
@@ -42,7 +44,8 @@
       onceki: { N: 1 },
       sonraki: { N: 32 }
     },
-    acik: 'N 1\'den 32\'ye çıkınca tek energy level (enerji seviyesi) 32 çizgiye yarıldı; çizgiler band (bant) oluşturdu.'
+    acik: 'N 1\'den 32\'ye çıkınca tek energy level (enerji seviyesi) 32 çizgiye yarıldı; çizgiler band (bant) oluşturdu.',
+    ipucu: "N atom kaç seviye verir? \"Energy band nasıl oluşur\" kartına bak."
   };
 
   Q.data.stations.s09 = {
@@ -92,6 +95,29 @@
             "Metal (metal): band yarı dolu ya da örtüşür. Insulator (yalıtkan): büyük E_g (elmas ≈ 5,5 eV).",
             "Semiconductor (yarıiletken): küçük E_g (silikon ≈ 1,1 eV). Ayrım probability (olasılık) değil, band (bant) yapısıdır." ] }
         ],
+        nasil: [
+          { baslik: "Nasıl yapılır: malzemeyi belirle", madde: [
+            "Adım 1: kapasiteyi bul. N atom (atom) N seviye verir, her seviye 2 electron (elektron) alır; band (bant) kapasitesi 2N olur.",
+            "Adım 2: electron (elektron) sayısını kapasiteyle karşılaştır. Band (bant) yarı doluysa metal (metal); tam doluysa Adım 3.",
+            "Adım 3: tam dolu bandın üstündeki bandgap (yasak enerji aralığı) E_g'ye bak: birkaç eV ise insulator (yalıtkan), yaklaşık 1 eV ise semiconductor (yarıiletken).",
+            "Örnek: N = 10, kapasite 20. 10 electron (elektron) varsa band (bant) yarı dolu: metal. 20 electron ve E_g = 6 eV ise insulator (yalıtkan)." ] },
+          { baslik: "Nasıl yapılır: gap ve foton", madde: [
+            "Foton enerjisi E = hc/λ, hc = 1239,84 eV·nm. Elektronu bandgap (yasak enerji aralığı) üstüne çıkarmak için E ≥ E_g gerekir.",
+            "Adım 1: E_g'yi eV yaz. Adım 2: λ_max = hc / E_g hesapla. Bundan uzun dalga boyu soğurulmaz.",
+            "Örnek: germanium (germanyum) E_g = 0,67 eV. λ_max = 1239,84 / 0,67 ≈ 1850 nm; 2000 nm fotonun enerjisi E_g'den küçüktür, soğurulmaz.",
+            "Tersi: electron (elektron) iletim bandından alta inerse yaklaşık E_g enerjili foton yayılır; dalga boyu aynı formülle bulunur." ] },
+          { baslik: "Nasıl yapılır: zincir ve cevap", madde: [
+            "Zincir sırası nedensellik sırasıdır: atomlar yaklaşır, seviyeler yarılır, çizgiler yığılıp band (bant) olur, bantlar arası boşluk bandgap (yasak enerji aralığı) kalır.",
+            "Neden: yarılma atomların etkileşiminden doğar; tek atomda yarılma olmaz. Band (bant) ancak çok yakın çizgi olunca oluşur; gap ise bantlardan sonra kalan boşluktur.",
+            "Dolu band (bant) neden akım taşımaz: electron (elektron) hareket için boş seviye ister, tam dolu bandda komşu boş seviye yoktur.",
+            "Açık cevap şablonu: (1) seviyeler yarılır, (2) band (bant) olur, (3) Pauli kapasitesi, (4) doluluk ve E_g ile malzemeyi sınıfla." ] },
+          { baslik: "Nasıl yapılır: bant simülasyonu", madde: [
+            "N kaydırıcısı atom (atom) sayısını 1'den 64'e çıkarır; N arttıkça her seviye N çizgiye yarılır ve çizgiler band (bant) oluşturur.",
+            "Üç düğme malzemeyi seçer: Metal, Insulator (yalıtkan), Semiconductor (yarıiletken). Alttaki satırda E_g değeri görünür.",
+            "Fill electrons (elektron doldur) düğmesi electron'ları alttan yukarı doldurur; dolum bitince akım taşıyıp taşımadığı yazılır.",
+            "Görev sırası: N'yi 32 yap, bir malzeme seç, Fill'e bas; sonra diğer iki malzemede tekrarla." ] }
+        ],
+        tanitim: "Kaydırıcı N atom (atom) sayısını değiştirir. Üç düğme malzemeyi seçer. Fill electrons (elektron doldur) alttan doldurur; alttaki satır E_g ve akım durumunu yazar. Kartları Nasıl yapılır? düğmesiyle yeniden açabilirsin.",
         gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {
           modul: 'bant',
@@ -105,6 +131,7 @@
       o05,
       {
         id: 's09-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'bant_sonsuz_kuyu', agirlik: 1,
+        ipucu: "Bant için kaç atom gerekir? \"Energy band nasıl oluşur\" kartındaki 3. maddeye bak.",
         iddia: 'Tek infinite well (sonsuz kuyu) içinde energy bands (enerji bantları) oluşur.',
         parcalar: ['Tek infinite well (sonsuz kuyu)', 'içinde energy bands (enerji bantları)', 'oluşur.'],
         yanlisParca: 0,
@@ -112,12 +139,19 @@
       },
       {
         id: 's09-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'bant_yarilma', agirlik: 1,
+        ipucu: "Önce etkileşme, sonra yarılma: \"Nasıl yapılır: zincir ve cevap\" kartına bak.",
         soru: 'Band (bant) oluşum zincirini sıraya diz',
         bloklar: [
           'N atom (atom) bir araya gelir',
           'Her energy level (enerji seviyesi) N yakın çizgiye yarılır',
           'Energy level (enerji seviyesi) çizgileri birleşip energy band (enerji bandı) olur',
           'Bandgap (yasak enerji aralığı) energy band (enerji bandı) gruplarını ayırır'
+        ],
+        nedenler: [
+          "Etkileşme yarılmanın önkoşuludur; tek atomda yarılma olmaz.",
+          "Seviyeler birbirini etkileyip yakın çizgilere ayrılır; N atom N çizgi verir.",
+          "Çok sayıda yakın çizgi neredeyse sürekli bir enerji aralığını doldurur.",
+          "Bantlar oluşunca aralarında izinli durum olmayan bir enerji bölgesi kalır."
         ],
         sonuc: 'N atom (atom), N energy level (enerji seviyesi), energy bands (enerji bantları), aralarında bandgap (yasak enerji aralığı).'
       },

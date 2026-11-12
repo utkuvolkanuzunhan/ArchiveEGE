@@ -14,7 +14,8 @@
       sec('f(E_F) = 1/2', true, 'Doğru. E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.'),
       sec('f(E_F) = 1', false, 'Yanlış. Olasılık 1 olsaydı seviye her zaman dolu olurdu.'),
       sec('f(E_F) = 0', false, 'Yanlış. Seviye E_F üstünde bile kısmen doludur.')
-    ]
+    ],
+    ipucu: "Formülde E = E_F koy: \"Nasıl yapılır: f(E) hesabı\" kartındaki adımlara bak."
   };
 
   var o04 = {
@@ -25,7 +26,8 @@
       sec('p de aynı oranda artar', false, 'Hayır. Çarpım sabit olduğu için p düşer.'),
       sec('p hiç değişmez', false, 'Hayır. n büyürse p küçülür.')
     ],
-    kusurSkin: 'safsizlik'
+    kusurSkin: 'safsizlik',
+    ipucu: "Çarpım np sabit: \"Nasıl yapılır: np = nᵢ²\" kartındaki örneğe bak."
   };
 
   var o05 = {
@@ -41,7 +43,8 @@
       onceki: { T: 300 },
       sonraki: { T: 50 }
     },
-    acik: 'T 300 K\'den 50 K\'e inince f(E) eğrisi diklendi; geçiş bölgesi E_F çevresinde daraldı, basamağa yaklaştı.'
+    acik: 'T 300 K\'den 50 K\'e inince f(E) eğrisi diklendi; geçiş bölgesi E_F çevresinde daraldı, basamağa yaklaştı.',
+    ipucu: "Geçiş genişliği kT ile orantılı: \"Nasıl yapılır: sıcaklık ve kT\" kartına bak."
   };
 
   Q.data.stations.s10 = {
@@ -91,6 +94,29 @@
             "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); electron (elektron) ve hole (delik) katkıları toplanır.",
             "Sık karışan nokta: drift, alan etkisiyle olur; diffusion (difüzyon) ise konsantrasyon farkıyla olur." ] }
         ],
+        nasil: [
+          { baslik: "Nasıl yapılır: f(E) hesabı", madde: [
+            "Adım 1: kT = 8,617×10⁻⁵ · T (eV). Adım 2: x = (E − E_F)/kT. Adım 3: f = 1/(1 + eˣ).",
+            "Örnek: E − E_F = 0,06 eV, T = 500 K. kT = 0,0431 eV, x = 1,39, f = 1/(1 + 4,03) ≈ 0,20.",
+            "E, E_F altındaysa x negatiftir ve f 1/2'den büyük çıkar. Örnek: −0,05 eV, 300 K için x = −1,93, f ≈ 0,87.",
+            "Özel durum E = E_F: x kaç olur, eˣ kaç eder, f kaç çıkar? Önce kendin hesapla, sonra soruya geç." ] },
+          { baslik: "Nasıl yapılır: sıcaklık ve kT", madde: [
+            "Geçiş bölgesinin genişliği kT ile orantılıdır. T'yi k kat değiştirirsen genişlik de k kat değişir.",
+            "Örnek: 600 K → 150 K. T dört kat düşer; kT 51,7 meV'den 12,9 meV'ye iner, eğri dört kat daralır.",
+            "T düştükçe eğri step function (basamak fonksiyonu) biçimine yaklaşır. E_F noktası kaymaz, yalnızca eğrinin yumuşaklığı değişir.",
+            "Açık cevap şablonu: formülü yaz, sembolleri açıkla, E = E_F ve T = 0 K durumlarını söyle, T artınca ne olduğunu ekle." ] },
+          { baslik: "Nasıl yapılır: np = nᵢ²", madde: [
+            "Adım 1: nᵢ'yi al. Adım 2: katkıdan gelen çoğunluk taşıyıcı n'yi belirle. Adım 3: p = nᵢ²/n hesapla.",
+            "Örnek: nᵢ = 10¹⁰ cm⁻³, n = 10¹⁴ cm⁻³. p = (10¹⁰)²/10¹⁴ = 10⁶ cm⁻³; n 10⁴ kat arttı, p 10⁴ kat azaldı.",
+            "Çarpım np sabittir: n kaç kat artarsa p o kadar kat azalır. Toplam n + p sabit değildir.",
+            "Çoğunluk taşıyıcı katkıdan gelir; azınlık taşıyıcı np = nᵢ² bağıntısından bulunur." ] },
+          { baslik: "Nasıl yapılır: drift zinciri", madde: [
+            "Zincir sırası nedensellik sırasıdır: önce neden (alan), sonra tepki (hız), sonra taşıyanlar (n, p), en son sonuç (akım yoğunluğu).",
+            "Adım 1: v_d = μE ile hızı bul. Adım 2: J = q(nμₙ + pμₚ)E ile akım yoğunluğunu bul.",
+            "Örnek: μ = 500 cm²/V·s, E = 20 V/cm. v_d = 500 · 20 = 10⁴ cm/s.",
+            "Aynı örnekte n = 10¹⁵ cm⁻³ (p ihmal): J = 1,6×10⁻¹⁹ · 10¹⁵ · 500 · 20 = 1,6 A/cm²." ] }
+        ],
+        tanitim: "Üç kaydırıcı: T sıcaklığı, E_F Fermi seviyesini, E elektrik alanını (V/cm) değiştirir. Üstteki grafik f(E) eğrisidir; T düşünce basamağa döner. E artınca parçacıkların kayması hızlanır. Alttaki satır f(E_F), n, p değerlerini gösterir.",
         gorev: 'T\'yi 50 K\'e indir (Fermi eğrisi basamağa döner), sonra alan E\'yi artır (drift hızı v_d = μE).',
         sim: {
           modul: 'fermi',
@@ -104,6 +130,7 @@
       o05,
       {
         id: 's10-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'fermi_hep_dolu', agirlik: 1,
+        ipucu: "T > 0 için E = E_F koy: \"Nasıl yapılır: f(E) hesabı\" kartının son maddesine bak.",
         iddia: 'Fermi function (Fermi fonksiyonu) için f(E_F) her sıcaklıkta 1 değerini alır.',
         parcalar: ['Fermi function (Fermi fonksiyonu) için', 'f(E_F) her sıcaklıkta', '1 değerini alır.'],
         yanlisParca: 2,
@@ -111,12 +138,19 @@
       },
       {
         id: 's10-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'drift_hiz', agirlik: 1,
+        ipucu: "Önce neden, sonra tepki: \"Nasıl yapılır: drift zinciri\" kartına bak.",
         soru: 'Drift (sürüklenme) zincirini sıraya diz',
         bloklar: [
           'Electric field (elektrik alanı) E uygulanır',
           'Carrier (taşıyıcı) ortalama v_d = μE hızı kazanır',
           'Hareketli n ve p yük taşır',
           'Akım yoğunluğu J = q(nμₙ + pμₚ)E olur'
+        ],
+        nedenler: [
+          "Zincir alanla başlar; alan olmadan yükü sürükleyen bir kuvvet yoktur.",
+          "Alan taşıyıcıyı hızlandırır, saçılma ortalama bir hıza oturtur: v_d = μE.",
+          "Akım, hareket eden yüklerin sayısına ve her birinin hızına bağlıdır.",
+          "Hız ve yoğunluk birleşince akım yoğunluğu J çıkar."
         ],
         sonuc: 'Alan E, drift velocity (sürüklenme hızı) v_d = μE verir; n ve p ile birlikte J = q(nμₙ + pμₚ)E akımı çıkar.'
       },
