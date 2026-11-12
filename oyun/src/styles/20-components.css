@@ -47,6 +47,7 @@
 #bubble-layer .bubble.canavar::after{left:auto;right:24px}
 #bubble-layer .bubble.anlatici{left:50%;top:8%;max-width:46%;animation:popc .5s ease-out both}
 #bubble-layer .bubble.anlatici::after{left:calc(50% - 9px)}
+@media (max-width:900px){#bubble-layer .bubble{padding:8px 12px;font-size:15px;max-width:66%}#bubble-layer .bubble.runner{left:3%;top:6%}#bubble-layer .bubble.canavar{right:3%;top:42%}#bubble-layer .bubble.anlatici{max-width:84%;top:5%}}  /* 700x800: baloncuk yol sahnesinde kırpılmasın */
 @keyframes pop{from{transform:scale(.7);opacity:0}to{transform:none;opacity:1}}
 @keyframes popc{from{transform:translateX(-50%) scale(.7);opacity:0}to{transform:translateX(-50%);opacity:1}}
 #bubble-layer .bubble.anlatici{transform:translateX(-50%)}
@@ -94,7 +95,8 @@
 #dock .kavram-sim canvas,#dock .kavram-sim svg{max-height:100%;max-width:100%;object-fit:contain}
 #dock .kavram-butonlar{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap}
 /* "Nasıl yapılır?" köşe düğmesi geri bildirim kutusunun son sözcüklerini örtmesin */
-#dock:has(> .ob-onbilgi-ac) .aciklama,#dock:has(> .ob-onbilgi-ac) .p5-box{margin-right:140px}
+#dock:has(> .ob-onbilgi-ac) .dusman-soru,#dock:has(> .ob-onbilgi-ac) .aciklama,#dock:has(> .ob-onbilgi-ac) .p5-box{margin-right:140px}
+#dock:has(> .ob-onbilgi-ac) .tahmin-soru,#dock:has(> .ob-onbilgi-ac) .dusman-soru{margin-right:130px !important}  /* "Nasıl yapılır?" düğmesi soru metnini örtmesin (inline margin'i ezmek için !important) */
 @media (max-height:800px){#dock{padding:8px 12px;gap:6px}}
 @media (max-height:800px){#dock .opts{gap:5px}#dock .opt{padding:5px 12px;min-height:38px}}  /* 4 şık + Onayla 1366x768 dock içinde kaydırmasız */
 @media (max-height:1000px){#dock .opt{min-height:34px;padding:4px 12px;gap:8px}#dock .opt .num{width:24px;height:24px}}
