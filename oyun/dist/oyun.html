@@ -720,7 +720,7 @@ html,body{height:100%;margin:0;overflow:hidden}
       var d = doc();
       if (d) {
         var a = d.getElementById('a8-claude-text'); if (a) a.textContent = t;
-        var h = d.getElementById('hud-claude'); if (h) h.textContent = ad;
+        var h = d.getElementById('hud-claude'); if (h) h.textContent = 'Claude: ' + ad;
       }
       return r;
     });
@@ -759,7 +759,7 @@ html,body{height:100%;margin:0;overflow:hidden}
     } else if (!goster && e && e.parentNode) e.parentNode.removeChild(e);
   }
   function showPanel(s){
-    panelEl.textContent = '';
+    panelEl.textContent = ''; panelEl.style.display = '';
     var p = prog(s.id), acik = S.istasyonAcik(s.id);
     panelEl.appendChild(el('h3', '', s.sira + '. ' + s.ad));
     panelEl.appendChild(el('p', '', s.konu));
@@ -825,7 +825,7 @@ html,body{height:100%;margin:0;overflow:hidden}
       listEl.appendChild(b);
     });
     box.appendChild(listEl);
-    panelEl = el('div', 'panel'); panelEl.id = 'a8-station-panel'; panelEl.style.padding = '12px';
+    panelEl = el('div', 'panel'); panelEl.id = 'a8-station-panel'; panelEl.style.padding = '12px'; panelEl.style.display = 'none';
     box.appendChild(panelEl);
     /* kartlar */
     box.appendChild(el('h3', '', 'Kart koleksiyonu'));
@@ -848,6 +848,11 @@ html,body{height:100%;margin:0;overflow:hidden}
     var row = el('div'); row.style.cssText = 'display:flex;gap:8px;margin-top:12px';
     var tb = btn('Tekrar Merkezi', 'primary', function(){ if (Q.tekrar && Q.tekrar.open) Q.tekrar.open(); }); tb.id = 'a10-tekrar'; row.appendChild(tb);
     row.appendChild(btn('Ayarlar', '', function(){ S.open(); }));
+    if (Q.final && Q.final.start) {
+      var fb = btn('Sınav Günü (Final)', '', function(){ Q.final.start(); }); fb.id = 'a7-final';
+      if (!Q.final.acik()) { fb.disabled = true; fb.title = 'Önce 9 istasyonu bitir'; fb.style.opacity = '.55'; }
+      row.appendChild(fb);
+    }
     box.appendChild(row);
   }
   S.openMap = function(){
@@ -902,7 +907,7 @@ html,body{height:100%;margin:0;overflow:hidden}
       var tg = e.target, tag = tg && tg.tagName;
       if (e.key === 'Escape') {
         if (settingsEl) { S.close(); e.stopPropagation(); e.preventDefault(); }
-        else if (panelEl && panelEl.firstChild) { panelEl.textContent = ''; e.stopPropagation(); }
+        else if (panelEl && panelEl.firstChild) { panelEl.textContent = ''; panelEl.style.display = 'none'; e.stopPropagation(); }
         return;
       }
       if ((e.key === 's' || e.key === 'S') && !e.ctrlKey && !e.metaKey && !e.altKey &&
@@ -1100,7 +1105,7 @@ html,body{height:100%;margin:0;overflow:hidden}
       throw m;
     }
   }
-  async function callApi(prompt, signal, maxTok){
+  async function callApi(prompt, signal, maxTok, ek){
     var res;
     try {
       res = await root.fetch('https://api.anthropic.com/v1/messages', {
@@ -1110,10 +1115,15 @@ html,body{height:100%;margin:0;overflow:hidden}
           'anthropic-version': '2023-06-01',
           'anthropic-dangerous-direct-browser-access': 'true'
         },
-        body: JSON.stringify({ model: modelAdi(), max_tokens: maxTok || 700, messages: [{ role: 'user', content: prompt }] })
+        body: JSON.stringify((function(){
+          var b = { model: modelAdi(), max_tokens: maxTok || 700, messages: (ek && ek.messages) || [{ role: 'user', content: prompt }] };
+          if (ek && ek.system) b.system = ek.system;
+          return b;
+        })())
       });
     } catch (e) {
       if (e && e.name === 'AbortError') throw rej('iptal');
+      if (ek && ek.sohbet) throw rej('ag', 'ağ hatası');
       forcedNone = true; setBackend('none');
       toast('Bu sayfada API anahtarı çalışmıyor. Yerel dosya olarak aç ya da claude.ai\'daki yayını kullan.', 'kotu');
       throw rej('gecici', 'ağ hatası');
@@ -1150,6 +1160,43 @@ html,body{height:100%;margin:0;overflow:hidden}
       if (e && e.code) throw e;
       throw rej('gecici', String(e && e.message || e));
     } finally { busy = false; ctl = null; }
+  };
+
+  /* Sohbet: o = {system, messages:[{role:'user'|'assistant', content}], signal, timeoutMs, maxTokens} -> Promise<string>
+   * Hata kodları: yok, iptal, zaman, ag, sinir, gecici. Anahtar hiçbir yere yazılmaz. */
+  var chatBusy = false;
+  C.chat = async function(o){
+    o = o || {};
+    var av = await C.available();
+    if (av.backend === 'none') throw rej('yok', 'Claude kullanılamıyor');
+    if (chatBusy) throw rej('gecici', 'Önceki mesaj sürüyor');
+    var msgs = (o.messages || []).map(function(m){ return { role: m.role === 'assistant' ? 'assistant' : 'user', content: String(m.content == null ? '' : m.content) }; });
+    if (!msgs.length) throw rej('gecici', 'Mesaj yok');
+    chatBusy = true;
+    var c = (typeof AbortController !== 'undefined') ? new AbortController() : { signal: undefined, abort: function(){} };
+    var zaman = false, tm = setTimeout(function(){ zaman = true; try { c.abort(); } catch (e) {} }, o.timeoutMs || 45000);
+    if (o.signal && o.signal.addEventListener) {
+      if (o.signal.aborted) c.abort(); else o.signal.addEventListener('abort', function(){ try { c.abort(); } catch (e) {} });
+    }
+    try {
+      var text;
+      if (av.backend === 'sample') {
+        var pr = (o.system ? o.system + '\n\n' : '') + msgs.map(function(m){ return (m.role === 'user' ? 'ÖĞRENCİ: ' : 'ASİSTAN: ') + m.content; }).join('\n\n') + '\n\nASİSTAN:';
+        try {
+          text = await sampleObj.text(pr, { model: modelAdi(), effort: efor(), modelTier: 'default', cache: false, signal: c.signal });
+        } catch (e) {
+          var m = mapSampleErr(e);
+          if (m.code === 'iptal' && zaman) throw rej('zaman');
+          throw m;
+        }
+      } else {
+        try { text = await callApi('', c.signal, o.maxTokens || 900, { messages: msgs, system: o.system, sohbet: true }); }
+        catch (e) { if (e && e.code === 'iptal' && zaman) throw rej('zaman'); throw e; }
+      }
+      text = String(text == null ? '' : (typeof text === 'object' && text.text ? text.text : text)).trim();
+      if (!text) throw rej('gecici', 'boş yanıt');
+      return text;
+    } finally { clearTimeout(tm); chatBusy = false; }
   };
 
   C.test = async function(){
@@ -4361,11 +4408,11 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       var grp = document.createElement('div');
       grp.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;';
       TURLER.forEach(function(t){
-        tBtn[t] = mkBtn(t, function(){ sec(t); });
+        tBtn[t] = mkBtn(t === 'elmas' ? 'diamond (elmas)' : t, function(){ sec(t); });
         grp.appendChild(tBtn[t]);
       });
       bar.appendChild(grp);
-      var sayBtn = mkBtn('Say', function(){ sayModu = !sayModu; sonuc = ''; tahmin = 1; guncelle(); });
+      var sayBtn = mkBtn('Say (Count)', function(){ sayModu = !sayModu; sonuc = ''; tahmin = 1; guncelle(); });
       bar.appendChild(sayBtn);
       var sayGrp = document.createElement('div');
       sayGrp.style.cssText = 'display:flex;gap:6px;align-items:center;';
@@ -6101,6 +6148,84 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
   if (typeof Q !== 'undefined' && Q.sim && Q.sim.register) Q.sim.register('olcum', impl);
 })();
 
+/* 79-onbilgi.js "Bilgi kartı" gezgini: hikaye/kavram engelinin opsiyonel ob.onBilgi alanını gösterir.
+ * Q.onBilgi.goster(host, kartlar, {son:'Devam'}) -> Promise (kartlar bitince çözülür). Ok tuşları/Enter/düğmeler.
+ * Kartlar: [{ baslik, madde:[...] }] (1-3 sayfa). Esc'e dokunmaz (çalıştırıcı menüsü çalışır).
+ * Q.onBilgi.hepsi(stationId) -> istasyondaki tüm kartların düz listesi (Tekrar Merkezi için). */
+(function(){
+  'use strict';
+  var Q = window.Q;
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  function goster(host, kartlar, opt){
+    kartlar = (kartlar || []).slice(0, 3);
+    if (!kartlar.length) return Promise.resolve();
+    opt = opt || {};
+    return new Promise(function(res){
+      var i = 0, t0 = Date.now(), bitti = false;
+      host.textContent = '';
+      var wrap = el('div', 'ob-onbilgi');
+      wrap.style.cssText = 'padding:10px 16px;max-height:100%;overflow:auto;';
+      var ust = el('div', 'ob-onbilgi-ust');
+      ust.style.cssText = 'display:flex;gap:10px;align-items:center;margin-bottom:8px;flex-wrap:wrap;';
+      var etiket = el('span', 'ob-onbilgi-etiket', 'Bilgi kartı');
+      etiket.style.cssText = 'font-family:var(--font-d);font-size:18px;color:var(--accent-ink);background:var(--accent);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);padding:2px 12px;box-shadow:var(--shadow-sm);';
+      var sayfa = el('span', 'ob-onbilgi-sayfa');
+      sayfa.style.cssText = 'font-weight:800;font-size:15px;';
+      ust.appendChild(etiket); ust.appendChild(sayfa);
+      var baslik = el('h3', 'ob-onbilgi-baslik');
+      baslik.style.cssText = 'margin:0 0 6px;font-family:var(--font-d);font-size:22px;';
+      var liste = el('ul', 'ob-onbilgi-liste');
+      liste.setAttribute('aria-live', 'polite');
+      liste.style.cssText = 'margin:0 0 10px;padding-left:22px;display:flex;flex-direction:column;gap:5px;font-size:var(--fs-body);font-weight:700;line-height:1.3;';
+      var alt = el('div', 'ob-onbilgi-alt');
+      alt.style.cssText = 'display:flex;gap:10px;align-items:center;';
+      function mk(txt, cls){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), txt); b.type = 'button'; return b; }
+      var geri = mk('◀ Geri'), ileri = mk('İleri ▶', 'primary');
+      geri.classList.add('ob-onbilgi-geri'); ileri.classList.add('ob-onbilgi-ileri');
+      alt.appendChild(geri); alt.appendChild(ileri);
+      wrap.appendChild(ust); wrap.appendChild(baslik); wrap.appendChild(liste); wrap.appendChild(alt);
+      host.appendChild(wrap);
+
+      function ciz(){
+        var k = kartlar[i] || {};
+        baslik.textContent = k.baslik || '';
+        liste.textContent = '';
+        (k.madde || []).slice(0, 4).forEach(function(m){ liste.appendChild(el('li', null, m)); });
+        sayfa.textContent = (i + 1) + ' / ' + kartlar.length;
+        geri.disabled = i === 0;
+        ileri.textContent = i === kartlar.length - 1 ? (opt.son || 'Devam') : 'İleri ▶';
+        try { ileri.focus(); } catch (e) {}
+      }
+      function bit(){
+        if (bitti) return; bitti = true;
+        document.removeEventListener('keydown', key, true);
+        host.textContent = '';
+        res();
+      }
+      function sonra(){ if (i < kartlar.length - 1) { i++; ciz(); } else bit(); }
+      function once(){ if (i > 0) { i--; ciz(); } }
+      function key(e){
+        if (e.key === 'ArrowRight') { e.preventDefault(); sonra(); }
+        else if (e.key === 'ArrowLeft') { e.preventDefault(); once(); }
+        else if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); e.stopPropagation(); sonra(); }
+      }
+      geri.addEventListener('click', once);
+      ileri.addEventListener('click', sonra);
+      document.addEventListener('keydown', key, true);
+      ciz();
+    });
+  }
+
+  function hepsi(stationId){
+    var st = Q.data && Q.data.stations && Q.data.stations[stationId], out = [];
+    ((st && st.engeller) || []).forEach(function(o){ if (Array.isArray(o.onBilgi)) out = out.concat(o.onBilgi); });
+    return out;
+  }
+
+  Q.onBilgi = { goster: goster, hepsi: hepsi };
+})();
+
 /* 80-obs-dusman.js (H2) `dusman` engel işleyicisi: 1 cümlelik kavram sorusu,
  * 3 seçenek, eminlik, açıklama + Devam. Hasarı uygulamaz (runner uygular).
  * Ekler: Q.obs.register('dusman'). Bağımlılık: 00-q.js, Q.ui (options, confidence, toast),
@@ -6291,15 +6416,20 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         void balon.offsetWidth;
         balon.style.opacity = '1';
         try { ctx.runway.say(sr.kim, sr.metin); } catch (e) {}
-        await sleep(400);
+        await sleep(250);
         await new Promise(function(res){
-          var t = setTimeout(function(){ ilerle = null; res(); }, 1800);
+          var t = setTimeout(function(){ ilerle = null; res(); }, 1400);
           ilerle = function(){ clearTimeout(t); ilerle = null; res(); };
         });
       }
 
       bitti = true;
       document.removeEventListener('keydown', onKey);
+      if (ob.onBilgi && ob.onBilgi.length && Q.onBilgi) {
+        await Q.onBilgi.goster(host, ob.onBilgi);
+        host.textContent = '';
+        host.appendChild(wrap);
+      }
       await new Promise(function(res){
         var b = el('button', 'hk-devam', 'Devam');
         b.type = 'button';
@@ -6322,7 +6452,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 })();
 
 /* 80-obs-kavram.js (H3) Engel işleyicisi: "kavram" (kavram kapısı).
- * Dock'ta görev satırı + simülasyon; api.done ile kapı açılır, 45 sn sonra İpucu, 120 sn sonra Geç düğmesi.
+ * Dock'ta görev satırı + simülasyon; api.done ile kapı açılır, 15 sn sonra İpucu, 60 sn sonra Geç düğmesi.
  * Ekler: Q.obs.handlers.kavram. Süreler ctx.sureler ({ipucu, gec} ms) veya Q.obs.sureler ile kısaltılabilir.
  * Bağımlılık: 00-q.js (Q.util, Q.sim, Q.obs); çalışma anında Q.ui.toast, ctx.runway (isteğe bağlı). */
 (function(){
@@ -6375,15 +6505,26 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       try {
         var host = ctx.host;
         host.textContent = '';
+        var ay = (ctx.state && ctx.state.ayarlar) || {};
+        if (ob.onBilgi && ob.onBilgi.length && Q.onBilgi && !ay.hikayeAtla) {
+          await Q.onBilgi.goster(host, ob.onBilgi, { son: 'Göreve geç' });
+          host.textContent = '';
+        }
         var sure = ctx.sureler || (Q.obs && Q.obs.sureler) || {};
-        var tIpucu = sure.ipucu != null ? sure.ipucu : 45000;
-        var tGec = sure.gec != null ? sure.gec : 120000;
+        var tIpucu = sure.ipucu != null ? sure.ipucu : 15000;
+        var tGec = sure.gec != null ? sure.gec : 60000;
 
         var gorev = U.el('p', 'kavram-gorev'); gorev.textContent = ob.gorev || '';
         var simHost = U.el('div', 'kavram-sim');
         var hintLine = U.el('p', 'kavram-ipucu'); hintLine.hidden = true;
         var butonlar = U.el('div', 'kavram-butonlar');
-        host.appendChild(gorev); host.appendChild(simHost);
+        host.appendChild(gorev);
+        if (ob.tanitim) {
+          var tan = U.el('p', 'kavram-tanitim'); tan.textContent = ob.tanitim;
+          tan.style.cssText = 'margin:2px 0 4px;font-size:14px;line-height:1.3;color:var(--muted,#b9b0e0);';
+          host.appendChild(tan);
+        }
+        host.appendChild(simHost);
         host.appendChild(hintLine); host.appendChild(butonlar);
 
         var sonHint = '', acildi = false, kapandi = false, bitir;
@@ -6491,6 +6632,9 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       root.style.cssText = 'display:flex;flex-direction:column;gap:4px;';
       var head = el('div', 'kopru-soru', ob.soru || 'Zinciri sıraya diz');
       head.style.cssText = 'font-family:var(--font-d);font-size:17px;';
+      var nasil = el('span', 'kopru-nasil', '  · Kartlara dokun, sırayla dizilir. Dolunca Kontrol.');
+      nasil.style.cssText = 'font-family:inherit;font-size:14px;color:var(--muted,#b9b0e0);';
+      head.appendChild(nasil);
       var poolBox = el('div', 'kopru-havuz');
       poolBox.setAttribute('aria-label', 'Kartlar');
       poolBox.style.cssText = 'display:flex;flex-wrap:wrap;gap:8px;';
@@ -7471,7 +7615,25 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: "s01-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "kati_turleri", agirlik: 1,
+        onBilgi: [
+          { baslik: "Tarihçe: kristal ve CZ", madde: [
+            "Katıların atom düzeni 1900'lerin başında X-ray (X-ışını) kırınımıyla anlaşıldı; kristalin düzenli olduğu böyle gösterildi.",
+            "Jan Czochralski (1916): eriyik metalden tek kristal çekme yöntemini buldu; yöntem onun adını taşır.",
+            "Bell Labs'te 1950 dolaylarında Teal ve Little bu yöntemi yarıiletken kristallere uyguladı.",
+            "Bugün chip (çip) için kullanılan wafer (dilim) neredeyse hep CZ ile çekilen silisyumdan kesilir." ] },
+          { baslik: "Katı türleri ve kusurlar", madde: [
+            "Single crystal (tek kristal): düzen tüm parçada kesintisiz sürer; long-range order (uzun menzilli düzen) vardır.",
+            "Polycrystalline (çok kristalli): küçük kristal grain (tane) topluluğu; grain boundary (tane sınırı) taneleri ayırır.",
+            "Amorphous (amorf): yalnızca yakın komşular düzenli; short-range order (kısa menzilli düzen) vardır, uzakta düzen kaybolur.",
+            "Scattering (saçılma): electron (elektron) bozuk düzende yön değiştirir; mean free path (serbest yol) iki saçılma arası ortalama mesafedir." ] },
+          { baslik: "Neden crystal, nasıl çekilir?", madde: [
+            "Lattice (kafes) tekrar ettiği için electron (elektron) periodic potential (periyodik potansiyel) görür; bundan energy band (enerji bandı) doğar.",
+            "CZ: melt (eriyik) silisyuma seed crystal (tohum kristal) batırılır, yavaşça döndürülerek çekilir; ingot (külçe) oluşur.",
+            "Ingot (külçe) dilimlenir; her dilim wafer (dilim) olur ve üstüne device (aygıt) yapılır.",
+            "Sınavda sık karışan: crystal tercihinin nedeni maliyet veya görünüş değil, öngörülebilir ve tekrarlanabilir özelliklerdir." ] }
+        ],
         gorev: "Electron (elektron) üç malzemeden de geçir; scattering (saçılma) farkını gözle.",
+        tanitim: "Crystal (kristal): atomlar uzun menzilde düzenli. Polycrystalline (çok kristalli): düzenli taneler, aralarında grain boundary (tane sınırı). Amorphous (amorf): düzen yok. Mean free path (serbest yol): elektronun çarpmadan gittiği mesafe.",
         sim: { modul: "kristal_tur", params: { mod: "tur" }, basari: { hepsiniDene: true } },
         ogrenilen: "Order (düzen) bozuldukça electron (elektron) daha çok saçılır (scattering); single crystal (tek kristal) içinde yolu en açıktır."
       },
@@ -7493,6 +7655,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: "s01-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "kristal_neden", agirlik: 1,
+        onNot: "Lattice (kafes): atomların tekrar eden dizilimi. Periodic potential (periyodik potansiyel): elektron, kafesin tekrar eden atom çekimini görür. Energy band (enerji bandı): elektronun sahip olabileceği izinli enerji aralığı.",
         soru: "Zinciri sıraya diz",
         bloklar: ["Lattice (kafes) periyodik tekrar eder", "Electron (elektron) periodic potential (periyodik potansiyel) görür", "Energy bands (enerji bantları) net oluşur", "Properties (özellikler) öngörülebilir ve tekrarlanabilir"],
         sonuc: "Periodic lattice (periyodik kafes), periodic potential (periyodik potansiyel), net energy bands (enerji bantları), öngörülebilir device (aygıt)."
@@ -7500,6 +7663,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: "s01-o08", tip: "patron", baslik: "Grain Boundary (Tane Sınırı) Canavarı", kavram: null, agirlik: 1,
         canavar: "czoch", canavarAd: "Grain Boundary (Tane Sınırı) Canavarı",
+        onNot: "CZ (Czochralski) yöntemi: melt (eriyik) silisyuma seed crystal (tohum kristal) değdirilir, yavaşça döndürülerek yukarı çekilir. Katılaşan atomlar tohumun düzenini sürdürür; ingot (külçe) tek kristal olur. Patronda şıkkın yanında eminliğini de seç.",
         giris: "Ben grain boundary (tane sınırı) canavarıyım! Electron (elektron) saçarım. Beni nasıl yenersin?",
         fazlar: [
           {
@@ -7639,6 +7803,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o04 = {
     id: "s02-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
+    onNot: "Diamond structure (elmas yapı): silisyum ve germanyumun kafesi. Nearest neighbor (en yakın komşu): bir atoma en yakın duran atomlar; sayısı coordination number (koordinasyon sayısı) olur.",
     soru: "diamond structure (elmas yapı) içinde her atom (atom) için nearest neighbor (en yakın komşu) sayısı kaçtır?",
     secenekler: [
       s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 neighbors (komşu) ile."),
@@ -7650,6 +7815,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
 
   var o05 = {
     id: "s02-o05", tip: "tahmin", baslik: "Tahmin çukuru", kavram: "miller_duzlem", agirlik: 1.5,
+    onNot: "Miller indices (Miller indisleri): düzlemin adı (hkl). Bul: axis intercepts (eksen kesişimleri), reciprocals (tersleri), en küçük integers (tam sayılar). Eksene parallel (paralel) düzlemde intercept ∞, index (indis) 0.",
     soru: "Axes (eksenleri) 2, ∞, ∞ noktasında kesen plane (düzlem) için Miller indices (Miller indisleri) nedir? Determine (belirle).",
     secenekler: [
       s("(200)", false, "Yanlış. Önce reciprocal (ters) al: ½, 0, 0. Sonra integer (tam sayı) yap: (100). Miller indices (Miller indisleri) en küçük integers (tam sayılar) olur."),
@@ -7680,7 +7846,17 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
-        gorev: "fcc unit cell (birim hücre) atom (atom) sayısını determine (belirle).",
+        onBilgi: [
+          { baslik: "Crystal (kristal) nedir?", madde: [
+            "Crystal (kristal): atoms (atomlar) düzenli ve tekrar eden biçimde dizilir.",
+            "Bravais (1848): üç boyutta yalnızca 14 lattice (kafes) türü vardır.",
+            "Bragg'lar (1913) X-ray (X-ışını) ile bu dizilimi ilk kez ölçtü." ] },
+          { baslik: "Unit cell (birim hücre)", madde: [
+            "Unit cell (birim hücre): kafesi tekrar ederek kuran en küçük kutu.",
+            "Cubic (kübik) türler: sc, bcc, fcc.",
+            "Bir köşe atomu 8 hücreyle paylaşılır, yüz atomu 2 hücreyle paylaşılır." ] }
+        ],
+        gorev: "Say düğmesine bas; fcc unit cell (birim hücre) atom sayısını determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
         ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },
       o03,
@@ -7702,6 +7878,7 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
       { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,
         canavar: "miller", canavarAd: "Plane (Düzlem) Canavarı",
+        onNot: "Gösterim: (hkl) tek plane (düzlem), {hkl} equivalent planes (eşdeğer düzlemler) ailesi, [uvw] bir direction (yön). Wafer (dilim): tek kristal külçeden kesilmiş ince silisyum disk.",
         giris: "Hangi düzlemdeyim? Bil bakalım, yoksa seni yanlış açıdan keserim!",
         fazlar: [
           { tip: "secmeli", kavram: "miller_duzlem",
@@ -7871,6 +8048,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's03-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'karacisim_felaket', agirlik: 1,
+        onBilgi: [
+          { baslik: "Tarihçe: ışık ve enerji paketleri", madde: [
+            "Blackbody (kara cisim): üzerine düşen ışığın tamamını soğuran ideal cisim; ısınınca sıcaklığına göre ışık yayar.",
+            "Klasik teori düşük frequency (frekans) değerlerinde deneyle uyuştu, ama yüksek frequency değerlerinde sonsuz energy (enerji) öngördü.",
+            "Max Planck (Berlin, 1900): enerji ancak paketler halinde alınıp verilir diyerek ölçümle uyuşan eğriyi buldu.",
+            "Hertz (1887) photoelectric effect (fotoelektrik olay) gözledi; Einstein (1905) ışığı foton paketleriyle açıkladı, Nobel 1921." ] },
+          { baslik: "Tanımlar ve sezgi", madde: [
+            "Quantum (kuantum): enerjinin bölünemeyen en küçük paketi. Photon (foton): ışığın bir kuantumu.",
+            "Intensity (şiddet): saniyede gelen photon sayısıdır; her photon (foton) kendi energy (enerji) değerini taşır.",
+            "Photoelectric effect (fotoelektrik olay): ışık metalden electron (elektron) koparır. Her electron tek bir photon ile etkileşir.",
+            "Work function (iş fonksiyonu) φ: electron (elektron) metalden çıkarmak için gereken en küçük energy (enerji)." ] },
+          { baslik: "Formüller ve karışan noktalar", madde: [
+            "E = hf; h = 6,626×10⁻³⁴ J·s, f hertz (Hz), E joule (J) veya eV. Threshold frequency (eşik frekansı): f₀ = φ/h.",
+            "Kinetic energy (kinetik enerji): K = hf − φ. Eşik üstünde frequency arttıkça K büyür; sayıyı intensity belirler.",
+            "Karışan: wavelength (dalga boyu) kısaldıkça frequency (frekans) ve photon energy (foton enerjisi) artar; λf = c.",
+            "Standart yorumda quantum randomness (kuantum rastgeleliği) bilgi eksikliği değil, probability (olasılık) temelli doğa kuralıdır." ] }
+        ],
         gorev: 'Temperature (sıcaklık) değerini 5000 K yap, classical curve (klasik eğri) açık kalsın.',
         sim: {
           modul: 'karacisim',
@@ -8086,6 +8280,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's04-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bohr_seviye', agirlik: 1,
+        onBilgi: [
+          { baslik: "Tarihçe: atomdan spektruma", madde: [
+            "Balmer (1885): hidrojenin görünür ışık çizgilerini basit bir formülle verdi; neden öyle olduğunu kimse bilmiyordu.",
+            "Rutherford (1911): atomun merkezinde küçük, yüklü bir nucleus (çekirdek) var, electron (elektron) çevresinde dolaşır.",
+            "Klasik fiziğe göre dönen electron ışıma yapıp enerji kaybeder; bu atom kararlılığı sorununu doğurdu.",
+            "Niels Bohr (1913): electron yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir dedi; çizgileri açıkladı." ] },
+          { baslik: "Tanımlar ve sezgi", madde: [
+            "Energy level (enerji seviyesi): atomda electron (elektron) için izinli enerji değerleri; n = 1, 2, 3 ile sayılır.",
+            "Ground state (temel hâl): atomun en düşük enerjili hâli. Excited state (uyarılmış hâl): daha yüksek seviyedeki hâl.",
+            "Transition (geçiş): electron seviye değiştirirken seviye farkı kadar energy (enerji) taşıyan photon (foton) alır veya verir.",
+            "Discrete spectrum (ayrık spektrum): atom yalnızca belirli renkleri yayar; her çizgi bir seviye farkına karşılık gelir." ] },
+          { baslik: "Madde dalgası ve hapsolma", madde: [
+            "de Broglie (1924): her particle (parçacık) bir wave (dalga) gibi davranır. Davisson ve Germer (1927) electron diffraction (elektron kırınımı) gösterdi.",
+            "Matter wave (madde dalgası): λ = h/p; p momentum (momentum), λ metre (m), h = 6,626×10⁻³⁴ J·s.",
+            "Hidrojen: Eₙ = −13,6 eV / n². Foton: hf = E_üst − E_alt. Uncertainty principle (belirsizlik ilkesi): Δx·Δp ≥ ħ/2.",
+            "Boundary condition (sınır koşulu): hapsolmuş wave (dalga) kenarlarda uygun biçimde sonlanmalıdır; bu yalnızca belirli dalga boylarına izin verir." ] }
+        ],
         gorev: 'n=3\'ten n=2\'ye transition (geçiş) rengini bul.',
         sim: {
           modul: 'bohr',
@@ -8294,6 +8505,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's05-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Zürih', yil: 1926, rivayet: false,
+        onBilgi: [
+          { baslik: "Schrödinger ve dalga denklemi", madde: [
+            "1924'te de Broglie: parçacıkların da wave (dalga) gibi davranabileceğini önerdi.",
+            "1926'da Schrödinger, wave function (dalga fonksiyonu) ψ için denklemini yazdı.",
+            "Aynı yıl Born, |ψ|² değerini probability density (olasılık yoğunluğu) olarak yorumladı.",
+            "Atomun energy levels (enerji seviyeleri) bu denklemden kendiliğinden çıktı; bu yüzden çok önemlidir." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Dalga odası: burada her şey tek bir denkleme bağlı.' },
           { kim: 'schro', metin: 'Wave function (dalga fonksiyonu) ψ için bir denklem yazdım. Atomun energy levels (enerji seviyeleri) denklemden çıktı.' },
@@ -8302,6 +8520,22 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's05-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'kuantalasma_sinir', agirlik: 1,
+        onBilgi: [
+          { baslik: "Wave function (dalga fonksiyonu) ψ", madde: [
+            "ψ(x): parçacığı anlatan wave function (dalga fonksiyonu); kendisi doğrudan ölçülemez.",
+            "|ψ(x)|² = probability density (olasılık yoğunluğu): parçacığın x civarında bulunma olasılığı.",
+            "ψ konum ya da enerji değeri vermez; yalnızca olasılık dağılımını taşır." ] },
+          { baslik: "Schrödinger equation (denklemi)", madde: [
+            "Girdi: potential (potansiyel) V(x) ve boundary condition (sınır koşulu). Çıktı: ψ ve izinli E değerleri.",
+            "Time-independent (zamandan bağımsız) hâli Ĥψ = Eψ: bir eigenvalue problem (özdeğer problemi).",
+            "Time-dependent (zamana bağlı) hâli ψ'yi zamanla düzgün ve deterministic (belirlenimci) evriltir.",
+            "Collapse (çökme) denklemin parçası değildir; ölçüm postülatı ayrıdır ve sonraki istasyonda gelir." ] },
+          { baslik: "Infinite well (sonsuz kuyu), quantization", madde: [
+            "Infinite well (sonsuz kuyu): L genişliğinde kutu; duvarlarda ψ = 0 boundary condition (sınır koşulu) vardır.",
+            "Yalnızca standing wave (duran dalga) sığar: λ = 2L/n, ψ = √(2/L) sin(nπx/L), n = 1, 2, 3...",
+            "Energy quantization (enerji kuantalaşması): E = n²π²ħ²/(2mL²) ∝ n²/L²; L yarıya inerse etkisi büyüktür.",
+            "n = 0 dalga yok demektir; en düşük E₁ > 0 olur: zero-point energy (sıfır noktası enerjisi), sınır koşulundan gelir." ] }
+        ],
         gorev: 'Well (kuyu) genişliğini 2\'den 1 nm\'ye indir.',
         sim: {
           modul: 'kuyu',
@@ -8509,6 +8743,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's06-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Paris', yil: 1924, rivayet: false,
+        onBilgi: [
+          { baslik: "Madde dalgasından tünellemeye", madde: [
+            "1924'te de Broglie, electron (elektron) gibi parçacıklar için matter wave (madde dalgası) önerdi.",
+            "1927'de Davisson ve Germer, electron diffraction (elektron kırınımı) ile dalga davranışını gösterdi.",
+            "1928'de Gamow, alpha decay (alfa bozunumu) olayını tunneling (tünelleme) ile açıkladı.",
+            "Tunneling, tunnel diode (tünel diyodu) ve flash memory (flash bellek) gibi aygıtların temelindedir." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Tünel istasyonunda electron (elektron) bir duvarla karşılaşıyor. Geçer mi?' },
           { kim: 'broglie', metin: 'Matter wave (madde dalgası) ise ışık gibi davranır: engelde hem yansır hem geçebilir.' },
@@ -8517,6 +8758,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's06-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'basamak_yansima', agirlik: 1,
+        onBilgi: [
+          { baslik: "Step potential (basamak potansiyeli)", madde: [
+            "Step potential (basamak potansiyeli): x = 0'da potential (potansiyel) V = 0'dan V₀'a sıçrar.",
+            "Region (bölge) 1 ve region 2 için ayrı ψ yazılır; k₁=√(2mE)/ħ ve k₂=√(2m(E−V₀))/ħ.",
+            "Işığın cam yüzeyinde kısmen yansıması gibi: dalganın ortamı değişince bir kısmı reflect (yansır) olur.",
+            "R = reflection (yansıma) olasılığı, T = transmission (geçiş) olasılığı; R + T = 1." ] },
+          { baslik: "Continuity (süreklilik) ve forbidden region", madde: [
+            "Boundary (sınır) noktasında ψ ve ψ' continuous (sürekli) olmalı; bu şart katsayıları (r, t) belirler.",
+            "Bunun nedeni: equation (denklem) second derivative (ikinci türev) içerir, süreksizlik taşıyamaz.",
+            "E < V₀ ise klasikte yasak olan bölge: forbidden region (yasak bölge).",
+            "Orada ψ oscillate (salınmaz); exponentially decays (üstel sönümlenir) ama bir anda sıfırlanmaz." ] },
+          { baslik: "Tunneling (tünelleme), barrier (bariyer)", madde: [
+            "Barrier (bariyer): V₀ yüksekliğinde, a kalınlığında engel; E < V₀ olsa bile öbür yanda ψ sıfır değildir.",
+            "Tunneling (tünelleme): ψ'nin sönümlenip karşı tarafa ulaşması; parçacık engelin üstünden zıplamaz.",
+            "T ∝ e^(−2κa), κ=√(2m(V₀−E))/ħ: thickness (kalınlık) a arttıkça T exponential (üstel) azalır.",
+            "Sık karışan nokta: tunneling sırasında parçacık energy (enerji) kaybetmez, yalnızca olasılık küçülür." ] }
+        ],
         gorev: 'Energy (enerji) step (basamak) yüksekliğinden büyük kalsın; R\'yi 0,1-0,2 yap.',
         sim: {
           modul: 'basamak',
@@ -8724,6 +8982,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's07-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Göttingen', yil: 1926, rivayet: false,
+        onBilgi: [
+          { baslik: "Born, postülatlar ve ölçüm", madde: [
+            "1926'da Born, |ψ|² değerini probability (olasılık) olarak yorumladı; bu yorum sonradan Nobel aldı.",
+            "1927 dolayında Bohr ve Heisenberg'in Copenhagen interpretation (Kopenhag yorumu) şekillendi.",
+            "1932'de von Neumann, quantum mechanics (kuantum mekaniği) postulate (postülat) yapısını matematiksel kurdu.",
+            "1935'te Schrödinger, kendi cat (kedi) düşünce deneyiyle ölçüm sorununu tartışmaya açtı." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Measurement (ölçüm) laboratuvarı: bakınca ne oluyor?' },
           { kim: 'born', metin: 'ψ\'nin karesini probability (olasılık) olarak yorumladım. Measurement (ölçüm) result (sonuç) kesin değil, probability (olasılık) ile çıkar.' },
@@ -8732,6 +8997,22 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's07-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'olcum_cokme', agirlik: 1,
+        onBilgi: [
+          { baslik: "Observable (gözlenebilir), operator (operatör)", madde: [
+            "Observable (gözlenebilir): ölçülebilen büyüklük, örneğin energy (enerji), position (konum), momentum.",
+            "Her observable bir operator (operatör) ile temsil edilir; Ĥ enerji operatörüdür.",
+            "Eigenvalue (özdeğer): operatörün izinli sayısı; eigenstate (özdurum): o sayıya ait kesin durum φₙ." ] },
+          { baslik: "Superposition (süperpozisyon), probability", madde: [
+            "Superposition (süperpozisyon): durum eigenstate (özdurum) toplamı olabilir: ψ = c₁φ₁ + c₂φ₂ + ...",
+            "Her c coefficient (katsayı) ile ölçüm sonucu φₙ için probability (olasılık) = |cₙ|².",
+            "Olasılıklar toplanınca 1 eder: Σ|cₙ|² = 1 (normalization, normalizasyon).",
+            "Sık karışan nokta: olasılık c'nin kendisi değil karesidir; katsayılar doğrudan toplanmaz." ] },
+          { baslik: "Measurement (ölçüm), collapse (çökme)", madde: [
+            "Measurement (ölçüm) yalnızca bir eigenvalue (özdeğer) verir; average (ortalama) tek ölçümde görülmez.",
+            "Ölçümden sonra ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker); hemen tekrar ölçersen sonuç kararlıdır.",
+            "Aralarda Schrödinger equation (denklemi) ψ'yi deterministic (belirlenimci) evriltir; rastgelelik yalnızca ölçümde.",
+            "Schrödinger denklemi çökmez; collapse (çökme) ayrı bir postulate (postülat) ve measurement (ölçüm) ile gelir." ] }
+        ],
         gorev: 'Measure (ölç), sonra tekrar measure (ölç): result (sonuç) ne?',
         sim: {
           modul: 'olcum',
@@ -8939,6 +9220,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's08-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Kopenhag', yil: 1927, rivayet: false,
+        onBilgi: [
+          { baslik: "Heisenberg ve belirsizlik ilkesi", madde: [
+            "1925'te Heisenberg matrix mechanics (matris mekaniği) kurdu; Born ve Jordan [x,p] = iħ bağıntısını türetti.",
+            "1927'de Heisenberg uncertainty principle (belirsizlik ilkesi) makalesini yayımladı; aynı yıl Kennard ΔxΔp ≥ ħ/2 biçimini verdi.",
+            "1929'da Robertson bunu herhangi iki operator (operatör) için genelleştirdi.",
+            "Bohr ve Heisenberg'in Copenhagen interpretation (Kopenhag yorumu) bu dönemde şekillendi." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Calibration (kalibrasyon) odası: measurement (ölçüm) mükemmelleştirmek istiyoruz.' },
           { kim: 'heis', metin: 'Position (konum) ve momentum aynı anda keyfi hassas ölçülemez. Sebep instrument (alet) değil.' },
@@ -8947,6 +9235,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's08-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'belirsizlik_dalga', agirlik: 1,
+        onBilgi: [
+          { baslik: "Uncertainty (belirsizlik), wave packet", madde: [
+            "Wave packet (dalga paketi): konumu sınırlı dalga; keskin konum için çok farklı wavelength (dalga boyu) toplanır.",
+            "Çok wavelength (dalga boyu) geniş momentum (p = h/λ) demektir; Δx ve Δp bu yüzden bağlıdır.",
+            "Δx, Δp: konum ve momentumun spread (yayılma) değeri; σx, σp aynı fikrin standart sapmasıdır.",
+            "ħ = h/2π ≈ 1,05×10⁻³⁴ J·s: çok küçük sabit; ilke her cisimde geçerli ama büyükte görünmez." ] },
+          { baslik: "ΔxΔp ≥ ħ/2 ilişkisi", madde: [
+            "Formül: ΔxΔp ≥ ħ/2 (birim J·s). Çarpımın alt sınırı vardır; ikisi birden sıfıra gitmez.",
+            "Gaussian wave packet (Gauss dalga paketi) sınıra eşit olur: σxσp = ħ/2 (minimum uncertainty, en az belirsizlik).",
+            "Instrument (alet) hatası değildir: ideal aletle de geçerli, çünkü sebep wave nature (dalga doğası).",
+            "Sık karışan nokta: ilke ölçümün parçacığı bozmasından ibaret değildir; ölçüm yapılmasa da geçerlidir." ] },
+          { baslik: "Conjugate variable (eşlenik değişken)", madde: [
+            "Conjugate variables (eşlenik değişkenler): operator'leri commute (değişme) etmeyen çift; örnek x ve p.",
+            "Commutator (komütatör): [x,p] = xp − px = iħ ≠ 0; sıfır olsaydı ortak eigenstate (özdurum) olurdu.",
+            "Ortak eigenstate (özdurum) yoksa iki büyüklük birden keskin değerli olamaz.",
+            "Sık karışan nokta: her büyüklük çifti belirsizlik vermez; kütle ve yük gibi sayılar operator (operatör) değildir." ] }
+        ],
         gorev: 'Position width (konum genişliği) daralt, momentuma bak.',
         sim: {
           modul: 'belirsizlik',
@@ -9164,6 +9469,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's09-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Zürih', yil: 1928, rivayet: false,
+        onBilgi: [
+          { baslik: "Pauli, Bloch ve bant kuramı", madde: [
+            "1925'te Pauli exclusion principle (Pauli dışlama ilkesi) önerdi; fikir sonra electron spin (spin) ile bağlandı.",
+            "1928'de Bloch, periodic potential (periyodik potansiyel) içindeki dalgalar için Bloch theorem (Bloch teoremi) verdi.",
+            "1931'de A. H. Wilson, band theory (bant kuramı) ile metal (metal), insulator (yalıtkan), semiconductor (yarıiletken) ayrımını açıkladı.",
+            "1947'de Bardeen ve Brattain ilk transistor'u yaptı; bant fikirlerinin pratik sonucu." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Tek atomda energy level (enerji seviyesi) belli. Atomlar bir araya gelince solid (katı) içinde ne olur?' },
           { kim: 'pauli', metin: 'Her energy level N seviyeye yarılır, seviyeler birleşip energy band (enerji bandı) olur. Pauli: seviyeye en çok iki electron (elektron) sığar.' },
@@ -9172,6 +9484,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's09-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bant_yarilma', agirlik: 1,
+        onBilgi: [
+          { baslik: "Energy band (enerji bandı) nasıl oluşur", madde: [
+            "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır.",
+            "Yakın seviyeler birleşip energy band (enerji bandı) olur; band içinde seviyeler neredeyse sürekli dizilir.",
+            "Tek infinite well (sonsuz kuyu) bant vermez; bant, çok atomlu periodic potential (periyodik potansiyel) içinde olur.",
+            "Crystal (kristal) düzenli olduğu için bantlar öngörülebilir; amorf yapıda bu düzen bozulur." ] },
+          { baslik: "Pauli ilkesi ve doluluk", madde: [
+            "Pauli exclusion principle (Pauli dışlama ilkesi): iki electron (elektron) aynı quantum state (kuantum durumu) paylaşamaz.",
+            "Spin (spin) iki değer alır (yukarı, aşağı); bir seviyedeki durum sayısını buradan çıkar.",
+            "Electron (elektron) seviyeleri alttan yukarı doldurur (Fermi filling, Fermi dolumu).",
+            "Sık karışan nokta: tam dolu band (bant) boş seviye bırakmadığı için akım taşımaz; yarı dolu band (bant) taşır." ] },
+          { baslik: "Bandgap (yasak enerji aralığı), malzeme", madde: [
+            "Valence band (valans bandı): dolu üst band. Conduction band (iletim bandı): üstteki, akım taşıyabilen band.",
+            "Bandgap (yasak enerji aralığı) E_g (birim eV): iki band arası; bu enerjide allowed state (izinli durum) yoktur.",
+            "Metal (metal): band yarı dolu ya da örtüşür. Insulator (yalıtkan): büyük E_g (elmas ≈ 5,5 eV).",
+            "Semiconductor (yarıiletken): küçük E_g (silikon ≈ 1,1 eV). Ayrım probability (olasılık) değil, band (bant) yapısıdır." ] }
+        ],
         gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {
           modul: 'bant',
@@ -9399,6 +9728,13 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       {
         id: 's10-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Roma', yil: 1926, rivayet: false,
+        onBilgi: [
+          { baslik: "Fermi-Dirac ve sürüklenme tarihi", madde: [
+            "1900 dolayında Drude, metaldeki electron (elektron) hareketini drift (sürüklenme) ve scattering (saçılma) ile modelledi.",
+            "1926'da Fermi ve Dirac birbirinden bağımsız Fermi-Dirac statistics (Fermi-Dirac istatistiği) kurdu; Pauli ilkesine uyan parçacıklar için.",
+            "1927'de Sommerfeld bu dağılımı metaldeki electron (elektron) gazına uyguladı.",
+            "1947'de ilk transistor yapıldı; Bardeen, Brattain ve Shockley 1956 Nobel Fizik Ödülü'nü aldı." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Roma, 1926. Fermi bir dağılım yazdı: Fermi level (Fermi seviyesi) E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.' },
           { kim: 'fermi', metin: 'Taşıyıcılar iki türlü: electron (elektron) n ve hole (delik) p. Sıcaklık yükselince f(E) yumuşar, carrier (taşıyıcı) artar.' },
@@ -9407,6 +9743,23 @@ Q.art.CHAR_IDS = MONSTER_IDS.concat(CAMEO_IDS);
       },
       {
         id: 's10-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'fermi_dagilim', agirlik: 1,
+        onBilgi: [
+          { baslik: "Fermi-Dirac dağılımı, Fermi level", madde: [
+            "f(E) = 1/(1 + e^((E−E_F)/kT)): enerjisi E olan bir seviyenin dolu olma olasılığı (0 ile 1 arası).",
+            "Fermi level (Fermi seviyesi) E_F: doluluk olasılığının tam yarı olduğu enerji. Formülde E = E_F koyup değeri hesapla.",
+            "T = 0 K'de f step function (basamak fonksiyonu) olur; T arttıkça geçiş bölgesi kT mertebesinde genişler.",
+            "k = 8,617×10⁻⁵ eV/K; 300 K'de kT ≈ 0,026 eV. E_F bir seviye olmak zorunda değil, bandgap içinde de olabilir." ] },
+          { baslik: "Carriers (taşıyıcılar): n, p, nᵢ", madde: [
+            "Carriers (taşıyıcılar): n electron (elektron) yoğunluğu, p hole (delik) yoğunluğu (birim cm⁻³).",
+            "Intrinsic (katkısız) yarıiletkende n = p = nᵢ; nᵢ sıcaklık ve bandgap ile değişir (Si için ≈ 10¹⁰ cm⁻³).",
+            "Doping (katkılama): donor n-type (n-tipi), acceptor p-type (p-tipi) yapar. Dengede np = nᵢ² (kütle etkisi yasası).",
+            "Sık karışan nokta: çarpım np sabittir; toplam n+p değil. Katkı bir taşıyıcıyı artırırken diğerini etkiler." ] },
+          { baslik: "Drift (sürüklenme), mobility, akım", madde: [
+            "Drift velocity (sürüklenme hızı): v_d = μE; μ mobility (hareketlilik, cm²/V·s), E alan (V/cm).",
+            "Scattering (saçılma) carrier'ı sürekli yavaşlatır; bu yüzden v_d ivmelenmez, alanla orantılı bir ortalama hıza oturur.",
+            "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); electron (elektron) ve hole (delik) katkıları toplanır.",
+            "Sık karışan nokta: drift, alan etkisiyle olur; diffusion (difüzyon) ise konsantrasyon farkıyla olur." ] }
+        ],
         gorev: 'T\'yi 50 K\'e indir; Fermi eğrisinin basamağa dönüşünü gör.',
         sim: {
           modul: 'fermi',
@@ -10175,7 +10528,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
 (function(){
   'use strict';
   var R = Q.runner;
-  var H = 720, GY = 600, TRIG = 420, STOPD = 160, DECEL = 1.4, INTRO = 1.2, ACCEL = 0.8, BASE_V = 260;
+  var H = 720, GY = 600, TRIG = 420, STOPD = 160, DECEL = 1.0, INTRO = 0.7, ACCEL = 0.5, BASE_V = 360;
   var GAP = { hikaye: 1000, kavram: 1000, dusman: 900, tahmin: 1000, tuzak: 900, kopru: 1000, patron: 1200, sandik: 1000 };
   var ANIM = { saldir: 0.7, atla: 0.9, dus: 1.6, sendele: 0.8, zafer: 1.2, 'kapi-ac': 0.9, 'kopru-kur': 1.0, 'tuzak-boz': 0.8 };
   var RUNNER_DURUM = { saldir: 'saldir', atla: 'atla', dus: 'dus', sendele: 'sendele', zafer: 'zafer' };
@@ -10399,6 +10752,27 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   }
 
   /* ---------- engel akışı ---------- */
+  /* ob.onNot: soru/engel açılmadan önce tek kartlık kısa tanıtım ("Önce bil"). Devam/Enter ile geçilir; atla/geri isteğinde bırakılır. */
+  function onNotGoster(host, ob, r){
+    var metin = ob && ob.onNot;
+    if (!metin || !host || !host.appendChild || (r && (r.skipReq || r.gotoReq != null))) return Promise.resolve();
+    return new Promise(function(res){
+      var kutu = document.createElement('div'); kutu.className = 'on-bilgi';
+      var b = document.createElement('div'); b.textContent = 'Önce bil';
+      b.style.cssText = 'font-family:var(--font-d);font-size:18px;color:var(--accent,#ffd23f);margin-bottom:4px;';
+      var p = document.createElement('p'); p.className = 'on-bilgi-metin'; p.textContent = metin;
+      p.style.cssText = 'margin:0 0 8px;font-size:18px;line-height:1.4;';
+      var d = document.createElement('button'); d.type = 'button'; d.className = 'btn primary'; d.textContent = 'Anladım';
+      var t0 = Date.now(), bitti = false;
+      function bit(){ if (bitti) return; bitti = true; document.removeEventListener('keydown', key, true); host.textContent = ''; res(); }
+      function key(e){ if (e.key === 'Enter' && Date.now() - t0 > 250) { e.preventDefault(); bit(); } }
+      d.addEventListener('click', bit); document.addEventListener('keydown', key, true);
+      if (r) r.onNotIptal = bit;
+      kutu.appendChild(b); kutu.appendChild(p); kutu.appendChild(d); host.appendChild(kutu);
+      try { d.focus(); } catch (e) {}
+    });
+  }
+
   async function doObstacle(r){
     var it = r.items[r.cur], ob = it.ob, i = r.cur;
     var rw = makeRunwayApi(r, it);
@@ -10412,6 +10786,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     try { if (Q.ui && Q.ui.dock) { Q.ui.dock.clear(); host = Q.ui.dock.mount(host) || host; } } catch (e) { console.error(e); }
     var ctx = { stationId: r.id, index: i, istasyon: r.ist, host: host, runway: rw, ui: Q.ui, claude: Q.claude, sim: Q.sim, battle: Q.battle, art: Q.art, state: Q.state };
     rw.setObstacleState('aktif');                          // 5
+    if (ob.onNot) { try { r.onNotIptal = null; await onNotGoster(host, ob, r); } catch (e) { console.error(e); } r.onNotIptal = null; if (!alive(r)) return; }
     var h = Q.obs.handlers && Q.obs.handlers[ob.tip], sonuc = null;
     if (!h || typeof h.enter !== 'function') { toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: '' }; r.skipApply = true; }
     else {
@@ -10552,7 +10927,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       };
       orchestrate(r).then(function(s){
         if (r.aborted) return;
-        if (s === 'tamam') { save(); }
+        if (s === 'tamam') { Q.state.aktif = { stationId: null, index: 0 }; save(); }
         if (endRun) endRun(s);
       }, function(e){ console.error('runner', e); toast('Koşu durdu', 'kotu'); if (endRun) endRun('cikis'); });
     });
@@ -10575,7 +10950,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     var r = run; if (!r) return false;
     if (closeMenu) { closeMenu(); closeMenu = null; }
     paused = false; last = null;
-    r.skipReq = true; if (r.skipRes) r.skipRes('atla');
+    r.skipReq = true; if (r.skipRes) r.skipRes('atla'); if (r.onNotIptal) r.onNotIptal();
     return true;
   };
   R.back = function(n){
@@ -10583,7 +10958,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     if (closeMenu) { closeMenu(); closeMenu = null; }
     paused = false; last = null;
     r.gotoReq = Math.max(0, r.cur - Math.max(1, n | 0));
-    if (r.skipRes) r.skipRes('git');
+    if (r.skipRes) r.skipRes('git'); if (r.onNotIptal) r.onNotIptal();
     return true;
   };
   R.abort = function(){ if (run) abort('cikis'); };
@@ -10610,6 +10985,410 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   document.addEventListener('visibilitychange', onVis);
 })();
 
+/* 96-final.js (A7) Final "Sınav Günü": 10 tek soruluk kapı, sonda Sınav Raporu.
+ * Ekler: Q.final {start, acik, hazirla, rapor, son}. Bağımlı (çalışma anında): Q.data.stations.s01..s09, Q.data.sinav,
+ * Q.runner, Q.obs, Q.ui, Q.claude, Q.settings. Sınav dili İngilizce (DIL-1); arayüz Türkçe.
+ * Kalıcı ilerlemeye DOKUNMAZ: 'final' istasyonu yalnızca çalışma anında Q.data.stations içinde bulunur, bitince silinir;
+ * kayıt anahtarı (cip-hatti-v1) bozulmaz. Son rapor ayrı anahtarda: cip-hatti-final-v1.
+ * Engeller tip:'patron' + final:true taşır; patron işleyicisi sarılır, final engeli bu dosyadaki işleyiciye gider. */
+(function(){
+  'use strict';
+
+  var KEY = 'cip-hatti-final-v1';
+  var NOTLAR = { s05: 1, s06: 1 };   /* hesap sorusu: sayısal sonuç yerine mantık açıklaması */
+  var calisiyor = false;
+  var kayit = null;                  /* geçerli koşunun cevapları: { idx: kayıt } */
+  var son = null;
+
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function btn(text, primary, fn){
+    var b = el('button', 'btn' + (primary ? ' primary' : ''), text);
+    b.type = 'button';
+    if (fn) b.addEventListener('click', fn);
+    return b;
+  }
+  function sleep(ms){ return Q.util && Q.util.sleep ? Q.util.sleep(ms) : new Promise(function(r){ setTimeout(r, ms); }); }
+  function swallow(p){ try { if (p && p.catch) p.catch(function(){}); } catch (e) { /* yut */ } return p; }
+  function toast(m, tur){ try { if (Q.ui && Q.ui.toast) Q.ui.toast(m, { tur: tur || 'bilgi' }); } catch (e) { /* ui yok */ } }
+  function stIds(){
+    return Object.keys(Q.data.stations || {}).filter(function(k){ return /^s\d\d$/.test(k); }).sort();
+  }
+
+  /* ---------- kullanılabilirlik ---------- */
+  function acik(){
+    var ids = stIds();
+    var ayar = Q.state && Q.state.ayarlar || {};
+    if (ayar.kilitleriAc) return ids.length > 0;
+    var il = Q.state && Q.state.ilerleme || {};
+    return ids.length >= 9 && ids.slice(0, 9).every(function(id){ return il[id] && il[id].tamam; });
+  }
+
+  /* ---------- soru ve istasyon üretimi ---------- */
+  function mcqOf(stId, n){
+    var l = ((Q.data.sinav && Q.data.sinav.mcq) || []).filter(function(m){ return m.station === stId; });
+    return l.length ? l[n % l.length] : null;
+  }
+  function hazirla(){
+    var engeller = [], n = 0, ilk = null;
+    stIds().forEach(function(id){
+      var st = Q.data.stations[id];
+      ilk = ilk || st;
+      (st.engeller || []).forEach(function(e){
+        if (e.tip !== 'patron') return;
+        (e.fazlar || []).forEach(function(f){
+          if (f.tip !== 'acik' || !f.pdfSoru) return;
+          n++;
+          var soru = f.pdfSoru;
+          if (NOTLAR[id]) soru += ' (In this final, explain the reasoning and method step by step; the final number is not required.)';
+          engeller.push({
+            id: 'final-' + n, tip: 'patron', final: true, no: n, kaynak: id, kaynakAd: st.ad,
+            baslik: 'Question ' + n, kavram: f.kavram || null, agirlik: 1,
+            canavar: e.canavar, canavarAd: e.canavarAd, soru: soru,
+            anahtarFikirler: f.anahtarFikirler || [], yanlisKavramlar: f.yanlisKavramlar || [],
+            yanlisKavramIds: f.yanlisKavramIds || [], idealCevap: f.idealCevap || '',
+            mcq: mcqOf(id, n)
+          });
+        });
+      });
+    });
+    if (!engeller.length) return null;
+    engeller.forEach(function(e){ e.toplam = engeller.length; e.giris = 'Soru ' + e.no + '/' + engeller.length + '. Süre yok, sakin ol.'; });
+    return {
+      id: 'final', sira: 0, ad: 'Sınav Günü', konu: 'Final: 10 soru, süre baskısı yok.', renk: (ilk && ilk.renk) || '#ffd166',
+      sureHedefDk: 30, patronId: engeller[0].canavar, temelTur: null, tekrarHavuzu: [], kavramlar: [], engeller: engeller
+    };
+  }
+
+  /* ---------- engel işleyicisi ---------- */
+  async function finalEnter(ob, ctx){
+    var host = ctx.host, runway = ctx.runway, ui = ctx.ui || Q.ui, claude = ctx.claude || Q.claude;
+    var rec = { idx: ob.no, kaynak: ob.kaynak, kaynakAd: ob.kaynakAd, soru: ob.soru, dogruluk: 0, eminlik: 1, eksik: [], mod: 'bos', geri: [] };
+    function newArea(){
+      host.textContent = '';
+      var a = el('div', 'fn-area');
+      host.appendChild(a);
+      var h = el('div', 'fn-head');
+      h.style.cssText = 'display:flex;gap:8px;align-items:center;margin-bottom:8px';
+      h.appendChild(el('span', 'chip', 'Soru ' + ob.no + '/' + ob.toplam));
+      h.appendChild(el('span', 'chip', 'Süre yok'));
+      a.appendChild(h);
+      var q = el('div', 'fn-soru', ob.soru);
+      q.style.cssText = 'font-weight:800;font-size:17px;line-height:1.35;margin:0 0 8px';
+      a.appendChild(q);
+      return a;
+    }
+    function bekle(area, etiket){
+      return new Promise(function(res){
+        var b = btn(etiket || 'Devam', true, function(){ document.removeEventListener('keydown', k, true); if (b.parentNode) b.parentNode.removeChild(b); res(); });
+        function k(e){ if (e.key === 'Enter') { e.preventDefault(); e.stopPropagation(); b.click(); } }
+        document.addEventListener('keydown', k, true);
+        b.style.marginTop = '10px';
+        area.appendChild(b);
+        try { b.focus(); } catch (e) { /* odak yok */ }
+      });
+    }
+    function iki(area, a, b){
+      return new Promise(function(res){
+        var row = el('div', 'fn-row');
+        row.style.cssText = 'display:flex;gap:10px;margin-top:10px;flex-wrap:wrap';
+        [[a, true], [b, false]].forEach(function(x, i){
+          row.appendChild(btn(x[0], x[1], function(){ if (row.parentNode) row.parentNode.removeChild(row); res(i); }));
+        });
+        area.appendChild(row);
+      });
+    }
+    function kutu(area, m, iyi){
+      var b = el('div', 'fn-box', m);
+      b.style.cssText = 'margin-top:8px;padding:8px 12px;border:2px solid var(' + (iyi ? '--good' : '--bad') + ');border-radius:var(--rs)';
+      area.appendChild(b);
+    }
+
+    /* çoktan seçmeli yedek: Claude yokken sınav havuzundaki İngilizce MCQ */
+    async function mcqYedek(area, em){
+      var m = ob.mcq;
+      if (!m) { rec.mod = 'bos'; return false; }
+      area.appendChild(el('div', 'fn-ipucu', 'Claude yok: aynı istasyondan çoktan seçmeli soru.')).style.cssText = 'color:var(--muted);font-size:var(--fs-small);margin:6px 0';
+      var q = el('div', 'fn-mcq', m.q);
+      q.style.cssText = 'font-weight:700;margin:6px 0';
+      area.appendChild(q);
+      var kb = el('div', 'fn-opts');
+      area.appendChild(kb);
+      var i = await ui.options.ask({ host: kb, secenekler: m.options.map(function(o){ return { t: o }; }), tek: true });
+      var dogru = i === m.answer;
+      rec.mod = 'mcq'; rec.dogruluk = dogru ? 100 : 0; rec.eminlik = em;
+      kutu(area, (dogru ? 'Correct. ' : 'Not quite. Correct answer: ' + m.options[m.answer] + '. ') + (m.explanation || ''), dogru);
+      if (!dogru) rec.eksik = ob.anahtarFikirler.slice();
+      await bekle(area);
+      return true;
+    }
+
+    try {
+      await runway.showBoss(ob.canavar, { ad: ob.canavarAd, renk: ctx.istasyon && ctx.istasyon.renk });
+      swallow(runway.say(ob.canavar, ob.giris));
+      var area = newArea(), cevap = '', bitti = false;
+      while (!bitti) {
+        var it = el('div', 'fn-iter');
+        area.appendChild(it);
+        var tb = el('div', 'fn-tb');
+        it.appendChild(tb);
+        var v = await ui.textbox.ask({ host: tb, soru: 'Cevabını yaz (İngilizce)', maks: 400, deger: cevap });
+        if (v == null || !String(v).trim() || /^\s*(bilmiyorum|i don'?t know)\s*\.?\s*$/i.test(String(v))) {
+          rec.mod = 'bos'; rec.dogruluk = 0; rec.eminlik = 0; rec.eksik = ob.anahtarFikirler.slice();
+          area.textContent = '';
+          area = newArea();
+          kutu(area, 'Boş bıraktın, sorun değil. Örnek cevap: ' + ob.idealCevap, false);
+          await bekle(area);
+          break;
+        }
+        cevap = String(v);
+        var em = await ui.confidence.ask({ host: it });
+        var iptal = false, jsonHata = 0;
+        while (!iptal) {
+          var av = null;
+          try { av = await claude.available(); } catch (e) { av = { backend: 'none' }; }
+          if (!av || av.backend === 'none') { area.textContent = ''; area = newArea(); await mcqYedek(area, em); bitti = true; break; }
+          var th = el('div', 'fn-th');
+          it.appendChild(th);
+          swallow(runway.say(ob.canavar, '…'));
+          ui.thinking.show(th, { metin: 'Canavar cevabını okuyor…' });
+          var puan = null, hata = null;
+          try {
+            puan = await claude.grade({ soru: ob.soru, anahtarFikirler: ob.anahtarFikirler, yanlisKavramlar: ob.yanlisKavramlar,
+              idealCevap: ob.idealCevap, cevap: cevap, eminlik: em });
+          } catch (e) { hata = e || {}; }
+          try { ui.thinking.hide(); } catch (e) { /* ui yok */ }
+          if (th.parentNode) th.parentNode.removeChild(th);
+          if (puan) {
+            rec.mod = 'claude'; rec.dogruluk = +puan.dogruluk || 0; rec.eminlik = em;
+            rec.eksik = (puan.fikirler || []).filter(function(f){ return !f['var']; }).map(function(f){ return f.fikir; });
+            rec.geri = puan.geriBildirim || [];
+            area.textContent = '';
+            area = newArea();
+            area.appendChild(el('div', 'fn-puan', 'Doğruluk: %' + rec.dogruluk)).style.cssText = 'font-weight:800;margin:6px 0';
+            var ul = el('ul', 'fn-fikirler');
+            ul.style.cssText = 'margin:6px 0;padding-left:0;list-style:none';
+            (puan.fikirler || []).forEach(function(f){ ul.appendChild(el('li', f['var'] ? 'iyi' : 'kotu', (f['var'] ? '✓ ' : '✗ ') + f.fikir)); });
+            area.appendChild(ul);
+            rec.geri.forEach(function(g){ area.appendChild(el('div', 'fn-gb', g)); });
+            await bekle(area);
+            bitti = true;
+            break;
+          }
+          var code = (hata && hata.code) || 'gecici';
+          if (code === 'iptal') { iptal = true; break; }
+          if (code === 'izin_yok' || code === 'yok' || (code === 'json' && ++jsonHata >= 2)) {
+            toast('Claude kapalı, çoktan seçmeliye geçtik');
+            area.textContent = ''; area = newArea(); await mcqYedek(area, em); bitti = true; break;
+          }
+          var m = el('div', 'fn-hata', code === 'sinir' ? 'Biraz bekle, Claude yoruldu.' : 'Bağlantı sorunu.');
+          it.appendChild(m);
+          var sec = await iki(it, 'Tekrar dene', 'Çoktan seçmeliye geç');
+          if (m.parentNode) m.parentNode.removeChild(m);
+          if (sec === 1) { area.textContent = ''; area = newArea(); await mcqYedek(area, em); bitti = true; break; }
+        }
+        if (!bitti && it.parentNode) it.parentNode.removeChild(it);
+      }
+    } catch (e) {
+      console.error('final', e);
+      toast('Soru sahnesinde bir aksilik oldu', 'kotu');
+    }
+    if (kayit) kayit[ob.no] = rec;
+    host.textContent = '';
+    try { await runway.hideBoss(); } catch (e) { /* panel yok */ }
+    return { dogru: true, eminlik: rec.eminlik, dogruluk: null, kavram: null, agirlik: 0, notlar: 'final' };
+  }
+
+  /* patron işleyicisini sar: final engelleri bizim işleyiciye, diğerleri eskisine */
+  function sar(){
+    var H = Q.obs.handlers, eski = H.patron;
+    if (eski && eski._finalSarildi) return;
+    var yeni = {
+      tip: 'patron', _finalSarildi: true,
+      enter: function(ob, ctx){
+        if (ob && ob.final) {
+          return finalEnter(ob, ctx).catch(function(e){
+            console.error('final', e);
+            return { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: 'hata' };
+          });
+        }
+        if (eski && eski.enter) return eski.enter(ob, ctx);
+        return Promise.resolve({ dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: '' });
+      }
+    };
+    Q.obs.register('patron', yeni);
+  }
+
+  /* ---------- rapor ---------- */
+  function ortalama(l){
+    if (!l.length) return 0;
+    return Math.round(l.reduce(function(a, r){ return a + (r.dogruluk || 0); }, 0) / l.length);
+  }
+  function temelTur(stId, geri){
+    var st = Q.data.stations[stId], tt = st && st.temelTur;
+    if (!tt) { toast('Bu istasyonun temel turu yok'); return; }
+    var kok = el('div', 'fn-temel'), i = 0, sim = null;
+    var kartlar = tt.kartlar || [];
+    function kapat(){
+      if (sim && sim.destroy) { try { sim.destroy(); } catch (e) { /* sim kapandı */ } }
+      sim = null;
+      geri();
+    }
+    function kart(){
+      kok.textContent = '';
+      if (i >= kartlar.length) return simGoster();
+      var k = kartlar[i];
+      kok.appendChild(el('div', 'chip', (i + 1) + ' / ' + kartlar.length));
+      kok.appendChild(el('h3', null, k.baslik));
+      kok.appendChild(el('p', null, k.metin));
+      kok.appendChild(btn(i + 1 < kartlar.length ? 'Sonraki' : 'Dene bakalım', true, function(){ i++; kart(); }));
+    }
+    function simGoster(){
+      kok.textContent = '';
+      var h = el('div', 'fn-sim'), ip = el('p', 'fn-sim-ip');
+      kok.appendChild(h); kok.appendChild(ip);
+      kok.appendChild(btn('Raporuma dön', true, kapat));
+      if (tt.sim && tt.sim.modul) {
+        sim = Q.sim.mount(tt.sim.modul, h, tt.sim.params || {}, { done: function(){}, hint: function(m){ ip.textContent = m; }, onFail: function(){} });
+      }
+    }
+    kart();
+    Q.ui.modal.open(kok, { baslik: 'Temel tur · ' + st.ad });
+  }
+  function rapor(sonuc, ad){
+    sonuc = sonuc || son;
+    if (!sonuc) return Promise.resolve();
+    return new Promise(function(res){
+      var kok = el('div', 'fn-rapor');
+      kok.style.cssText = 'max-height:68vh;overflow:auto;padding-right:6px;text-align:left';
+      var ort = ortalama(sonuc.sorular);
+      kok.appendChild(el('h3', null, 'Sınav Raporu')).style.margin = '0 0 4px';
+      var ozet = el('p', null, 'Genel doğruluk: %' + ort + '. ' + (ort >= 80 ? 'Sınava hazırsın.' : ort >= 50 ? 'İyi gidiyorsun; zayıf yerleri tekrar et.' : 'Temelleri biraz daha çalışalım.'));
+      ozet.style.margin = '0 0 8px';
+      kok.appendChild(ozet);
+      sonuc.sorular.forEach(function(r){
+        var satir = el('div', 'fn-satir');
+        satir.style.cssText = 'margin:6px 0';
+        var top = el('div');
+        top.style.cssText = 'display:flex;justify-content:space-between;gap:8px;font-size:var(--fs-small)';
+        top.appendChild(el('span', null, 'Q' + r.idx + ' · ' + (r.kaynak || '').toUpperCase() + ' · ' + r.kaynakAd));
+        top.appendChild(el('b', null, r.mod === 'atla' ? 'Atlandı' : '%' + r.dogruluk));
+        satir.appendChild(top);
+        var cubuk = el('div', 'fn-cubuk');
+        cubuk.style.cssText = 'height:10px;border-radius:5px;background:var(--panel2);overflow:hidden;border:1px solid var(--line)';
+        var dolu = el('div');
+        dolu.style.cssText = 'height:100%;width:' + Math.max(2, r.dogruluk || 0) + '%;background:var(' + (r.dogruluk >= 70 ? '--good' : r.dogruluk >= 40 ? '--yellow' : '--bad') + ')';
+        cubuk.appendChild(dolu);
+        satir.appendChild(cubuk);
+        if (r.eksik && r.eksik.length) {
+          var d = el('details');
+          d.appendChild(el('summary', null, 'Eksik kalan anahtar fikirler (' + r.eksik.length + ')'));
+          var ul = el('ul');
+          r.eksik.forEach(function(x){ ul.appendChild(el('li', null, x)); });
+          d.appendChild(ul);
+          satir.appendChild(d);
+        }
+        kok.appendChild(satir);
+      });
+      /* hata defteri */
+      var acikK = ((Q.state && Q.state.hataDefteri) || []).filter(function(h){ return !h.cozuldu; });
+      var by = {};
+      acikK.forEach(function(h){ by[h.kavram] = (by[h.kavram] || 0) + 1; });
+      var kv = Object.keys(by).sort(function(a, b){ return by[b] - by[a]; }).slice(0, 5);
+      kok.appendChild(el('h4', null, 'Hata defteri')).style.margin = '12px 0 4px';
+      kok.appendChild(el('p', null, acikK.length ? acikK.length + ' açık kayıt: ' + kv.map(function(k){ return String(k).replace(/_/g, ' ') + ' (' + by[k] + ')'; }).join(', ') : 'Açık kayıt yok.'));
+      /* tekrar önerisi */
+      var zayif = sonuc.sorular.filter(function(r){ return (r.dogruluk || 0) < 80; })
+        .sort(function(a, b){ return (a.dogruluk || 0) - (b.dogruluk || 0); });
+      var gor = {}, oner = [];
+      zayif.forEach(function(r){ if (!gor[r.kaynak] && oner.length < 3) { gor[r.kaynak] = 1; oner.push(r); } });
+      kok.appendChild(el('h4', null, 'Tekrar çalışma önerisi')).style.margin = '12px 0 4px';
+      if (!oner.length) kok.appendChild(el('p', null, 'Hepsi sağlam görünüyor.'));
+      oner.forEach(function(r){
+        var s = el('div');
+        s.style.cssText = 'display:flex;gap:10px;align-items:center;margin:4px 0;flex-wrap:wrap';
+        s.appendChild(el('span', null, r.kaynak.toUpperCase() + ' · ' + r.kaynakAd + ' (%' + r.dogruluk + ')'));
+        s.appendChild(btn('Temel tura git', false, function(){ temelTur(r.kaynak, function(){ rapor(sonuc, ad).then(res); }); }));
+        kok.appendChild(s);
+      });
+      var son2 = el('div');
+      son2.style.cssText = 'display:flex;gap:10px;margin-top:14px;justify-content:center';
+      son2.appendChild(btn('Haritaya dön', true, function(){ try { Q.ui.modal.close(); } catch (e) { /* modal yok */ } res(); }));
+      kok.appendChild(son2);
+      Q.ui.modal.open(kok, { baslik: '' });
+      kok.scrollTop = 0;
+    });
+  }
+
+  /* ---------- koşu ---------- */
+  function yaz(sonuc){
+    try { localStorage.setItem(KEY, JSON.stringify(sonuc)); } catch (e) { /* kapalı */ }
+  }
+  function oku(){
+    try { var r = JSON.parse(localStorage.getItem(KEY)); if (r && Array.isArray(r.sorular)) return r; } catch (e) { /* yok */ }
+    return null;
+  }
+  function haritaAc(){ try { if (Q.settings && Q.settings.openMap) Q.settings.openMap(); } catch (e) { /* ayar yok */ } }
+
+  async function start(){
+    if (calisiyor) return 'zaten';
+    if (!acik()) { toast('Final için önce 9 istasyonu bitir (ya da Ayarlar: Her yere eriş).', 'bilgi'); return 'kilitli'; }
+    var st = hazirla();
+    if (!st) { toast('Final soruları bulunamadı', 'kotu'); return 'yok'; }
+    sar();
+    calisiyor = true;
+    kayit = {};
+    var eskiVoltaj = Q.state.voltaj, eskiAktif = Q.state.aktif;
+    var eskiIlerleme = Q.state.ilerleme && Q.state.ilerleme.final;
+    Q.data.stations.final = st;
+    try { if (Q.settings && Q.settings.closeMap) Q.settings.closeMap(); } catch (e) { /* harita yok */ }
+    try { if (Q.ui && Q.ui.modal) Q.ui.modal.close(); } catch (e) { /* modal yok */ }
+    var onStart = function(o){
+      if (!o || o.stationId !== 'final') return;
+      var h = document.getElementById('hud-station');
+      if (h) h.textContent = 'Sınav Günü · Final';
+    };
+    Q.bus.on('station:start', onStart);
+    var sonuc = 'cikis';
+    try {
+      Q.state.voltaj = 100;
+      sonuc = await Q.runner.start('final', 0);
+    } catch (e) {
+      console.error('final', e);
+    }
+    try { Q.bus.off('station:start', onStart); } catch (e) { /* off yok */ }
+    delete Q.data.stations.final;
+    if (Q.state.ilerleme) { if (eskiIlerleme) Q.state.ilerleme.final = eskiIlerleme; else delete Q.state.ilerleme.final; }
+    Q.state.voltaj = eskiVoltaj;
+    Q.state.aktif = eskiAktif;
+    try { if (Q.ui && Q.ui.hud && Q.ui.hud.setVoltaj) Q.ui.hud.setVoltaj(eskiVoltaj); } catch (e) { /* hud yok */ }
+    try { Q.save.write(); } catch (e) { /* kayıt yok */ }
+    var cevaplar = kayit || {};
+    kayit = null;
+    calisiyor = false;
+    if (sonuc !== 'tamam') { haritaAc(); return sonuc; }
+    var liste = st.engeller.map(function(e){
+      return cevaplar[e.no] || { idx: e.no, kaynak: e.kaynak, kaynakAd: e.kaynakAd, soru: e.soru, dogruluk: 0, eminlik: 1, eksik: e.anahtarFikirler.slice(), mod: 'atla', geri: [] };
+    });
+    son = { tarih: Date.now(), sorular: liste };
+    yaz(son);
+    await sleep(300);
+    await rapor(son);
+    haritaAc();
+    return 'tamam';
+  }
+
+  Q.final = {
+    start: start, acik: acik, hazirla: hazirla, rapor: rapor,
+    son: function(){ return son || oku(); },
+    calisiyor: function(){ return calisiyor; }
+  };
+})();
+
 /* 97-tekrar.js (A10) Tekrar Merkezi: Terimler (glossary), Test (quiz), Açıklama kartları, Sınav tarzı.
  * Ekler: Q.tekrar {open, close, terimler, havuz}. Ana oyun ilerlemesine/voltaja/kısa devreye DOKUNMAZ.
  * Kayıt: yalnızca localStorage["cip-hatti-tekrar-v1"] (son skor, yanlış sorular), try/catch ile.
@@ -10634,6 +11413,28 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
   function stAd(id){ var s = Q.data.stations[id]; return id.toUpperCase() + ' · ' + (s && s.ad || id); }
   function mix(a){ return Q.util && Q.util.shuffle ? Q.util.shuffle(a) : a.slice().sort(function(){ return Math.random() - 0.5; }); }
+
+  /* ---------- Biliyorum (Q.state.biliyorum: küçük harfli İngilizce terim listesi; ana kayıtta geriye uyumlu isteğe bağlı alan) ---------- */
+  var biliyorumAtla = true;
+  function bilList(){ if (!Array.isArray(Q.state.biliyorum)) Q.state.biliyorum = []; return Q.state.biliyorum; }
+  function bilMi(en){ return bilList().indexOf(String(en).toLowerCase()) >= 0; }
+  function bilDegis(en, ekle){
+    var k = String(en).toLowerCase(), l = bilList(), i = l.indexOf(k);
+    if (ekle && i < 0) l.push(k); else if (!ekle && i >= 0) l.splice(i, 1);
+    if (Q.save && Q.save.write) Q.save.write();
+  }
+  function atlanir(metin){
+    if (!biliyorumAtla) return false;
+    var m = String(metin || '').toLowerCase(), l = bilList();
+    for (var i = 0; i < l.length; i++) if (l[i].length >= 4 && m.indexOf(l[i]) >= 0) return true;
+    return false;
+  }
+  function atlaKutusu(onDegis){
+    var lbl = el('label', 'tk-row'), cb = el('input'); cb.type = 'checkbox'; cb.checked = biliyorumAtla; cb.className = 'tk-atla';
+    cb.addEventListener('change', function(){ biliyorumAtla = cb.checked; if (onDegis) onDegis(); });
+    lbl.appendChild(cb); lbl.appendChild(el('span', '', 'Biliyorum dediğim terimleri içerenleri atla (' + bilList().length + ' terim)'));
+    return lbl;
+  }
 
   /* ---------- terim çıkarma ---------- */
   var STOP = {}; 've bir ile de da bu şu o en her hiç hic mi ne ya ki ama gibi için icin daha çok cok sadece yalnızca ise olan olarak bunu onu'.split(' ').forEach(function(w){ STOP[w] = 1; });
@@ -10756,13 +11557,15 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       '.tk-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:10px}.tk-muted{color:var(--muted)}';
     document.head.appendChild(s);
   }
-  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)']];
+  var SEKMELER = [['terim', 'Terimler'], ['test', 'Test'], ['kart', 'Açıklama kartları'], ['sinav', 'Sınav tarzı'], ['deneme', 'Deneme sınavı (Mock exam)'], ['hata', 'Hata defterini çalış'], ['ai', "AI'a sor"], ['bil', 'Biliyorum']];
   function ac(){
     if (root) { git(aktifSekme); return; }
     css();
     root = el('div'); root.id = 'tk-root'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-label', 'Tekrar Merkezi');
     var top = el('div', 'tk-top'); top.appendChild(el('h2', '', 'Tekrar Merkezi'));
-    top.appendChild(btn('Kapat', '', kapat)); root.appendChild(top);
+    var tsag = el('div', 'tk-row');
+    if (Q.final && Q.final.start && Q.final.acik()) tsag.appendChild(btn('Sınav Günü (Final)', 'primary', function(){ kapat(); Q.final.start(); }));
+    tsag.appendChild(btn('Kapat', '', kapat)); top.appendChild(tsag); root.appendChild(top);
     tabsEl = el('div', 'tk-tabs'); tabsEl.setAttribute('role', 'tablist');
     SEKMELER.forEach(function(s){ var b = btn(s[1], '', function(){ git(s[0]); }); b.dataset.sekme = s[0]; b.setAttribute('role', 'tab'); tabsEl.appendChild(b); });
     root.appendChild(tabsEl);
@@ -10779,10 +11582,11 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     if (root.parentNode) root.parentNode.removeChild(root);
     root = body = tabsEl = null;
   }
-  function git(s){
+  function git(s, ctx){
     if (!root) return; aktifSekme = s; denemeTok++; denemeDurdur(); body.textContent = '';
     Array.prototype.forEach.call(tabsEl.children, function(b){ b.setAttribute('aria-selected', b.dataset.sekme === s ? 'true' : 'false'); });
-    if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else if (s === 'deneme') denemeSekmesi(); else sinavSekmesi();
+    if (s === 'terim') terimSekmesi(); else if (s === 'test') testKur(); else if (s === 'kart') kartSekmesi(); else if (s === 'deneme') denemeSekmesi();
+    else if (s === 'hata') { if (Q.tekrarHata) Q.tekrarHata.hata(body, ctx); } else if (s === 'ai') { if (Q.tekrarHata) Q.tekrarHata.ai(body, ctx); } else if (s === 'bil') bilSekmesi(); else sinavSekmesi();
   }
 
   /* ---------- 1. terimler ---------- */
@@ -10796,25 +11600,46 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     body.appendChild(r); body.appendChild(liste);
     function satir(t){
       var row = el('div', 'tk-t'); row.appendChild(el('b', '', t.en));
+      var bb = btn('Biliyorum', '', function(){ bilDegis(t.en, true); ciz(); }); bb.className += ' tk-bil'; bb.style.marginLeft = 'auto';
       if (cb.checked) {
         var g = el('span', 'tr gizli', 'göster'); g.tabIndex = 0;
         var goster = function(){ g.textContent = t.tr; g.className = 'tr'; };
         g.addEventListener('click', goster); g.addEventListener('keydown', function(e){ if (e.key === 'Enter') goster(); });
         row.appendChild(g);
       } else row.appendChild(el('span', 'tr', t.tr));
+      row.appendChild(bb);
       return row;
     }
     function ciz(){
       liste.textContent = ''; var q = ara.value.trim().toLowerCase(), son = null, n = 0;
-      terimler().filter(function(t){ return (sel.value === 'hepsi' || t.g === sel.value) && (!q || t.en.toLowerCase().indexOf(q) >= 0 || t.tr.toLowerCase().indexOf(q) >= 0); })
+      terimler().filter(function(t){ return !bilMi(t.en) && (sel.value === 'hepsi' || t.g === sel.value) && (!q || t.en.toLowerCase().indexOf(q) >= 0 || t.tr.toLowerCase().indexOf(q) >= 0); })
         .sort(function(a, b){ return a.g === b.g ? a.en.localeCompare(b.en) : ((a.g === 'temel') - (b.g === 'temel')) || (a.g < b.g ? -1 : 1); })
         .forEach(function(t){
           if (t.g !== son) { son = t.g; liste.appendChild(el('div', 'tk-g', t.g === 'temel' ? 'Temel terimler' : stAd(t.g))); }
           liste.appendChild(satir(t)); n++;
         });
-      sayac.textContent = n + ' terim';
+      sayac.textContent = n + ' terim · Biliyorum: ' + bilList().length + ' / ' + terimler().length;
     }
     ara.addEventListener('input', ciz); sel.addEventListener('change', ciz); cb.addEventListener('change', ciz); ciz();
+  }
+
+  function bilSekmesi(){
+    var liste = el('div'), sayac = el('div', 'tk-muted');
+    body.appendChild(sayac); body.appendChild(liste);
+    function ciz(){
+      liste.textContent = '';
+      var tum = terimler(), haritasi = {}; tum.forEach(function(t){ haritasi[t.en.toLowerCase()] = t; });
+      var l = bilList().slice().sort();
+      sayac.textContent = 'Biliyorum: ' + l.length + ' / ' + tum.length;
+      if (!l.length) { liste.appendChild(el('div', 'tk-fb', 'Henüz "Biliyorum" dediğin terim yok. Terimler sayfasında kolay gelen terimlerin yanındaki Biliyorum düğmesine bas; burada birikir ve tekrar listesinde görünmez.')); return; }
+      l.forEach(function(k){
+        var t = haritasi[k] || { en: k, tr: '' }, row = el('div', 'tk-t');
+        row.appendChild(el('b', '', t.en)); row.appendChild(el('span', 'tr', t.tr));
+        var g = btn('Geri al / Tekrar listesine koy', '', function(){ bilDegis(k, false); ciz(); }); g.className += ' tk-geri'; g.style.marginLeft = 'auto';
+        row.appendChild(g); liste.appendChild(row);
+      });
+    }
+    ciz();
   }
 
   /* ---------- 2. test ---------- */
@@ -10835,11 +11660,11 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       sb.push(b); say.appendChild(b);
     });
     var bilgi = el('div', 'tk-muted'), go = btn('Testi başlat', 'primary', null);
-    function secHavuz(){ return h.filter(function(x){ return secili[x.st]; }); }
+    function secHavuz(){ return h.filter(function(x){ return secili[x.st] && !atlanir(x.soru + ' ' + x.secenekler.map(function(o){ return o.t; }).join(' ')); }); }
     function ozet(){ var n = secHavuz().length; bilgi.textContent = 'Havuzda ' + n + ' soru var.' + (k.son ? ' Son skor: ' + k.son.skor + '/' + k.son.toplam + '.' : ''); go.disabled = !n; }
     go.addEventListener('click', function(){ var p = mix(secHavuz()); if (sayiSecim) p = p.slice(0, sayiSecim); basla(p); });
     body.appendChild(el('div', 'tk-muted', 'Sorular istasyonlardaki düşman, tahmin, tuzak ve patron sorularından gelir. Hasar ya da voltaj yok; oyun ilerlemen değişmez.'));
-    body.appendChild(sec); body.appendChild(say); body.appendChild(bilgi);
+    body.appendChild(sec); body.appendChild(say); body.appendChild(atlaKutusu(ozet)); body.appendChild(bilgi);
     var ra = el('div', 'tk-row'); ra.appendChild(go);
     if (k.yanlis.length) ra.appendChild(btn('Kayıtlı yanlışlarım (' + k.yanlis.length + ')', '', function(){ var p = h.filter(function(x){ return k.yanlis.indexOf(x.soru) >= 0; }); if (p.length) basla(mix(p)); }));
     body.appendChild(ra); ozet();
@@ -10889,8 +11714,8 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   function kartSekmesi(){
     var sel = el('select'); sel.setAttribute('aria-label', 'İstasyon');
     stIds().forEach(function(id){ var o = el('option', '', stAd(id)); o.value = id; sel.appendChild(o); });
-    var grid = el('div', 'tk-grid'), r = el('div', 'tk-row'); r.appendChild(sel); body.appendChild(r); body.appendChild(grid);
-    function kart(b, satirlar){ var c = el('div', 'tk-kart'); c.appendChild(el('h4', '', b)); satirlar.forEach(function(t){ if (t) c.appendChild(el('p', '', t)); }); grid.appendChild(c); }
+    var grid = el('div', 'tk-grid'), r = el('div', 'tk-row'); r.appendChild(sel); r.appendChild(atlaKutusu(function(){ ciz(); })); body.appendChild(r); body.appendChild(grid);
+    function kart(b, satirlar){ if (atlanir(b + ' ' + satirlar.join(' '))) return; var c = el('div', 'tk-kart'); c.appendChild(el('h4', '', b)); satirlar.forEach(function(t){ if (t) c.appendChild(el('p', '', t)); }); grid.appendChild(c); }
     function ciz(){
       grid.textContent = ''; var s = Q.data.stations[sel.value]; if (!s) return;
       ((s.temelTur && s.temelTur.kartlar) || []).forEach(function(k){ kart(k.baslik, [k.metin]); });
@@ -10956,6 +11781,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     var sm = v.mcq.filter(function(x){ return x.secki; }), sk = v.klasik.filter(function(x){ return x.secki; });
     var kume = (denemeAyar.kume === 'tum' || !sm.length) ? 'tum' : 'secki';
     var hm = kume === 'secki' ? sm : v.mcq, hk = kume === 'secki' ? sk : v.klasik;
+    var jt = function(x){ return !atlanir(JSON.stringify(x)); }; var hm0 = hm, hk0 = hk; hm = hm.filter(jt); hk = hk.filter(jt); if (!hm.length) hm = hm0; if (!hk.length) hk = hk0;
     var nm = Math.min(50, hm.length), nk = Math.min(20, hk.length);
     body.appendChild(el('div', 'tk-muted', 'Gerçek sınav gibi: tüm sorular İngilizce, istasyonlar karışık. Önce çoktan seçmeli (MCQ), sonra klasik (yazılı) sorular. Cevaplarını İngilizce yaz; terim bilmiyorsan sınav sonundaki terim listesine bak.'));
     var kutu = el('div', 'tk-kart'); kutu.appendChild(el('h4', '', 'Bu sınavda'));
@@ -10983,6 +11809,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
       });
       body.appendChild(rk);
     }
+    body.appendChild(atlaKutusu(function(){ git('deneme'); }));
     secenek('Süre sayacı:', 'sure', 'Açık', 'Kapalı');
     secenek('MCQ geri bildirimi:', 'anlik', 'Her sorudan sonra', 'Sınav sonunda toplu');
     var go = btn('Sınavı başlat', 'primary', function(){ denemeBasla(mix(hm).slice(0, 50), mix(hk).slice(0, 20)); });
@@ -11105,7 +11932,383 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     }
     mcqSor(0);
   }
-  Q.tekrar = { open: ac, close: kapat, terimler: terimler, havuz: havuz };
+  Q.tekrar = { open: ac, close: kapat, git: function(s, ctx){ if (!root) ac(); git(s, ctx); }, terimler: terimler, havuz: havuz };
+})();
+
+/* 98-tekrar-hata.js · Tekrar Merkezi: "Hata defterini çalış" ve "AI'a sor" sayfaları.
+ * Ekler: Q.tekrarHata {hata(host, ctx), ai(host, ctx), sistemIstemi(), enCokYanlis(n), soruBul(kayit), cevapla(kayit, ok)}.
+ * Hata defteri kaydı (Q.state.hataDefteri, anahtar cip-hatti-v1) geriye uyumlu genişler: isteğe bağlı alanlar
+ * seri (art arda doğru), ogrenildi (bool), cz (deneme sayısı). 2 art arda doğru -> cozuldu=true (defterden çıkar).
+ * Sohbet geçmişi yalnızca bellekte (oturum). API anahtarına hiç dokunulmaz; Q.claude.chat kullanılır. */
+(function(){
+  'use strict';
+  var Q = (typeof window !== 'undefined' ? window : globalThis).Q;
+  var TUR_AD = { 'emin-yanlis': 'Emin olduğun yanlış', yanlis: 'Yanlış', bilinmeyen: 'Bilmiyordum', sans: 'Şans eseri doğru' };
+  var TIP_AD = { dusman: 'Düşman sorusu', tahmin: 'Tahmin sorusu', tuzak: 'Tuzak (yanlış parça)', patron: 'Patron sorusu' };
+  var TIP_SIRA = { dusman: 0, tahmin: 1, tuzak: 2, patron: 3 };
+
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function btn(text, cls, fn){ var b = el('button', 'btn' + (cls ? ' ' + cls : ''), text); b.type = 'button'; if (fn) b.addEventListener('click', fn); return b; }
+  function kavramAd(k){ return String(k || '?').replace(/_/g, ' '); }
+  function stIds(){ return Object.keys(Q.data.stations || {}).sort(); }
+  function stAd(id){ var s = Q.data.stations[id]; return id.toUpperCase() + ' · ' + (s && s.ad || id); }
+  function defter(){ return Q.state.hataDefteri; }
+  function kaydet(){ if (Q.save && Q.save.write) Q.save.write(); }
+
+  function css(){
+    if (document.getElementById('th-css')) return;
+    var s = el('style'); s.id = 'th-css';
+    s.textContent = '.th-kart{padding:10px 12px;border:2px solid var(--line);border-radius:8px;background:var(--panel2);display:flex;flex-direction:column;gap:6px}' +
+      '.th-kart h4{margin:0;color:var(--yellow);font-size:18px}.th-rozet{display:inline-block;padding:1px 8px;border-radius:99px;border:1px solid var(--line);font-size:var(--fs-small);color:var(--muted)}' +
+      '.th-bos{margin:auto;text-align:center;max-width:520px;padding:24px;display:flex;flex-direction:column;gap:12px;align-items:center}.th-bos .buyuk{font-size:64px;line-height:1}' +
+      '.th-sohbet{display:flex;flex-direction:column;flex:1;min-height:0;gap:8px}.th-akis{flex:1;min-height:0;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:4px}' +
+      '.th-m{max-width:80%;padding:8px 12px;border-radius:10px;border:2px solid var(--line);white-space:pre-wrap;word-break:break-word}' +
+      '.th-m.u{align-self:flex-end;background:var(--sel)}.th-m.a{align-self:flex-start;background:var(--panel2)}.th-m.h{align-self:center;border-color:var(--red);background:var(--panel2)}' +
+      '.th-gir{display:flex;gap:8px;align-items:flex-end}.th-gir textarea{flex:1;min-height:44px;max-height:110px;resize:vertical;background:var(--panel2);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit}';
+    document.head.appendChild(s);
+  }
+
+  /* ---------- soru bulma ---------- */
+  var idxCache = null;
+  function indeks(){
+    if (idxCache && idxCache.n === stIds().length) return idxCache.v;
+    var v = {};
+    function ekle(st, tip, soru, sec, kavram, ek){
+      if (!kavram || !soru || !sec || sec.length < 2) return;
+      if (sec.filter(function(s){ return s.dogru; }).length !== 1) return;
+      (v[st + '|' + kavram] = v[st + '|' + kavram] || []).push({ st: st, tip: tip, soru: soru, secenekler: sec.map(function(s){ return { t: s.t, dogru: !!s.dogru, neden: s.neden || '' }; }), kavram: kavram, ek: ek || '' });
+    }
+    stIds().forEach(function(id){
+      var s = Q.data.stations[id];
+      (s.engeller || []).concat(s.tekrarHavuzu || []).forEach(function(e){
+        if (e.tip === 'dusman') ekle(id, 'dusman', e.soru, e.secenekler, e.kavram);
+        else if (e.tip === 'tahmin') ekle(id, 'tahmin', e.soru, e.secenekler, e.kavram, e.acik);
+        else if (e.tip === 'tuzak' && e.parcalar && e.parcalar.length > 1)
+          ekle(id, 'tuzak', 'Bu cümlenin hangi parçası yanlış? "' + e.iddia + '"',
+            e.parcalar.map(function(p, i){ return { t: p, dogru: i === e.yanlisParca, neden: e.duzeltme ? 'Doğrusu: ' + e.duzeltme : '' }; }), e.kavram);
+        else if (e.tip === 'patron') (e.fazlar || []).forEach(function(f){ if (f.tip === 'secmeli') ekle(id, 'patron', f.soru, f.secenekler, e.kavram); });
+      });
+    });
+    idxCache = { n: stIds().length, v: v };
+    return v;
+  }
+  function ogrenilen(kayit){
+    var s = Q.data.stations[kayit.istasyon];
+    var l = (s && s.engeller || []).concat(s && s.tekrarHavuzu || []);
+    for (var i = 0; i < l.length; i++) if (l[i].kavram === kayit.kavram && l[i].ogrenilen) return l[i].ogrenilen;
+    return '';
+  }
+  /* Kayda ait soru: deneme sayısına göre döner (aynı kavramda birden çok soru varsa değişir). null = soru yok. */
+  function soruBul(kayit){
+    var l = indeks()[kayit.istasyon + '|' + kayit.kavram];
+    if (!l || !l.length) {
+      var d = indeks();
+      for (var k in d) if (k.split('|')[1] === kayit.kavram) { l = d[k]; break; }
+    }
+    if (!l || !l.length) return null;
+    return l[(kayit.cz || 0) % l.length];
+  }
+  function dogruSecenek(q){ return q.secenekler.filter(function(s){ return s.dogru; })[0]; }
+  function nedenMetni(q){
+    var d = dogruSecenek(q);
+    return (d.neden || '').replace(/^(Doğru|Hayır|Yanlış)\.\s*/, '') || q.ek || '';
+  }
+  function ipucu(q){
+    var d = dogruSecenek(q).t, w = d.split(/\s+/).slice(0, 2).join(' ');
+    return 'Doğru seçenek "' + w + '..." diye başlıyor.';
+  }
+
+  /* ---------- cevap kaydı ---------- */
+  function cevapla(kayit, ok){
+    kayit.cz = (kayit.cz || 0) + 1;
+    if (ok) {
+      kayit.seri = (kayit.seri || 0) + 1; kayit.ogrenildi = true;
+      if (kayit.seri >= 2) { kayit.cozuldu = true; kayit.cozulduTarih = Date.now(); }
+    } else { kayit.seri = 0; kayit.ogrenildi = false; }
+    kaydet();
+    return { cikti: !!kayit.cozuldu, seri: kayit.seri };
+  }
+  function acikKayitlar(){ return defter().filter(function(h){ return !h.cozuldu; }); }
+  function enCokYanlis(n){
+    var agirlik = { 'emin-yanlis': 3, yanlis: 2, bilinmeyen: 1, sans: 0.5 }, by = {};
+    acikKayitlar().forEach(function(h){
+      var o = by[h.kavram] = by[h.kavram] || { kavram: h.kavram, w: 0 };
+      o.w += (agirlik[h.tur] || 1) + (h.tekrar || 0);
+    });
+    return Object.keys(by).map(function(k){ return by[k]; }).sort(function(a, b){ return b.w - a.w; }).slice(0, n || 3);
+  }
+
+  /* ---------- HATA DEFTERİ SAYFASI ---------- */
+  var fSt = 'hepsi', fKv = 'hepsi', cozulenGoster = false;
+  var hataTok = 0;
+
+  function hataSayfasi(host){
+    css();
+    var tok = ++hataTok;
+    host.textContent = '';
+    liste(host, tok);
+  }
+  function canli(host, tok){ return tok === hataTok && host.isConnected; }
+
+  function liste(host, tok){
+    host.textContent = '';
+    var tum = defter().filter(function(h){ return cozulenGoster || !h.cozuldu; });
+    var acik = acikKayitlar();
+    if (!defter().length || (!acik.length && !cozulenGoster && !defter().some(function(h){ return h.cozuldu; }))) return bosEkran(host, false);
+    if (!acik.length && !cozulenGoster) return bosEkran(host, true, tok);
+
+    var sSel = el('select'); sSel.setAttribute('aria-label', 'İstasyon filtresi');
+    var kSel = el('select'); kSel.setAttribute('aria-label', 'Kavram filtresi');
+    function opt(sel, v, t){ var o = el('option', '', t); o.value = v; sel.appendChild(o); }
+    opt(sSel, 'hepsi', 'Tüm istasyonlar');
+    var stler = {}, kvler = {};
+    tum.forEach(function(h){ if (h.istasyon) stler[h.istasyon] = 1; });
+    Object.keys(stler).sort().forEach(function(id){ opt(sSel, id, Q.data.stations[id] ? stAd(id) : id); });
+    if (!stler[fSt]) fSt = 'hepsi'; sSel.value = fSt;
+    function kvDoldur(){
+      kSel.textContent = ''; opt(kSel, 'hepsi', 'Tüm kavramlar'); kvler = {};
+      tum.forEach(function(h){ if (fSt === 'hepsi' || h.istasyon === fSt) kvler[h.kavram] = 1; });
+      Object.keys(kvler).sort().forEach(function(k){ opt(kSel, k, kavramAd(k)); });
+      if (!kvler[fKv]) fKv = 'hepsi'; kSel.value = fKv;
+    }
+    kvDoldur();
+    var cb = el('input'); cb.type = 'checkbox'; cb.checked = cozulenGoster;
+    var lbl = el('label', 'tk-row'); lbl.appendChild(cb); lbl.appendChild(el('span', '', 'Defterden çıkanları da göster'));
+    var sayac = el('span', 'tk-muted');
+    var ust = el('div', 'tk-row'); [sSel, kSel, lbl, sayac].forEach(function(x){ ust.appendChild(x); });
+    var grid = el('div', 'tk-grid');
+    var hepsi = btn('Görünenleri yeniden çöz', 'primary', null); hepsi.id = 'th-hepsi';
+    var ustSag = el('div', 'tk-row'); ustSag.appendChild(hepsi);
+    host.appendChild(ust); host.appendChild(ustSag); host.appendChild(grid);
+
+    function gorunen(){
+      return tum.filter(function(h){ return (fSt === 'hepsi' || h.istasyon === fSt) && (fKv === 'hepsi' || h.kavram === fKv); });
+    }
+    function ciz(){
+      grid.textContent = '';
+      var g = gorunen(), ac = g.filter(function(h){ return !h.cozuldu; });
+      var ogr = defter().filter(function(h){ return h.ogrenildi && !h.cozuldu; }).length;
+      sayac.textContent = g.length + ' kayıt · öğrenildi (1/2): ' + ogr;
+      hepsi.disabled = !ac.some(function(h){ return soruBul(h); });
+      g.forEach(function(h){ grid.appendChild(kart(h)); });
+      if (!g.length) grid.appendChild(el('div', 'tk-muted', 'Bu filtreyle kayıt yok.'));
+    }
+    function kart(h){
+      var c = el('div', 'th-kart'); c.dataset.kavram = h.kavram;
+      c.appendChild(el('h4', '', kavramAd(h.kavram)));
+      var meta = el('div', 'tk-row');
+      meta.appendChild(el('span', 'th-rozet', TUR_AD[h.tur] || h.tur));
+      if (h.istasyon) meta.appendChild(el('span', 'th-rozet', h.istasyon.toUpperCase()));
+      meta.appendChild(el('span', 'th-rozet', h.cozuldu ? 'Defterden çıktı' : (h.ogrenildi ? 'Öğrenildi 1/2' : 'Öğrenilmedi 0/2')));
+      c.appendChild(meta);
+      var q = soruBul(h);
+      if (q) {
+        c.appendChild(el('div', 'tk-soru', q.soru));
+        var d = dogruSecenek(q), nd = nedenMetni(q);
+        c.appendChild(el('p', '', 'Doğru cevap: ' + d.t));
+        if (nd) c.appendChild(el('p', 'tk-muted', 'Neden: ' + nd));
+        var ip = el('p', 'tk-muted', ''); ip.style.display = 'none'; ip.textContent = 'İpucu: ' + ipucu(q);
+        var ib = btn('İpucu göster', '', function(){ ip.style.display = ''; ib.style.display = 'none'; });
+        c.appendChild(ip);
+        var r = el('div', 'tk-row'); r.appendChild(ib);
+        if (!h.cozuldu) r.appendChild(btn('Bu soruyu yeniden çöz', 'primary', function(){ coz(host, tok, [h]); }));
+        r.appendChild(btn("Bunu AI'a sor / açıkla", '', function(){ Q.tekrar.git('ai', { kayit: h, soru: q }); }));
+        c.appendChild(r);
+      } else {
+        var og = ogrenilen(h);
+        c.appendChild(el('p', 'tk-muted', og || 'Bu kavram için kayıtlı bir soru bulunamadı.'));
+        var r2 = el('div', 'tk-row');
+        r2.appendChild(btn("Bunu AI'a sor / açıkla", '', function(){ Q.tekrar.git('ai', { kayit: h }); }));
+        c.appendChild(r2);
+      }
+      return c;
+    }
+    sSel.addEventListener('change', function(){ fSt = sSel.value; kvDoldur(); ciz(); });
+    kSel.addEventListener('change', function(){ fKv = kSel.value; ciz(); });
+    cb.addEventListener('change', function(){ cozulenGoster = cb.checked; liste(host, tok); });
+    hepsi.addEventListener('click', function(){ coz(host, tok, gorunen().filter(function(h){ return !h.cozuldu && soruBul(h); })); });
+    ciz();
+  }
+
+  function bosEkran(host, hepsiCikti, tok){
+    var b = el('div', 'th-bos'); b.id = 'th-bos';
+    b.appendChild(el('div', 'buyuk', hepsiCikti ? '🏆' : '📒'));
+    b.appendChild(el('h3', '', hepsiCikti ? 'Defterdeki tüm hatalar temizlendi!' : 'Hata defterin şu an boş'));
+    b.appendChild(el('p', 'tk-muted', hepsiCikti
+      ? 'Yanlış yaptığın her şeyi art arda iki kez doğru çözerek defterden çıkardın. Harika iş.'
+      : 'Henüz yanlış yaptığın bir soru yok. Oyunda ilerledikçe yanlışların burada birikir; sonra buradan çalışırsın. Şimdilik Test sayfasında kendini sınayabilirsin.'));
+    var r = el('div', 'tk-row');
+    r.appendChild(btn('Teste git', 'primary', function(){ Q.tekrar.git('test'); }));
+    if (hepsiCikti) r.appendChild(btn('Çıkanları göster', '', function(){ cozulenGoster = true; liste(host, tok); }));
+    b.appendChild(r); host.appendChild(b);
+  }
+
+  /* Yeniden çöz: kayıtlar soru tipine göre gruplanıp sırayla sorulur */
+  function coz(host, tok, kayitlar){
+    var kuyruk = kayitlar.map(function(h){ return { h: h, q: soruBul(h) }; }).filter(function(x){ return x.q; });
+    kuyruk.sort(function(a, b){ return (TIP_SIRA[a.q.tip] || 0) - (TIP_SIRA[b.q.tip] || 0); });
+    var i = 0, dogru = 0, cikan = 0;
+    function sor(){
+      if (!canli(host, tok)) return;
+      host.textContent = '';
+      if (i >= kuyruk.length) return bitis();
+      var x = kuyruk[i], q = x.q;
+      host.appendChild(el('div', 'tk-muted', 'Soru ' + (i + 1) + '/' + kuyruk.length + ' · ' + (TIP_AD[q.tip] || q.tip) + ' · ' + kavramAd(x.h.kavram) + ' · ' + stAd(q.st)));
+      host.appendChild(el('div', 'tk-soru', q.soru));
+      var oh = el('div'); host.appendChild(oh);
+      var iptal = btn('Listeye dön', '', function(){ hataTok++; hataSayfasi(host); }); iptal.id = 'th-liste-don';
+      var ia = el('div', 'tk-row'); ia.appendChild(iptal); host.appendChild(ia);
+      Q.ui.options.ask({ host: oh, secenekler: q.secenekler }).then(function(idx){
+        if (!canli(host, tok)) return;
+        var ok = !!q.secenekler[idx].dogru, d = dogruSecenek(q), r = cevapla(x.h, ok);
+        if (ok) dogru++; if (r.cikti) cikan++;
+        var fb = el('div', 'tk-fb ' + (ok ? 'iyi' : 'kotu')); fb.setAttribute('role', 'status');
+        var nd = nedenMetni(q);
+        fb.textContent = (ok ? 'Doğru! ' : 'Yanlış. Doğru seçenek: ' + d.t + '. ') + (nd ? 'Nedeni: ' + nd + ' ' : '') +
+          (ok ? (r.cikti ? 'Art arda 2 doğru: defterden çıktı.' : 'Öğrenildi sayıldı (1/2); bir kez daha doğru yaparsan defterden çıkar.') : 'Defterde kalıyor.');
+        oh.textContent = ''; oh.appendChild(fb);
+        var dev = btn(i + 1 >= kuyruk.length ? 'Sonucu gör' : 'Sonraki soru', 'primary', function(){ i++; sor(); });
+        dev.id = 'th-sonraki'; oh.appendChild(dev);
+        try { dev.focus(); } catch (e) { /* odak yok */ }
+      });
+    }
+    function bitis(){
+      host.appendChild(el('div', 'tk-soru', 'Sonuç: ' + dogru + '/' + kuyruk.length + ' doğru'));
+      host.appendChild(el('p', 'tk-muted', cikan + ' kayıt defterden çıktı.'));
+      var r = el('div', 'tk-row'); r.appendChild(btn('Hata defterine dön', 'primary', function(){ hataTok++; hataSayfasi(host); })); host.appendChild(r);
+    }
+    if (!kuyruk.length) return;
+    sor();
+  }
+
+  /* ---------- AI'A SOR ---------- */
+  var mesajlar = [];   // {role:'user'|'assistant', content}
+  var taslak = '';
+  var bekliyor = false, hataMesaji = '', aiCtl = null, aiUI = null;
+  var AI_TIMEOUT = 45000;
+
+  function sistemIstemi(){
+    var st = stIds().map(function(id){
+      var s = Q.data.stations[id], kv = {};
+      (s.engeller || []).forEach(function(e){ if (e.kavram) kv[e.kavram] = 1; });
+      return '- ' + id + ' ' + (s.ad || '') + ': ' + Object.keys(kv).map(kavramAd).join(', ');
+    }).join('\n');
+    var top = enCokYanlis(3).map(function(t){ return kavramAd(t.kavram); });
+    return 'Sen oyunlaştırılmış bir Aygıt Fiziği (kuantum mekaniği, kristal yapı, yarı iletken) çalışma oyunu "Çip Hattı" içindeki yardımcı öğretmensin. ' +
+      'Öğrenci Türkçe konuşuyor. Sade, kısa ve anlaşılır Türkçe ile anlat; küçük örnekler ve benzetmeler kullan, gerekirse kısa maddelerle yaz. ' +
+      'Ders terimlerini her zaman `English (Türkçe)` biçiminde yaz (örnek: Miller indices (Miller indisleri), bandgap (yasak enerji aralığı)). ' +
+      'Sınav tamamen İngilizce olduğu için önemli terimlerin İngilizcesini mutlaka ver. Emin olmadığın şeyi uydurma, bilmediğini söyle. Konu dışı isteklere nazikçe ders konusuna dön.\n\n' +
+      'OYUNDAKİ İSTASYONLAR VE KAVRAMLAR:\n' + st + '\n\n' +
+      (top.length ? 'ÖĞRENCİNİN HATA DEFTERİNDE EN ÇOK YANLIŞ YAPTIĞI 3 KAVRAM: ' + top.join('; ') + '. İlk mesajda ya da uygun olduğunda "Bunlardan başlayayım mı?" diye öner.' : 'Öğrencinin hata defteri şu an boş.');
+  }
+  function soruMesaji(ctx){
+    var k = ctx.kayit, q = ctx.soru, t = 'Hata defterimdeki bir kavramı anlamadım: ' + kavramAd(k && k.kavram) + '.';
+    if (q) t += '\nSoru: ' + q.soru + '\nDoğru cevap: ' + dogruSecenek(q).t + '\nBunu yanlış yaptım. Neden doğru olduğunu ve neden diğer seçeneklerin yanlış olduğunu sade anlat.';
+    else t += ' Bunu sade bir şekilde açıklar mısın?';
+    return t;
+  }
+  function hataKodu(e){
+    var c = e && e.code;
+    if (c === 'zaman') return 'Yanıt gecikti (45 sn). İnternet bağlantını kontrol edip tekrar dene.';
+    if (c === 'ag') return 'Bağlantı kurulamadı. İnternetini kontrol edip tekrar dene (yerel dosya olarak açtıysan anahtar çalışmayabilir).';
+    if (c === 'sinir') return 'Çok fazla istek gönderildi. Biraz bekleyip tekrar dene.';
+    if (c === 'yok') return 'Claude bağlı değil. Ayarlar sayfasından API anahtarını gir.';
+    if (c === 'iptal') return 'İstek iptal edildi.';
+    return 'Claude şu an yanıt veremedi. Biraz sonra tekrar dene.';
+  }
+
+  function gonder(metin){
+    metin = String(metin || '').trim();
+    if (!metin || bekliyor) return;
+    mesajlar.push({ role: 'user', content: metin });
+    taslak = ''; hataMesaji = '';
+    iste();
+  }
+  function iste(){
+    bekliyor = true; hataMesaji = ''; ciz();
+    aiCtl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
+    var son = mesajlar.slice(-20);
+    while (son.length && son[0].role !== 'user') son.shift();
+    Q.claude.chat({ system: sistemIstemi(), messages: son, signal: aiCtl && aiCtl.signal, timeoutMs: AI_TIMEOUT }).then(function(t){
+      mesajlar.push({ role: 'assistant', content: t });
+    }, function(e){
+      hataMesaji = hataKodu(e);
+    }).then(function(){ bekliyor = false; aiCtl = null; ciz(); });
+  }
+
+  function ciz(){
+    if (!aiUI || !aiUI.host.isConnected) return;
+    var u = aiUI, host = u.host;
+    host.textContent = '';
+    var wrap = el('div', 'th-sohbet'); host.appendChild(wrap);
+    var akis = el('div', 'th-akis'); akis.id = 'th-akis'; wrap.appendChild(akis);
+    if (!mesajlar.length) {
+      var top = enCokYanlis(3), g = el('div', 'tk-kart');
+      g.appendChild(el('h4', '', "AI'a sor"));
+      g.appendChild(el('p', '', 'Bir kavramı sor, Claude sade Türkçe ile anlatsın. Ders terimleri English (Türkçe) biçiminde gelir.'));
+      var ch = el('div', 'tk-row');
+      ['Miller indisini anlat', 'Bandgap (yasak enerji aralığı) nedir?', 'Photoelectric effect (fotoelektrik olay) nasıl çalışır?'].forEach(function(s){
+        var c = el('button', 'tk-chip', s); c.type = 'button'; c.addEventListener('click', function(){ if (u.hazir) gonder(s); }); ch.appendChild(c);
+      });
+      g.appendChild(ch);
+      if (top.length) {
+        var o = el('div', 'tk-row'); o.appendChild(el('span', '', 'Hata defterinde en çok yanlış: ' + top.map(function(t){ return kavramAd(t.kavram); }).join(', ') + '.'));
+        o.appendChild(btn('Bunlardan başlayayım mı?', 'primary', function(){ if (u.hazir) gonder('Hata defterimdeki en çok yanlış yaptığım kavramlardan başlayalım: ' + top.map(function(t){ return kavramAd(t.kavram); }).join(', ') + '. Sırayla sade anlatır mısın?'); }));
+        g.appendChild(o);
+      }
+      akis.appendChild(g);
+    }
+    mesajlar.forEach(function(m){ akis.appendChild(el('div', 'th-m ' + (m.role === 'user' ? 'u' : 'a'), m.content)); });
+    if (bekliyor) {
+      var y = el('div', 'th-m a tk-muted', 'Claude yazıyor...'); y.id = 'th-yaziyor'; akis.appendChild(y);
+    }
+    if (hataMesaji) {
+      var h = el('div', 'th-m h', hataMesaji); h.id = 'th-hata'; h.setAttribute('role', 'alert'); akis.appendChild(h);
+      if (mesajlar.length && mesajlar[mesajlar.length - 1].role === 'user') {
+        var tb = btn('Tekrar dene', '', function(){ iste(); }); tb.id = 'th-tekrar-dene'; tb.style.alignSelf = 'center'; akis.appendChild(tb);
+      }
+    }
+    var gir = el('div', 'th-gir'); wrap.appendChild(gir);
+    var ta = el('textarea'); ta.id = 'th-giris'; ta.placeholder = 'Sorunu yaz (Enter: gönder, Shift+Enter: yeni satır)'; ta.setAttribute('aria-label', 'Mesajın'); ta.value = taslak;
+    ta.addEventListener('input', function(){ taslak = ta.value; });
+    ta.addEventListener('keydown', function(e){ e.stopPropagation(); if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); gonder(ta.value); } });
+    gir.appendChild(ta);
+    var gb = btn('Gönder', 'primary', function(){ gonder(ta.value); }); gb.id = 'th-gonder'; gb.disabled = bekliyor; gir.appendChild(gb);
+    if (bekliyor) gir.appendChild(btn('İptal', '', function(){ if (aiCtl) aiCtl.abort(); }));
+    if (mesajlar.length && !bekliyor) gir.appendChild(btn('Yeni sohbet', '', function(){ mesajlar = []; hataMesaji = ''; ciz(); }));
+    akis.scrollTop = akis.scrollHeight;
+    if (!bekliyor) { try { ta.focus(); } catch (e) { /* odak yok */ } }
+  }
+
+  function aiSayfasi(host, ctx){
+    css();
+    host.textContent = '';
+    var u = aiUI = { host: host, hazir: false };
+    var yukleniyor = el('div', 'tk-muted', 'Claude bağlantısı kontrol ediliyor...'); host.appendChild(yukleniyor);
+    Q.claude.available().then(function(av){
+      if (aiUI !== u || !host.isConnected) return;
+      if (!av || av.backend === 'none') { uyari(host); return; }
+      u.hazir = true;
+      if (ctx && ctx.kayit) {
+        var m = soruMesaji(ctx);
+        if (!bekliyor) { mesajlar.push({ role: 'user', content: m }); taslak = ''; iste(); return; }
+      }
+      ciz();
+    }, function(){ if (aiUI === u && host.isConnected) uyari(host); });
+  }
+  function uyari(host){
+    host.textContent = '';
+    var b = el('div', 'th-bos'); b.id = 'th-anahtar-yok';
+    b.appendChild(el('div', 'buyuk', '🔑'));
+    b.appendChild(el('h3', '', 'AI sohbeti için Claude bağlantısı gerekli'));
+    b.appendChild(el('p', 'tk-muted', "Henüz bir API anahtarı tanımlı değil. Ayarlar'daki \"Gelişmiş: API anahtarı\" bölümüne anahtarını girersen burada Claude'a kavram sorabilirsin. Anahtar olmadan da Terimler, Test ve Hata defteri sayfaları çalışır."));
+    var r = el('div', 'tk-row');
+    r.appendChild(btn("Ayarlar'a git", 'primary', function(){ if (Q.tekrar && Q.tekrar.close) Q.tekrar.close(); if (Q.settings && Q.settings.open) Q.settings.open(); }));
+    r.appendChild(btn('Tekrar kontrol et', '', function(){ aiSayfasi(host, null); }));
+    b.appendChild(r); host.appendChild(b);
+  }
+
+  Q.tekrarHata = { hata: hataSayfasi, ai: aiSayfasi, sistemIstemi: sistemIstemi, enCokYanlis: enCokYanlis, soruBul: soruBul, cevapla: cevapla };
 })();
 
 /* 99-main.js (A9) — başlatma ve istasyon akışı.
@@ -11173,7 +12376,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     h.textContent = 'Çip Hattı';
     h.style.margin = '0 0 8px';
     var p = Q.util.el('p');
-    p.textContent = 'Kumdan çipe: 9 istasyon, engelleri geç.';
+    p.textContent = 'Kumdan çipe: istasyonları sırayla geç. Engele varınca soru ya da görev açılır; cevapla, ilerle.';
     kutu.appendChild(h);
     kutu.appendChild(p);
     kutu.appendChild(butonlar([
@@ -11211,6 +12414,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     sarildi = true;
     var orijinal = Q.runner.start;
     Q.runner.start = function (stationId, fromIndex) {
+      if (stationId === 'final') return orijinal.call(Q.runner, stationId, fromIndex || 0);  // Q.final kendi akışını yönetir
       var st = Q.data && Q.data.stations && Q.data.stations[stationId];
       var hata = dogrulaIstasyon(st);
       if (hata.length) {
