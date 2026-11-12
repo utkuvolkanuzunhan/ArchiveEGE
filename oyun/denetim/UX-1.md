@@ -16,7 +16,7 @@ Yöntem: ilk açılış, harita, ayarlar, sonra s01 ve s02 engelleri Playwright 
 | s02-o05 | Miller indices, intercept, reciprocal köprüden (o07) ÖNCE soruluyor | `onBilgi` (tek cümle tarif) |
 | s02-o08 patron | (hkl)/{hkl}/[uvw] gösterimi ve wafer tanımsız | `onBilgi` |
 
-Mekanizma: veride `tanitim` (kavram, satır içi, en çok 45 kelime) ve `onBilgi` (herhangi engel, açılmadan önce tek kart + "Anladım"/Enter, en çok 50 kelime; Esc menüsünden atla/geri dönüşte kart kapanır). `veri-dogrula.js` iki alanı da denetliyor. Hikâye (3 satır ≤20) ve görev (≤12) sınırlarına dokunulmadı.
+Mekanizma: veride `tanitim` (kavram, satır içi, en çok 45 kelime) ve `onNot` (kavram dışı engeller; başka ajanın `onBilgi` Bilgi kartı sayfalarından ayrı, açılmadan önce tek kart + "Anladım"/Enter, en çok 50 kelime; Esc menüsünden atla/geri dönüşte kart kapanır). `veri-dogrula.js` iki alanı da denetliyor. Hikâye (3 satır ≤20) ve görev (≤12) sınırlarına dokunulmadı.
 
 ### (2) Yönlendirme
 - Hoş geldin ekranı yalnızca "9 istasyon, engelleri geç" diyordu (istasyon sayısı da yanlış, s10 var). Yeni metin: istasyonları sırayla geç; engele varınca soru/görev açılır; cevapla, ilerle.
