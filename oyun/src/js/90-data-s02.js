@@ -56,6 +56,12 @@
           { kim: "selin", metin: "1848'de Bravais: atoms (atomlar) yalnızca 14 lattice (kafes) türünde dizilir. 1913'te Bragg'lar X-ray (X-ışını) ile gördü." },
           { kim: "selin", metin: "Cubic unit cell (kübik birim hücre): sc yalnızca köşelerde atom taşır, bcc ayrıca merkezde, fcc ayrıca yüz merkezlerinde. Önce sayacağız!" },
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
+        ],
+        onBilgi: [
+          { baslik: "Miller indices (Miller indisleri): ek notlar", madde: [
+            "Negatif intercept (kesişim) için indisin üstüne çizgi (bar) konur: (1 1 1̄).",
+            "Cubic (kübik) kristalde komşu (hkl) planes (düzlemleri) arası mesafe: d = a/√(h² + k² + l²).",
+            "Wafer (dilim): Czochralski yöntemiyle çekilen tek kristal külçeden kesilir; seed crystal (çekirdek kristal) yönelimi belirler." ] }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
         onBilgi: [
@@ -75,10 +81,10 @@
       o04,
       o05,
       { id: "s02-o06", tip: "tuzak", baslik: "Yanılgı tuzağı", kavram: "miller_duzlem", agirlik: 1,
-        iddia: "Axis (eksen) parallel (paralel) plane (düzlem) için index (indis) sonsuzdur.",
-        parcalar: ["Axis (eksen) parallel (paralel)", "plane (düzlem) için index (indis)", "sonsuzdur."],
+        iddia: "Axis (eksen) ile parallel (paralel) plane (düzlem) için index (indis) sonsuzdur.",
+        parcalar: ["Axis (eksen) ile parallel (paralel)", "plane (düzlem) için index (indis)", "sonsuzdur."],
         yanlisParca: 2,
-        duzeltme: "Axis (eksen) parallel (paralel) plane (düzlem) axis (ekseni) ∞ noktasında keser (intercept, kesişim); index (indis) 0 olur." },
+        duzeltme: "Axis (eksen) ile parallel (paralel) plane (düzlem), o axis (ekseni) ∞ noktasında keser (intercept, kesişim); index (indis) 0 olur." },
       { id: "s02-o07", tip: "kopru", baslik: "Mantık köprüsü", kavram: "miller_duzlem", agirlik: 1,
         soru: "Miller indices (Miller indisleri) adımlarını sıraya diz",
         bloklar: [
@@ -90,7 +96,7 @@
         sonuc: "Intercept (kesişim), reciprocal (ters), integer (tam sayı), (hkl): her plane (düzlem) için aynı dört adım." },
       { id: "s02-o08", tip: "patron", baslik: "Plane (Düzlem) Canavarı", kavram: null, agirlik: 1,
         canavar: "miller", canavarAd: "Plane (Düzlem) Canavarı",
-        onNot: "Gösterim: (hkl) tek plane (düzlem), {hkl} equivalent planes (eşdeğer düzlemler) ailesi, [uvw] bir direction (yön). Wafer (dilim): tek kristal külçeden kesilmiş ince silisyum disk.",
+        onNot: "Gösterim: (hkl) tek plane (düzlem), {hkl} equivalent planes (eşdeğer düzlemler) ailesi, [uvw] bir direction (yön); cubic (kübik) yapıda [hkl], (hkl) plane için normaldir (diktir). Wafer (dilim): tek kristal külçeden kesilmiş ince silisyum disk; plane seçimi atomic density (atom yoğunluğu) ve surface (yüzey) özelliklerini değiştirir.",
         giris: "Hangi düzlemdeyim? Bil bakalım, yoksa seni yanlış açıdan keserim!",
         fazlar: [
           { tip: "secmeli", kavram: "miller_duzlem",
@@ -166,7 +172,7 @@
       kartlar: [
         { baslik: "Unit cell (birim hücre) ve atom (atom)", metin: "Unit cell (birim hücre) tekrar eder. Corner (köşe) 1/8, face (yüz) 1/2, inside (iç) atom 1 sayılır." },
         { baslik: "Miller indices (Miller indisleri) adımları", metin: "Intercept (kesişim) bul, reciprocal (ters) al, integer (tam sayı) yap, (hkl) yaz." },
-        { baslik: "What happens at ∞ (infinity, sonsuz)?", metin: "Axis (eksen) parallel (paralel) plane (düzlem) the axis (eksen) at ∞ keser, index (indis) 0." }
+        { baslik: "What happens at ∞ (infinity, sonsuz)?", metin: "Axis (eksen) ile parallel (paralel) plane (düzlem) o axis (ekseni) ∞ noktasında keser; index (indis) 0 olur." }
       ],
       sim: { modul: "miller", params: { c: [1, 1, 1] } }
     },
@@ -178,7 +184,7 @@
       { id: "s02-t03", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_duzlem", agirlik: 1,
         soru: o05.soru, secenekler: o05.secenekler.map(kopya), kusurSkin: "vakans" },
       { id: "s02-t04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "miller_yon", agirlik: 1,
-        soru: "[100] direction (yön) hangi axis (eksen) için parallel (paralel) olur?",
+        soru: "[100] direction (yön) hangi axis (eksen) ile parallel (paralel) olur?",
         secenekler: [
           s("x axis (x ekseni)", true, "Doğru. [100] = (1,0,0) vector (vektör), x direction (yön)."),
           s("y axis (y ekseni)", false, "Hayır. y direction (yön) [010]."),
