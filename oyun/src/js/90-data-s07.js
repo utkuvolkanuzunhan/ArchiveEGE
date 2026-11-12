@@ -33,7 +33,7 @@
 
   var o05 = {
     id: 's07-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'olcum_cokme', agirlik: 1.5,
-    soru: '|c₁|² = 0,3 olan aynı ψ durumu 100 kez taze hazırlanıp her seferinde bir kez measure (ölçülürse) sonuçlar nasıl dağılır?',
+    soru: '|c₁|² = 0,3 olan aynı ψ durumu 100 kez taze hazırlanıp her seferinde bir kez measurement (ölçüm) yapılırsa result (sonuç) nasıl dağılır?',
     secenekler: [
       sec('Yaklaşık 30 kez φ₁, 70 kez φ₂', true, 'Doğru. Her tek measurement (ölçüm) bir eigenvalue (özdeğer) verir; sıklıklar |c|² değerlerine yaklaşır (0,3 ve 0,7).'),
       sec('Hep average (ortalama) değer çıkar', false, 'Yanlış. Tek measurement (ölçüm) average (ortalama) değeri vermez; yalnız bir eigenvalue (özdeğer) görülür.'),
@@ -117,7 +117,7 @@
           params: { c1sq: 0.3 },
           basari: { tekrarAyni: true }
         },
-        ogrenilen: 'Measurement (ölçüm) ψ\'yi result (sonuç) durumuna collapse (çökertir) eder; hemen tekrar measure (ölçersen) aynı result (sonuç) alırsın.'
+        ogrenilen: 'Measurement (ölçüm) ψ\'yi result (sonuç) durumuna çökertir (collapse); hemen tekrar ölçersen aynı result (sonuç) değerini alırsın.'
       },
       o03,
       o04,
@@ -136,7 +136,7 @@
         bloklar: [
           'System (sistem) eigenstate (özdurum) superposition (süperpozisyon) içindedir',
           'Measurement (ölçüm) bir eigenvalue (özdeğer) değerini |c|² probability (olasılık) ile verir',
-          'ψ o eigenstate durumuna collapse (çöker) eder',
+          'ψ o eigenstate durumuna collapse (çöker)',
           'Sonra equation (denklem) ψ\'yi yeniden evolve (evriltir)'
         ],
         sonuc: 'Superposition (süperpozisyon), probabilistic (olasılıklı) result (sonuç), collapse (çökme), deterministic (belirlenimci) evolution (evrim).',
@@ -178,7 +178,7 @@
             anahtarFikirler: [
               'State (durum) ψ ile tarif edilir, |ψ|² probability density (olasılık yoğunluğu) olur.',
               'Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir.',
-              'Measurement (ölçüm) yalnızca eigenvalue (özdeğer) verir, state (durum) eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Measurement (ölçüm) yalnızca eigenvalue (özdeğer) verir, state (durum) eigenstate (özdurum) durumuna collapse (çöker).',
               'Time evolution (zaman evrimi) Schrödinger equation (denklem) ile deterministic (belirlenimci) olur.'
             ],
             yanlisKavramlar: [
@@ -186,7 +186,7 @@
               'Measurement (ölçüm) sırasında ψ hiç değişmez'
             ],
             yanlisKavramIds: ['evrim_belirlenimci', 'olcum_cokme'],
-            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker) eder. Measurement (ölçüm) arasında ψ, Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde evrilir.',
+            idealCevap: 'Sistemin durumu ψ ile tarif edilir ve |ψ|² probability density (olasılık yoğunluğu) olur. Her observable (gözlenebilir) bir operator (operatör) ile temsil edilir. Measurement (ölçüm) yalnızca eigenvalue (özdeğer) değerlerinden birini verir ve durum o eigenstate (özdurum) durumuna collapse (çöker). Measurement (ölçüm) arasında ψ, Schrödinger equation (denklem) ile deterministic (belirlenimci) biçimde evrilir.',
             yedekSecmeli: {
               soru: 'Hangisi kuantum postulate (postülat) ilkelerinden biridir?',
               secenekler: [
@@ -205,7 +205,7 @@
             anahtarFikirler: [
               'State (durum) superposition (süperpozisyon) olarak eigenstate (özdurum) toplamıdır: ψ = Σ cₙφₙ.',
               'Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir.',
-              'Measurement (ölçüm) sonrası ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder.',
+              'Measurement (ölçüm) sonrası ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker).',
               'Hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.'
             ],
             yanlisKavramlar: [
@@ -213,11 +213,11 @@
               'Collapse (çökme) Schrödinger equation (denklem) kaynaklıdır'
             ],
             yanlisKavramIds: ['ozdeger_olcum', 'schrodinger_cokme'],
-            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder; hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
+            idealCevap: 'Durum eigenstate (özdurum) değilse eigenstate toplamının superposition (süperpozisyon) halidir: ψ = Σ cₙφₙ. Measurement (ölçüm) eigenvalue (özdeğer) değerlerinden birini |cₙ|² probability (olasılık) ile verir. Measurement (ölçüm) sonrası state (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker); hemen tekrar measurement (ölçüm) aynı result (sonuç) verir.',
             yedekSecmeli: {
               soru: 'Eigenstate (özdurum) olmayan state (durumda) measurement (ölçüm) sonrası ne olur?',
               secenekler: [
-                sec('State (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker) eder', true, 'Doğru. Result (sonuç) probability (olasılık) ile belirlenir.'),
+                sec('State (durum) ölçülen eigenstate (özdurum) durumuna collapse (çöker)', true, 'Doğru. Result (sonuç) probability (olasılık) ile belirlenir.'),
                 sec('State (durum) hiç değişmez', false, 'Yanlış. Measurement (ölçüm) state (durum) değiştirir.'),
                 sec('State (durum) average (ortalama) eigenstate (özdurum) içinde olur', false, 'Yanlış. Average (ortalama) eigenstate (özdurum) diye bir şey yok.'),
                 sec('System (sistem) yok olur', false, 'Yanlış. System (sistem) eigenstate (özdurum) içinde kalır.')
@@ -231,7 +231,7 @@
       {
         id: 's07-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin probability (olasılık) olduğunu söyledi.' },
-        ozet: ['Measurement (ölçüm) eigenvalue (özdeğer) verir, |c|² probability (olasılık) ile', 'Measurement (ölçüm) sırasında ψ eigenstate (özdurum) durumuna collapse (çöker) eder', 'Equation (denklem) deterministic (belirlenimci), collapse (çökme) measurement (ölçüm) ile'],
+        ozet: ['Measurement (ölçüm) eigenvalue (özdeğer) verir, |c|² probability (olasılık) ile', 'Measurement (ölçüm) sırasında ψ eigenstate (özdurum) durumuna collapse (çöker)', 'Equation (denklem) deterministic (belirlenimci), collapse (çökme) measurement (ölçüm) ile'],
         kontrolNoktasi: true
       }
     ],

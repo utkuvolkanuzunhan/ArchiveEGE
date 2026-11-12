@@ -88,10 +88,11 @@
       }
       function yuzKez(){
         var i;
+        sayac = [0, 0];            /* histogram ve metin yalnızca bu 100'lük taze seriyi göstersin */
         for (i = 0; i < 100; i++) kaydet(Math.random() < c1sq ? 1 : 2);
         hazirla();
         yuzYapti = true;
-        sonMetin = '100 fresh preparation (taze hazırlık): total (toplam) ' + sayac[0] + ' kez 1, ' + sayac[1] + ' kez 2.';
+        sonMetin = '100 fresh preparation (taze hazırlık): ' + sayac[0] + ' kez result (sonuç) 1, ' + sayac[1] + ' kez result (sonuç) 2.';
         guncelle(); bildir();
       }
       sl.addEventListener('input', function(){
@@ -155,7 +156,9 @@
         }
         c.textAlign = 'left';
         if (collapsed) {
-          c.fillStyle = yel; c.font = '400 ' + Math.round(Math.min(34, H * 0.14)) + 'px ' + col('--font-d', 'Impact, sans-serif');
+          var fs = Math.round(Math.min(34, H * 0.14)), fd = col('--font-d', 'Impact, sans-serif');
+          c.fillStyle = yel; c.font = '400 ' + fs + 'px ' + fd;
+          while (fs > 12 && c.measureText('COLLAPSED (ÇÖKTÜ)').width > W * 0.36 - 6) { fs -= 2; c.font = '400 ' + fs + 'px ' + fd; }
           c.fillText('COLLAPSED (ÇÖKTÜ)', W * 0.64, H * 0.12);
         } else {
           c.fillStyle = muted; c.font = '700 16px ' + fb; c.fillText('superposition (süperpozisyon)', W * 0.64, H * 0.12);
@@ -178,7 +181,8 @@
           else c.strokeRect(sx + i * sw + 0.5, sy + 0.5, sw - 4, sw - 1);
         }
         c.fillStyle = muted; c.textAlign = 'left'; c.font = '600 16px ' + fb;
-        c.fillText('last 20 measurement (ölçüm)', sx, sy - 12);
+        if (sx + 20 * sw + 8 + 240 <= W) c.fillText('last 20 measurement (ölçüm)', sx + 20 * sw + 8, sy + sw / 2);
+        else c.fillText('last 20 measurement (ölçüm)', sx, sy - 12);
       }
       function dongu(now){
         raf = 0;
