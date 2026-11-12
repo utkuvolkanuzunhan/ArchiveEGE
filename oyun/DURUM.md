@@ -47,7 +47,7 @@
 | E7 | veri s07 | low | M2 | bitti | | |
 | E8 | veri s08 | low | M2 | bitti | | |
 | E9 | veri s09 | low | M3 | bitti | | |
-| E10 | veri s10 | low | M3 | bekliyor | | istasyon dosyası henüz yok olabilir |
+| E10 | veri s10 | low | M3 | bitti | | veri-dogrula temiz; sim fermi (S13) bekleniyor; bkz denetim/E10.md |
 | S13 | sim fermi | low | M3 | bekliyor | | |
 | A7 | Final Sınav Günü | medium | M3 | bekliyor | | |
 | A5c | Ses | low | M3 | bekliyor | | isteğe bağlı |
