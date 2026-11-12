@@ -281,7 +281,7 @@
           });
           var yz = el('div', 'kopru-duzeltme');
           yz.style.cssText = 'border:3px solid var(--good);border-radius:var(--rs);padding:8px 12px;';
-          yz.appendChild(el('b', null, 'Yanlış. Doğru sıra:'));
+          yz.appendChild(el('b', null, 'Cevabın yanlış. Doğru sıra:'));
           var ol = el('ol', 'kopru-dogru-sira');
           ol.style.cssText = 'margin:4px 0 0;padding-left:22px;';
           blocks.forEach(function(t){ ol.appendChild(el('li', null, t)); });

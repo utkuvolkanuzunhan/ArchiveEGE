@@ -264,7 +264,7 @@
     } else if (!goster && e && e.parentNode) e.parentNode.removeChild(e);
   }
   function showPanel(s){
-    panelEl.textContent = '';
+    panelEl.textContent = ''; panelEl.style.display = '';
     var p = prog(s.id), acik = S.istasyonAcik(s.id);
     panelEl.appendChild(el('h3', '', s.sira + '. ' + s.ad));
     panelEl.appendChild(el('p', '', s.konu));
@@ -329,7 +329,7 @@
       listEl.appendChild(b);
     });
     box.appendChild(listEl);
-    panelEl = el('div', 'panel'); panelEl.id = 'a8-station-panel'; panelEl.style.padding = '12px';
+    panelEl = el('div', 'panel'); panelEl.id = 'a8-station-panel'; panelEl.style.padding = '12px'; panelEl.style.display = 'none';
     box.appendChild(panelEl);
     /* kartlar */
     box.appendChild(el('h3', '', 'Kart koleksiyonu'));
@@ -411,7 +411,7 @@
       var tg = e.target, tag = tg && tg.tagName;
       if (e.key === 'Escape') {
         if (settingsEl) { S.close(); e.stopPropagation(); e.preventDefault(); }
-        else if (panelEl && panelEl.firstChild) { panelEl.textContent = ''; e.stopPropagation(); }
+        else if (panelEl && panelEl.firstChild) { panelEl.textContent = ''; panelEl.style.display = 'none'; e.stopPropagation(); }
         return;
       }
       if ((e.key === 's' || e.key === 'S') && !e.ctrlKey && !e.metaKey && !e.altKey &&

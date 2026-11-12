@@ -97,7 +97,7 @@
         sonucSatiri.className = 'tahmin-acik ' + (dogru ? 'dogru' : 'yanlis');
         sonucSatiri.textContent = dogru
           ? 'Doğru tahmin. ' + (ob.acik || '')
-          : 'Yanlış. Doğrusu: ' + ob.secenekler[dIdx].t + '. ' + (ob.acik || '');
+          : 'Cevabın yanlış. Doğru seçenek: ' + ob.secenekler[dIdx].t + '. ' + (ob.acik || '');
         await run(ctx, 'anim', dogru ? 'atla' : 'dus');
         Array.prototype.forEach.call(simHost.querySelectorAll('button, input'), function(b){ b.disabled = true; b.style.display = 'none'; });
         await devam(host);

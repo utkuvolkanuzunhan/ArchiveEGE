@@ -381,7 +381,7 @@
       };
       orchestrate(r).then(function(s){
         if (r.aborted) return;
-        if (s === 'tamam') { save(); }
+        if (s === 'tamam') { Q.state.aktif = { stationId: null, index: 0 }; save(); }
         if (endRun) endRun(s);
       }, function(e){ console.error('runner', e); toast('Koşu durdu', 'kotu'); if (endRun) endRun('cikis'); });
     });
