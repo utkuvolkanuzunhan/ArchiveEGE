@@ -15,6 +15,7 @@
       sec('Küçülür (decreases)', false, 'Yanlış. Product (çarpım) sınırlı olduğundan biri küçülünce öbürü büyür.'),
       sec('Değişmez (unchanged)', false, 'Yanlış. ΔxΔp ≥ ħ/2 condition (koşul) bunu zorunlu kılar.')
     ],
+    ipucu: 'Çarpım en az ħ/2 ise biri küçülünce öbürü? "Nasıl yapılır: Δp bulmak" kartına bak.',
     kusurSkin: 'vakans'
   };
 
@@ -26,6 +27,7 @@
       sec('Top uncertainty (belirsizlik) kapsamında değildir', false, 'Hayır. Principle (ilke) her cisim için geçerlidir.'),
       sec('Top bir wave (dalga) değildir', false, 'Hayır. Wavelength (dalga boyu) yalnızca ihmal edilecek kadar küçüktür.')
     ],
+    ipucu: 'Top için Δv = Δp/m ne kadar çıkar? "Nasıl yapılır: günlük cisim" kartına bak.',
     kusurSkin: 'tane_siniri'
   };
 
@@ -42,6 +44,7 @@
       onceki: { sx: 2 },
       sonraki: { sx: 1 }
     },
+    ipucu: 'σp = ħ/(2σx): ters orantı. "Nasıl yapılır: Δp bulmak" kartına bak.',
     acik: 'σx 2\'den 1\'e inince σp iki katına çıktı; product (çarpım) ħ/2\'de kaldı.'
   };
 
@@ -90,9 +93,25 @@
             "Conjugate variables (eşlenik değişkenler): operator'leri commute (değişme) etmeyen çift; örnek x ve p.",
             "Commutator (komütatör): [x,p] = xp − px = iħ ≠ 0; sıfır olsaydı ortak eigenstate (özdurum) olurdu.",
             "Ortak eigenstate (özdurum) yoksa iki büyüklük birden keskin değerli olamaz.",
-            "Sık karışan nokta: her büyüklük çifti belirsizlik vermez; kütle ve yük gibi sayılar operator (operatör) değildir." ] }
+            "Sık karışan nokta: her büyüklük çifti belirsizlik vermez; kütle ve yük gibi sayılar operator (operatör) değildir." ] },
+          { baslik: "Nasıl yapılır: Δp bulmak", madde: [
+            "Adımlar: (1) Δx'i metreye çevir (1 nm = 10⁻⁹ m); (2) Δp ≥ ħ/(2Δx) yaz; (3) sayıyı koy.",
+            "Örnek: Δx = 2 nm = 2×10⁻⁹ m ise Δp ≥ 1,05×10⁻³⁴ / (4×10⁻⁹) ≈ 2,6×10⁻²⁶ kg·m/s.",
+            "Δx 4 kat daralıp 0,5 nm olursa Δp alt sınırı 4 kat büyür: ≈ 1,05×10⁻²⁵ kg·m/s. Çarpım hep ħ/2 kalır.",
+            "Kural: Δp, Δx ile ters orantılıdır. Biri k kat daralırsa öbürünün alt sınırı k kat büyür." ] },
+          { baslik: "Nasıl yapılır: günlük cisim", madde: [
+            "Aynı yöntemle büyük cisme bak, sonra Δv = Δp/m al. Kütle büyükse Δv çok küçük kalır.",
+            "Örnek: m = 0,15 kg top, Δx = 1 nm. Δp ≥ 5,3×10⁻²⁶ kg·m/s ve Δv ≥ 5,3×10⁻²⁶ / 0,15 ≈ 3,5×10⁻²⁵ m/s.",
+            "Bu hız belirsizliği ölçülemeyecek kadar küçüktür. Elektronda (m ≈ 10⁻³⁰ kg) aynı hesap belirgin bir değer verir.",
+            "Sonuç: ilke her cisimde geçerli kalır; yalnız sayısal etkisi, kütle büyüdükçe ihmal edilecek kadar küçük çıkar." ] },
+          { baslik: "Nasıl yapılır: zincir sırası", madde: [
+            "Zincir neden-sonuç sırasıdır: önce parçacığın dalga hâli, sonra dar konumun bedeli, sonra momentum, en son formül.",
+            "Önce: konumu sınırlı bir dalga ancak wave packet (dalga paketi) olarak yazılır; tek düz dalga her yere yayılır.",
+            "Sonra: dar paket için çok sayıda dalga üst üste gelir; her dalga farklı momentum taşıdığından momentum yayılır.",
+            "En sonda iki yayılmanın çarpımı sayıya bağlanır: alt sınırı ħ/2 olan formül sonuçtur, başlangıç değildir." ] }
         ],
-        gorev: 'Position width (konum genişliği) daralt, momentuma bak.',
+        tanitim: "σx kaydırıcısı wave packet (dalga paketi) genişliğini nm cinsinden değiştirir. Üst grafik konum, alt grafik momentum yayılmasıdır. Conjugate (eşlenik) düğmesi alt grafiği açıp kapatır.",
+        gorev: 'σx kaydırıcısını 1 nm\'ye indir; Conjugate açık kalsın.',
         sim: {
           modul: 'belirsizlik',
           params: { sx: 3 },
@@ -108,7 +127,8 @@
         iddia: 'Uncertainty (belirsizlik), measurement (ölçüm) instrument (aletimizin) yeterince hassas olmamasından kaynaklanır.',
         parcalar: ['Uncertainty (belirsizlik),', 'measurement (ölçüm) instrument (aletimizin) yeterince', 'hassas olmamasından kaynaklanır.'],
         yanlisParca: 1,
-        duzeltme: 'Uncertainty (belirsizlik) instrument (alet) kusuru değil, wave nature (dalga doğası) temel sonucudur.'
+        duzeltme: 'Uncertainty (belirsizlik) instrument (alet) kusuru değil, wave nature (dalga doğası) temel sonucudur.',
+        ipucu: 'Mükemmel aletle de geçerli mi? "ΔxΔp ≥ ħ/2 ilişkisi" kartına bak.'
       },
       {
         id: 's08-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'belirsizlik_dalga', agirlik: 1,
@@ -119,10 +139,18 @@
           'Çok wavelength (dalga boyu) geniş momentum demektir',
           'ΔxΔp ≥ ħ/2'
         ],
-        sonuc: 'Wave packet (dalga paketi), sharp position (keskin konum), broad momentum (geniş momentum), ΔxΔp ≥ ħ/2.'
+        sonuc: 'Wave packet (dalga paketi), sharp position (keskin konum), broad momentum (geniş momentum), ΔxΔp ≥ ħ/2.',
+        ipucu: 'Önce dalga hâli, sonra dar konumun bedeli, sonra momentum, en son formül. "Zincir sırası" kartına bak.',
+        nedenler: [
+          'Konumu sınırlı parçacık ancak dalga paketi olarak anlatılabilir; zincir buradan başlar.',
+          'Dar paket için çok farklı dalga gerekir; konumu keskinleştirmenin bedeli budur.',
+          'Her dalga ayrı momentum taşır, çok dalga geniş momentum aralığı demektir.',
+          'İki yayılmanın çarpımı sayıya bağlanır; formül zincirin sonucudur.'
+        ]
       },
       {
         id: 's08-o08', tip: 'patron', baslik: 'Uncertainty (Belirsizlik) Canavarı', kavram: null, agirlik: 1,
+        onNot: "Commutator (komütatör) [A,B] = AB − BA. Sıfırsa ortak eigenstate (özdurum) vardır ve ikisi birden keskin olabilir; örnek x ile V(x) böyledir. Sıfırdan farklıysa conjugate (eşlenik) çift olur. Açık cevapta formül, sebep, commutator (komütatör), günlük cisim sırasını izle.",
         canavar: 'heis', canavarAd: 'Uncertainty (Belirsizlik) Canavarı',
         giris: 'Neredeyim? Ne kadar hızlıyım? İkisini birden bilemezsin!',
         fazlar: [

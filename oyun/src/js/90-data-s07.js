@@ -15,6 +15,7 @@
       sec('Herhangi bir değeri', false, 'Hayır. Yalnızca eigenvalue (özdeğer) çıkabilir; measurement (ölçüm) başka değer vermez.'),
       sec('Eigenvalue (özdeğer) average (ortalama) değerini', false, 'Hayır. Tek measurement (ölçüm) average (ortalama) değil, bir eigenvalue (özdeğer) verir.')
     ],
+    ipucu: 'Tek ölçüm average (ortalama) verir mi? "Measurement (ölçüm), collapse (çökme)" kartına bak.',
     kusurSkin: 'vakans'
   };
 
@@ -26,6 +27,7 @@
       sec('c₁ (coefficient, katsayı)', false, 'Hayır. Probability (olasılık) coefficient (katsayı) kendisi değil karesidir.'),
       sec('c₁ + c₂', false, 'Hayır. Coefficient (katsayı) toplanmaz; her sonucun probability (olasılık) değeri kendi karesidir.')
     ],
+    ipucu: 'Olasılık c₁ mi, c₁² mi? "Nasıl yapılır: |c|² ile olasılık" kartına bak.',
     kusurSkin: 'tane_siniri'
   };
 
@@ -42,6 +44,7 @@
       onceki: { c1sq: 0.3 },
       sonraki: { c1sq: 0.3, olcTekrar: true }
     },
+    ipucu: 'Çökmeden sonra ψ hangi durumdadır? "Measurement (ölçüm), collapse (çökme)" kartına bak.',
     acik: 'Collapse (çökme) sonrası ψ eigenstate (özdurum) olur; tekrar measurement (ölçüm) aynı result (sonuç) verir.'
   };
 
@@ -90,9 +93,25 @@
             "Measurement (ölçüm) yalnızca bir eigenvalue (özdeğer) verir; expectation value (beklenen değer) ⟨E⟩ = Σ|cₙ|²Eₙ çok ölçümün average (ortalama) değeridir, tek ölçümde görülmez.",
             "Ölçümden sonra ψ ölçülen eigenstate (özdurum) durumuna collapse (çöker); hemen tekrar ölçersen sonuç kararlıdır.",
             "Aralarda Schrödinger equation (denklemi) ψ'yi deterministic (belirlenimci) evriltir; rastgelelik yalnızca ölçümde.",
-            "Schrödinger denklemi çökmez; collapse (çökme) ayrı bir postulate (postülat) ve measurement (ölçüm) ile gelir." ] }
+            "Schrödinger denklemi çökmez; collapse (çökme) ayrı bir postulate (postülat) ve measurement (ölçüm) ile gelir." ] },
+          { baslik: "Nasıl yapılır: |c|² ile olasılık", madde: [
+            "Adımlar: (1) ψ içindeki katsayıyı oku; (2) karesini al. Bu sayı, o eigenstate (özdurum) sonucunun probability (olasılık) değeridir.",
+            "Örnek: ψ = 0,6φ₁ + 0,8φ₂ ise φ₁ olasılığı 0,6² = 0,36; φ₂ olasılığı 0,8² = 0,64.",
+            "Kontrol: 0,36 + 0,64 = 1. Katsayıları doğrudan toplasan 0,6 + 0,8 = 1,4 çıkardı; bu yüzden katsayılar toplanmaz.",
+            "Tek ölçümde yalnız bir sonuç görürsün: %36 ile φ₁ ya da %64 ile φ₂; ikisinin arası çıkmaz." ] },
+          { baslik: "Nasıl yapılır: ⟨E⟩ hesabı", madde: [
+            "Adımlar: (1) her eigenvalue (özdeğer) Eₙ ile |cₙ|² değerini yaz; (2) çarp; (3) hepsini topla: ⟨E⟩ = Σ|cₙ|²Eₙ.",
+            "Örnek: E₁ = 1 eV, E₂ = 4 eV; |c₁|² = 0,2 ve |c₂|² = 0,8. ⟨E⟩ = 0,2·1 + 0,8·4 = 3,4 eV.",
+            "3,4 eV tek ölçümde görülmez: yalnız 1 eV ya da 4 eV çıkar. ⟨E⟩ çok ölçümün average (ortalama) değeridir.",
+            "Ağırlık |cₙ|² olur, cₙ değil; ağırlıkların toplamı 1 olmalıdır, değilse normalization (normalizasyon) eksiktir." ] },
+          { baslik: "Nasıl yapılır: ölçüm döngüsü", madde: [
+            "Döngü dört aşamadır ve her aşama bir öncekine dayanır: ölçüm öncesi, ölçüm anı, hemen sonrası, sonraki zaman.",
+            "Önce: ölçülmemiş sistem eigenstate (özdurum) karışımıdır. Karışım olmasa 'hangisi çıkar?' sorusu anlamsız kalırdı.",
+            "Ölçüm anında sonuç şansla seçilir, ağırlığı |c|² belirler. Çökme seçilmiş sonucu izler; seçilmeden nereye çökeceği bilinmez.",
+            "En sonda çökmüş ψ yeniden Schrödinger denklemiyle düzgün evrilir. Rastgelelik yalnız ölçüm anındadır, evrimde yoktur." ] }
         ],
-        gorev: 'Measure (ölç), sonra tekrar measure (ölç): result (sonuç) ne?',
+        tanitim: "c₁² kaydırıcısı ilk ψ içindeki |c₁|² payını ayarlar, kalan |c₂|² olur. Measure (ölç) bir sonuç çeker ve çubuğu çökertir. Tekrar measure (ölç) çökmüş durumu yeniden ölçer. 100 times (kez) taze hazırlıkla 100 ölçüm yapıp sonuçları sayar.",
+        gorev: 'Önce Measure (ölç), sonra Tekrar measure (ölç) düğmesine bas.',
         sim: {
           modul: 'olcum',
           params: { c1sq: 0.3 },
@@ -108,7 +127,8 @@
         iddia: 'Schrödinger equation (denklem) ψ\'yi measurement (ölçüm) anında collapse (çökme) ettirir.',
         parcalar: ['Schrödinger equation (denklem)', 'ψ\'yi measurement (ölçüm) anında', 'collapse (çökme) ettirir.'],
         yanlisParca: 0,
-        duzeltme: 'Equation (denklem) ψ\'yi smooth (düzgün) evriltir. Collapse (çökme) ayrı postulate (postülat) olup yalnızca measurement (ölçüm) ile olur.'
+        duzeltme: 'Equation (denklem) ψ\'yi smooth (düzgün) evriltir. Collapse (çökme) ayrı postulate (postülat) olup yalnızca measurement (ölçüm) ile olur.',
+        ipucu: 'Denklem mi ölçüm mü çökertir? "Measurement (ölçüm), collapse (çökme)" kartının son maddesine bak.'
       },
       {
         id: 's07-o07', tip: 'kopru', baslik: 'Mantık köprüsü', kavram: 'evrim_belirlenimci', agirlik: 1,
@@ -119,10 +139,18 @@
           'ψ o eigenstate durumuna collapse (çöker) eder',
           'Sonra equation (denklem) ψ\'yi yeniden evolve (evriltir)'
         ],
-        sonuc: 'Superposition (süperpozisyon), probabilistic (olasılıklı) result (sonuç), collapse (çökme), deterministic (belirlenimci) evolution (evrim).'
+        sonuc: 'Superposition (süperpozisyon), probabilistic (olasılıklı) result (sonuç), collapse (çökme), deterministic (belirlenimci) evolution (evrim).',
+        ipucu: 'Önce karışım, sonra çekilen sonuç, sonra çökme, en son evrim. "Ölçüm döngüsü" kartına bak.',
+        nedenler: [
+          'Sonuç ancak bir karışımdan seçilebilir; bu yüzden ölçüm öncesi durum başa gelir.',
+          'Seçim |c|² ağırlığıyla yapılır; hangi eigenstate (özdurum) çıktığı ancak ölçüm anında belli olur.',
+          'Çökme seçilmiş sonucu izler: ψ önce hangi eigenstate (özdurum) çıktığını bilmelidir.',
+          'Çökmüş durumdan sonra ψ yalnız denklemle, belirlenimci biçimde evrilir.'
+        ]
       },
       {
         id: 's07-o08', tip: 'patron', baslik: 'Probability (Olasılık) Canavarı', kavram: null, agirlik: 1,
+        onNot: "Açık cevap sırası: (1) durumu ψ = Σ cₙφₙ yaz; (2) ölçümün yalnız eigenvalue (özdeğer) verdiğini, olasılığın |cₙ|² olduğunu söyle; (3) çökmeyi anlat; (4) ölçümler arası deterministic (belirlenimci) evrimi ekle. Örnek: ψ = 0,6φ₁ + 0,8φ₂ için E₁ olasılığı 0,36.",
         canavar: 'born', canavarAd: 'Probability (Olasılık) Canavarı',
         giris: 'Zar atıyorum! Ama kurallarım var. Probability (olasılık) |c|².',
         fazlar: [
