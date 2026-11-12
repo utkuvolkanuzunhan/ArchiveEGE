@@ -238,9 +238,9 @@
   ui.toast = function(metin, o){
     o = o || {};
     var layer = $('toast-layer'); if (!layer) return null;
-    var t = el('div', 'toast ' + (o.tur || 'bilgi') + (o.buyuk ? ' buyuk' : ''), metin);
+    var t = el('div', 'toast ' + (o.tur || 'bilgi') + (o.buyuk ? ' buyuk' : '') + (o.ust ? ' ust' : ''), metin);
     t.setAttribute('role', 'status');
-    layer.appendChild(t);
+    (o.ust ? document.body : layer).appendChild(t);  /* layer transform'lu: fixed için body */
     setTimeout(function(){ if (t.parentNode) t.parentNode.removeChild(t); }, o.ms || (o.buyuk ? 1800 : 2600));
     return t;
   };

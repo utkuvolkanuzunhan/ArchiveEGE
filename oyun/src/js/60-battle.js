@@ -192,7 +192,7 @@
     var sayi = ilr[id].kisaDevre;
     Q.bus.emit('kisa-devre', { stationId: id, sayi: sayi });
     if (Q.save.write) Q.save.write();
-    if (hasUI('toast')) Q.ui.toast('KISA DEVRE!', { tur: 'kotu', ms: 2200 });
+    if (hasUI('toast')) Q.ui.toast('KISA DEVRE!', { tur: 'kotu', ms: 2200, ust: true });
     return temelTur(Q.data.stations[id]).then(function(){
       setVoltaj(70);
       if (sayi >= 3 && hasUI('toast')) Q.ui.toast('Tamir modu açıldı: hasar yarıya indi.', { tur: 'bilgi', ms: 3500 });

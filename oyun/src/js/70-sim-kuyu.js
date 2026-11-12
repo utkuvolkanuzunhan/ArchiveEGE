@@ -82,10 +82,10 @@
     r2.appendChild(zeroBtn);
 
     /* 3) Tel <-> Kuyu */
-    var r3 = row();
-    var modBtn = mkBtn('', 1);
+    var modBtn = mkBtn('', 2);
     on(modBtn, 'click', function () { mod = mod === 'kuyu' ? 'tel' : 'kuyu'; refresh(); });
-    r3.appendChild(modBtn);
+    r2.style.flexWrap = 'wrap';
+    r2.appendChild(modBtn);  /* ayri satir yerine seviye satirinda: 1366x768 dock'a sigsin */
 
     on(slider, 'input', function () { L = clamp(+slider.value, 1, 10); shownL = L; flat = false; amp = 1; refresh(); });
 
@@ -150,7 +150,8 @@
       if (destroyed) { return; }
       var dpr = window.devicePixelRatio || 1;
       W = Math.max(220, host.clientWidth || 300);
-      H = Math.max(150, Math.min(260, Math.round((window.innerHeight || 800) * 0.2)));
+      var ih = window.innerHeight || 800;
+      H = ih <= 800 ? Math.max(100, Math.round(ih * 0.14)) : Math.max(150, Math.min(260, Math.round(ih * 0.2)));
       canvas.style.height = H + 'px';
       canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
       canvas.getContext('2d').setTransform(dpr, 0, 0, dpr, 0, 0);

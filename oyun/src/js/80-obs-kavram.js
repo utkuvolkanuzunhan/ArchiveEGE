@@ -42,8 +42,9 @@
   Q.obs.register('kavram', {
     tip: 'kavram',
     async enter(ob, ctx){
-      var simObj = null, timers = [];
+      var simObj = null, timers = [], sigKaldir = null;
       function temizle(){
+        if (sigKaldir) { sigKaldir(); sigKaldir = null; }
         timers.forEach(function(t){ clearTimeout(t); });
         timers = [];
         if (simObj && typeof simObj.destroy === 'function') safe(function(){ simObj.destroy(); });
@@ -96,14 +97,33 @@
         butonlar.appendChild(ipBtn); butonlar.appendChild(gecBtn);
         ipBtn.addEventListener('click', function(){
           hintLine.textContent = sonHint || 'Kontrolleri dene, kapı tepki verir.';
-          hintLine.hidden = false;
+          hintLine.hidden = false; sigdir();
         });
         gecBtn.addEventListener('click', function(){
           if (acildi || kapandi) return;
           kapandi = true; bitir('gec');
         });
-        timers.push(setTimeout(function(){ ipBtn.hidden = false; }, tIpucu));
-        timers.push(setTimeout(function(){ gecBtn.hidden = false; }, tGec));
+        /* Alçak ekranda (1366x768) sim dock'a sığmazsa içeriği ölçekle: kırpılma/taşma olmasın */
+        function sigdir(){
+          safe(function(){
+            var c = simHost.firstElementChild; if (!c) return;
+            c.style.zoom = ''; c.style.width = '';
+            var dk = document.getElementById('dock') || host;
+            var z = 1;
+            for (var i = 0; i < 5; i++) {
+              var tasma = dk.scrollHeight - dk.clientHeight;
+              if (tasma <= 1 || z <= 0.55) break;
+              var h = simHost.scrollHeight;
+              z = Math.max(0.55, z * Math.max(0.5, (h - tasma - 3) / h));
+              c.style.zoom = String(z); c.style.width = (100 / z) + '%';
+            }
+          });
+        }
+        [0, 120, 500].forEach(function(ms){ timers.push(setTimeout(sigdir, ms)); });
+        window.addEventListener('resize', sigdir);
+        sigKaldir = function(){ window.removeEventListener('resize', sigdir); };
+        timers.push(setTimeout(function(){ ipBtn.hidden = false; sigdir(); }, tIpucu));
+        timers.push(setTimeout(function(){ gecBtn.hidden = false; sigdir(); }, tGec));
 
         var how = await bitisSozu;
         kapandi = true;
