@@ -9639,9 +9639,9 @@ Q.art.PORTRE_IDS = Object.keys(P);
   G('bel-v', 's08', true, 'belirsizlik', 'sinav', 2, 'Uncertainty principle: velocity of a confined electron',
     'An electron is confined to a region of size Δx = 0.1 nm (atomic size). Using the uncertainty principle, calculate the minimum uncertainty in its momentum and in its velocity (give Δv in km/s).',
     ['Δx = 0,1 nm', 'ħ = 1,055×10^{-34} J·s', 'm = 9,109×10^{-31} kg'],
-    [S('Momentum belirsizliği', 'ΔxΔp ≥ ħ/2. Δx = 0,1 nm = 10^{-10} m.', 'Δp ≥ ħ/(2Δx) = 5,273×10^{-25} kg·m/s', N('Δp kaç ×10^{-25} kg·m/s?', 5.273, '×10^{-25} kg·m/s')),
-     S('Hız belirsizliği', 'Δv = Δp/m.', 'Δv ≥ 5,273×10^{-25} / 9,109×10^{-31} = 5,79×10^{5} m/s = 579 km/s')],
-    { deger: 578.8, birim: 'km/s', metin: 'Δp ≥ 5.27×10^{-25} kg·m/s, Δv ≥ 579 km/s' },
+    [S('Momentum belirsizliği', 'ΔxΔp ≥ ħ/2. Δx = 0,1 nm = 10^{-10} m.', 'Δp ≥ ħ/(2Δx) = 5,275×10^{-25} kg·m/s', N('Δp kaç ×10^{-25} kg·m/s?', 5.275, '×10^{-25} kg·m/s')),
+     S('Hız belirsizliği', 'Δv = Δp/m.', 'Δv ≥ 5,275×10^{-25} / 9,109×10^{-31} = 5,79×10^{5} m/s = 579 km/s')],
+    { deger: 579.1, birim: 'km/s', metin: 'Δp ≥ 5.28×10^{-25} kg·m/s, Δv ≥ 579 km/s' },
     'ħ/2 mi ħ mi? Sınavda ΔxΔp ≥ ħ/2 yaz. Birim: nm → m. Belirsizlik ölçü aletinin kusuru değil, dalga doğasının sonucudur.');
 
   G('bel-t', 's08', true, 'belirsizlik', 'alistirma', 2, 'Energy-time uncertainty',
@@ -9650,21 +9650,21 @@ Q.art.PORTRE_IDS = Object.keys(P);
     [S('İlke', 'Enerji ve zaman eşlenik değişkenler gibi davranır.', 'ΔE·Δt ≥ ħ/2', C('Kısa yaşam süresi → çizgi genişliği?', 'daha geniş', ['daha dar', 'değişmez'])),
      S('Sayı', 'ħ = 6,582×10^{-16} eV·s kullan.', 'ΔE ≥ ħ/(2Δt) = 6,582×10^{-16}/(2×10^{-9}) = 3,29×10^{-7} eV = 0,329 μeV')],
     { deger: 0.3291, birim: 'μeV', metin: 'ΔE ≈ 0.33 μeV' },
-    'ΔE–Δt için Δt "ölçüm süresi/ömür" anlamında; dikkatli ifade et. Birim dönüşümü: 10^{-7} eV = 0,1 μeV.');
+    'Burada Δt, durumun ömrüdür (ölçüm süresi değil). Birim dönüşümü: 10^{-7} eV = 0,1 μeV.');
 
   /* ================= s09 · Bantlar ================= */
   G('bant-si', 's09', true, 'bant', 'sinav', 1, 'Absorption edge of silicon',
     'Silicon has a bandgap E_g = 1.12 eV. Calculate the longest wavelength of light that can create an electron-hole pair.',
     ['E_{g} = 1,12 eV', 'hc = 1239,84 eV·nm'],
     [S('Koşul', 'Elektronu valence band (değerlik bandı) → conduction band (iletim bandı) taşımak için hf ≥ E_g. Sınır durumda eşitlik.', 'hf ≥ E_{g}  →  λ ≤ hc/E_{g}', C('Daha uzun dalga boyu (E < E_g)?', 'Soğurulmaz (Si saydam)', ['Daha iyi soğurulur', 'Çift e-h üretir'])),
-     S('Sayı', '', 'λ_{max} = 1239,84 / 1,12 = 1107 nm  (yakın kızılötesi)')],
+     S('Sayı', '', 'λ_{max} = 1239,84 / 1,12 = 1107 nm  (yakın kızılötesi)', N('λ_max kaç nm? (hc/E_g)', 1107, 'nm'))],
     { deger: 1107.0, birim: 'nm', metin: 'λ_max ≈ 1.11 μm' },
     'Eg\'den küçük enerjili foton soğurulmaz. Soğurma eşiği = bandgap, fotoelektrik eşik ile aynı mantık.');
 
   G('bant-gaas', 's09', true, 'bant', 'alistirma', 1, 'GaAs bandgap and photon wavelength',
     'GaAs has a bandgap E_g = 1.42 eV. Calculate the wavelength of the photon emitted when an electron recombines across the gap, and decide whether a 1000 nm photon can be absorbed.',
     ['E_{g} = 1,42 eV'],
-    [S('Yayılan foton', 'Rekombinasyonda yaklaşık E_g enerjili foton yayılır.', 'λ = 1239,84 / 1,42 = 873 nm'),
+    [S('Yayılan foton', 'Rekombinasyonda yaklaşık E_g enerjili foton yayılır.', 'λ = 1239,84 / 1,42 = 873 nm', N('Yayılan fotonun dalga boyu kaç nm?', 873.1, 'nm')),
      S('1000 nm foton', '1000 nm → E = 1,24 eV < 1,42 eV.', 'E_{foton} = 1,24 eV < E_{g}', C('1000 nm foton GaAs\'ta?', 'Soğurulmaz', ['Soğurulur', 'Yalnızca ısıtırsa soğurulur']))],
     { deger: 873.1, birim: 'nm', metin: 'λ ≈ 873 nm; a 1000 nm photon is not absorbed' },
     'Foton enerjisi E_g\'den küçükse bantlar arası geçiş yok. GaAs doğrudan bant aralığı: verimli ışık yayar.');
@@ -9693,7 +9693,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
     [S('Elektron yoğunluğu', 'N_D ≫ n_i olduğundan n ≈ N_D.', 'n ≈ N_{D} = 10^{16} cm^{-3}', C('Katkılı yarıiletken n tipi mi p tipi mi?', 'n tipi (donör)', ['p tipi (akseptör)', 'özgün (intrinsic)'])),
      S('Delik yoğunluğu', 'Kütle etkisi yasası np = n_i².', 'p = n_{i}²/n = (1,5×10^{10})² / 10^{16} = 2,25×10^{4} cm^{-3}')],
     { deger: 22500, birim: 'cm^{-3} (2.25e4 biçiminde gir)', metin: 'p ≈ 2.25×10^{4} cm^{-3}' },
-    'Çoğunluk taşıyıcı (n) katkıdan, azınlık (p) np = n_i²\'den. Birimler cm^{-3}, n_i değerinin karesi alınırken 10^{20} → 10^{20}×2,25.');
+    'Çoğunluk taşıyıcı (n) katkıdan, azınlık (p) np = n_i²\'den. Birimler cm^{-3}, (1,5×10^{10})² = 2,25×10^{20} (kuvvetler toplanır, katsayı karesi alınır).');
 
   G('drift-v', 's10', false, 'drift', 'alistirma', 1, 'Drift velocity',
     'The electron mobility in silicon is μ_n = 1350 cm²/(V·s). Calculate the drift velocity in an electric field E = 100 V/cm, in m/s.',
@@ -12320,19 +12320,19 @@ Q.art.PORTRE_IDS = Object.keys(P);
         onBilgi: [
           { baslik: "Uncertainty (belirsizlik), wave packet", madde: [
             "Wave packet (dalga paketi): konumu sınırlı dalga; keskin konum için çok farklı wavelength (dalga boyu) toplanır.",
-            "Çok wavelength (dalga boyu) geniş momentum (p = h/λ) demektir; Δx ve Δp bu yüzden bağlıdır.",
+            "Çok wavelength (dalga boyu) geniş momentum demektir: p = h/λ = ħk, k = 2π/λ wavenumber (dalga sayısı). Bu yüzden Δx Δk ≥ 1/2 ve Δp = ħΔk.",
             "Δx, Δp: konum ve momentumun spread (yayılma) değeri; σx, σp aynı fikrin standart sapmasıdır.",
             "ħ = h/2π ≈ 1,05×10⁻³⁴ J·s: çok küçük sabit; ilke her cisimde geçerli ama büyükte görünmez." ] },
           { baslik: "ΔxΔp ≥ ħ/2 ilişkisi", madde: [
             "Formül: ΔxΔp ≥ ħ/2 (birim J·s). Çarpımın alt sınırı vardır; ikisi birden sıfıra gitmez.",
             "Gaussian wave packet (Gauss dalga paketi) sınıra eşit olur: σxσp = ħ/2 (minimum uncertainty, en az belirsizlik).",
-            "Instrument (alet) hatası değildir: ideal aletle de geçerli, çünkü sebep wave nature (dalga doğası).",
-            "Sık karışan nokta: ilke ölçümün parçacığı bozmasından ibaret değildir; ölçüm yapılmasa da geçerlidir." ] },
+            "Sık karışan nokta: ilke alet hatası ya da ölçümün parçacığı bozması değildir; ideal aletle ve ölçüm yapılmasa da geçerlidir, sebep wave nature (dalga doğası).",
+            "Hapsolma: L boyuna sıkışan parçacıkta Δp ≳ ħ/(2L), kinetik enerji yaklaşık ħ²/(8mL²) olur: zero-point energy (sıfır noktası enerjisi), L küçüldükçe artar." ] },
           { baslik: "Conjugate variable (eşlenik değişken)", madde: [
             "Conjugate variables (eşlenik değişkenler): operator'leri commute (değişme) etmeyen çift; örnek x ve p.",
-            "Commutator (komütatör): [x,p] = xp − px = iħ ≠ 0; sıfır olsaydı ortak eigenstate (özdurum) olurdu.",
-            "Ortak eigenstate (özdurum) yoksa iki büyüklük birden keskin değerli olamaz.",
-            "Sık karışan nokta: her büyüklük çifti belirsizlik vermez; kütle ve yük gibi sayılar operator (operatör) değildir." ] },
+            "Commutator (komütatör): [x,p] = xp − px = iħ ≠ 0. Ortak eigenstate (özdurum) yoktur, bu yüzden iki büyüklük birden keskin olamaz.",
+            "Sık karışan nokta: her çift belirsizlik vermez; x ve p_y commute (değişme) eder, kütle ve yük sayıdır.",
+            "Energy (enerji) ve zaman için ΔE Δt ≥ ħ/2: Δt durumun ömrüdür. Kısa ömürlü durumun enerjisi geniş yayılır, sonsuz ömürlü durumunki keskindir." ] },
           { baslik: "Nasıl yapılır: Δp bulmak", madde: [
             "Adımlar: (1) Δx'i metreye çevir (1 nm = 10⁻⁹ m); (2) Δp ≥ ħ/(2Δx) yaz; (3) sayıyı koy.",
             "Örnek: Δx = 2 nm = 2×10⁻⁹ m ise Δp ≥ 1,05×10⁻³⁴ / (4×10⁻⁹) ≈ 2,6×10⁻²⁶ kg·m/s.",
@@ -12597,8 +12597,8 @@ Q.art.PORTRE_IDS = Object.keys(P);
         id: 's09-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bant_yarilma', agirlik: 1,
         onBilgi: [
           { baslik: "Energy band (enerji bandı) nasıl oluşur", madde: [
-            "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır.",
-            "Yakın seviyeler birleşip energy band (enerji bandı) olur; band içinde seviyeler neredeyse sürekli dizilir.",
+            "Tek atomda energy level (enerji seviyesi) ayrıktır; N atom yaklaşınca her seviye N yakın seviyeye yarılır. Atomlar yaklaştıkça örtüşme artar, band (bant) genişler.",
+            "Yakın seviyeler birleşip energy band (enerji bandı) olur; N ≈ 10^22 için seviye aralığı ısıl enerjiden (kT) çok küçüktür, band sürekli gibi davranır.",
             "Tek infinite well (sonsuz kuyu) bant vermez; bant, çok atomlu periodic potential (periyodik potansiyel) içinde olur.",
             "Crystal (kristal) düzenli olduğu için bantlar öngörülebilir; amorf yapıda bu düzen bozulur." ] },
           { baslik: "Pauli ilkesi ve doluluk", madde: [
@@ -12878,12 +12878,12 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "1900 dolayında Drude, metaldeki electron (elektron) hareketini drift (sürüklenme) ve scattering (saçılma) ile modelledi.",
             "1926'da Fermi ve Dirac birbirinden bağımsız Fermi-Dirac statistics (Fermi-Dirac istatistiği) kurdu; Pauli ilkesine uyan parçacıklar için.",
             "1927'de Sommerfeld bu dağılımı metaldeki electron (elektron) gazına uyguladı.",
-            "1947'de ilk transistor yapıldı; Bardeen, Brattain ve Shockley 1956 Nobel Fizik Ödülü'nü aldı." ] }
+            "1947'de Bardeen ve Brattain ilk transistor'u yaptı; ikisi ve Shockley 1956 Nobel Fizik Ödülü'nü paylaştı." ] }
         ],
         satirlar: [
           { kim: 'selin', metin: 'Roma, 1926. Fermi bir dağılım yazdı: Fermi level (Fermi seviyesi) E_F, doluluk olasılığının yarı olduğu energy (enerji) değeridir.' },
           { kim: 'fermi', metin: 'Taşıyıcılar iki türlü: electron (elektron) n ve hole (delik) p. Sıcaklık yükselince f(E) yumuşar, carrier (taşıyıcı) artar.' },
-          { kim: 'fermi', metin: 'Alan E uygulanınca carrier (taşıyıcı) v_d = μE hızıyla drift (sürüklenme) yapar. 1947\'de ilk transistör (Bardeen, Brattain, Shockley) buna dayandı.' }
+          { kim: 'fermi', metin: 'Alan E uygulanınca carrier (taşıyıcı) v_d = μE hızıyla drift (sürüklenme) yapar. Alanla taşıyıcı akışını denetlemek transistörün temelidir (ilk transistor: 1947).' }
         ]
       },
       {
@@ -12896,13 +12896,13 @@ Q.art.PORTRE_IDS = Object.keys(P);
             "k = 8,617×10⁻⁵ eV/K; 300 K'de kT ≈ 0,026 eV. E_F bir seviye olmak zorunda değil, bandgap içinde de olabilir." ] },
           { baslik: "Carriers (taşıyıcılar): n, p, nᵢ", madde: [
             "Carriers (taşıyıcılar): n electron (elektron) yoğunluğu, p hole (delik) yoğunluğu (birim cm⁻³).",
-            "Intrinsic (katkısız) yarıiletkende n = p = nᵢ; nᵢ sıcaklık ve bandgap ile değişir (Si için ≈ 10¹⁰ cm⁻³).",
+            "Intrinsic (katkısız) yarıiletkende n = p = nᵢ; nᵢ sıcaklık arttıkça hızla artar, bandgap büyüdükçe azalır (Si için ≈ 10¹⁰ cm⁻³).",
             "Doping (katkılama): donor n-type (n-tipi), acceptor p-type (p-tipi) yapar. Dengede np = nᵢ² (kütle etkisi yasası).",
             "Sık karışan nokta: çarpım np sabittir; toplam n+p değil. Katkı bir taşıyıcıyı artırırken diğerini etkiler." ] },
           { baslik: "Drift (sürüklenme), mobility, akım", madde: [
-            "Drift velocity (sürüklenme hızı): v_d = μE; μ mobility (hareketlilik, cm²/V·s), E alan (V/cm).",
+            "Drift velocity (sürüklenme hızı): v_d = μE; μ mobility (hareketlilik, cm²/V·s), E alan (V/cm). μₙ electron (elektron), μₚ hole (delik) için hareketliliktir.",
             "Scattering (saçılma) carrier'ı sürekli yavaşlatır; bu yüzden v_d ivmelenmez, alanla orantılı bir ortalama hıza oturur.",
-            "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); electron (elektron) ve hole (delik) katkıları toplanır.",
+            "Current density (akım yoğunluğu): J = q(nμₙ + pμₚ)E (A/cm²); q temel yük (1,6×10⁻¹⁹ C). Electron (elektron) ve hole (delik) katkıları toplanır.",
             "Sık karışan nokta: drift, alan etkisiyle olur; diffusion (difüzyon) ise konsantrasyon farkıyla olur." ] }
         ],
         nasil: [
@@ -13398,7 +13398,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     ['Δx Δp ≥ ħ/2','Wave packet needs many wavelengths: Δk ≥ 1/(2Δx)','x and p are conjugate (non-commuting)','Property of the state, not of instruments']),
   K('s08-k2','s08','belirsizlik',
     'Calculate the minimum velocity uncertainty of (a) an electron confined to Δx = 0.10 nm and (b) a 0.145 kg baseball located to within 1.0 mm. Compare and explain why (b) is not observed in daily life.',
-    '(a) Δp ≥ ħ/(2Δx) = 1.055×10⁻³⁴/(2 × 1.0×10⁻¹⁰) = 5.3×10⁻²⁵ kg·m/s, so Δv = Δp/m = 5.3×10⁻²⁵/9.11×10⁻³¹ ≈ 5.8×10⁵ m/s. (b) Δv ≥ ħ/(2mΔx) = 1.055×10⁻³⁴/(2 × 0.145 × 1.0×10⁻³) ≈ 3.6×10⁻³¹ m/s. The electron value is a large fraction of atomic speeds (about 10⁶ m/s), so uncertainty is essential for atomic physics. The baseball value is about 10³¹ times smaller than anything measurable, because ħ is tiny compared with the product m·Δx of macroscopic bodies.',
+    '(a) Δp ≥ ħ/(2Δx) = 1.055×10⁻³⁴/(2 × 1.0×10⁻¹⁰) = 5.3×10⁻²⁵ kg·m/s, so Δv = Δp/m = 5.3×10⁻²⁵/9.11×10⁻³¹ ≈ 5.8×10⁵ m/s. (b) Δv ≥ ħ/(2mΔx) = 1.055×10⁻³⁴/(2 × 0.145 × 1.0×10⁻³) ≈ 3.6×10⁻³¹ m/s. The electron value is a large fraction of atomic speeds (about 10⁶ m/s), so uncertainty is essential for atomic physics. The baseball value is far below anything measurable, because ħ is tiny compared with the product m·Δx of macroscopic bodies.',
     ['Δp ≥ ħ/(2Δx) then Δv = Δp/m','Electron: Δv ≈ 5.8 × 10⁵ m/s','Baseball: Δv ≈ 3.6 × 10⁻³¹ m/s','ħ is tiny, so effects are negligible for large m']),
   K('s08-k3','s08','belirsizlik',
     'Use the uncertainty principle to estimate the minimum kinetic energy of a particle of mass m confined to a region of size L. Evaluate it for an electron with L = 0.10 nm and comment on the result.',
@@ -13461,7 +13461,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   /* ---- s09 Band test ---- */
   M('sv-s09-m1', 's09', 'N identical atoms are brought close together to form a crystal. What happens to each atomic energy level?', 'It splits into N closely spaced levels that form an energy band', ['It stays as a single level', 'It splits into exactly two levels', 'It disappears because electrons become free'], 'The wave functions of neighbouring atoms overlap. Because the Pauli exclusion principle forbids identical states, each level splits into N slightly different levels; for N ~ 10^22 they form a quasi-continuous band.');
   M('sv-s09-m2', 's09', 'Why does an insulator not conduct current?', 'Its valence band is full and the bandgap is large, so electrons cannot reach empty states', ['It contains no electrons', 'Its conduction band is half filled', 'Its atoms are too heavy to move'], 'A full band offers no empty states for electrons to move into, and the large gap prevents thermal excitation to the next band. A half-filled band would be a metal.');
-  M('sv-s09-m3', 's09', 'Which band picture describes a metal?', 'A partially filled band, so electrons can move into nearby empty states', ['A completely full valence band separated by a large gap', 'A completely empty valence band', 'Two full bands with no gap between them'], 'In a metal the highest occupied band is only partly filled (or overlaps another band), so a small field can shift electrons into empty states.');
+  M('sv-s09-m3', 's09', 'Which band picture describes a metal?', 'A partially filled band, so electrons can move into nearby empty states', ['A completely full valence band separated by a large gap', 'A completely empty valence band', 'Two completely full bands separated by a large gap'], 'In a metal the highest occupied band is only partly filled (or overlaps another band), so a small field can shift electrons into empty states.');
   M('sv-s09-m4', 's09', 'According to the Pauli exclusion principle, how many electrons can occupy one energy level (including spin)?', '2', ['1', '4', 'Any number'], 'No two electrons can share the same set of quantum numbers. A level holds two electrons of opposite spin.');
   M('sv-s09-m5', 's09', 'The bandgap is best defined as:', 'The range of energies between the top of the valence band and the bottom of the conduction band where no allowed states exist', ['The spacing between two neighbouring levels inside one band', 'The width of the valence band', 'The energy needed to ionise a single atom'], 'Inside the bandgap there are no allowed electron states in a perfect crystal.');
   M('sv-s09-m6', 's09', 'A crystal contains N atoms, each contributing one s level. Including spin, how many electron states does the resulting s band hold?', '2N', ['N', 'N/2', '4N'], 'N atoms give N orbital levels in the band, and each holds two electrons of opposite spin, so 2N states.');
