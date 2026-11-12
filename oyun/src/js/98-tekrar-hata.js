@@ -7,7 +7,7 @@
   'use strict';
   var Q = (typeof window !== 'undefined' ? window : globalThis).Q;
   var TUR_AD = { 'emin-yanlis': 'Emin olduğun yanlış', yanlis: 'Yanlış', bilinmeyen: 'Bilmiyordum', sans: 'Şans eseri doğru' };
-  var TIP_AD = { dusman: 'Düşman sorusu', tahmin: 'Tahmin sorusu', tuzak: 'Tuzak (yanlış parça)', patron: 'Patron sorusu' };
+  var TIP_AD = { dusman: 'Düşman sorusu', tahmin: 'Tahmin sorusu', tuzak: 'Tuzak (yanlış parça)', patron: 'Patron sorusu', hesap: 'Hesap görevi' };
   var TIP_SIRA = { dusman: 0, tahmin: 1, tuzak: 2, patron: 3 };
 
   function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -177,6 +177,13 @@
         if (!h.cozuldu) r.appendChild(btn('Bu soruyu yeniden çöz', 'primary', function(){ coz(host, tok, [h]); }));
         r.appendChild(btn("Bunu AI'a sor / açıkla", '', function(){ Q.tekrar.git('ai', { kayit: h, soru: q }); }));
         c.appendChild(r);
+      } else if (h.hesap && Q.hesap && Q.hesap.gorev(h.hesap)) {
+        var hg = Q.hesap.gorev(h.hesap);
+        c.appendChild(el('p', '', 'Hesap görevi: ' + hg.baslik + (h.adim ? ' (yanlış adım: ' + h.adim + ')' : '')));
+        c.appendChild(el('p', 'tk-muted', 'Bu hata hesap adımından geldi. Hesap çalıştayında adımları yeniden çöz.'));
+        var r3 = el('div', 'tk-row');
+        r3.appendChild(btn('Hesap çalıştayında aç', 'primary', function(){ if (Q.tekrarHesap && Q.tekrarHesap.sec) Q.tekrarHesap.sec(h.hesap); Q.tekrar.git('hesap'); }));
+        c.appendChild(r3);
       } else {
         var og = ogrenilen(h);
         c.appendChild(el('p', 'tk-muted', og || 'Bu kavram için kayıtlı bir soru bulunamadı.'));

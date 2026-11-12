@@ -178,6 +178,7 @@
           }
         ]
       },
+      { id: "s01-h01", tip: "hesap", baslik: "Hesap görevi", kavram: null, agirlik: 0, hesapGorev: "si-yogunluk" },
       {
         id: "s01-o09", tip: "sandik", baslik: "Sandık", kavram: null, agirlik: 1,
         kart: { id: "czoch", yil: 1916, tekCumle: "Melt (eriyik) içinden seed (tohum) ile single crystal (tek kristal) çekmenin yolunu buldu." },

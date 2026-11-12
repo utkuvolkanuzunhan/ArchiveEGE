@@ -159,6 +159,7 @@
             },
             alt: { soru: "(100) ve (111) planes (düzlemleri) arasındaki farkı compare (karşılaştır): device (aygıt) için neden önemli?" } }
         ] },
+      { id: "s02-h01", tip: "hesap", baslik: "Hesap görevi", kavram: null, agirlik: 0, hesapGorev: "miller-326" },
       { id: "s02-o09", tip: "sandik", baslik: "Sandık", kavram: null, agirlik: 1,
         kart: { id: "miller", yil: 1839, tekCumle: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdı: Miller indices (Miller indisleri)." },
         ozet: [

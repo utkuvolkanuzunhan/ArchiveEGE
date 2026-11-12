@@ -8,10 +8,11 @@ var path = require('path');
 var vm = require('vm');
 
 var JS = path.join(__dirname, '..', 'src', 'js');
-var SIRA = ['hikaye', 'kavram', 'dusman', 'dusman', 'tahmin', 'tuzak', 'kopru', 'patron', 'sandik'];
+var SIRA = ['hikaye', 'kavram', 'dusman', 'dusman', 'tahmin', 'tuzak', 'kopru', 'patron', 'hesap', 'sandik'];
 var MODULLER = ['kristal_tur', 'czochralski', 'kafes', 'miller', 'karacisim', 'fotoelektrik', 'bohr', 'kuyu',
   'basamak', 'olcum', 'belirsizlik', 'bant', 'fermi'];
 
+var HESAP = {};   /* 87-data-hesap.js: id -> görev */
 var hatalar = [];
 var uyarilar = [];
 function hata(dosya, alan, sorun) { hatalar.push(dosya + ':' + alan + ': ' + sorun); }
@@ -119,6 +120,26 @@ function engel(d, st, e, i) {
         else hata(d, b + '.tip', 'secmeli|acik olmalı: ' + f.tip);
       });
       break;
+    case 'hesap': {
+      var g = HESAP[e.hesapGorev];
+      if (!e.hesapGorev) { hata(d, a + '.hesapGorev', 'boş'); break; }
+      if (!g) { hata(d, a + '.hesapGorev', '"' + e.hesapGorev + '" Q.data.hesap içinde yok'); break; }
+      if (g.istasyon !== st.id) hata(d, a + '.hesapGorev', '"' + g.id + '" başka istasyona ait (' + g.istasyon + ')');
+      if (!g.istasyonSonu) hata(d, a + '.hesapGorev', '"' + g.id + '" istasyonSonu:true değil');
+      if (!g.soru || !Array.isArray(g.veriler) || !g.veriler.length) hata(d, a + '.hesapGorev', 'görev metni/verilenler eksik');
+      if (!Array.isArray(g.adimlar) || g.adimlar.length < 2) hata(d, a + '.hesapGorev', 'en az 2 adım olmalı');
+      else {
+        if (!g.adimlar.some(function (x) { return x.adimSoru; })) hata(d, a + '.hesapGorev', 'hiç adimSoru yok');
+        g.adimlar.forEach(function (x, j) {
+          var q = x.adimSoru; if (!q) return;
+          if (!q.soru) hata(d, a + '.adimlar[' + j + '].adimSoru.soru', 'boş');
+          if (q.sayiCevap) { if (typeof q.sayiCevap.deger !== 'number') hata(d, a + '.adimlar[' + j + '].sayiCevap.deger', 'sayı değil'); }
+          else if (!Array.isArray(q.secenekler) || q.secenekler.filter(function (s) { return s.dogru; }).length !== 1) hata(d, a + '.adimlar[' + j + '].secenekler', 'tam 1 doğru seçenek olmalı');
+        });
+      }
+      if (!g.sonuc || !g.sonuc.metin || !g.sinavNotu) hata(d, a + '.hesapGorev', 'sonuc/sinavNotu eksik');
+      break;
+    }
     case 'sandik':
       if (!e.kart || !e.kart.id) hata(d, a + '.kart.id', 'boş'); else sinir(d, a + '.kart.tekCumle', e.kart.tekCumle, 16);
       if (!Array.isArray(e.ozet) || e.ozet.length !== 3) hata(d, a + '.ozet', 'tam 3 madde olmalı');
@@ -151,6 +172,8 @@ function istasyon(d, id, st) {
   else if (tt.sim && tt.sim.modul && MODULLER.indexOf(tt.sim.modul) < 0) hata(d, 'temelTur.sim.modul', 'bilinmeyen modül "' + tt.sim.modul + '"');
 }
 
+try { (yukle('87-data-hesap.js').hesap || []).forEach(function (g) { HESAP[g.id] = g; }); }
+catch (e) { hata('87-data-hesap.js', 'yükleme', e.message); }
 var toplam = 0;
 for (var n = 1; n <= 10; n++) {
   var id = 's' + (n < 10 ? '0' : '') + n;

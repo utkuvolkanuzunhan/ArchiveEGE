@@ -199,6 +199,7 @@
           }
         ]
       },
+      { id: 's09-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'bant-si' },
       {
         id: 's09-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'pauli', yil: 1925, tekCumle: 'İki electron (elektron) aynı quantum state (kuantum durumu) içinde olamaz.' },

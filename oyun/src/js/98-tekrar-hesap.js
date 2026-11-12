@@ -208,5 +208,8 @@
     if (ilk) { aktif = ilk.id; ciz(); detay(ilk); }
   }
 
-  Q.tekrarHesap = { sayfa: sayfa, kontrol: kontrol, sayiOku: sayiOku, yaz: yaz, adimUI: adimUI };
+  /* Hesap çalıştayı sayfası açılırken verilen görevi seç (filtreleri sıfırla); oyun içi ve hata defteri bağlantısı */
+  function sec(id){ aktif = id; fKonu = 'hepsi'; fTip = 'hepsi'; fSt = 'hepsi'; }
+
+  Q.tekrarHesap = { sec: sec, sayfa: sayfa, kontrol: kontrol, sayiOku: sayiOku, yaz: yaz, adimUI: adimUI };
 })();

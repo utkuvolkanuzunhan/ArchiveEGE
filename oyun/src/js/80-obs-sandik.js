@@ -82,6 +82,14 @@
       var rozet = el('span', 'sd-rozet', 'Kayıt alındı');
       rozet.style.cssText = 'font-weight:800;color:var(--ink-dark);background:var(--good);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);padding:2px 12px;box-shadow:var(--glow-lime);';
       alt.appendChild(rozet);
+      try {
+        var pg = st.ilerleme && st.ilerleme[ctx.stationId || ist.id];
+        if (pg && pg.hesap === 'atlandi') {
+          var hn = el('div', 'sd-hesap-atlandi', 'Hesap atlandı: görevi Tekrar Merkezi > Hesap çalıştayı\'nda çözebilirsin.');
+          hn.style.cssText = 'font-size:var(--fs-small);color:var(--muted);';
+          wrap.appendChild(hn);
+        }
+      } catch (e) {}
       try { if (Q.save && Q.save.write) Q.save.write(); } catch (e) {}
       wrap.appendChild(alt);
 

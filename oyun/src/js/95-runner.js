@@ -5,10 +5,10 @@
   'use strict';
   var R = Q.runner;
   var H = 720, GY = 600, TRIG = 420, STOPD = 160, DECEL = 1.0, INTRO = 0.7, ACCEL = 0.5, BASE_V = 360;
-  var GAP = { hikaye: 1000, kavram: 1000, dusman: 900, tahmin: 1000, tuzak: 900, kopru: 1000, patron: 1200, sandik: 1000 };
+  var GAP = { hikaye: 1000, kavram: 1000, dusman: 900, tahmin: 1000, tuzak: 900, kopru: 1000, patron: 1200, hesap: 1000, sandik: 1000 };
   var ANIM = { saldir: 0.7, atla: 0.9, dus: 1.6, sendele: 0.8, zafer: 1.2, 'kapi-ac': 0.9, 'kopru-kur': 1.0, 'tuzak-boz': 0.8 };
   var RUNNER_DURUM = { saldir: 'saldir', atla: 'atla', dus: 'dus', sendele: 'sendele', zafer: 'zafer' };
-  var OK_ANIM = { hikaye: 'kapi-ac', kavram: 'kapi-ac', dusman: 'saldir', tahmin: 'atla', tuzak: 'tuzak-boz', kopru: 'kopru-kur', patron: 'zafer', sandik: 'zafer' };
+  var OK_ANIM = { hikaye: 'kapi-ac', kavram: 'kapi-ac', dusman: 'saldir', tahmin: 'atla', tuzak: 'tuzak-boz', kopru: 'kopru-kur', patron: 'zafer', hesap: 'zafer', sandik: 'zafer' };
   var BAD_ANIM = { dusman: 'sendele', tahmin: 'dus', tuzak: 'sendele', kopru: 'sendele' };
 
   var container = null, canvas = null, cctx = null, ro = null, W = 1280, scale = 1, rafId = 0, last = null;
@@ -280,7 +280,7 @@
           r.mode = 'stopped'; hudPath(r); toast('Geri alındı', 'bilgi');
           return;
         }
-        if (sonuc === 'atla') { try { B().hideBoss(); } catch (e) {} sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: 'atlandi' }; r.skipApply = true; toast('Engel atlandı', 'iyi'); }
+        if (sonuc === 'atla') { try { B().hideBoss(); } catch (e) {} sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: 'atlandi' }; r.skipApply = true; if (ob.tip === 'hesap') prog(r).hesap = 'atlandi'; toast('Engel atlandı', 'iyi'); }
       } catch (e) { console.error('obs:' + ob.tip, e); toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, agirlik: 0, notlar: '' }; r.skipApply = true; }  // 6
     }
     if (!alive(r)) return;
@@ -298,6 +298,7 @@
     Q.bus.emit('obstacle:done', { stationId: r.id, index: i, ob: ob, result: sonuc });  // 11
     var p = prog(r);
     p.enSon = Math.max(p.enSon || 0, i + 1);
+    if (ob.tip === 'hesap' && sonuc && sonuc.hesapDurum) p.hesap = sonuc.hesapDurum;   /* 'tamam' | (atlanınca 'atlandi' yukarıda) */
     if (r.cp[i + 1]) p.kontrol = i + 1;
     if (ob.tip === 'sandik' && i === r.items.length - 1) {
       p.tamam = true;

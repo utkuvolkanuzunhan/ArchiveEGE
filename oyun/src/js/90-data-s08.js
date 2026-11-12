@@ -199,6 +199,7 @@
           }
         ]
       },
+      { id: 's08-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'bel-v' },
       {
         id: 's08-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'heis', yil: 1927, tekCumle: 'Position (konum) ve momentumun aynı anda sharp (keskin) olamayacağını gösterdi.' },

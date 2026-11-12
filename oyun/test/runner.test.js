@@ -21,7 +21,7 @@ async function setup(browser, opts){
   for (var f of ['00-q.js', '10-state.js', '95-runner-b.js', '95-runner.js']) await page.addScriptTag({ path: path.join(SRC, f) });
   await page.evaluate(function(){
     Q.state.ayarlar.hiz = 3;
-    var tips = ['hikaye','kavram','dusman','dusman','tahmin','tuzak','kopru','patron','sandik'];
+    var tips = ['hikaye','kavram','dusman','dusman','tahmin','tuzak','kopru','patron','hesap','sandik'];
     Q.data.stations.t1 = { id: 't1', sira: 1, ad: 'Test', renk: '#ffd23f', engeller: tips.map(function(t, i){ return { id: 't1-o' + (i + 1), tip: t, baslik: t }; }) };
     window.__log = [];
     tips.filter(function(t, i, a){ return a.indexOf(t) === i; }).forEach(function(t){
@@ -78,14 +78,14 @@ async function setup(browser, opts){
     ok(c3.maxd <= 260 * 3 * 0.05 + 1, 'T3 devamda dt zıplaması yok (max adım ' + c3.maxd.toFixed(1) + ')');
     await s.ctx.close();
 
-    /* T1: 9 engelli tam akış */
+    /* T1: 10 engelli tam akış */
     s = await setup(browser); page = s.page;
     var res = await page.evaluate(function(){ return Q.runner.start('t1', 0); });
     var info = await page.evaluate(function(){ return { log: window.__log, i: Q.runner.info(), st: Q.state.ilerleme.t1, k: Q.state.fabrika.kurulu }; });
     ok(res === 'tamam', 'T1 sonuç tamam');
-    ok(info.log.length === 9 && info.log.every(function(v, i){ return v === i; }), 'T1 9 engel sırayla');
+    ok(info.log.length === 10 && info.log.every(function(v, i){ return v === i; }), 'T1 10 engel sırayla');
     var dl = info.i.decelLog;
-    ok(dl.length === 9 && dl.every(function(d){ return Math.abs(d.gameSn - 1.0) <= 0.2 && Math.abs(d.duvarSn - 1.0) <= 0.2; }),
+    ok(dl.length === 10 && dl.every(function(d){ return Math.abs(d.gameSn - 1.0) <= 0.2 && Math.abs(d.duvarSn - 1.0) <= 0.2; }),
       'T1 yavaşlama 1.0 ±0.2 sn: ' + dl.map(function(d){ return d.gameSn.toFixed(2) + '/' + d.duvarSn.toFixed(2); }).join(' '));
     ok(dl.every(function(d){ return Math.abs(d.mesafe - 160) <= 20; }), 'T1 durma mesafesi 160±20: ' + dl.map(function(d){ return Math.round(d.mesafe); }).join(' '));
     ok(info.st.tamam === true && info.k.indexOf('t1') >= 0, 'T1 ilerleme.tamam + fabrika.kurulu');
@@ -102,7 +102,7 @@ async function setup(browser, opts){
       return { res: res, log: window.__log, kd: window.__kd, v: Q.state.voltaj };
     });
     ok(t4.res === 'tamam' && t4.kd === 1, 'T4 kısa devre bir kez, istasyon yine biter');
-    ok(JSON.stringify(t4.log) === JSON.stringify([0,1,2,3,2,3,4,5,6,7,8]), 'T4 kontrol noktasına (index 2) döner: ' + t4.log.join(','));
+    ok(JSON.stringify(t4.log) === JSON.stringify([0,1,2,3,2,3,4,5,6,7,8,9]), 'T4 kontrol noktasına (index 2) döner: ' + t4.log.join(','));
     ok(t4.v === 70, 'T4 voltaj 70');
     await s.ctx.close();
 
@@ -112,7 +112,7 @@ async function setup(browser, opts){
     var r5 = await page.evaluate(function(){ return Q.runner.start('t1', 0); });
     var i5 = await page.evaluate(function(){ return Q.runner.info().decelLog; });
     ok(r5 === 'tamam', 'T5 reduced-motion ilerler ve biter');
-    ok(i5.length === 9 && i5.every(function(d){ return d.gameSn < 0.2 && Math.abs(d.mesafe - 160) <= 20; }), 'T5 yavaşlama anlık');
+    ok(i5.length === 10 && i5.every(function(d){ return d.gameSn < 0.2 && Math.abs(d.mesafe - 160) <= 20; }), 'T5 yavaşlama anlık');
     ok(Date.now() - t0 < 40000, 'T5 hızlı bitti (' + (Date.now() - t0) + 'ms)');
     await s.ctx.close();
   } catch (e) { fails++; process.stdout.write('HATA ' + (e && e.stack || e) + '\n'); }

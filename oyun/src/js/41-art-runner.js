@@ -185,7 +185,7 @@
   /* ================= ENGELLER ================= */
   var SIZE = {
     hikaye: { w: 200, h: 300 }, kavram: { w: 200, h: 280 }, dusman: { w: 120, h: 140 }, tahmin: { w: 260, h: 60 },
-    tuzak: { w: 180, h: 60 }, kopru: { w: 420, h: 90 }, patron: { w: 600, h: 140 }, sandik: { w: 140, h: 120 }
+    tuzak: { w: 180, h: 60 }, kopru: { w: 420, h: 90 }, patron: { w: 600, h: 140 }, hesap: { w: 150, h: 170 }, sandik: { w: 140, h: 120 }
   };
   Q.art.OBSTACLE_SIZE = SIZE;
 
@@ -419,6 +419,23 @@
     [-250, 250].forEach(function(px){ ctx.beginPath(); ctx.rect(px - 6, -120, 12, 120); inkFill(ctx, '#56627d'); });
     rrect(ctx, -200, -134, 400, 64, 10); inkFill(ctx, '#3b1d7a', act);
     label(ctx, 'PATRON', 0, -102, 52);
+  };
+
+  /* hesap görevi: ayaklı hesap makinesi panosu (ekranda sayı, tuş ızgarası; çözülünce ekran yeşil) */
+  DRAW.hesap = function(ctx, durum, t, p, o){
+    var act = durum === 'aktif' || durum === 'intro', done = durum === 'cozuldu';
+    ctx.beginPath(); rrect(ctx, -30, -12, 60, 12, 4); inkFill(ctx, '#56627d');                       /* taban */
+    ctx.beginPath(); ctx.rect(-6, -40, 12, 30); inkFill(ctx, '#56627d');                              /* ayak */
+    ctx.beginPath(); rrect(ctx, -56, -158, 112, 122, 10); inkFill(ctx, '#3a5bff', act);               /* gövde */
+    ctx.beginPath(); rrect(ctx, -44, -148, 88, 32, 5); inkFill(ctx, done ? tok('--lime') : '#0b0620'); /* ekran */
+    ctx.fillStyle = done ? tok('--ink-dark') : tok('--cyan');
+    ctx.font = '20px ' + tok('--font-d'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    var rakam = done ? '= OK' : (act ? ['4,0', '0,74', '3,1', '2π'][Math.floor(t * 2) % 4] : 'f(x)');
+    ctx.fillText(rakam, 0, -132);
+    for (var r = 0; r < 3; r++) for (var c = 0; c < 4; c++) {
+      ctx.beginPath(); rrect(ctx, -44 + c * 23, -108 + r * 22, 19, 17, 3);
+      inkFill(ctx, (c === 3) ? tok('--yellow') : '#c9cfe0');
+    }
   };
 
   DRAW.sandik = function(ctx, durum, t, p, o){

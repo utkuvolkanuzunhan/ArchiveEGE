@@ -203,6 +203,7 @@
           }
         ]
       },
+      { id: 's04-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'bohr-gecis' },
       {
         id: 's04-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'bohr', yil: 1913, tekCumle: 'Atomda electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir, diye gösterdi.' },

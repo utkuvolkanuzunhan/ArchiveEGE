@@ -198,6 +198,7 @@
           }
         ]
       },
+      { id: 's10-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'fd-100meV' },
       {
         id: 's10-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'fermi', yil: 1926, tekCumle: 'Fermi level (Fermi seviyesi): doluluk olasılığının yarı olduğu energy (enerji).' },

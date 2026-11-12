@@ -58,7 +58,7 @@ function ok(c, m){ process.stdout.write((c ? 'ok: ' : 'KALDI: ') + m + '\n'); if
       onar: [].map.call(pn.querySelectorAll('.btn.primary'), function(b){ return b.textContent; }), mini: !!pn.querySelector('.fb-mini'), engel: pn.querySelectorAll('ol li').length, t: pn.textContent }; });
   ok(r.madde === 3, 'panelde 3 bilgi kartı (' + r.madde + ')');
   ok(r.kav >= 3 && r.kav <= 4, 'kavram çipleri 3-4 (' + r.kav + ')');
-  ok(r.onar[0] === 'Onar' && !r.mini && r.engel === 9, 'Onar düğmesi, mini soru henüz yok, 9 engele atla düğmesi');
+  ok(r.onar[0] === 'Onar' && !r.mini && r.engel === 10, 'Onar düğmesi, mini soru henüz yok, 10 engele atla düğmesi (hesap dahil)');
   await p.locator('#a8-station-panel .btn.primary', { hasText: 'Onar' }).click();
   await p.waitForTimeout(200);
   r = await p.evaluate(function(){ return { s: window.__start, harita: !document.querySelector('.fb-root') }; });

@@ -254,9 +254,10 @@
     tuzak: '<polygon points="2,21 6,6 10,21 14,6 18,21 22,8 22,21"/>',
     kopru: '<rect x="1" y="9" width="22" height="6"/>',
     patron: '<polygon points="12,1 15,9 23,9 17,14 19,23 12,18 5,23 7,14 1,9 9,9"/>',
+    hesap: '<rect x="4" y="2" width="16" height="20"/><rect x="7" y="5" width="10" height="4"/>',
     sandik: '<rect x="3" y="8" width="18" height="12"/><rect x="3" y="4" width="18" height="5"/>'
   };
-  var TIP_AD = { hikaye: 'hikaye', kavram: 'kavram', dusman: 'düşman', tahmin: 'tahmin', tuzak: 'tuzak', kopru: 'köprü', patron: 'patron', sandik: 'sandık' };
+  var TIP_AD = { hikaye: 'hikaye', kavram: 'kavram', dusman: 'düşman', tahmin: 'tahmin', tuzak: 'tuzak', kopru: 'köprü', patron: 'patron', hesap: 'hesap', sandik: 'sandık' };
   ui.hud = {
     setVoltaj: function(n){
       n = U.clamp(Math.round(+n || 0), 0, 100);

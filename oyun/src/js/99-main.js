@@ -6,7 +6,7 @@
 (function () {
   'use strict';
 
-  var SIRA = ['hikaye', 'kavram', 'dusman', 'dusman', 'tahmin', 'tuzak', 'kopru', 'patron', 'sandik'];
+  var SIRA = ['hikaye', 'kavram', 'dusman', 'dusman', 'tahmin', 'tuzak', 'kopru', 'patron', 'hesap', 'sandik'];
   var TOPLAM = 9;
   var finalBasladi = false;
   var timerId = null;
@@ -31,6 +31,7 @@
     if (eng.length !== SIRA.length) hata.push('engel sayısı ' + eng.length + ' (beklenen ' + SIRA.length + ')');
     eng.forEach(function (e, i) {
       if (SIRA[i] && e.tip !== SIRA[i]) hata.push('engel ' + (i + 1) + ' tipi ' + e.tip + ' (beklenen ' + SIRA[i] + ')');
+      if (e.tip === 'hesap' && !(Q.hesap && Q.hesap.gorev && Q.hesap.gorev(e.hesapGorev))) hata.push('engel ' + (i + 1) + ' hesapGorev yok: ' + e.hesapGorev);
       if ((e.tip === 'dusman' || e.tip === 'tahmin') && (!e.secenekler || e.secenekler.length !== 3 ||
         e.secenekler.filter(function (s) { return s.dogru; }).length !== 1)) hata.push('engel ' + (i + 1) + ' seçenekleri');
     });

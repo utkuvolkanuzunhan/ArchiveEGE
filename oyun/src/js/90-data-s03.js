@@ -193,6 +193,7 @@
           }
         ]
       },
+      { id: 's03-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'foto-cu' },
       {
         id: 's03-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'einstein', yil: 1905, tekCumle: 'Light (ışık) photon (foton) paketlerine bölüp photoelectric effect (fotoelektrik olay) olayını açıkladı.' },
