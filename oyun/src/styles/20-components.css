@@ -93,6 +93,8 @@
 #dock .kavram-sim{flex:1 1 auto;min-height:0;max-height:calc(clamp(300px,44vh,346px) - 56px);overflow:auto;display:flex;align-items:safe center;justify-content:center}
 #dock .kavram-sim canvas,#dock .kavram-sim svg{max-height:100%;max-width:100%;object-fit:contain}
 #dock .kavram-butonlar{flex:0 0 auto;display:flex;gap:8px;flex-wrap:wrap}
+/* "Nasıl yapılır?" köşe düğmesi geri bildirim kutusunun son sözcüklerini örtmesin */
+#dock:has(> .ob-onbilgi-ac) .aciklama,#dock:has(> .ob-onbilgi-ac) .p5-box{margin-right:140px}
 @media (max-height:800px){#dock{padding:8px 12px;gap:6px}}
 @media (max-height:800px){#dock .opts{gap:5px}#dock .opt{padding:5px 12px;min-height:38px}}  /* 4 şık + Onayla 1366x768 dock içinde kaydırmasız */
 @media (max-height:1000px){#dock .opt{min-height:34px;padding:4px 12px;gap:8px}#dock .opt .num{width:24px;height:24px}}
