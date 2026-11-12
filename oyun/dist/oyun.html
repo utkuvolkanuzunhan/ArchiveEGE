@@ -2649,7 +2649,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
   /* ================= ENGELLER ================= */
   var SIZE = {
     hikaye: { w: 200, h: 300 }, kavram: { w: 200, h: 280 }, dusman: { w: 120, h: 140 }, tahmin: { w: 260, h: 60 },
-    tuzak: { w: 180, h: 60 }, kopru: { w: 420, h: 90 }, patron: { w: 600, h: 140 }, sandik: { w: 140, h: 120 }
+    tuzak: { w: 180, h: 60 }, kopru: { w: 420, h: 90 }, patron: { w: 600, h: 140 }, hesap: { w: 150, h: 170 }, sandik: { w: 140, h: 120 }
   };
   Q.art.OBSTACLE_SIZE = SIZE;
 
@@ -2883,6 +2883,23 @@ Q.art.PORTRE_IDS = Object.keys(P);
     [-250, 250].forEach(function(px){ ctx.beginPath(); ctx.rect(px - 6, -120, 12, 120); inkFill(ctx, '#56627d'); });
     rrect(ctx, -200, -134, 400, 64, 10); inkFill(ctx, '#3b1d7a', act);
     label(ctx, 'PATRON', 0, -102, 52);
+  };
+
+  /* hesap görevi: ayaklı hesap makinesi panosu (ekranda sayı, tuş ızgarası; çözülünce ekran yeşil) */
+  DRAW.hesap = function(ctx, durum, t, p, o){
+    var act = durum === 'aktif' || durum === 'intro', done = durum === 'cozuldu';
+    ctx.beginPath(); rrect(ctx, -30, -12, 60, 12, 4); inkFill(ctx, '#56627d');                       /* taban */
+    ctx.beginPath(); ctx.rect(-6, -40, 12, 30); inkFill(ctx, '#56627d');                              /* ayak */
+    ctx.beginPath(); rrect(ctx, -56, -158, 112, 122, 10); inkFill(ctx, '#3a5bff', act);               /* gövde */
+    ctx.beginPath(); rrect(ctx, -44, -148, 88, 32, 5); inkFill(ctx, done ? tok('--lime') : '#0b0620'); /* ekran */
+    ctx.fillStyle = done ? tok('--ink-dark') : tok('--cyan');
+    ctx.font = '20px ' + tok('--font-d'); ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    var rakam = done ? '= OK' : (act ? ['4,0', '0,74', '3,1', '2π'][Math.floor(t * 2) % 4] : 'f(x)');
+    ctx.fillText(rakam, 0, -132);
+    for (var r = 0; r < 3; r++) for (var c = 0; c < 4; c++) {
+      ctx.beginPath(); rrect(ctx, -44 + c * 23, -108 + r * 22, 19, 17, 3);
+      inkFill(ctx, (c === 3) ? tok('--yellow') : '#c9cfe0');
+    }
   };
 
   DRAW.sandik = function(ctx, durum, t, p, o){
@@ -3335,9 +3352,10 @@ Q.art.PORTRE_IDS = Object.keys(P);
     tuzak: '<polygon points="2,21 6,6 10,21 14,6 18,21 22,8 22,21"/>',
     kopru: '<rect x="1" y="9" width="22" height="6"/>',
     patron: '<polygon points="12,1 15,9 23,9 17,14 19,23 12,18 5,23 7,14 1,9 9,9"/>',
+    hesap: '<rect x="4" y="2" width="16" height="20"/><rect x="7" y="5" width="10" height="4"/>',
     sandik: '<rect x="3" y="8" width="18" height="12"/><rect x="3" y="4" width="18" height="5"/>'
   };
-  var TIP_AD = { hikaye: 'hikaye', kavram: 'kavram', dusman: 'düşman', tahmin: 'tahmin', tuzak: 'tuzak', kopru: 'köprü', patron: 'patron', sandik: 'sandık' };
+  var TIP_AD = { hikaye: 'hikaye', kavram: 'kavram', dusman: 'düşman', tahmin: 'tahmin', tuzak: 'tuzak', kopru: 'köprü', patron: 'patron', hesap: 'hesap', sandik: 'sandık' };
   ui.hud = {
     setVoltaj: function(n){
       n = U.clamp(Math.round(+n || 0), 0, 100);
@@ -8046,6 +8064,14 @@ Q.art.PORTRE_IDS = Object.keys(P);
       var rozet = el('span', 'sd-rozet', 'Kayıt alındı');
       rozet.style.cssText = 'font-weight:800;color:var(--ink-dark);background:var(--good);border:var(--bw) solid var(--ink-dark);border-radius:var(--rs);padding:2px 12px;box-shadow:var(--glow-lime);';
       alt.appendChild(rozet);
+      try {
+        var pg = st.ilerleme && st.ilerleme[ctx.stationId || ist.id];
+        if (pg && pg.hesap === 'atlandi') {
+          var hn = el('div', 'sd-hesap-atlandi', 'Hesap atlandı: görevi Tekrar Merkezi > Hesap çalıştayı\'nda çözebilirsin.');
+          hn.style.cssText = 'font-size:var(--fs-small);color:var(--muted);';
+          wrap.appendChild(hn);
+        }
+      } catch (e) {}
       try { if (Q.save && Q.save.write) Q.save.write(); } catch (e) {}
       wrap.appendChild(alt);
 
@@ -8963,6 +8989,279 @@ Q.art.PORTRE_IDS = Object.keys(P);
       }
     ]
   };
+})();
+
+/* 86-obs-hesap.js · Engel işleyicisi: `hesap` (istasyon sonu hesap görevi, adım adım yönlendirmeli, öğretici).
+ * Ekler: Q.obs.register('hesap', ...), Q.obsHesap {hataYaz(gorev, adimNo, ob, stId), kontrol}.
+ * Veri: engel {id, tip:'hesap', baslik, hesapGorev:'gorevId'} + Q.data.hesap (87-data-hesap.js, Q.hesap.gorev(id)).
+ * Akış: görev metni (EN) + verilenler solda sürekli görünür; sağda adımlar: her adimSoru sorulur (sayı ya da seçenek),
+ *   doğruysa çözüm metni/formülü açılır ve sonraki adım gelir; yanlışsa "Cevabın yanlış. Doğru: ..." + "Adımı göster".
+ *   CEZA/CAN KAYBI YOK. Yanlış adım hata defterine yazılır (kavram 'hesap_<konu>', hesap:<gorevId>, adim:<no>).
+ *   Bitince Q.state.hesapCalisma[gorevId] = 'cozdum' (yanlış adım olduysa 'tekrar'; var olan 'cozdum' düşürülmez).
+ * Atla/geri: runner'ın Esc menüsü işleyici sözünü yarıştırır; DOM dock'tan silinince dinleyiciler kendini temizler. */
+(function(){
+  'use strict';
+  var Q = window.Q;
+
+  function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+  function safe(fn){ try { return fn(); } catch (e) { return undefined; } }
+  function yaz(host, metin){
+    if (Q.tekrarHesap && Q.tekrarHesap.yaz) return Q.tekrarHesap.yaz(host, metin);
+    host.textContent = String(metin == null ? '' : metin).replace(/[\^_]\{([^{}]*)\}/g, '$1'); return host;
+  }
+  function p(cls, metin, tag){ return yaz(el(tag || 'div', cls), metin); }
+  function duz(s){ return String(s == null ? '' : s).replace(/[\^_]\{([^{}]*)\}/g, '$1'); }
+  function kontrol(girdi, hedef, tol){
+    if (Q.tekrarHesap && Q.tekrarHesap.kontrol) return Q.tekrarHesap.kontrol(girdi, hedef, tol);
+    var v = parseFloat(String(girdi).replace(',', '.')), t = tol == null ? 0.02 : tol;
+    if (!isFinite(v)) return { ok: false, gecersiz: true, v: v };
+    return { ok: Math.abs(v - hedef) <= t * Math.abs(hedef), v: v, ters: false };
+  }
+  function sayiYaz(v){
+    if (typeof v !== 'number') return String(v);
+    var a = Math.abs(v);
+    if (a !== 0 && (a < 1e-3 || a >= 1e6)) { var s = v.toExponential(3).replace(/\.?0+e/, 'e'); var m = /^(-?[\d.]+)e([+-]?)(\d+)$/.exec(s); return m ? m[1] + '×10^{' + (m[2] === '-' ? '-' : '') + m[3] + '}' : s; }
+    return String(Math.round(v * 1e4) / 1e4).replace('.', ',');
+  }
+
+  /* ---------- hata defteri (geriye uyumlu: yeni isteğe bağlı alanlar hesap, adim) ---------- */
+  function hataYaz(gorev, adimNo, ob, stId){
+    var s = Q.state; if (!s || !Array.isArray(s.hataDefteri)) return null;
+    var kavram = 'hesap_' + gorev.konu, d = s.hataDefteri, k = null, i;
+    for (i = 0; i < d.length; i++) if (d[i].kavram === kavram && d[i].hesap === gorev.id && !d[i].cozuldu) { k = d[i]; break; }
+    if (k) { k.tekrar = (k.tekrar || 0) + 1; k.adim = adimNo; }
+    else {
+      var n = 0; d.forEach(function(r){ var m = /^hd-(\d+)$/.exec(r.id); if (m) n = Math.max(n, +m[1]); });
+      k = { id: 'hd-' + (n + 1), kavram: kavram, istasyon: stId || gorev.istasyon || null, tur: 'yanlis',
+        engel: (ob && ob.id) || null, hesap: gorev.id, adim: adimNo, tarih: Date.now(), tekrar: 0, cozuldu: false };
+      d.push(k);
+    }
+    safe(function(){ Q.bus.emit('hata:add', { kayit: k }); });
+    safe(function(){ Q.save.write(); });
+    return k;
+  }
+
+  function css(){
+    if (document.getElementById('hg-css')) return;
+    var s = el('style'); s.id = 'hg-css';
+    s.textContent = '.hg-kok{display:flex;flex-direction:column;gap:6px;min-height:0;flex:1 1 auto;padding:2px 4px}' +
+      '.hg-ust{display:flex;align-items:center;gap:10px;flex:0 0 auto}.hg-ust b{font-family:var(--font-d);font-size:20px;color:var(--accent)}.hg-ust span{color:var(--muted);font-size:var(--fs-small)}' +
+      '.hg-ilerle{flex:1;height:8px;border-radius:99px;background:var(--track);border:2px solid var(--line);overflow:hidden}.hg-ilerle i{display:block;height:100%;background:var(--good);width:0;transition:width .3s}' +
+      '.hg-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:10px;flex:1 1 auto;min-height:0}' +
+      '.hg-sol,.hg-sag{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:6px}' +
+      '.hg-soru{font-size:16px;line-height:1.35;padding:8px 10px;border:2px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--ink)}' +
+      '.hg-ver-b{color:var(--muted);font-size:var(--fs-small)}.hg-ver{margin:0;padding-left:20px;color:var(--cyan);font-size:15px}.hg-ver li{margin:1px 0}' +
+      '.hg-adim{padding:6px 10px;border:2px solid var(--line);border-radius:8px;background:var(--panel2);display:flex;flex-direction:column;gap:5px}' +
+      '.hg-adim.bitti{opacity:.82}.hg-adim h4{margin:0;color:var(--cyan);font-size:16px}.hg-adim p{margin:0}' +
+      '.hg-formul{font-family:Georgia,"Times New Roman",serif;font-size:18px;padding:4px 10px;border-left:4px solid var(--yellow);background:rgba(255,255,255,.06);overflow-wrap:anywhere}.hg-formul sup,.hg-formul sub{font-size:.7em}' +
+      '.hg-kod{margin:0;padding:6px 8px;border-radius:6px;background:rgba(0,0,0,.35);font:12px/1.35 monospace;white-space:pre-wrap;overflow:auto}' +
+      '.hg-gir{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.hg-gir input{background:var(--panel2);color:var(--ink);border:2px solid var(--line);border-radius:8px;padding:5px 10px;font:inherit;width:170px}' +
+      '.hg-opts{display:flex;flex-direction:column;gap:5px}.hg-opts .opt{min-height:34px;text-align:left}' +
+      '.hg-fb{padding:5px 10px;border-radius:8px;border:2px solid var(--line);font-weight:700}.hg-fb.iyi{border-color:var(--good)}.hg-fb.kotu{border-color:var(--bad)}' +
+      '.hg-sonuc{padding:8px 10px;border:2px solid var(--good);border-radius:8px;background:var(--panel2);font-size:17px;color:var(--ink)}' +
+      '.hg-not{padding:8px 10px;border:2px solid var(--accent);border-radius:8px;background:var(--panel2);color:var(--ink)}' +
+      '@media (max-width:760px){.hg-grid{grid-template-columns:1fr;overflow:auto}}';
+    document.head.appendChild(s);
+  }
+
+  Q.obs.register('hesap', {
+    tip: 'hesap',
+    async enter(ob, ctx){
+      var host = ctx.host, st = ctx.state || Q.state, stId = ctx.stationId;
+      var gorev = Q.hesap && Q.hesap.gorev ? Q.hesap.gorev(ob.hesapGorev) : null;
+      if (!gorev) {
+        safe(function(){ Q.ui.toast('Hesap görevi bulunamadı, devam ediyoruz', { tur: 'kotu' }); });
+        return { dogru: true, eminlik: 1, kavram: null, agirlik: 0, notlar: 'hesap-yok' };
+      }
+      css();
+      var yanlisAdim = 0, toplam = gorev.adimlar.length;
+      host.textContent = '';
+      var kok = el('div', 'hg-kok'); kok.dataset.gorev = gorev.id; host.appendChild(kok);
+      /* üst şerit */
+      var ust = el('div', 'hg-ust');
+      ust.appendChild(el('b', '', 'Hesap görevi'));
+      var sayac = el('span', '', ''); sayac.id = 'hg-sayac';
+      var il = el('div', 'hg-ilerle'), ilI = el('i'); il.appendChild(ilI);
+      ust.appendChild(sayac); ust.appendChild(il); kok.appendChild(ust);
+      var grid = el('div', 'hg-grid'), sol = el('div', 'hg-sol'), sag = el('div', 'hg-sag');
+      grid.appendChild(sol); grid.appendChild(sag); kok.appendChild(grid);
+      /* sol: görev metni + verilenler (görev bitene kadar kalır) */
+      var sr = p('hg-soru', gorev.soru); sr.id = 'hg-soru'; sol.appendChild(sr);
+      if (gorev.veriler && gorev.veriler.length) {
+        sol.appendChild(el('div', 'hg-ver-b', 'Verilenler (Given)'));
+        var ul = el('ul', 'hg-ver'); ul.id = 'hg-veriler';
+        gorev.veriler.forEach(function(v){ ul.appendChild(p('', v, 'li')); });
+        sol.appendChild(ul);
+      }
+      function ilerleme(i){
+        sayac.textContent = i < toplam ? 'Adım ' + (i + 1) + '/' + toplam : 'Tamam';
+        ilI.style.width = Math.round(100 * Math.min(i, toplam) / toplam) + '%';
+      }
+
+      /* Enter ile devam: tek seferlik, host sökülünce kendini temizler */
+      function bekleDevam(dugme, sec){
+        return new Promise(function(res){
+          var t0 = Date.now(), bitti = false;
+          function fin(){ if (bitti) return; bitti = true; document.removeEventListener('keydown', onKey, true); res(); }
+          function onKey(e){
+            if (!dugme.isConnected) { document.removeEventListener('keydown', onKey, true); return; }
+            if (e.key === 'Enter' && Date.now() - t0 > 250 && !(e.target && e.target.tagName === 'INPUT' && !sec)) { e.preventDefault(); e.stopPropagation(); fin(); }
+          }
+          dugme.addEventListener('click', fin);
+          document.addEventListener('keydown', onKey, true);
+          try { dugme.focus(); dugme.scrollIntoView({ block: 'nearest' }); } catch (e) {}
+        });
+      }
+      function acikla(kutu, adim, yer){
+        yer.textContent = '';
+        if (adim.metin) yer.appendChild(p('', adim.metin));
+        if (adim.formul) yer.appendChild(p('hg-formul', adim.formul));
+        if (adim.kod) yer.appendChild(el('pre', 'hg-kod', adim.kod));
+        sag.scrollTop = sag.scrollHeight;
+      }
+
+      /* adım adım */
+      for (var i = 0; i < toplam; i++) {
+        var adim = gorev.adimlar[i], q = adim.adimSoru;
+        ilerleme(i);
+        var kutu = el('div', 'hg-adim'); kutu.dataset.adim = String(i + 1);
+        kutu.appendChild(yaz(el('h4'), (i + 1) + '. ' + String(adim.baslik).replace(/^\s*\d+\s*[.)]\s*/, '')));
+        var yer = el('div'); yer.style.cssText = 'display:flex;flex-direction:column;gap:5px';
+        kutu.appendChild(yer); sag.appendChild(kutu);
+        var ilkYanlis = true;
+        if (q) {
+          yer.appendChild(p('', q.soru));
+          var fb = el('div'); fb.setAttribute('role', 'status'); fb.className = 'hg-fb-yer';
+          var cozum = el('div'); cozum.style.cssText = 'display:flex;flex-direction:column;gap:5px';
+          var sat = el('div', 'hg-gir'), dogruMetin, dogruSag = false, kontrolFn, giris = null, onay = null, secili = -1, optBtns = [];
+          if (q.sayiCevap) {
+            giris = el('input', 'hg-giris'); giris.type = 'text'; giris.setAttribute('inputmode', 'decimal'); giris.setAttribute('aria-label', 'Ara cevap');
+            giris.placeholder = 'sayı' + (q.sayiCevap.birim ? ' (' + duz(q.sayiCevap.birim) + ')' : '');
+            onay = el('button', 'btn primary hg-kontrol', 'Kontrol'); onay.type = 'button';
+            dogruMetin = sayiYaz(q.sayiCevap.deger) + (q.sayiCevap.birim ? ' ' + q.sayiCevap.birim : '');
+            kontrolFn = function(){
+              var k = kontrol(giris.value, q.sayiCevap.deger, q.tolerans);
+              if (k.gecersiz) return { gecersiz: true };
+              return { ok: k.ok, ters: k.ters };
+            };
+            giris.addEventListener('keydown', function(e){ if (e.key === 'Escape') return; e.stopPropagation(); if (e.key === 'Enter') { e.preventDefault(); onay.click(); } });
+            sat.appendChild(giris); sat.appendChild(onay); yer.appendChild(sat);
+          } else {
+            var ops = el('div', 'hg-opts'); ops.setAttribute('role', 'group');
+            var sirali = Q.util && Q.util.shuffle ? Q.util.shuffle(q.secenekler.map(function(s){ return s; })) : q.secenekler.slice();
+            sirali.forEach(function(s, pos){
+              var b = el('button', 'opt hg-sec'); b.type = 'button'; b.setAttribute('aria-pressed', 'false');
+              b.appendChild(el('span', 'num', String(pos + 1))); b.appendChild(el('span', 't', s.t));
+              b.addEventListener('click', function(){
+                if (dogruSag || b.disabled) return;
+                secili = pos; optBtns.forEach(function(x, j){ x.setAttribute('aria-pressed', j === pos ? 'true' : 'false'); });
+                onay.disabled = false;
+              });
+              optBtns.push(b); ops.appendChild(b);
+            });
+            onay = el('button', 'btn primary hg-kontrol', 'Onayla'); onay.type = 'button'; onay.disabled = true;
+            dogruMetin = (q.secenekler.filter(function(s){ return s.dogru; })[0] || {}).t;
+            kontrolFn = function(){ return secili < 0 ? { gecersiz: true } : { ok: !!sirali[secili].dogru }; };
+            yer.appendChild(ops); sat.appendChild(onay); yer.appendChild(sat);
+          }
+          yer.appendChild(fb); yer.appendChild(cozum);
+          var yardim = null;
+          await new Promise(function(res){
+            function dogruCoz(){ dogruSag = true; res(); }
+            onay.addEventListener('click', function(){
+              if (dogruSag) return;
+              var k = kontrolFn();
+              if (k.gecersiz) { fb.className = 'hg-fb kotu'; fb.textContent = q.sayiCevap ? 'Bir sayı gir (örnek: 1,5 ya da 2e-4).' : 'Önce bir şık seç.'; return; }
+              if (k.ok) {
+                fb.className = 'hg-fb iyi'; fb.textContent = 'Doğru.';
+                if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; });
+                dogruCoz();
+              } else {
+                if (ilkYanlis) { ilkYanlis = false; yanlisAdim++; hataYaz(gorev, i + 1, ob, stId); }
+                fb.className = 'hg-fb kotu';
+                fb.textContent = '';
+                fb.appendChild(document.createTextNode('Cevabın yanlış. Doğru: '));
+                var dm = el('span'); yaz(dm, dogruMetin); fb.appendChild(dm);
+                fb.appendChild(document.createTextNode('.' + (k.ters ? ' (Mertebe ya da birim hatası olabilir.)' : '')));
+                if (!yardim) {
+                  yardim = el('div', 'hg-gir');
+                  var ab = el('button', 'btn hg-adim-goster', 'Adımı göster'); ab.type = 'button';
+                  ab.addEventListener('click', function(){ acikla(kutu, adim, cozum); ab.disabled = true; });
+                  var dv = el('button', 'btn primary hg-adim-devam', 'Devam'); dv.type = 'button';
+                  yardim.appendChild(ab); yardim.appendChild(dv); yer.appendChild(yardim);
+                  dv.addEventListener('click', function(){ if (giris) giris.disabled = true; onay.disabled = true; optBtns.forEach(function(x){ x.disabled = true; }); dogruSag = true; acikla(kutu, adim, cozum); res(); });
+                }
+                if (giris) { giris.select(); giris.focus(); }
+                sag.scrollTop = sag.scrollHeight;
+              }
+            });
+            if (giris) { try { giris.focus({ preventScroll: true }); } catch (e) {} }
+            else {
+              function onNum(e){
+                if (!kutu.isConnected) { document.removeEventListener('keydown', onNum); return; }
+                var n = parseInt(e.key, 10);
+                if (n >= 1 && n <= optBtns.length && !dogruSag) optBtns[n - 1].click();
+                else if (e.key === 'Enter' && !onay.disabled && !dogruSag) { e.preventDefault(); onay.click(); }
+              }
+              document.addEventListener('keydown', onNum);
+            }
+          });
+          if (!kutu.isConnected) return { dogru: true, eminlik: 1, kavram: null, agirlik: 0 };
+          acikla(kutu, adim, cozum);
+        } else {
+          acikla(kutu, adim, yer);
+        }
+        /* sonraki adıma geçiş */
+        var son = i + 1 >= toplam;
+        var gec = el('button', 'btn primary hg-sonraki', son ? 'Sonucu göster' : 'Sonraki adım'); gec.type = 'button';
+        var gs = el('div', 'hg-gir'); gs.appendChild(gec); kutu.appendChild(gs);
+        sag.scrollTop = sag.scrollHeight;
+        await bekleDevam(gec, true);
+        if (!kutu.isConnected) return { dogru: true, eminlik: 1, kavram: null, agirlik: 0 };
+        gs.parentNode && gs.parentNode.removeChild(gs);
+        kutu.className += ' bitti';
+      }
+
+      /* sonuç */
+      ilerleme(toplam);
+      sol.textContent = ''; sag.textContent = '';
+      var sr2 = p('hg-soru', gorev.soru); sol.appendChild(sr2);
+      if (gorev.veriler && gorev.veriler.length) {
+        sol.appendChild(el('div', 'hg-ver-b', 'Verilenler (Given)'));
+        var ul2 = el('ul', 'hg-ver'); gorev.veriler.forEach(function(v){ ul2.appendChild(p('', v, 'li')); }); sol.appendChild(ul2);
+      }
+      var sn = p('hg-sonuc', 'Sonuç: ' + gorev.sonuc.metin); sn.id = 'hg-sonuc'; sag.appendChild(sn);
+      var oz = el('div', 'hg-adim'); oz.appendChild(el('h4', '', 'Formül özeti'));
+      gorev.adimlar.forEach(function(a){ if (a.formul) oz.appendChild(p('hg-formul', a.formul)); });
+      sag.appendChild(oz);
+      var nt = p('hg-not', 'Sınavda dikkat: ' + gorev.sinavNotu); nt.id = 'hg-not'; sag.appendChild(nt);
+      /* Çözdüm işareti */
+      if (!st.hesapCalisma || typeof st.hesapCalisma !== 'object' || Array.isArray(st.hesapCalisma)) st.hesapCalisma = {};
+      var mevcut = st.hesapCalisma[gorev.id];
+      st.hesapCalisma[gorev.id] = (yanlisAdim === 0 || mevcut === 'cozdum') ? 'cozdum' : 'tekrar';
+      safe(function(){ Q.save.write(); });
+      var alt = el('div', 'hg-gir'), dur = el('span', '');
+      dur.style.color = 'var(--muted)';
+      function durum(){ var d = st.hesapCalisma[gorev.id]; dur.textContent = d === 'cozdum' ? 'İşaret: Çözdüm ✓' : 'İşaret: Tekrar çalış ↻'; }
+      var tk = el('button', 'btn hg-tekrar', 'Tekrar çalış'); tk.type = 'button';
+      tk.addEventListener('click', function(){ st.hesapCalisma[gorev.id] = 'tekrar'; safe(function(){ Q.save.write(); }); durum(); });
+      var cz = el('button', 'btn hg-cozdum', 'Çözdüm'); cz.type = 'button';
+      cz.addEventListener('click', function(){ st.hesapCalisma[gorev.id] = 'cozdum'; safe(function(){ Q.save.write(); }); durum(); });
+      var dev = el('button', 'btn primary hg-devam', 'Devam'); dev.type = 'button';
+      alt.appendChild(cz); alt.appendChild(tk);
+      if (Q.tekrar && Q.tekrarHesap && Q.tekrarHesap.sec) {
+        var tm = el('button', 'btn hg-merkez', 'Tekrar Merkezi\'nde aç'); tm.type = 'button';
+        tm.addEventListener('click', function(){ safe(function(){ Q.tekrarHesap.sec(gorev.id); Q.tekrar.git('hesap'); }); });
+        alt.appendChild(tm);
+      }
+      alt.appendChild(dur); alt.appendChild(dev); sag.appendChild(alt); durum();
+      sag.scrollTop = 0;
+      await bekleDevam(dev, true);
+      return { dogru: true, eminlik: 1, kavram: null, agirlik: 0, hesapDurum: 'tamam', yanlisAdim: yanlisAdim };
+    }
+  });
+
+  Q.obsHesap = { hataYaz: hataYaz };
 })();
 
 /* 87-data-hesap.js · Hesap çalıştayı (Calculation workshop) verisi + okuma API'si.
@@ -9904,6 +10203,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: "s01-h01", tip: "hesap", baslik: "Hesap görevi", kavram: null, agirlik: 0, hesapGorev: "si-yogunluk" },
       {
         id: "s01-o09", tip: "sandik", baslik: "Sandık", kavram: null, agirlik: 1,
         kart: { id: "czoch", yil: 1916, tekCumle: "Melt (eriyik) içinden seed (tohum) ile single crystal (tek kristal) çekmenin yolunu buldu." },
@@ -10118,6 +10418,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
             },
             alt: { soru: "(100) ve (111) planes (düzlemleri) arasındaki farkı compare (karşılaştır): device (aygıt) için neden önemli?" } }
         ] },
+      { id: "s02-h01", tip: "hesap", baslik: "Hesap görevi", kavram: null, agirlik: 0, hesapGorev: "miller-326" },
       { id: "s02-o09", tip: "sandik", baslik: "Sandık", kavram: null, agirlik: 1,
         kart: { id: "miller", yil: 1839, tekCumle: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdı: Miller indices (Miller indisleri)." },
         ozet: [
@@ -10349,6 +10650,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's03-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'foto-cu' },
       {
         id: 's03-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'einstein', yil: 1905, tekCumle: 'Light (ışık) photon (foton) paketlerine bölüp photoelectric effect (fotoelektrik olay) olayını açıkladı.' },
@@ -10592,6 +10894,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's04-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'bohr-gecis' },
       {
         id: 's04-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'bohr', yil: 1913, tekCumle: 'Atomda electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir, diye gösterdi.' },
@@ -10831,6 +11134,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's05-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'q5-bolgeler' },
       {
         id: 's05-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'schro', yil: 1926, tekCumle: 'Wave function (dalga fonksiyonu) denklemini yazdı; energy levels (enerji seviyeleri) kendiliğinden çıktı.' },
@@ -11070,6 +11374,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's06-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'q6-e-gt' },
       {
         id: 's06-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'broglie', yil: 1924, tekCumle: 'Matter (madde) için de wave (dalga) davranışı önerdi.' },
@@ -11308,6 +11613,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's07-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'olc-E' },
       {
         id: 's07-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'born', yil: 1926, tekCumle: 'ψ\'nin karesinin probability (olasılık) olduğunu söyledi.' },
@@ -11547,6 +11853,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's08-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'bel-v' },
       {
         id: 's08-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'heis', yil: 1927, tekCumle: 'Position (konum) ve momentumun aynı anda sharp (keskin) olamayacağını gösterdi.' },
@@ -11796,6 +12103,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's09-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'bant-si' },
       {
         id: 's09-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'pauli', yil: 1925, tekCumle: 'İki electron (elektron) aynı quantum state (kuantum durumu) içinde olamaz.' },
@@ -12054,6 +12362,7 @@ Q.art.PORTRE_IDS = Object.keys(P);
           }
         ]
       },
+      { id: 's10-h01', tip: 'hesap', baslik: 'Hesap görevi', kavram: null, agirlik: 0, hesapGorev: 'fd-100meV' },
       {
         id: 's10-o09', tip: 'sandik', baslik: 'Sandık', kavram: null, agirlik: 1,
         kart: { id: 'fermi', yil: 1926, tekCumle: 'Fermi level (Fermi seviyesi): doluluk olasılığının yarı olduğu energy (enerji).' },
@@ -12716,10 +13025,10 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   'use strict';
   var R = Q.runner;
   var H = 720, GY = 600, TRIG = 420, STOPD = 160, DECEL = 1.0, INTRO = 0.7, ACCEL = 0.5, BASE_V = 360;
-  var GAP = { hikaye: 1000, kavram: 1000, dusman: 900, tahmin: 1000, tuzak: 900, kopru: 1000, patron: 1200, sandik: 1000 };
+  var GAP = { hikaye: 1000, kavram: 1000, dusman: 900, tahmin: 1000, tuzak: 900, kopru: 1000, patron: 1200, hesap: 1000, sandik: 1000 };
   var ANIM = { saldir: 0.7, atla: 0.9, dus: 1.6, sendele: 0.8, zafer: 1.2, 'kapi-ac': 0.9, 'kopru-kur': 1.0, 'tuzak-boz': 0.8 };
   var RUNNER_DURUM = { saldir: 'saldir', atla: 'atla', dus: 'dus', sendele: 'sendele', zafer: 'zafer' };
-  var OK_ANIM = { hikaye: 'kapi-ac', kavram: 'kapi-ac', dusman: 'saldir', tahmin: 'atla', tuzak: 'tuzak-boz', kopru: 'kopru-kur', patron: 'zafer', sandik: 'zafer' };
+  var OK_ANIM = { hikaye: 'kapi-ac', kavram: 'kapi-ac', dusman: 'saldir', tahmin: 'atla', tuzak: 'tuzak-boz', kopru: 'kopru-kur', patron: 'zafer', hesap: 'zafer', sandik: 'zafer' };
   var BAD_ANIM = { dusman: 'sendele', tahmin: 'dus', tuzak: 'sendele', kopru: 'sendele' };
 
   var container = null, canvas = null, cctx = null, ro = null, W = 1280, scale = 1, rafId = 0, last = null;
@@ -12991,7 +13300,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
           r.mode = 'stopped'; hudPath(r); toast('Geri alındı', 'bilgi');
           return;
         }
-        if (sonuc === 'atla') { try { B().hideBoss(); } catch (e) {} sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: 'atlandi' }; r.skipApply = true; toast('Engel atlandı', 'iyi'); }
+        if (sonuc === 'atla') { try { B().hideBoss(); } catch (e) {} sonuc = { dogru: true, eminlik: 1, dogruluk: null, kavram: null, agirlik: 0, notlar: 'atlandi' }; r.skipApply = true; if (ob.tip === 'hesap') prog(r).hesap = 'atlandi'; toast('Engel atlandı', 'iyi'); }
       } catch (e) { console.error('obs:' + ob.tip, e); toast('Engel yüklenemedi: ' + ob.tip, 'kotu'); sonuc = { dogru: true, eminlik: 1, agirlik: 0, notlar: '' }; r.skipApply = true; }  // 6
     }
     if (!alive(r)) return;
@@ -13009,6 +13318,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     Q.bus.emit('obstacle:done', { stationId: r.id, index: i, ob: ob, result: sonuc });  // 11
     var p = prog(r);
     p.enSon = Math.max(p.enSon || 0, i + 1);
+    if (ob.tip === 'hesap' && sonuc && sonuc.hesapDurum) p.hesap = sonuc.hesapDurum;   /* 'tamam' | (atlanınca 'atlandi' yukarıda) */
     if (r.cp[i + 1]) p.kontrol = i + 1;
     if (ob.tip === 'sandik' && i === r.items.length - 1) {
       p.tamam = true;
@@ -14497,7 +14807,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
   'use strict';
   var Q = (typeof window !== 'undefined' ? window : globalThis).Q;
   var TUR_AD = { 'emin-yanlis': 'Emin olduğun yanlış', yanlis: 'Yanlış', bilinmeyen: 'Bilmiyordum', sans: 'Şans eseri doğru' };
-  var TIP_AD = { dusman: 'Düşman sorusu', tahmin: 'Tahmin sorusu', tuzak: 'Tuzak (yanlış parça)', patron: 'Patron sorusu' };
+  var TIP_AD = { dusman: 'Düşman sorusu', tahmin: 'Tahmin sorusu', tuzak: 'Tuzak (yanlış parça)', patron: 'Patron sorusu', hesap: 'Hesap görevi' };
   var TIP_SIRA = { dusman: 0, tahmin: 1, tuzak: 2, patron: 3 };
 
   function el(tag, cls, text){ var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
@@ -14667,6 +14977,13 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
         if (!h.cozuldu) r.appendChild(btn('Bu soruyu yeniden çöz', 'primary', function(){ coz(host, tok, [h]); }));
         r.appendChild(btn("Bunu AI'a sor / açıkla", '', function(){ Q.tekrar.git('ai', { kayit: h, soru: q }); }));
         c.appendChild(r);
+      } else if (h.hesap && Q.hesap && Q.hesap.gorev(h.hesap)) {
+        var hg = Q.hesap.gorev(h.hesap);
+        c.appendChild(el('p', '', 'Hesap görevi: ' + hg.baslik + (h.adim ? ' (yanlış adım: ' + h.adim + ')' : '')));
+        c.appendChild(el('p', 'tk-muted', 'Bu hata hesap adımından geldi. Hesap çalıştayında adımları yeniden çöz.'));
+        var r3 = el('div', 'tk-row');
+        r3.appendChild(btn('Hesap çalıştayında aç', 'primary', function(){ if (Q.tekrarHesap && Q.tekrarHesap.sec) Q.tekrarHesap.sec(h.hesap); Q.tekrar.git('hesap'); }));
+        c.appendChild(r3);
       } else {
         var og = ogrenilen(h);
         c.appendChild(el('p', 'tk-muted', og || 'Bu kavram için kayıtlı bir soru bulunamadı.'));
@@ -15074,7 +15391,10 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     if (ilk) { aktif = ilk.id; ciz(); detay(ilk); }
   }
 
-  Q.tekrarHesap = { sayfa: sayfa, kontrol: kontrol, sayiOku: sayiOku, yaz: yaz, adimUI: adimUI };
+  /* Hesap çalıştayı sayfası açılırken verilen görevi seç (filtreleri sıfırla); oyun içi ve hata defteri bağlantısı */
+  function sec(id){ aktif = id; fKonu = 'hepsi'; fTip = 'hepsi'; fSt = 'hepsi'; }
+
+  Q.tekrarHesap = { sec: sec, sayfa: sayfa, kontrol: kontrol, sayiOku: sayiOku, yaz: yaz, adimUI: adimUI };
 })();
 
 /* 99-main.js (A9) — başlatma ve istasyon akışı.
@@ -15085,7 +15405,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
 (function () {
   'use strict';
 
-  var SIRA = ['hikaye', 'kavram', 'dusman', 'dusman', 'tahmin', 'tuzak', 'kopru', 'patron', 'sandik'];
+  var SIRA = ['hikaye', 'kavram', 'dusman', 'dusman', 'tahmin', 'tuzak', 'kopru', 'patron', 'hesap', 'sandik'];
   var TOPLAM = 9;
   var finalBasladi = false;
   var timerId = null;
@@ -15110,6 +15430,7 @@ Q.data.sinav.klasik = Q.data.sinav.klasik || [];
     if (eng.length !== SIRA.length) hata.push('engel sayısı ' + eng.length + ' (beklenen ' + SIRA.length + ')');
     eng.forEach(function (e, i) {
       if (SIRA[i] && e.tip !== SIRA[i]) hata.push('engel ' + (i + 1) + ' tipi ' + e.tip + ' (beklenen ' + SIRA[i] + ')');
+      if (e.tip === 'hesap' && !(Q.hesap && Q.hesap.gorev && Q.hesap.gorev(e.hesapGorev))) hata.push('engel ' + (i + 1) + ' hesapGorev yok: ' + e.hesapGorev);
       if ((e.tip === 'dusman' || e.tip === 'tahmin') && (!e.secenekler || e.secenekler.length !== 3 ||
         e.secenekler.filter(function (s) { return s.dogru; }).length !== 1)) hata.push('engel ' + (i + 1) + ' seçenekleri');
     });
