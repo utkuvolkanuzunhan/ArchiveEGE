@@ -23,7 +23,7 @@
 .kk-grup-ust{display:flex;align-items:center;gap:8px;padding:6px 10px;background:linear-gradient(90deg,color-mix(in srgb,var(--kk-renk) 34%,var(--panel)),var(--panel));border-bottom:4px solid var(--kk-renk)}
 .kk-grup-ust .a8-icon{flex:0 0 auto;display:inline-flex}
 .kk-grup-ust .a8-icon svg{width:36px;height:30px}
-.kk-grup-ad{font-family:var(--font-d);font-size:17px;flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kk-grup-ad{font-family:var(--font-d);font-size:17px;flex:1 1 auto;min-width:0;line-height:1.2;overflow-wrap:anywhere}
 .kk-ilerleme{flex:0 0 auto;font-size:var(--fs-small);font-weight:800;padding:1px 9px;border-radius:99px;border:2px solid var(--kk-renk);background:var(--panel2)}
 .kk-grup[data-tam="1"] .kk-ilerleme{background:var(--kk-renk);color:var(--ink-dark)}
 .kk-cubuk{height:5px;background:var(--panel2)}
