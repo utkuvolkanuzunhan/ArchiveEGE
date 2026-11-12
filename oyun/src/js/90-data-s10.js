@@ -32,18 +32,18 @@
 
   var o05 = {
     id: 's10-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'fermi_dagilim', agirlik: 1.5,
-    soru: 'Temperature (sıcaklık) 300 K\'den 50 K\'e inerse f(E) eğrisi E_F çevresinde ne olur?',
+    soru: 'E_F\'nin 0,1 eV üstündeki bir seviyenin dolu olma olasılığı f, sıcaklık 300 K\'den 600 K\'e çıkınca ne olur?',
     secenekler: [
-      sec('Dikleşir, step function (basamak fonksiyonu) biçimine yaklaşır', true, 'Doğru. kT küçülünce geçiş bölgesi daralır.'),
-      sec('Daha da yumuşar', false, 'Yanlış. Yumuşama sıcaklıkla artar, düşmez.'),
-      sec('E_F noktası kaybolur', false, 'Yanlış. f(E_F) = 1/2 her T için sürer.')
+      sec('Artar (increases): f ≈ 0,02 -> 0,13', true, 'Doğru. kT büyüyünce geçiş bölgesi genişler, E_F üstündeki seviyeler daha çok dolar.'),
+      sec('Azalır (decreases)', false, 'Yanlış. Isınan electron (elektron) daha yüksek seviyelere çıkar, E_F üstündeki f artar.'),
+      sec('f(E_F) de 1/2\'den büyük olur', false, 'Yanlış. f(E_F) = 1/2 her T için sürer.')
     ],
     sim: {
       modul: 'fermi',
       onceki: { T: 300 },
-      sonraki: { T: 50 }
+      sonraki: { T: 600 }
     },
-    acik: 'T 300 K\'den 50 K\'e inince f(E) eğrisi diklendi; geçiş bölgesi E_F çevresinde daraldı, basamağa yaklaştı.',
+    acik: 'T 300 K\'den 600 K\'e çıkınca E_F + 0,1 eV seviyesinde f ≈ 0,02\'den 0,13\'e yükseldi; geçiş bölgesi genişledi.',
     ipucu: "Geçiş genişliği kT ile orantılı: \"Nasıl yapılır: sıcaklık ve kT\" kartına bak."
   };
 
@@ -155,8 +155,8 @@
         sonuc: 'Alan E, drift velocity (sürüklenme hızı) v_d = μE verir; n ve p ile birlikte J = q(nμₙ + pμₚ)E akımı çıkar.'
       },
       {
-        id: 's10-o08', tip: 'patron', baslik: 'Fermi (Fermi) Canavarı', kavram: null, agirlik: 1,
-        canavar: 'fermi', canavarAd: 'Fermi (Fermi) Canavarı',
+        id: 's10-o08', tip: 'patron', baslik: 'Fermi Canavarı', kavram: null, agirlik: 1,
+        canavar: 'fermi', canavarAd: 'Fermi Canavarı',
         giris: 'Seviyeleri ben doldururum! Sıcaklık yükselirse sınırım bulanır!',
         fazlar: [
           {

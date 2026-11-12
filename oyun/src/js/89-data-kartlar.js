@@ -237,7 +237,7 @@
     { id: 'neumann', ist: 's07', kisi: 'John von Neumann', yil: 1932, tekCumle: 'Measurement postulate (ölçüm postülatı): sonuç eigenvalue (özdeğer), ardından collapse (çökme).' },
     { id: 'kennard', ist: 's08', kisi: 'Earle H. Kennard', yil: 1927, tekCumle: 'Belirsizlik bağıntısını kesin eşitsizlik olarak türetti: σ_x σ_p ≥ ħ/2.' },
     { id: 'bloch', ist: 's09', kisi: 'Felix Bloch', yil: 1928, tekCumle: 'Periodic potential (periyodik potansiyel) içinde çözüm e^(ikx) çarpı periyodik u(x): Bloch theorem (Bloch teoremi).' },
-    { id: 'kronig', ist: 's09', kisi: 'Kronig ve Penney', yil: 1931, tekCumle: 'Tekrar eden bariyer modeliyle energy bands (enerji bantları) ve bandgap (yasak aralık) gösterdiler.' },
+    { id: 'kronig', ist: 's09', kisi: 'Kronig ve Penney', yil: 1931, tekCumle: 'Tekrar eden bariyer modeliyle energy bands (enerji bantları) ve bandgap (yasak enerji aralığı) gösterdiler.' },
     { id: 'dirac', ist: 's10', kisi: 'Paul Dirac', yil: 1926, tekCumle: 'Fermi-Dirac statistics (Fermi-Dirac istatistiği)ni antisimetrik dalga fonksiyonlarından türetti.' },
     { id: 'shockley', ist: 's10', kisi: 'William Shockley', yil: 1948, tekCumle: 'p-n junction (p-n eklem) kuramı ve junction transistor (eklem transistörü) fikri.' }
   ];

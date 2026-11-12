@@ -15,7 +15,7 @@
 
   var o04 = {
     id: "s02-o04", tip: "dusman", baslik: "Defect (kusur) düşmanı", kavram: "birim_hucre", agirlik: 1,
-    onNot: "Diamond structure (elmas yapı): silisyum ve germanyumun kafesi. Nearest neighbor (en yakın komşu): bir atoma en yakın duran atomlar; sayısı coordination number (koordinasyon sayısı) olur.",
+    onNot: "Diamond structure (elmas yapı): silisyum ve germanyumun kafesi; fcc kafes + iki atomlu basis (baz), sp3 bağlarıyla. Nearest neighbor (en yakın komşu): bir atoma en yakın duran atomlar; sayısı coordination number (koordinasyon sayısı) olur.",
     soru: "diamond structure (elmas yapı) içinde her atom (atom) için nearest neighbor (en yakın komşu) sayısı kaçtır?",
     secenekler: [
       s("4", true, "Doğru. Diamond structure (elmas yapı) içinde her atom tetrahedral (dörtyüzlü), 4 neighbors (komşu) ile."),

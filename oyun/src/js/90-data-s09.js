@@ -24,7 +24,7 @@
     soru: 'Insulator (yalıtkan) neden akım taşımaz?',
     secenekler: [
       sec('Valence band (valans bandı) dolu, bandgap (yasak enerji aralığı) büyük', true, 'Doğru. Electron (elektron) boş seviyeye çıkamaz.'),
-      sec('Atom (atom) hiç electron (elektron) içermez', false, 'Hayır. Electron (elektron) vardır, ama hareket edemez.'),
+      sec('Valence band (valans bandı) boştur, electron (elektron) atoma sıkı bağlıdır', false, 'Hayır. Insulator (yalıtkan) içinde valence band (valans bandı) doludur; sorun boş seviyenin bandgap (yasak enerji aralığı) ötesinde olmasıdır.'),
       sec('Conduction band (iletim bandı) yarı doludur', false, 'Hayır. Yarı dolu band (bant) metal (metal) özelliğidir.')
     ],
     kusurSkin: 'bant_bosluk',

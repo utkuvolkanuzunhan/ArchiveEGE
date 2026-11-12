@@ -123,9 +123,9 @@
       },
       s09: {
         kisa: 'Bant testi',
-        rol: 'Çok atom yan yana gelince enerji seviyeleri bantlara dönüşür; aralarında band gap (bant aralığı) kalır.',
+        rol: 'Çok atom yan yana gelince enerji seviyeleri bantlara dönüşür; aralarında bandgap (yasak enerji aralığı) kalır.',
         neden: 'Malzemenin metal, semiconductor (yarıiletken) ya da insulator (yalıtkan) olması bant yapısına bağlıdır.',
-        bagliKavramlar: ['Energy band (enerji bandı)', 'Band gap (bant aralığı)', 'Valence band (değerlik bandı)', 'Conduction band (iletim bandı)'],
+        bagliKavramlar: ['Energy band (enerji bandı)', 'Bandgap (yasak enerji aralığı)', 'Valence band (değerlik bandı)', 'Conduction band (iletim bandı)'],
         miniSoru: {
           soru: 'Bir kristalde energy bands (enerji bantları) neden oluşur?',
           secenekler: [

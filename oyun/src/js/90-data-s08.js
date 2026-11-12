@@ -9,9 +9,9 @@
 
   var o03 = {
     id: 's08-o03', tip: 'dusman', baslik: 'Defect (kusur) düşmanı', kavram: 'belirsizlik_dalga', agirlik: 1,
-    soru: 'Δx küçülürse Δp (momentum) ne olur?',
+    soru: 'Δx küçülürse Δp (momentum) için alt sınır ne olur?',
     secenekler: [
-      sec('Büyür (increases)', true, 'Doğru. ΔxΔp ≥ ħ/2 product (çarpım) en az sabit kalır.'),
+      sec('Alt sınırı büyür (increases)', true, 'Doğru. ΔxΔp ≥ ħ/2 product (çarpım) en az sabit kalır; Δp alt sınırı büyür.'),
       sec('Küçülür (decreases)', false, 'Yanlış. Product (çarpım) sınırlı olduğundan biri küçülünce öbürü büyür.'),
       sec('Değişmez (unchanged)', false, 'Yanlış. ΔxΔp ≥ ħ/2 condition (koşul) bunu zorunlu kılar.')
     ],
@@ -33,19 +33,19 @@
 
   var o05 = {
     id: 's08-o05', tip: 'tahmin', baslik: 'Tahmin çukuru', kavram: 'belirsizlik_dalga', agirlik: 1.5,
-    soru: 'Wave packet (dalga paketi) için position (konum) genişliğini yarıya indirirsen momentum spread (momentum yayılması) ne olur?',
+    soru: 'Wave packet (dalga paketi) için position (konum) genişliğini iki katına çıkarırsan (σx 1 nm -> 2 nm) momentum spread (momentum yayılması) ne olur?',
     secenekler: [
-      sec('İki katına çıkar (doubles)', true, 'Doğru. σp = ħ/(2σx).'),
-      sec('Yarıya iner (halves)', false, 'Yanlış. Position (konum) daralınca momentum genişler.'),
-      sec('Aynı kalır (unchanged)', false, 'Yanlış. Position (konum) ve momentum bağlıdır.')
+      sec('Yarıya iner (halves)', true, 'Doğru. σp = ħ/(2σx); σx iki katına çıkınca σp yarıya iner.'),
+      sec('İki katına çıkar (doubles)', false, 'Yanlış. Position (konum) genişleyince momentum yayılması daralır.'),
+      sec('Aynı kalır (unchanged)', false, 'Yanlış. Position (konum) ve momentum yayılması ters orantılıdır.')
     ],
     sim: {
       modul: 'belirsizlik',
-      onceki: { sx: 2 },
-      sonraki: { sx: 1 }
+      onceki: { sx: 1 },
+      sonraki: { sx: 2 }
     },
     ipucu: 'σp = ħ/(2σx): ters orantı. "Nasıl yapılır: Δp bulmak" kartına bak.',
-    acik: 'σx 2\'den 1\'e inince σp iki katına çıktı; product (çarpım) ħ/2\'de kaldı.'
+    acik: 'σx 1\'den 2\'ye çıkınca σp yarıya indi; product (çarpım) ħ/2\'de kaldı.'
   };
 
   Q.data.stations.s08 = {
