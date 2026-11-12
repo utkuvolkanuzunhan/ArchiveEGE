@@ -60,9 +60,20 @@
       {
         id: 's04-o01', tip: 'hikaye', baslik: 'Zaman kapısı', kavram: null, agirlik: 1,
         yer: 'Kopenhag', yil: 1913, rivayet: false,
+        onBilgi: [
+          { baslik: "Bohr modeli ve enerji", madde: [
+            "Bohr postulates (Bohr varsayımları): electron (elektron) belirli stationary orbits (durağan yörüngeler) üzerinde ışıma yapmadan döner; angular momentum (açısal momentum) L = nħ.",
+            "de Broglie bakışı: orbit (yörünge) çevresine tam sayı wave (dalga) sığmalı, 2πr = nλ; buradan mvr = nħ çıkar.",
+            "Ionisation energy (iyonlaşma enerjisi): electron (elektron) n=1'den sonsuza çıkarmak için gereken energy (enerji); hidrojende 13,6 eV.",
+            "Foton dalga boyu λ = hc/ΔE ile bulunur; hc ≈ 1240 eV·nm. Bohr radius (Bohr yarıçapı) a₀ ≈ 0,053 nm." ] },
+          { baslik: "Sıkışma ve denge", madde: [
+            "Electron (elektron) daha küçük bölgeye sıkışırsa Δx azalır, Δp büyür; momentum (momentum) büyüyünce kinetic energy (kinetik enerji) de büyür.",
+            "Coulomb attraction (Coulomb çekimi) r küçüldükçe potential energy (potansiyel enerji) değerini düşürür.",
+            "Kinetik ve potansiyel katkıların toplamı sonlu bir r değerinde minimum olabilir; bu denge yarıçapı Bohr radius (Bohr yarıçapı) ile aynı büyüklüktedir." ] }
+        ],
         satirlar: [
           { kim: 'selin', metin: 'Atom mikroskobu bir electron (elektron) arıyor. O neden nucleus (çekirdek) içine düşmüyor?' },
-          { kim: 'bohr', metin: 'Electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir. Levels arası atlarken photon (foton) yayar.' },
+          { kim: 'bohr', metin: 'Electron (elektron) yalnızca belirli energy levels (enerji seviyeleri) üzerinde durabilir. Levels (seviyeler) arasında atlarken photon (foton) yayar.' },
           { kim: 'anlatici', metin: 'On bir yıl sonra de Broglie ekledi: electron (elektron) da wave (dalga), orbit (yörünge) üzerine tam sayı wave (dalga) sığar.' }
         ]
       },
@@ -109,21 +120,21 @@
         bloklar: [
           'Electron (elektron) confined wave (hapsolmuş dalga) olarak davranır',
           'Yalnızca belirli wavelengths (dalga boyları) sığar',
-          'Ground state (temel hal) enerjisi sıfır değildir',
+          'Hapsolmuş wave (dalga) kinetic energy (kinetik enerji) sıfır olamaz',
           'Electron (elektron) daha aşağı düşemez, atom stable (kararlı)'
         ],
-        sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), alt sınır, stable atom (kararlı atom).'
+        sonuc: 'Confined wave (hapsolmuş dalga), discrete levels (ayrık seviyeler), lower limit (alt sınır), stable atom (kararlı atom).'
       },
       {
         id: 's04-o08', tip: 'patron', baslik: 'Orbit (Yörünge) Canavarı', kavram: null, agirlik: 1,
         canavar: 'bohr', canavarAd: 'Orbit (Yörünge) Canavarı',
-        giris: 'Electronunu (elektron) nucleus (çekirdek) içine düşüreceğim! Düşemez diyorsan justify (gerekçelendir).',
+        giris: 'Electron (elektron) nucleus (çekirdek) içine düşecek, hemen göreceksin! Düşemez diyorsan justify (gerekçelendir).',
         fazlar: [
           {
             tip: 'secmeli', kavram: 'atom_kararlilik',
-            soru: 'Atomun ground state (temel hal) enerjisi neden vardır?',
+            soru: 'Atom için neden bir lowest energy level (en düşük enerji seviyesi) vardır?',
             secenekler: [
-              sec('Electron wave (elektron dalgası) nucleus (çekirdek) çevresinde sığar, lower limit (alt sınır) oluşur', true, 'Doğru. Confined wave (hapsolmuş dalga) enerjisi sıfır olamaz.'),
+              sec('Electron wave (elektron dalgası) nucleus (çekirdek) çevresinde sığar, lower limit (alt sınır) oluşur', true, 'Doğru. Confined wave (hapsolmuş dalga) kinetic energy (kinetik enerji) sıfır olamaz.'),
               sec('Nucleus (çekirdek) electron (elektron) iter', false, 'Hayır. Nucleus (çekirdek) electron (elektron) çeker.'),
               sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Sebep temperature (sıcaklık) değil, wave nature (dalga doğası).')
             ],
@@ -132,7 +143,7 @@
               secenekler: [
                 sec('Artar', true, 'Doğru. Position (konum) daralır, momentum (momentum) ve kinetic energy (kinetik enerji) büyür.'),
                 sec('Azalır', false, 'Hayır. Dar alanda wavelength (dalga boyu) kısalır, energy (enerji) artar.'),
-                sec('Değişmez', false, 'Hayır. Uncertainty principle (belirsizlik ilkesi) sıkıştırmayı sınırlar.')
+                sec('Değişmez', false, 'Hayır. Uncertainty principle (belirsizlik ilkesi): Δx küçülünce Δp büyür.')
               ]
             }
           },
@@ -143,21 +154,21 @@
             anahtarFikirler: [
               'Klasikte radiation (ışıma) yapan electron (elektron) nucleus (çekirdek) içine düşmeliydi.',
               'Quantum (kuantum) teoride electron (elektron) confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık).',
-              'Ground state (temel hal) energy (enerji) sıfır değildir, altına inilemez.',
-              'Nucleus (çekirdek) içine sıkışmak kinetic energy (kinetik enerji) artırır (uncertainty principle, belirsizlik ilkesi), denge oluşur.'
+              'Ground state (temel hal) altına inilemez; confined wave (hapsolmuş dalga) kinetic energy (kinetik enerji) sıfır olamaz.',
+              'Nucleus (çekirdek) içine sıkışmak kinetic energy (kinetik enerji) değerini artırır (uncertainty principle, belirsizlik ilkesi), denge oluşur.'
             ],
             yanlisKavramlar: [
               'Electron (elektron) nucleus (çekirdek) tarafından itildiği için düşmez',
               'Atom temperature (sıcaklık) yüzünden kararlıdır'
             ],
             yanlisKavramIds: ['atom_kararlilik', 'sifir_noktasi_sicaklik'],
-            idealCevap: 'Klasik fizikte orbit (yörünge) üzerindeki electron (elektron) radiation (ışıma) yapıp energy (enerji) kaybeder ve nucleus (çekirdek) içine düşerdi. Quantum (kuantum) teoride electron confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık) ve ground state (temel hal) enerjisi sıfır değildir. Nucleus içine daha çok sıkışmak kinetic energy (kinetik enerji) artırdığından electron bir denge durumunda kalır.',
+            idealCevap: 'Klasik fizikte orbit (yörünge) üzerindeki electron (elektron) radiation (ışıma) yapıp energy (enerji) kaybeder ve nucleus (çekirdek) içine düşerdi. Quantum (kuantum) teoride electron confined wave (hapsolmuş dalga), energy levels (enerji seviyeleri) discrete (ayrık) ve ground state (temel hal) altında level yoktur. Nucleus içine daha çok sıkışmak kinetic energy (kinetik enerji) değerini artırdığından electron bir denge durumunda kalır.',
             yedekSecmeli: {
               soru: 'H atom (H atomu) neden stable (kararlı)?',
               secenekler: [
                 sec('Ground state (temel hal) altı yok, electron (elektron) düşemez', true, 'Doğru. Confined wave (hapsolmuş dalga) için lower energy limit (alt enerji sınırı) var.'),
                 sec('Electron nucleus (çekirdek) tarafından itilir', false, 'Yanlış. Nucleus (çekirdek) electron (elektron) çeker.'),
-                sec('Because the atom is too cold (atom çok soğuk olduğu için)', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
+                sec('Atom çok soğuk olduğu için', false, 'Yanlış. Temperature (sıcaklık) sebep değil.'),
                 sec('Electron (elektron) aslında durur', false, 'Yanlış. Electron durmaz, lowest energy (en düşük enerji) wave state (dalga durumu) içindedir.')
               ]
             },
@@ -185,7 +196,7 @@
                 sec('Momentum (momentum), λ = h/p', true, 'Doğru. Momentum (momentum) büyüdükçe λ küçülür.'),
                 sec('Color (renk)', false, 'Yanlış. Color (renk) bu kavramla ilgisiz.'),
                 sec('Volume (hacim)', false, 'Yanlış. Volume (hacim) λ\'yı belirlemez.'),
-                sec('Yalnızca temperature (sıcaklık)', false, 'Yanlış. Doğrudan momentum (momentum) bağlıdır.')
+                sec('Yalnızca temperature (sıcaklık)', false, 'Yanlış. Doğrudan momentum (momentum) değerine bağlıdır.')
               ]
             },
             alt: { soru: 'Electron diffraction (elektron kırınımı) deneyi neyi kanıtlar? Justify (gerekçelendir).' }
@@ -221,7 +232,7 @@
         soru: 'Confined particle (hapsolmuş parçacık) için lowest energy (en düşük enerji) neden sıfır değildir?',
         secenekler: [
           sec('Boundary condition (sınır koşulu) dalganın sığmasını gerektirir', true, 'Doğru. Temperature (sıcaklık) değil, boundary condition (sınır koşulu) sebep.'),
-          sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Absolute zero (mutlak sıfır) da E₁ > 0.'),
+          sec('Temperature (sıcaklık) sıfıra inemez', false, 'Hayır. Absolute zero (mutlak sıfır) sıcaklığında da E₁ > 0.'),
           sec('Measurement (ölçüm) energy (enerji) ekler', false, 'Hayır. Measurement (ölçüm) olmasa da lower energy (alt enerji) vardır.')
         ],
         kusurSkin: 'tane_siniri'
