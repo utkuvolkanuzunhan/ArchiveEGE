@@ -42,7 +42,7 @@
       onceki: { mod: 'bariyer', E: 2, V0: 4, a: 0.3 },
       sonraki: { mod: 'bariyer', E: 2, V0: 4, a: 1.5 }
     },
-    acik: 'Thickness (kalınlık) 0,3\'ten 1,5 nm\'ye çıkınca transmission (geçiş) olasılığı milyarlarca kat düşüyor.'
+    acik: 'Thickness (kalınlık) 0,3\'ten 1,5 nm\'ye çıkınca transmission (geçiş) olasılığı yaklaşık 35 milyon kat düşüyor.'
   };
 
   Q.data.stations.s06 = {
@@ -65,7 +65,16 @@
             "1924'te de Broglie, electron (elektron) gibi parçacıklar için matter wave (madde dalgası) önerdi.",
             "1927'de Davisson ve Germer, electron diffraction (elektron kırınımı) ile dalga davranışını gösterdi.",
             "1928'de Gamow, alpha decay (alfa bozunumu) olayını tunneling (tünelleme) ile açıkladı.",
-            "Tunneling, tunnel diode (tünel diyodu) ve flash memory (flash bellek) gibi aygıtların temelindedir." ] }
+            "Tunneling, tunnel diode (tünel diyodu) ve flash memory (flash bellek) gibi aygıtların temelindedir." ] },
+          { baslik: "Step (basamak) sonuçları", madde: [
+            "E > V₀ iken r = (k₁−k₂)/(k₁+k₂) ve R = |r|²; k₂ ≠ k₁ olduğundan R sıfırdan büyüktür.",
+            "E < V₀ iken region 2 (bölge 2) içinde ψ sönümlenir ve sağa giden flux (akı) yoktur; bu yüzden R = 1 olur.",
+            "Buna rağmen ψ orada sıfır değildir: probability density (olasılık yoğunluğu) vardır, flux (akı) yoktur." ] },
+          { baslik: "Penetration depth (sızma derinliği)", madde: [
+            "Forbidden region (yasak bölge) içinde ψ ∝ e^(−κx); penetration depth (sızma derinliği) δ = 1/κ.",
+            "κ=√(2m(V₀−E))/ħ: mass (kütle) m veya V₀−E büyürse κ büyür ve tunneling (tünelleme) azalır.",
+            "Elektron için κ ≈ 5,123·√(V₀−E) nm⁻¹ (V₀−E eV cinsinden).",
+            "Scanning tunneling microscope (taramalı tünelleme mikroskobu) akımı I ∝ e^(−2κd) ile gap (aralık) d'ye çok duyarlıdır." ] }
         ],
         satirlar: [
           { kim: 'selin', metin: 'Tünel istasyonunda electron (elektron) bir duvarla karşılaşıyor. Geçer mi?' },
@@ -85,7 +94,7 @@
             "Boundary (sınır) noktasında ψ ve ψ' continuous (sürekli) olmalı; bu şart katsayıları (r, t) belirler.",
             "Bunun nedeni: equation (denklem) second derivative (ikinci türev) içerir, süreksizlik taşıyamaz.",
             "E < V₀ ise klasikte yasak olan bölge: forbidden region (yasak bölge).",
-            "Orada ψ oscillate (salınmaz); exponentially decays (üstel sönümlenir) ama bir anda sıfırlanmaz." ] },
+            "Orada ψ oscillate (salınım) yapmaz; exponentially decays (üstel sönümlenir) ama bir anda sıfırlanmaz." ] },
           { baslik: "Tunneling (tünelleme), barrier (bariyer)", madde: [
             "Barrier (bariyer): V₀ yüksekliğinde, a kalınlığında engel; E < V₀ olsa bile öbür yanda ψ sıfır değildir.",
             "Tunneling (tünelleme): ψ'nin sönümlenip karşı tarafa ulaşması; parçacık engelin üstünden zıplamaz.",
@@ -107,7 +116,7 @@
         id: 's06-o06', tip: 'tuzak', baslik: 'Yanılgı tuzağı', kavram: 'bariyer_sonumlenme', agirlik: 1,
         iddia: 'Energy (enerji) değeri barrier (bariyer) height (yükseklik) değerinden düşük particle (parçacık), quantum (kuantum) fiziğinde de kesinlikle geçemez.',
         parcalar: ['Energy (enerji) değeri barrier (bariyer) height (yükseklik) değerinden düşük particle (parçacık),', 'quantum (kuantum) fiziğinde de', 'kesinlikle geçemez.'],
-        yanlisParca: 1,
+        yanlisParca: 2,
         duzeltme: 'Quantum (kuantum) fiziğinde ψ barrier (bariyer) içinde decays (sönümlenir) ama sıfır olmaz; ince barrier (bariyer) içinde tunneling (tünelleme) olasılığı vardır.'
       },
       {

@@ -48,12 +48,12 @@
   2. "Doğrusal azalır" · yanlış · neden: "Yanlış. Azalma üsteldir, çok hızlıdır."
   3. "Değişmez" · yanlış · neden: "Yanlış. Kalınlık arttıkça sönümlenme büyür."
 - `sim`: modul `basamak`, onceki `{mod:"bariyer", E:2, V0:4, a:0.3}`, sonraki `{mod:"bariyer", E:2, V0:4, a:1.5}`
-- `acik`: "Kalınlık 0,3'ten 1,5 nm'ye çıkınca geçiş olasılığı milyarlarca kat düşüyor."
+- `acik`: "Kalınlık 0,3'ten 1,5 nm'ye çıkınca geçiş olasılığı yaklaşık 35 milyon kat düşüyor."
 
 ### o06 · tuzak · "Yanılgı tuzağı" · kavram `bariyer_sonumlenme`
 - `iddia`: "Enerjisi bariyerden düşük parçacık, kuantumda da kesinlikle geçemez."
 - `parcalar`: ["Enerjisi bariyerden düşük parçacık,", "kuantumda da", "kesinlikle geçemez."]
-- `yanlisParca`: 1
+- `yanlisParca`: 2
 - `duzeltme`: "Kuantumda ψ bariyerde sönümlenir ama sıfır olmaz; ince bariyerden geçiş olasılığı vardır."
 
 ### o07 · kopru · "Mantık köprüsü" · kavram `dalga_surekli`
