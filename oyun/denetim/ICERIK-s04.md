@@ -14,6 +14,10 @@ Kapsam: 90-data-s04.js, istasyonlar/04-atom-mikroskobu.md, sınav havuzu (sv-s04
 ## Doğrulananlar (hata yok)
 Tüm doğru şıklar tek ve doğru. Tarihler: Balmer 1885, Rutherford 1911, Bohr 1913, de Broglie 1924 (1913+11), Davisson-Germer 1927 doğru. Sınav havuzu s04: m1-m8 cevapları ve açıklamaları doğru (1,89 eV, 656 nm H-alpha kırmızı, 0,123 nm, 13,6 eV iyonlaşma, p iki katına çıkınca λ yarıya iner), k1-k4 doğru. Şıklar eşit uzunlukta ve inandırıcı, tuzaklar gerçek öğrenci yanılgılarına dayanıyor (sıcaklık, itme, yalnızca ışık dalgadır).
 
+## Odak testi (Playwright 1366x768, hikayeAtla kapalı)
+Hikaye + onBilgi (yeni 2 sayfa dahil), kavram kartları + Bohr sim, o03/o04/o05 (sim'li tahmin), o06 tuzak, o07 köprü, patron 3 faz (seçmeli, açık uçlu, yedek seçmeli) ve sandık/yeni makine akışı takılmadan tamamlandı; taşma yok (en alt düğme y=757, 768 içinde), konsol hatası yok. Betik parçalı çalıştırıldı (o01-o04, o05, o06-sandık) çünkü koşucu engeller arası yavaş yürüyor.
+Not: açık uçlu fazda 'ne kadar eminsin' düğmeleri 1366x768'de y=757'ye iniyor (sıkı ama sığıyor).
+
 ## Açık sorunlar
 | sorun | konum | önerilen düzeltme | kesinlik |
 |---|---|---|---|
