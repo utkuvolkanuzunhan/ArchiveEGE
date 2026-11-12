@@ -101,6 +101,7 @@
     sarildi = true;
     var orijinal = Q.runner.start;
     Q.runner.start = function (stationId, fromIndex) {
+      if (stationId === 'final') return orijinal.call(Q.runner, stationId, fromIndex || 0);  // Q.final kendi akışını yönetir
       var st = Q.data && Q.data.stations && Q.data.stations[stationId];
       var hata = dogrulaIstasyon(st);
       if (hata.length) {

@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>final test</title>
+<style>
+:root{--bg:#0e0724;--panel:#1a0f3d;--panel2:#25164f;--ink:#fff;--ink-dark:#0b0620;--muted:#c4b9ec;--line:#f4f0ff;--yellow:#ffd23f;--cyan:#00e5ff;--lime:#39ff88;--red:#ff4d6d;--good:var(--lime);--bad:var(--red);--r:10px;--rs:8px;--fs-small:14px;--font-b:'Trebuchet MS',system-ui,sans-serif}
+body{margin:0;padding:12px;background:var(--bg);color:var(--ink);font:16px var(--font-b)}
+.btn{background:var(--panel2);color:var(--ink);border:3px solid var(--line);border-radius:var(--rs);padding:8px 12px;font:inherit;cursor:pointer;margin:4px 4px 4px 0}
+.btn.primary{background:var(--yellow);color:var(--ink-dark)}
+.chip{border:2px solid var(--cyan);border-radius:20px;padding:2px 10px;font-size:var(--fs-small)}
+#modal-layer{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.6)}
+#modal-layer[hidden]{display:none}.modal{background:var(--panel);border:3px solid var(--line);padding:16px;width:min(560px,90%)}
+.ok{color:var(--good)}.bad{color:var(--bad)}
+</style></head>
+<body>
+<h3>96-final.js: veri ve rapor denetimi</h3>
+<pre id="out"></pre>
+<div id="modal-layer" hidden></div>
+<script src="../src/js/00-q.js"></script>
+<script src="../src/js/10-state.js"></script>
+<script src="../src/js/90-data-s01.js"></script>
+<script src="../src/js/90-data-s02.js"></script>
+<script src="../src/js/90-data-s03.js"></script>
+<script src="../src/js/90-data-s04.js"></script>
+<script src="../src/js/90-data-s05.js"></script>
+<script src="../src/js/90-data-s06.js"></script>
+<script src="../src/js/90-data-s07.js"></script>
+<script src="../src/js/90-data-s08.js"></script>
+<script src="../src/js/90-data-s09.js"></script>
+<script src="../src/js/91-data-sinav-1.js"></script>
+<script src="../src/js/92-data-sinav-2.js"></script>
+<script src="../src/js/93-data-sinav-3.js"></script>
+<script>
+/* sahte ui: yalnızca modal (rapor denemesi için) */
+Q.ui.modal = { open: function(n){ var l = document.getElementById('modal-layer'); l.textContent=''; var m = document.createElement('div'); m.className='modal'; m.appendChild(n); l.appendChild(m); l.hidden=false; return m; },
+  close: function(){ var l = document.getElementById('modal-layer'); l.textContent=''; l.hidden=true; } };
+Q.ui.toast = function(){};
+</script>
+<script src="../src/js/96-final.js"></script>
+<script>
+(function(){
+  'use strict';
+  var out = document.getElementById('out'), fails = 0;
+  function L(ok, m){ if (!ok) fails++; out.innerHTML += '<span class="' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'ok   ' : 'FAIL ') + '</span>' + m.replace(/</g, '&lt;') + '\n'; }
+  Q.state.ayarlar.kilitleriAc = true;
+  var st = Q.final.hazirla();
+  L(!!st && st.id === 'final', 'istasyon üretildi');
+  L(st.engeller.length === 10, '10 engel (' + st.engeller.length + ')');
+  L(st.engeller.every(function(e){ return e.tip === 'patron' && e.final && /^[A-Za-z]/.test(e.soru) && e.anahtarFikirler.length === 4; }), 'hepsi patron+final, İngilizce soru, 4 anahtar fikir');
+  var kay = st.engeller.map(function(e){ return e.kaynak; });
+  L(kay.join(',') === 's01,s01,s03,s04,s05,s06,s07,s07,s08,s09', 'kaynaklar: ' + kay.join(','));
+  L(st.engeller.every(function(e){ return !!e.mcq; }), 'her soruya yedek İngilizce MCQ var');
+  L(/reasoning and method/.test(st.engeller[4].soru) && /reasoning and method/.test(st.engeller[5].soru), 'S5 ve S6 mantık açıklama biçiminde');
+  L(Q.final.acik() === true && !Q.data.stations.final, 'acik() true; kalıcı veri kirlenmedi');
+  var sorular = st.engeller.map(function(e, i){
+    return { idx: e.no, kaynak: e.kaynak, kaynakAd: e.kaynakAd, soru: e.soru, dogruluk: [95, 20, 60, 100, 35, 80, 10, 90, 50, 75][i], eminlik: 1,
+      eksik: i % 2 ? e.anahtarFikirler.slice(0, 2) : [], mod: 'claude', geri: [] };
+  });
+  Q.final.rapor({ tarih: 0, sorular: sorular });
+  L(document.querySelectorAll('.fn-cubuk').length === 10, 'rapor: 10 çubuk');
+  L(document.querySelectorAll('.fn-rapor details').length === 5, 'rapor: eksik fikir listeleri');
+  L(document.querySelectorAll('.fn-rapor button').length === 4, 'rapor: 3 "Temel tura git" + Haritaya dön');
+  out.innerHTML += fails ? '<b class="bad">' + fails + ' BAŞARISIZ</b>' : '<b class="ok">HEPSİ GEÇTİ</b>';
+  window.__final = { fails: fails };
+})();
+</script>
+</body></html>

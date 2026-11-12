@@ -352,6 +352,11 @@
     var row = el('div'); row.style.cssText = 'display:flex;gap:8px;margin-top:12px';
     var tb = btn('Tekrar Merkezi', 'primary', function(){ if (Q.tekrar && Q.tekrar.open) Q.tekrar.open(); }); tb.id = 'a10-tekrar'; row.appendChild(tb);
     row.appendChild(btn('Ayarlar', '', function(){ S.open(); }));
+    if (Q.final && Q.final.start) {
+      var fb = btn('Sınav Günü (Final)', '', function(){ Q.final.start(); }); fb.id = 'a7-final';
+      if (!Q.final.acik()) { fb.disabled = true; fb.title = 'Önce 9 istasyonu bitir'; fb.style.opacity = '.55'; }
+      row.appendChild(fb);
+    }
     box.appendChild(row);
   }
   S.openMap = function(){

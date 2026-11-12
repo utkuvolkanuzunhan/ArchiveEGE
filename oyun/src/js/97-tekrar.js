@@ -150,7 +150,9 @@
     css();
     root = el('div'); root.id = 'tk-root'; root.setAttribute('role', 'dialog'); root.setAttribute('aria-label', 'Tekrar Merkezi');
     var top = el('div', 'tk-top'); top.appendChild(el('h2', '', 'Tekrar Merkezi'));
-    top.appendChild(btn('Kapat', '', kapat)); root.appendChild(top);
+    var tsag = el('div', 'tk-row');
+    if (Q.final && Q.final.start && Q.final.acik()) tsag.appendChild(btn('Sınav Günü (Final)', 'primary', function(){ kapat(); Q.final.start(); }));
+    tsag.appendChild(btn('Kapat', '', kapat)); top.appendChild(tsag); root.appendChild(top);
     tabsEl = el('div', 'tk-tabs'); tabsEl.setAttribute('role', 'tablist');
     SEKMELER.forEach(function(s){ var b = btn(s[1], '', function(){ git(s[0]); }); b.dataset.sekme = s[0]; b.setAttribute('role', 'tab'); tabsEl.appendChild(b); });
     root.appendChild(tabsEl);
