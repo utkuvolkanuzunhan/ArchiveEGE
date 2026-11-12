@@ -51,6 +51,11 @@
       try {
         var host = ctx.host;
         host.textContent = '';
+        var ay = (ctx.state && ctx.state.ayarlar) || {};
+        if (ob.onBilgi && ob.onBilgi.length && Q.onBilgi && !ay.hikayeAtla) {
+          await Q.onBilgi.goster(host, ob.onBilgi, { son: 'Göreve geç' });
+          host.textContent = '';
+        }
         var sure = ctx.sureler || (Q.obs && Q.obs.sureler) || {};
         var tIpucu = sure.ipucu != null ? sure.ipucu : 45000;
         var tGec = sure.gec != null ? sure.gec : 120000;

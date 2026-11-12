@@ -97,6 +97,11 @@
 
       bitti = true;
       document.removeEventListener('keydown', onKey);
+      if (ob.onBilgi && ob.onBilgi.length && Q.onBilgi) {
+        await Q.onBilgi.goster(host, ob.onBilgi);
+        host.textContent = '';
+        host.appendChild(wrap);
+      }
       await new Promise(function(res){
         var b = el('button', 'hk-devam', 'Devam');
         b.type = 'button';

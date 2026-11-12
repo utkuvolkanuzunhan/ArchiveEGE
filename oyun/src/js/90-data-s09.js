@@ -68,6 +68,17 @@
       },
       {
         id: 's09-o02', tip: 'kavram', baslik: 'Kavram kapısı', kavram: 'bant_yarilma', agirlik: 1,
+        onBilgi: [
+          { baslik: 'Energy band (enerji bandı)', madde: [
+            'Tek atomda energy levels (enerji seviyeleri) ayrıktır.',
+            'N atom yaklaşınca her seviye N seviyeye yarılır; bunlar birleşip energy band (enerji bandı) olur.',
+            'Pauli ilkesi: her seviyeye en çok iki electron (elektron) sığar.' ] },
+          { baslik: 'Bandgap (yasak enerji aralığı)', madde: [
+            'Valence band (valans bandı): elektronlarla dolu en üst band.',
+            'Conduction band (iletim bandı): boş, akım taşıyabilen üst band.',
+            'Bandgap (yasak enerji aralığı): iki band arasındaki izinsiz enerji boşluğu.',
+            'Küçük bandgap semiconductor (yarıiletken), büyük olan insulator (yalıtkan) demektir.' ] }
+        ],
         gorev: 'N atom (atom) sayısını 32 yap, her malzemede Fill electrons (elektron doldur) düğmesine bas.',
         sim: {
           modul: 'bant',

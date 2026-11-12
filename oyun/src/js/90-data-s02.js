@@ -56,6 +56,16 @@
           { kim: "miller", metin: "Planes (düzlemleri) üç küçük integer (tam sayı) ile adlandırdım: (hkl). Crystal (kristal) bilimcilerin dili oldu." }
         ] },
       { id: "s02-o02", tip: "kavram", baslik: "Kavram kapısı", kavram: "atom_sayisi", agirlik: 1,
+        onBilgi: [
+          { baslik: "Crystal (kristal) nedir?", madde: [
+            "Crystal (kristal): atoms (atomlar) düzenli ve tekrar eden biçimde dizilir.",
+            "Bravais (1848): üç boyutta yalnızca 14 lattice (kafes) türü vardır.",
+            "Bragg'lar (1913) X-ray (X-ışını) ile bu dizilimi ilk kez ölçtü." ] },
+          { baslik: "Unit cell (birim hücre)", madde: [
+            "Unit cell (birim hücre): kafesi tekrar ederek kuran en küçük kutu.",
+            "Cubic (kübik) türler: sc, bcc, fcc.",
+            "Bir köşe atomu 8 hücreyle paylaşılır, yüz atomu 2 hücreyle paylaşılır." ] }
+        ],
         gorev: "fcc unit cell (birim hücre) atom (atom) sayısını determine (belirle).",
         sim: { modul: "kafes", params: { tur: "fcc" }, basari: { say: { tur: "fcc", atom: 4 } } },
         ogrenilen: "Corner (köşe) atom (atom) 1/8, face (yüz) atom 1/2 sayılır: fcc unit cell (birim hücre) içinde toplam 4 atoms." },

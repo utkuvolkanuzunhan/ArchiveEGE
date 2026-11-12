@@ -62,6 +62,16 @@ function engel(d, st, e, i) {
   if (e.kavram && st.kavramlar && st.kavramlar.indexOf(e.kavram) < 0) hata(d, a + '.kavram', '"' + e.kavram + '" istasyonun kavramlar listesinde yok');
   var sim = e.sim;
   if (sim && sim.modul && MODULLER.indexOf(sim.modul) < 0) hata(d, a + '.sim.modul', 'bilinmeyen modül "' + sim.modul + '"');
+  if (e.onBilgi !== undefined) {
+    if (['hikaye', 'kavram'].indexOf(e.tip) < 0) hata(d, a + '.onBilgi', 'yalnızca hikaye/kavram engelinde olur');
+    else if (!Array.isArray(e.onBilgi) || e.onBilgi.length < 1 || e.onBilgi.length > 3) hata(d, a + '.onBilgi', '1-3 sayfa olmalı');
+    else e.onBilgi.forEach(function (p, j) {
+      var b = a + '.onBilgi[' + j + ']';
+      sinir(d, b + '.baslik', p && p.baslik, 6);
+      if (!p || !Array.isArray(p.madde) || p.madde.length < 1 || p.madde.length > 4) hata(d, b + '.madde', '1-4 madde olmalı');
+      else p.madde.forEach(function (m, k) { sinir(d, b + '.madde[' + k + ']', m, 25); });
+    });
+  }
   switch (e.tip) {
     case 'hikaye':
       if (!Array.isArray(e.satirlar) || e.satirlar.length !== 3) hata(d, a + '.satirlar', 'tam 3 satır olmalı');
