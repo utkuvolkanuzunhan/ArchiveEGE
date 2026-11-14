@@ -1,0 +1,47 @@
+{
+  "aciklama": "Görsel arayüz ayarı: volkan-merkez deposundaki araclar/mimari_cikar.py bu depoyu bu kurallarla okur ve mimarisini çizer. Kural: README.md, 'Mimari görünümü'.",
+  "ad": "ArchiveEGE",
+
+  "haric": ["oyun/dist/", "oyun/test/ciktilar/", "oyun/test/ekran/"],
+
+  "bekci": ["mimari-ayar.json"],
+
+  "komutlar": [
+    { "desen": "oyun/test/*.test.js", "komut": "node {yol}" },
+    { "desen": "oyun/test/veri-dogrula.js", "komut": "node oyun/test/veri-dogrula.js" },
+    { "desen": "oyun/test/smoke.js", "komut": "node oyun/test/smoke.js" },
+    { "desen": "oyun/build.sh", "komut": "bash oyun/build.sh" }
+  ],
+
+  "denetimler": [
+    { "ad": "Çekirdek", "komut": ["node", "oyun/test/core.test.js"] },
+    { "ad": "Savaş", "komut": ["node", "oyun/test/battle.test.js"] },
+    { "ad": "Claude istemcisi", "komut": ["node", "oyun/test/claude.test.js"] },
+    { "ad": "Arayüz", "komut": ["node", "oyun/test/ui.test.js"] },
+    { "ad": "Engel: köprü", "komut": ["node", "oyun/test/obs-kopru.test.js"] },
+    { "ad": "Engel: patron", "komut": ["node", "oyun/test/obs-patron.test.js"] },
+    { "ad": "Veri doğrulama", "komut": ["node", "oyun/test/veri-dogrula.js"] }
+  ],
+
+  "gorunum": { "yukseklik": "satir", "taban": "giren", "renk": "durum" },
+
+  "akislar": [
+    {
+      "ad": "Derleme: src -> tek dosya",
+      "aciklama": "oyun/build.sh kaynakları sırayla birleştirir ve dist/oyun.html üretir (08-entegrasyon-yayin-test.md).",
+      "adimlar": [
+        { "dugum": "oyun/08-entegrasyon-yayin-test.md", "not": "Derleme ve yayın tanımı" },
+        { "dugum": "oyun/build.sh", "not": "Zorunlu dosya listesi, birleştirme, sözdizimi denetimi" },
+        { "dugum": "oyun/src/html/shell.html", "not": "Kabuk: stil ve betikler buna gömülür" }
+      ]
+    },
+    {
+      "ad": "Node testi",
+      "aciklama": "Testler ortak düzeneği yükler; kaynak dosyalar import edilmez, düzenek onları tarayıcıdaki sırayla çalıştırır.",
+      "adimlar": [
+        { "dugum": "oyun/test/core.test.js", "not": "Çekirdek testleri" },
+        { "dugum": "oyun/test/harness.js", "not": "Ortak test düzeneği" }
+      ]
+    }
+  ]
+}
