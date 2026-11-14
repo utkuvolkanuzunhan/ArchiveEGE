@@ -1,0 +1,554 @@
+{
+ "surum": 1,
+ "bolum": "diger",
+ "dil": "tr",
+ "kayitlar": [
+  {
+   "kimlik": "README.md",
+   "tur": "dosya",
+   "ozet": "773a52a662d6",
+   "iskelet": "bebdfc7c55d4",
+   "baslik": "Görsel düzen notu",
+   "ne": {
+    "cok_basit": "Bu depoyu çizen görsel düzenin kurallarını anlatan bir not.",
+    "normal": "Bu depoyu çizen görsel düzenin kurallarını anlatan bir not. Bu depo, merkez depodaki görsel arayüzle çizilir: klasörler mahalle, dosyalar bina, ölçülen bağlar ise yol olarak gösterilir. Her değişiklik bu görünüme uymak zorundadır."
+   },
+   "nasil": {
+    "normal": "Kökteki ayar dosyası ilk ekranın bölümlerini, yok sayılan çıktıları, test komutlarını, denetimleri ve akışları belirler. Üretilen çıktılar yok sayma listesine yazılır; gizleme listesi ise yalnız gizli yollar içindir ve o yollardaki dosya adlarını her metinde maskeler. Yeni klasör ya da test eklenirse ayar aynı değişiklikte güncellenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Görünümün merkez depodaki kurallara birebir uyması, bu depodaki her değişikliğin dayandığı sözdür.",
+     "Ayar dosyasındaki bölüm, çıktı ve akış adlarının yeni değişikliklerde de eşleşmesi gerekir."
+    ],
+    "degisebilir": [
+     "Bu belgedeki açıklama cümleleri, kuralın kendisi değişmeden yeniden yazılabilir.",
+     "Yeni bir test komutu ya da yeni bir klasör, ayar güncellendiği sürece eklenebilir."
+    ]
+   },
+   "kritik_neden": "Bu not bozulursa yanlış bilgiyle değişiklik yapılabilir ve görünüm merkez depodaki kurallardan sapabilir; diğer parçalar bu belgeye dayanmaz.",
+   "terimler": [
+    "mahalle",
+    "bina",
+    "yol"
+   ],
+   "belirsiz": [
+    "Ayar dosyasının içeriği ve merkez depodaki kuralın ayrıntıları bu belgeden görülemedi; yalnız belgenin söylediği kadarı yazıldı."
+   ],
+   "okunan": [
+    "README.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "b:diger",
+   "tur": "birim",
+   "ozet": "bf0201684d86",
+   "iskelet": "1dbb37b4189f",
+   "baslik": "Öteki çalışmalar ve depo ayarı",
+   "ne": {
+    "cok_basit": "Burada oyunun dışında kalan işler durur: bir sınav çalışma planı, bir kanıtlama planı ve depoyu çizen düzenin ayarı.",
+    "basit": "Bu bölüm oyunun kendisi dışında kalan üç işi tutar: sınav için çalışma sırası, bir fikrin faydasını göstermek için plan ve depoyu çizen yazılımın okuma ayarları ile açıklama notu.",
+    "normal": "Bu bölüm oyunun parçası olmayan ama depoda yaşayan işleri toplar. Çalışma planı sınav konularının sırasını tutar, kanıtlama planı bir fikrin uzun vadeli faydasını simülasyonla göstermeyi hedefler. Ayar dosyası depoyu çizen yazılıma neyi nasıl okuyacağını söyler, açıklama notu da çizimin kurallarını anlatır.",
+    "gelismis": "Bu bölüm iki farklı iş çeşidini bir arada tutar. Birincisi kişisel çalışma işleridir: sınav konularını önem sırasına göre dizen çalışma planı ve senaryoların faydasını simülasyonla göstermeyi hedefleyen kanıtlama planı. İkincisi depoyu çizen yazılıma bağlı ayardır: `mimari-ayar.json` okuma kurallarını, gizlenecek çıktıları, grupları, onay isteyen dosyaları ve test komutlarını yazar, `README.md` ise çizimin kurallarını anlatır.",
+    "detayli": "Bu bölüm oyunun asıl yapısına girmeyen ama depoda yaşayan işleri toplar. Kişisel çalışma işlerinde `kuantum-calisma-plani.md` sınav hazırlığının sırasını tutar; `oyunteorisiispat` senaryoların uzun vadeli faydasını simülasyonlarla göstermeyi planlar. Depo ayarı tarafında `mimari-ayar.json` depoyu çizen yazılımın okuma kurallarını taşır: çıktıları gizler, dosyaları gruplara ayırır, onay isteyen dosyaları ve test komutlarını yazar. `README.md` çizimin kurallarını anlatır: klasörler mahalle, dosyalar bina, ölçülen bağlar yol olarak gösterilir."
+   },
+   "mantik": {
+    "cok_basit": "Bu işler oyunun asıl yapısından ayrı ama yine bu depoda tutulur, böylece her şey tek yerde bulunur.",
+    "basit": "Sınav planı ve kanıtlama planı oyunla ilgisizdir ama aynı depoda durur. Ayar dosyası ise çizimin doğru çalışması için gereklidir.",
+    "normal": "Çalışma planı ve kanıtlama planı oyunun yapısına girmeyen kişisel işlerdir; ayrı durmaları oyunun belgelerini kirletmez. Ayar dosyası depoyu çizen yazılıma ait olduğu için depoda kökte durur ve o yazılıma neyi nasıl okuyacağını söyler. Çizim ayara dayandığı için ayarın doğru kalması çizimin doğru kalması demektir.",
+    "gelismis": "Kişisel çalışma işleri oyunun belgelerinden ayrı tutulur; böylece oyunun yapım planı kendi konusunda kalır. Çizim ayardan beslendiği için ayar ayrı bir dosyadır: neyin gizleneceği, hangi grupların olacağı ve neyin onay isteyeceği kod değiştirilmeden ayarlanabilir. Çizimin kurallarını anlatan açıklama notu da ayarla birlikte güncel tutulur.",
+    "detayli": "Kişisel çalışma işleri oyunun belgelerinden ayrı tutulur; böylece oyunun yapım planı kendi konusunda kalır ve çalışma planının değişmesi oyun belgelerini etkilemez. Çizim ayardan beslendiği için ayar ayrı bir dosyadır: neyin gizleneceği, hangi grupların olacağı ve neyin onay isteyeceği çizim yazılımının kodu değiştirilmeden ayarlanabilir. Çizimin kurallarını anlatan açıklama notu da ayarla birlikte tutulur ve yapıyı değiştiren iş ikisini aynı değişiklikte günceller. Bu bölümün bir arada durması bilinçli bir tasarım olmaktan çok, öteki bölümlere girmeyenlerin toplandığı yerdir."
+   },
+   "nasil": {
+    "basit": "Çalışma planı ve kanıtlama planı kendi başlarına okunur. Ayar dosyası ise depoyu çizen yazılım çalışırken okunur ve çizimin neyi göstereceğini belirler.",
+    "normal": "Çalışma planı ile kanıtlama planı sıradan belgelerdir, kimse onları çalıştırmaz; okuyan kişi çalışma sırasını ve hedefi görür. Ayar dosyası ise depoyu çizen yazılım tarafından okunur: yazılım hangi çıktıları gizleyeceğini, hangi dosyaları hangi gruba koyacağını ve hangi dosyaların onay isteyeceğini oradan öğrenir. Açıklama notu bu çizimin kurallarını insana anlatır.",
+    "gelismis": "`kuantum-calisma-plani.md` ve `oyunteorisiispat` kendi başlarına okunan belgelerdir. `mimari-ayar.json` ise depoyu çizen yazılım tarafından okunur: yazılım derleme ve test çıktılarını çizimden çıkarır, kaynak, testler, istasyonlar ve belgeleri ayrı gruplara böler, onay isteyen dosyaları ve test komutlarını buradan öğrenir. `README.md` çizimin nasıl okunacağını ve değişikliklerin ona nasıl uyması gerektiğini insana anlatır. Yapı değişince ayar ve anlatım birlikte güncellenir.",
+    "detayli": "`kuantum-calisma-plani.md` ve `oyunteorisiispat` yazılım tarafından çalıştırılmayan belgelerdir: biri sınav konularını önem sırasına göre dizer ve her bölüme örnek soru ile kendi cevap denemesi koyar, öteki senaryoların faydasını simülasyonla göstermeyi planlar. `mimari-ayar.json` ise depoyu çizen yazılımın girdisidir. Yazılım dosyayı okur, derleme ve test çıktılarını çizimden gizler, kaynak, testler, istasyonlar ve belgeleri ayrı gruplara böler, onay isteyen dosyaları ve test komutlarını buradan alır. `README.md` çizimin dilini açıklar: klasör mahalle, dosya bina, ölçülen bağ yoldur. Depodaki yapıyı değiştiren her iş ayarı ve anlatımı aynı değişiklikte günceller; böylece çizim ile gerçek yapı birbirinden ayrışmaz."
+   },
+   "detay": {
+    "girdiler": [
+     "Ayar dosyasını depoyu çizen yazılım okur.",
+     "Çalışma planı ders içeriğinden ve sınav konularından beslenir."
+    ],
+    "ciktilar": [
+     "Ayar dosyası çizimde neyin gizleneceğini, hangi gruplara ayrılacağını ve neyin onay isteyeceğini belirler.",
+     "Çalışma planı sınav hazırlığı için bir konu sırası verir."
+    ],
+    "degismezler": [
+     "Ayar dosyası depoyu çizen yazılımın beklediği biçimde kalmalıdır.",
+     "Depoyu çizen yazılımın bu depoya uygulayacağı kurallar ayar dosyasından gelir."
+    ],
+    "kenar": [
+     "Çalışma planında bantlar ve Fermi konuları dersin işlenişine göre sonda yer alır.",
+     "Kanıtlama planı yalnızca bir hedeftir; ölçütü bireysellik ve kurum kültürüne katkıdır."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Ayar dosyasının biçimi, depoyu çizen yazılımın okuyabileceği biçimde kalmalıdır.",
+     "Ayardaki grup ve gizleme kuralları çizimin neyi göstereceğini belirler; değişirse çizim değişir.",
+     "Çizimin kuralları ile gerçek klasör yapısı birbirinden ayrışmamalıdır."
+    ],
+    "degisebilir": [
+     "Çalışma planındaki örnek sorular ve konu sırası, ayara dokunmadan serbestçe değişir.",
+     "Kanıtlama planındaki ayrıntılar, çizime dokunmadan serbestçe değişir."
+    ]
+   },
+   "sorular": [
+    {
+     "soru": "Depodaki klasör yapısı değişirse bu bölümde neyi güncellemek gerekir?",
+     "yanit": "Ayar dosyasını ve çizimi anlatan notu. Çizim ayara dayandığı için ayar eski kalırsa çizim gerçek yapıyla uyuşmaz."
+    },
+    {
+     "soru": "Çalışma planındaki konu sırasını değiştirmek çizimi etkiler mi?",
+     "yanit": "Hayır. Çalışma planı kimse tarafından çalıştırılmayan bir belgedir; konu sırası serbestçe değişir ve ayara dokunmaz."
+    }
+   ],
+   "kritik_neden": "Ayar dosyası bozulursa depoyu çizen yazılım gizlenecek çıktıları, grupları ve onay isteyen dosyaları yanlış okur; çizim gerçek yapıyla uyuşmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Kanıtlama planının hangi simülasyonlarla ve hangi senaryolarla yürüyeceği belirsiz.",
+    "Çalışma planının hangi ders ve sınava bağlı olduğu bilinmiyor.",
+    "Bu bölümün neden tek başına toplandığına dair bir gerekçe görülmedi; öteki bölümlere girmeyen işlerin toplandığı yer olarak anlatıldı."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md",
+   "tur": "dosya",
+   "ozet": "491c30720d80",
+   "iskelet": "0bb9ad380978",
+   "baslik": "Çalışma planı ve öncelikler",
+   "ne": {
+    "cok_basit": "Bu belge, sınava hazırlanan öğrenci için bir çalışma planıdır.",
+    "basit": "Bu belge bir sınav hazırlık planıdır. Hangi konuya önce çalışılacağını ve her bölüme ne kadar süre ayrılacağını söyler.",
+    "normal": "Bu belge sınav hazırlığının çalışma sırasını tutar. Konular önem sırasına göre dizilir: kristal ve Miller başta, bantlar ve Fermi ise dersin işlenişine göre sonda yer alır. Her bölümde örnek soru ve kendi cevap denemesi vardır.",
+    "gelismis": "Belge, kısıtlı bir sürede sınava hazırlanmak için kurulmuş bir çalışma düzenidir. Öğrencinin önceliğiyle kristal yapı ve Miller en önemli kabul edilir; hesaplar tarif düzeyinde kalır. Her blok aynı yöntemle işler: örnek soru, mantık, kendi cevabı, geri bildirim.",
+    "detayli": "Belge, kısıtlı bir sürede sınava hazırlanmak için bir çalışma düzeni kurar ve blokların sırasını belirler. Öğrencinin önceliğiyle kristal yapı ve Miller en önemli kabul edilir; hesaplar tarif düzeyinde kalır. Örnek sorular gerçek sınavın zorluğunu yansıttığı için kavramsal sorular öne alınır. Her blokta bir örnek soru, mantık, öğrencinin kendi cevabı ve geri bildirim yer alır."
+   },
+   "mantik": {
+    "cok_basit": "Kısa sürede sınava hazırlanırken neye önce bakılacağını belli eder.",
+    "basit": "Sınırlı zamanda her konuya eşit süre ayırmak yerine temel konulara önce yer verilir.",
+    "normal": "Konular birbirine dayanır: kristal yapı olmadan bantlar, Schrödinger olmadan kuantalaşma anlaşılmaz. Belge bu bağımlılığı sıraya yansıtır. Hesapları tarif düzeyinde bırakmak, kavramsal soruya zaman açar.",
+    "gelismis": "Teşhis bölümü, hangi kavramın gerçekten kurulamadığını ortaya koyar. Plan bu nedenle konuları eşit değil, eksiklik sırasına göre dağıtır. Kendi cümlesiyle cevap vermek, cevabın bir şık seçmek yerine kurulmasını sağlar.",
+    "detayli": "Bu plan, konuların birbirine nasıl dayandığını bilmek isteyen ama hazırlığı dağınık bir öğrenci için yazılmıştır. Çalışma, kısa sürede en çok açığı kapatacak sırayla ilerler ve eksik kalan kavramları teşhis ile tek tek ortaya koyar. Her blokta cevap kendi cümlelerle kurulur; yanlış çıkan nokta hata defterine tek cümleyle yazılır ve zincir hiç bakılmadan yeniden çizilmeye çalışılır."
+   },
+   "nasil": {
+    "basit": "Plan önce sınav sorularını konulara bağlar. Sonra bloklar halinde ilerler ve her bloğa belirli bir süre verir.",
+    "normal": "Plan önce soru haritasını çıkarır, sonra kristal ve Miller ile başlayıp postülatlara ve Schrödinger'e geçer. Basamak ve bariyer kısa tutulur; bant, Fermi ve drift konuları ise dersin işlenişine göre sonda ya da atlanarak işlenir. Sona bir sınav provası ve hata defteri eklenir.",
+    "gelismis": "Her blok aynı döngüyle çalışır: önce örnek soru sorulur, sonra mantık kurulur, öğrenci birkaç cümleyle kendi cevabını yazar ve son olarak geri bildirim alır. Ana zincir, kristal yapıdan başlayıp Schrödinger ve kuantalaşma üzerinden bantlara ve drift akımına uzanır. Teşhis bölümü, öğrencinin takıldığı noktaları not eder; tekrar eden hata sıfır noktası enerjisinin sıcaklıktan geldiği sanısıdır. Belge, hangi bloğun ne kadar süre alacağını ve sınav provasında hangi soruların seçileceğini de söyler.",
+    "detayli": "Plan, sınavı ve konu haritasını çözerek başlar. Örnek sınavın soru haritası, her sorunun türünü, konusunu ve bloğunu gösterir. Teşhis bölümü her konunun şu anki durumunu yazar; en büyük karışıklık Schrödinger denkleminin çökmediği, çökmenin yalnızca ölçümle olduğu noktasıdır. Zaman çizelgesi her bloğa ayrılan süreyi ve bu blokta işlenecek soruları tablo olarak verir. Kristal bloğunda kristal türleri, birim hücre ve yarıiletken grupları ile CZ yöntemi anlatılır; tek kristalin tercih edilmesi, tane sınırlarının taşıyıcı hareketliliğini düşürmesiyle açıklanır. Miller bloğu düzlem ve yön notasyonunu adım adım bir yöntemle anlatır. Postülat bloğu ölçümün yalnızca özdeğer verdiğini ve ölçümle çökmeyi işler; belirsizlik bloğu ise konum ve momentumun ortak özdurumu olmadığını gösterir. Schrödinger ve sonsuz kuyu bloğu enerjinin sınır koşulundan kuantalandığını gösterir; basamak ve bariyer kısa tutulur."
+   },
+   "detay": {
+    "girdiler": [
+     "Sınavın örnek soru listesi ve konu başlıkları; belgenin dayandığı ana kaynak budur.",
+     "Öğrencinin öncelik tercihi ve dersin hangi konuları işlediği bilgisi."
+    ],
+    "ciktilar": [
+     "Blokların sırası ve her blok için bir süre, soru ve cevaplama yöntemi.",
+     "Sınav provası ve hata defteri ile biten bir çalışma akışı."
+    ],
+    "degismezler": [
+     "Her blokta soru, mantık, kendi cevap ve geri bildirim sırasının korunması.",
+     "Kristal ve Miller bloklarının önce gelmesi, öncelik kararının gereği.",
+     "Her cevapta neden sorusunun yanıtlanması."
+    ],
+    "kenar": [
+     "Ders bant ve Fermi konularını işlemediyse bu kısım atlanır ve yalnız ilgili soru yeterlidir.",
+     "Sınav provasında seçilen sorulardan en az biri kristal, biri Schrödinger konusundan olmalıdır.",
+     "Yanlış çıkan her nokta tek cümleyle yazılır."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kristal ve Miller bloklarının başta yer alması, öğrencinin öncelik kararına dayanır.",
+     "Her blokta sıra sabittir: örnek soru, mantık, kendi cevap, geri bildirim.",
+     "Ana zincirin sırası, konuların birbirine dayandığını gösterdiği için korunur."
+    ],
+    "degisebilir": [
+     "Blokların süreleri ve tablodaki dakikalar, öğrencinin hızına göre kaydırılabilir.",
+     "Sınav provasında seçilecek sorular serbesttir.",
+     "Bant ve Fermi bölümünün işlenip işlenmeyeceği dersin durumuna göre serbestçe belirlenebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa yalnız bu çalışma düzeni etkilenir; belge başka bir parçaya dayanmadığı için diğer işler etkilenmez.",
+   "terimler": [],
+   "belirsiz": [
+    "Bant ve Fermi bölümünün derste işlenip işlenmediği bilinmiyor; plan bunu koşullu bırakıyor.",
+    "Örnek sınavın PDF içeriği bu parçada yoktu; yalnız planın anlattığı kadarı yazıldı.",
+    "Bazı uzun satırların sonu okunamadı; o ayrıntılar yazılmadı."
+   ],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Ana zincir",
+   "tur": "alt",
+   "ozet": "76cfd08bd57a",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Konuların birbirini nasıl takip ettiğini gösteren kısa bir sıra.",
+    "normal": "Kristal yapı periyodik bir potansiyel verir; Schrödinger ve sınır koşulları enerjileri kuantalaştırır. Çok atomda seviyeler yarılıp bantlara döner; Fermi seviyesi ve taşıyıcı sayısı drift akımını belirler."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Blok 1: Kristal yapı, yarıiletkenler, CZ (S1, S2)",
+   "tur": "alt",
+   "ozet": "7cc90f735732",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Kristalin düzenini, yarıiletkenleri ve tek kristal büyütme yöntemini anlatır.",
+    "normal": "Katılar tek kristal, çok kristalli ve amorf diye ayrılır; kristal, kafes ile baz kombinasyonu olarak tarif edilir. Bu bölüm silisyumun ve benzeri yarıiletkenlerin neden tek kristal olarak büyütüldüğünü de açıklar."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Blok 2: Miller indisleri (Konu 2, uygulama ağırlıklı)",
+   "tur": "alt",
+   "ozet": "1d072bebc066",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Kristal düzlemlerini ve yönlerini harf ve sayılarla adlandırma yöntemi.",
+    "normal": "Düzlemin eksenleri kestiği noktaların tersinden ve en küçük tam sayılara çevrilmesiyle bir ad elde edilir. Bu bölüm çok sayıda uygulama sorusuyla pekiştirilir ve kübik kafes için düzlem aralığı da verilir."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Blok 4: Postülatlar, ölçüm, belirsizlik (S8, S9, S10)",
+   "tur": "alt",
+   "ozet": "c9ef68d3234b",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Kuantum kurallarının temelleri ve belirsizlik ilkesi.",
+    "normal": "Durum bir dalga fonksiyonuyla, her ölçülebilir büyüklük bir operatörle tarif edilir. Ölçüm yalnızca özdeğer verir ve sistemi bir özdurumda bırakır. Konum ve momentumun ortak özdurumu olmadığı için belirsizlik ilkesi doğar."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Blok 5: Schrödinger, sonsuz kuyu (S5, mantık ağırlıklı)",
+   "tur": "alt",
+   "ozet": "c7325fb7d66c",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Dalga denkleminin kuyuya hapsolmuş elektrona uygulanması ve enerji düzeyleri.",
+    "normal": "Sonsuz kuyuda elektron yalnız belirli enerji düzeylerinde bulunabilir. En düşük düzey sıfır değildir; bu da sıcaklıktan bağımsız bir sıfır noktası enerjisi demektir. Denklem kendi başına çökmez; çökme yalnızca ölçümle olur."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Blok 6: Basamak, bariyer (S5, S6, kısa)",
+   "tur": "alt",
+   "ozet": "b90b3d311a3c",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Elektron bir basamakla karşılaşınca ne olduğunu anlatan kısa bölüm.",
+    "normal": "Enerji basamağın yüksekliğinden büyükse elektron kısmen yansır, kısmen geçer; küçükse dalga bariyerin içinde sönümlenir. Yansıma oranı ve geçiş oranı bu bölümün ana hesabıdır, ancak hesaplar tarif düzeyinde bırakılır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Blok 7: Periyodik yapı → bant; Fermi ve drift (S7, Konu 3-4)",
+   "tur": "alt",
+   "ozet": "b873bcae148d",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Atomlar bir araya gelince enerji düzeylerinin bantlara dönüşünü anlatır.",
+    "normal": "Atom sayısı çok büyük olunca seviyeler sürekli bant gibi görünür; iletken, yalıtkan ve yarıiletken ayrımı bu bantların dolu ve boş olmasına bağlanır. Fermi ve drift kısmı yalnızca ders işlendiyse yapılır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Blok ayrıntıları",
+   "tur": "alt",
+   "ozet": "a44d1990f1e9",
+   "iskelet": "3b9608827dc3",
+   "ne": {
+    "cok_basit": "Her bloğun içinde ne öğreneceğini anlatan bölüm.",
+    "normal": "Bu bölüm her bloğun konu içeriğini, formüllerini ve kısa notlarını ayrı alt başlıklarda toplar. Bloklar sırayla okunur; her biri kendi sorularına bağlanır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Elektronik Malzemeler ve Aygıt Fiziği: 4 Saatlik Çalışma Planı (v3)",
+   "tur": "alt",
+   "ozet": "491c30720d80",
+   "iskelet": "f65380eda3a0",
+   "ne": {
+    "cok_basit": "Planın girişi; neye öncelik verileceğini ve neden bu sırayla çalışılacağını söyler.",
+    "normal": "Girişte öğrencinin öncelik tercihi yazılır: kristal yapı ve Miller en önemli, bant ve Fermi ise dersin işlenişine bağlı kalır. Sonraki bölümler bu kararın uygulamasıdır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Teşhis",
+   "tur": "alt",
+   "ozet": "85772f067063",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Her konuda şu an nerede takıldığını yazan kısım.",
+    "normal": "Teşhis, konular bazında mevcut durumu yazar. Kuantum konusu yarım doğru, Schrödinger konusundaki en büyük karışıklık ise çökmenin denklemde değil ölçümde olduğunu bilmemektir."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Zaman Çizelgesi (240 dk)",
+   "tur": "alt",
+   "ozet": "d3d1776c05f4",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Bloklara ayrılan süreler ve her bloğun hangi sınav sorularına bağlı olduğu.",
+    "normal": "Başta kısa bir harita çalışması var; sonra kristal ve Miller uzun bölümleri alır. Schrödinger ve basamak konuları orta süreyle, sınav provası ve hata defteri ise sonda kısa tutulur."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "kuantum-calisma-plani.md::Örnek sınavın haritası",
+   "tur": "alt",
+   "ozet": "79fb5dfd2317",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Örnek sınavın sorularını konu ve bloklara bağlayan tablo.",
+    "normal": "Her sorunun türü, bağlı olduğu konu ve hangi bloğa düştüğü bu tabloda gösterilir. Açıklama türündeki sorular kavram ağırlıklıdır, hesap türündeki sorular ise tarif düzeyinde ele alınır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "kuantum-calisma-plani.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "mimari-ayar.json",
+   "tur": "dosya",
+   "ozet": "2329451d49b1",
+   "iskelet": "15524deb8acc",
+   "baslik": "Mimari görünüm ayarı",
+   "ne": {
+    "cok_basit": "Bu dosya, çizim yapan yazılımın bu depoyu nasıl okuyacağını söyler.",
+    "basit": "Bu dosya, depoyu çizen yazılıma klasörlerin hangi grupta durduğunu, hangi dosyalara dikkat edileceğini ve testlerin nasıl çalıştığını söyler.",
+    "normal": "Bu dosya, depoyu çizen yazılımın okuma kurallarını tutar. Derleme ve test çıktıları çizimden gizlenir; kaynak, testler, istasyonlar ve belgeler ayrı gruplara ayrılır. Onay isteyen bekçi dosyaları ile test komutları da burada yazılıdır.",
+    "gelismis": "Ayar dosyası, depoyu çizen yazılım için anahtarlardan oluşur. Yoksay listesi çıktıları dışarıda tutar; bölümler klasör desenleriyle dosyaları gruplar. Bekçi listesi onay isteyen dosyaları işaretler. Komutlar ve denetimler test seçimini tanımlar. Akışlar sıralı adımları gösterir.",
+    "detayli": "Dosya, depoyu çizen yazılımın okuduğu tek ayar kaynağıdır. Yoksay kısmı derleme ve test çıktılarını çizimden çıkarır. Bölümler klasör desenlerine ad ve açıklama verir; bekçi listesi değişiklikte onay isteyen dosyaları belirler. Komutlar bir dosya desenine hangi testin koşulacağını söyler, denetimler adlandırılmış test takımlarını sıralar. Görünüm ayarı ve çalışma akışları da burada tutulur."
+   },
+   "mantik": {
+    "cok_basit": "Bu ayar olmasa çizim yazılımı depoyu kendi başına doğru gruplayamazdı.",
+    "basit": "Klasör adları tek başına yetmez; bu ayar hangisinin kaynak, hangisinin test ya da belge olduğunu söyler.",
+    "normal": "Harita klasörleri adlarından tahmin etmek yerine bu ayardaki bölümlerle gruplar. Bekçi ve komut listeleri aynı yerden okunduğu için, değiştirmeden önce hangi dosyanın onay gerektirdiği ve hangi testin koşacağı görünür.",
+    "gelismis": "Bu ayar, çizimin klasörleri yanlış gruplamasını ve yanlış testi önermesini engeller. Desenler açıkça yazıldığı için yeni bir klasör geldiğinde çizim kodunu değiştirmek gerekmez; yalnızca bu ayara bir desen eklenir.",
+    "detayli": "Bu ayar, kodu okumadan depoyu anlamanın yolunu açar. Yoksay listesi çıktı klasörlerini çizimden çıkarır. Bölümler klasörleri konuya göre ayırır; bekçi listesi onay isteyen dosyaları işaretler. Komutlar ve denetimler, bir dosya değişince hangi testin koşacağını belli eder. Akışlar, bir işin birden çok dosyadan nasıl geçtiğini gösterir."
+   },
+   "nasil": {
+    "basit": "Dosya anahtarlar ve listelerden oluşur. Çizim yazılımı önce hangi klasörlerin atlanacağına bakar, sonra dosyaları klasör desenlerine göre gruplara koyar.",
+    "normal": "Çizim yazılımı ayarı okuyunca önce yoksay listesindeki klasörleri çizimden çıkarır. Sonra her bölümün klasör desenlerine bakarak dosyaları gruplara yerleştirir ve bölüm adını kartta gösterir. Bekçi listesindeki dosyalar ayrıca işaretlenir. Komutlar bir dosya desenine uyan dosyanın test komutunu belirler. Görünüm ayarı yüksekliği satır sayısına, rengi duruma göre seçer.",
+    "gelismis": "Ayar bir dizi anahtar ve listeden oluşur. Çizim yazılımı önce yoksay listesini okuyup derleme ve test çıktılarını ayırır. Sonra bölümlerin klasör desenlerini dosyalarla eşleştirir. Bekçi listesindeki dosyalar onay işaretiyle gösterilir. Komutlar dosya desenine göre test komutunu bulur; denetimler adlandırılmış test takımlarını sıralar. Görünüm ayarı yüksekliği satır sayısından, tabanı giren bağlantılardan, rengi durumdan alır. Akışlar, bir giriş noktasından başlayıp sırayla ilerleyen durak listeleridir.",
+    "detayli": "Ayar dosyası iç içe anahtarlardan oluşur ve çizim yazılımı onu baştan sona okur. Ad anahtarı deponun adını taşır. Yoksay listesindeki klasörler çizime alınmaz; bunlar derleme ve test çıktılarıdır. Her bölümün klasör desenleri, dosyaları o bölüme eşleştirir. Bekçi listesindeki dosyalar, değişiklikte onay istediği için ayrıca işaretlenir. Komutlar bir dosya desenine uyan dosya değiştiğinde hangi komutla test edileceğini belirler. Denetimler, her biri adlandırılmış bir test komutu olan test takımlarını tanımlar. Görünüm ayarı yüksekliği satır sayısından, tabanı giren bağlantılardan, rengi durumdan alır. Akış listesi her akışın adını, açıklamasını ve adımlarını tutar; adımlar bir dosyaya bağlıdır ve sıra korunur."
+   },
+   "detay": {
+    "girdiler": [
+     "Depo klasörlerinin yapısı ve dosya adları, desenlerle eşleşecek dosyaları belirler.",
+     "Bekçi ve komut listeleri, değişen dosyanın hangi onay ve testle bağlı olduğunu belirlemek için okunur."
+    ],
+    "ciktilar": [
+     "Bölümlere ayrılmış ve onay isteyen dosyaları işaretlenmiş bir çizim.",
+     "Değişen dosya için koşulacak test komutu ve adlandırılmış test takımları."
+    ],
+    "degismezler": [
+     "Anahtar adları, klasör desenleri ve komut biçimi aynı kalmalı.",
+     "Akış adımlarında geçen dosya adları depodaki gerçek adlarla eşleşmeli."
+    ],
+    "kenar": [
+     "Bekçi listesindeki bir dosya depodan silinirse onay işareti boşa çıkar.",
+     "Yoksay listesine kaynak klasörü yanlışlıkla girerse o kod çizimden kaybolur."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Ayardaki anahtar adları ve bölüm, komut, denetim, görünüm, akış yapısı aynı kalmalı; çizim yazılımı bu adlarla okur.",
+     "Akış adımlarında geçen dosyalar depodaki gerçek adlarıyla yazılı kalmalı.",
+     "Komut listesindeki dosya deseni ile komut biçimi birlikte kalmalı; komut içindeki yer tutucu çizim tarafından doldurulur.",
+     "Görünüm ayarında yalnızca çizimin tanıdığı seçenekler kullanılmalı."
+    ],
+    "degisebilir": [
+     "Bölümlerin ad ve açıklama metinleri, çizimin yapısını bozmadan yeniden yazılabilir.",
+     "Yeni bir bölüm ya da yeni bir test komutu eklenebilir; mevcut girişler yerinde kalır.",
+     "Yoksay listesine yeni çıktı klasörleri eklenebilir.",
+     "Akış adımlarının notları ve akış açıklamaları serbestçe yeniden yazılabilir."
+    ]
+   },
+   "kritik_neden": "Bu ayar bozulursa harita dosyaları yanlış gruplara koyar, onay isteyen dosyalar işaretsiz kalır ve yanlış testler seçilir.",
+   "terimler": [
+    "bekci",
+    "akis",
+    "giris-noktasi"
+   ],
+   "belirsiz": [
+    "Bölüm sırasının çizimdeki etkisi bilinmiyor.",
+    "Ad anahtarının kartta nerede gösterildiği bilinmiyor."
+   ],
+   "okunan": [
+    "mimari-ayar.json"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyunteorisiispat",
+   "tur": "dosya",
+   "ozet": "dd52cf88f6bb",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Senaryo faydası notu",
+   "ne": {
+    "cok_basit": "Senaryoların uzun vadede ne kadar faydalı olduğunu gösterme planı.",
+    "normal": "Senaryoların uzun vadede ne kadar faydalı olduğunu gösterme planı. Hangi senaryonun en çok fayda sağladığı simülasyonlarla gösterilmek isteniyor. Faydanın ölçütü olarak bireysellik ve kurum kültürüne katkı anılıyor."
+   },
+   "nasil": {
+    "normal": "Dosyada tek bir cümle var ve içinde kod, komut ya da veri yok. Dosya kendi başına bir işlem yapmaz; okunduğunda yalnızca yazılı bir niyet görülür. Simülasyonlar yapılıp sonuçlar burada gösterilmek istendiğinde, bu not o işin amacını anlatacak."
+   },
+   "sinir": {
+    "sabit": [
+     "Notun düz yazı olarak kalması, yani içine kod ya da çalıştırılacak bir biçim konmaması, dosyanın amacına uygundur."
+    ],
+    "degisebilir": [
+     "Cümlenin ifadesi, ölçütlerin sıralaması ve ne kadar ayrıntıyla anlatıldığı serbestçe değiştirilebilir.",
+     "Simülasyonlar yapıldığında bu nota sonuç eklenebilir."
+    ]
+   },
+   "kritik_neden": "Bu dosya bozulursa yalnızca bu niyet notu kaybolur; hiçbir parça buna dayanmadığı için başka bir şey etkilenmez.",
+   "terimler": [],
+   "belirsiz": [
+    "Simülasyonların yapılıp yapılmadığı ve bu notun hangi çalışmaya ait olduğu bu dosyadan görülmedi."
+   ],
+   "okunan": [
+    "oyunteorisiispat"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  }
+ ]
+}

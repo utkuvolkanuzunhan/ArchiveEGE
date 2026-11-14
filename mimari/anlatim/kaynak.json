@@ -1,0 +1,2003 @@
+{
+ "surum": 1,
+ "bolum": "kaynak",
+ "dil": "tr",
+ "kayitlar": [
+  {
+   "kimlik": "b:kaynak",
+   "tur": "birim",
+   "ozet": "0fce21ab2b28",
+   "iskelet": "049feaa67db1",
+   "baslik": "Oyun kaynağı",
+   "ne": {
+    "cok_basit": "Oyunun parçalarını yazar ve sonra hepsini birleştirip tek bir oyun sayfası yapar.",
+    "basit": "Burada oyun parça parça yazılır: iskelet, görünüş ve çalışan kısım ayrı durur. Bir birleştirme betiği de bu parçaları toplayıp tek bir oyun sayfası çıkarır.",
+    "normal": "Bu bölüm oyunu iki işe böler. Kaynak klasörü oyunu iskelet, görünüş ve çalışan kısım olarak parça parça tutar. Birleştirme betiği bu parçaları denetleyip dosya adlarının sırasıyla tek sayfada toplar. Parçalar rahat yazılıp değiştirilir, oyuncuya ise tek sayfa ulaşır.",
+    "gelismis": "Bölüm, oyunu yazma ile oyunu sunma işini ayırır. Kaynak klasörü yerleşimi, görünüşü ve davranışı ayrı parçalarda tutar. Birleştirme betiği önce parçaların yerinde olup olmadığına bakar, sonra onları dosya adlarının sırasıyla tek sayfada birleştirir. Birleşik metni denetler ve sayfa boyutunu sınırlar. Böylece geliştirici küçük parçalarla çalışır, çıkan şey ise tek ve kendi kendine yeten bir sayfadır.",
+    "detayli": "Bölüm, oyunu yazma ile oyunu sunma işini ayırır. Kaynak klasörü yerleşimi, görünüşü ve davranışı ayrı parçalarda tutar; her parça kendi alanında değişir. Birleştirme betiği önce parçaların yerinde olup olmadığına bakar, eksikse ya durur ya uyarıp devam eder. Sonra parçaları dosya adlarının sırasıyla tek sayfada birleştirir, bu yüzden sıra adlandırmayla belirlenir. Birleşik metni ayrıca denetler ve sayfa boyutunu sınırlar. Geliştirici küçük parçalarla çalışır, oyuncuya giden şey ise tek ve kendi kendine yeten bir sayfadır."
+   },
+   "mantik": {
+    "cok_basit": "Oyunu küçük parçalarla yazmak kolaydır; oynayana ise tek parça halinde vermek gerekir.",
+    "basit": "Küçük parçalar yazmak ve düzeltmek kolaydır, oynayana ise tek sayfa vermek en sadesidir. Bu iki isteği bir birleştirme adımı birbirine bağlar.",
+    "normal": "Yazarken oyunun yerleşimi, görünüşü ve davranışı ayrı parçalarda tutulur; bu, her birinin ayrı değiştirilmesini kolaylaştırır. Oynarken ise tek sayfa yeter. Birleştirme betiği bu iki isteği ayırır: parçalar küçük kalır, çıktı tek olur. Betiğin denetimi, eksik ya da şişmiş bir sayfanın oyuncuya ulaşmasını önler.",
+    "gelismis": "İki istek çelişir: yazarken küçük ve ayrı parçalar, sunarken tek bir sayfa istenir. Birleştirme betiği bu çelişkiyi çözer; parçalar küçük kalır, çıktı tek olur. Sıranın dosya adlarından gelmesi ayrı bir sıra listesi tutma yükünü ortadan kaldırır. Eksik parça denetimi ve boyut sınırı, bozuk ya da şişmiş bir sayfanın fark edilmeden dağıtılmasını engeller.",
+    "detayli": "İki istek çelişir: yazarken küçük ve ayrı parçalar, sunarken tek bir sayfa istenir. Birleştirme betiği bu çelişkiyi çözer; parçalar küçük kalır, çıktı tek olur. Sıranın dosya adlarından gelmesi ayrı bir sıra listesi tutma yükünü ortadan kaldırır ve parça eklemeyi yalnız uygun adı vermeye indirir. Eksik parça denetimi ve boyut sınırı, bozuk ya da şişmiş bir sayfanın fark edilmeden dağıtılmasını engeller. Böylece geliştirme kolaylığı ile sunum sadeliği birbirinden ödün vermeden korunur."
+   },
+   "nasil": {
+    "basit": "Parçalar kaynak klasöründe yazılır. Birleştirme betiği çalışınca önce parçaların hepsi var mı diye bakar, sonra hepsini sırayla tek sayfaya dizer ve sonucu denetler.",
+    "normal": "Geliştirici iskelet, görünüş ve çalışan kısmı kaynak klasöründe ayrı ayrı yazar. Birleştirme betiği çalışınca önce gerekli parçaların yerinde olup olmadığına bakar. Eksik varsa durur ya da uyarıp devam eder. Parçalar dosya adlarının sırasıyla tek sayfada birleştirilir, çıkan metin denetlenir ve sayfa boyutu sınırlanır.",
+    "gelismis": "Kaynak klasöründe üç tür parça bulunur: iskelet, görünüş kuralları ve oyun betikleri. Birleştirme betiği çalışınca ilk iş gerekli parçaların yerinde olduğunu doğrulamaktır; eksik varsa ya işi durdurur ya da uyarıp sürdürür. Ardından parçaları dosya adlarının sırasıyla tek sayfada toplar. Sıra adlandırmadan geldiği için bir parçanın ötekinden önce yüklenmesi dosya adındaki öne eklenen rakamla ayarlanır. Çıkan birleşik metin ayrıca denetlenir ve sayfa boyutu sınırlanır.",
+    "detayli": "Kaynak klasöründe üç tür parça bulunur: iskelet, görünüş kuralları ve oyun betikleri. Birleştirme betiği çalışınca ilk iş gerekli parçaların yerinde olduğunu doğrulamaktır; eksik varsa ya işi durdurur ya da uyarıp sürdürür. Ardından parçaları dosya adlarının sırasıyla tek sayfada toplar. Sıra adlandırmadan geldiği için bir parçanın ötekinden önce yüklenmesi dosya adındaki öne eklenen rakamla ayarlanır; ayrı bir sıra listesi tutulmaz. Çıkan birleşik metin ayrıca denetlenir ve sayfa boyutu sınırlanır. Sınır aşılırsa ya da denetim başarısız olursa çıktı oyuncuya ulaşmadan önce fark edilir. Kaynak parçalarına dokunulmaz, her seferinde baştan birleştirilir."
+   },
+   "detay": {
+    "girdiler": [
+     "Kaynak klasöründeki iskelet, görünüş ve betik parçaları.",
+     "Birleştirme betiğinin kendi denetim ve boyut kuralları."
+    ],
+    "ciktilar": [
+     "Oyunu tek başına taşıyan birleşik bir sayfa."
+    ],
+    "degismezler": [
+     "Parçalar dosya adlarının sırasıyla birleştirilir.",
+     "Birleşik metin sunulmadan önce denetlenir ve boyutu sınırlanır."
+    ],
+    "kenar": [
+     "Gerekli bir parça eksikse betik ya durur ya da uyarıp devam eder.",
+     "Sayfa boyut sınırını aşarsa çıktı kabul edilmez."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Parça adlarının önündeki sıra rakamları birleştirme sırasını belirler, değiştirilirse yükleme sırası bozulur.",
+     "Çıkan şey her zaman tek ve kendi kendine yeten bir sayfadır.",
+     "Birleştirme betiği kaynak parçalarını değiştirmez."
+    ],
+    "degisebilir": [
+     "Bir parçanın içeriği, sıra ve ad aynı kaldıkça serbestçe yeniden yazılabilir.",
+     "Betiğin denetim ve uyarı iletileri, çıktının biçimine dokunmadan değiştirilebilir."
+    ]
+   },
+   "kurulus": [
+    {
+     "baslik": "Kaynak parçalarını yaz",
+     "metin": "İskeleti, görünüş kurallarını ve oyun betiklerini kaynak klasöründe ayrı parçalar olarak yaz. Parçaların adı birleşme sırasını belirleyecek biçimde seçilir.",
+     "parcalar": [
+      "k:oyun/src"
+     ]
+    },
+    {
+     "baslik": "Birleştirme betiğini kur",
+     "metin": "Gerekli parçaların yerinde olduğunu denetleyen, onları dosya adı sırasıyla tek sayfada toplayan ve boyutu sınırlayan betiği yaz.",
+     "parcalar": [
+      "oyun/build.sh"
+     ]
+    },
+    {
+     "baslik": "Çıktıyı denetle",
+     "metin": "Birleşik sayfanın eksiksiz olduğunu ve boyut sınırını aşmadığını doğrula; sonra oyunu bu tek sayfa olarak sun.",
+     "parcalar": [
+      "oyun/build.sh"
+     ]
+    }
+   ],
+   "sorular": [
+    {
+     "soru": "Bir betik parçasının ötekinden önce yüklenmesini nasıl sağlarım?",
+     "yanit": "Dosya adının başındaki sıra rakamıyla. Birleştirme betiği parçaları dosya adı sırasıyla dizer; ayrı bir sıra listesi yoktur, bu yüzden rakam değişirse yükleme sırası da değişir."
+    },
+    {
+     "soru": "Birleştirilmiş sayfayı elle düzeltsem ne olur?",
+     "yanit": "Düzeltme bir sonraki birleştirmede silinir. Sayfa her seferinde kaynak parçalarından baştan üretilir; kalıcı değişiklik kaynak parçasına yapılmalıdır."
+    },
+    {
+     "soru": "Parçaların içeriğini yeniden yazmak neden güvenlidir?",
+     "yanit": "Birleştirme yalnız adlara ve sıraya bakar. Ad ve sıra aynı kaldıkça içerik serbestçe değişebilir ve çıktı yine tek sayfa olur."
+    }
+   ],
+   "kritik_neden": "Bu bölüm bozulursa parçalar sayfaya birleşmez ya da yanlış sırayla birleşir; oyuncuya eksik, bozuk veya şişmiş bir oyun sayfası ulaşır.",
+   "terimler": [],
+   "belirsiz": [
+    "Birleştirme betiğinin çıktıyı nereye yazdığı ve boyut sınırının değeri görülemedi.",
+    "Betiğin hangi parçaları zorunlu saydığı belli değil."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "k:oyun/src",
+   "tur": "birim",
+   "ozet": "af6413311448",
+   "iskelet": "b0224858b5e5",
+   "baslik": "Oyun kaynağı",
+   "ne": {
+    "cok_basit": "Oyunun kaynağı üç işe bölünmüş: sayfanın iskeleti, görünüşü ve çalışan kısmı.",
+    "basit": "Oyunun kaynağı üç ayrı işe bölünmüştür. Biri sayfanın boş iskeletini verir, biri görünüşü belirler, biri de oyunu gerçekten çalıştırır: çizer, sorar, hesaplar ve kaydeder.",
+    "normal": "Oyunun kaynağı üç parçaya ayrılır ve her biri başka bir işe bakar. Sayfa kabuğu göstergelerin, oyun alanının ve panelin yerini hazırlar. Görünüş klasörü renkleri, düzeni ve bileşen biçimlerini belirler. Betik klasörü ise oyunun çalışan işini yürütür: durumu tutar, çizer, soruları sorar, puanı hesaplar ve açılışı yönetir.",
+    "gelismis": "Kaynak, yerleşim, görünüş ve davranış diye üçe ayrılmıştır. Sayfa kabuğu göstergelerin, oyun alanının ve alt panelin yerlerini boş bırakarak hazırlar. Görünüş klasörü ortak değerlerden başlayıp düzene, bileşenlere ve üst katmana uzanan biçim kurallarını verir. Betik klasörü yerleri doldurur: oyuncunun durumunu tutar, sahneyi çizer, engelleri ve soruları gösterir, sonucu hesaplar ve açılışı yönetir. Üçü birbirini aynı yerleşim adlarıyla bulur.",
+    "detayli": "Kaynak, yerleşim, görünüş ve davranış diye üçe ayrılmıştır. Sayfa kabuğu üstte ayar düğmesi, istasyon adı, engel şeridi, voltaj ve zamanlayıcı yerlerini, ortada oyun alanını, altta pencere ve bildirim panelini boş bırakarak hazırlar. Görünüş klasörü ortak değerlerden başlayıp ekran düzenine, bileşenlere ve oyun alanının üstüne binen katmana uzanan biçim kurallarını verir. Betik klasörü yerleri doldurur: oyuncunun durumunu tutar ve kaydeder, sahneyi çizer, engelleri ve soruları gösterir, cevabı hesaplar, açılışı yönetir. Kabuk ile görünüş iç işleyişi bilmez; betikler ise yerleşimin sunduğu yerlere değer yazar."
+   },
+   "mantik": {
+    "cok_basit": "Yer, görünüş ve iş ayrı tutulunca birini değiştirmek ötekileri bozmaz.",
+    "basit": "Sayfanın yeri, görünüşü ve davranışı üç ayrı klasörde tutulur. Biri değişince ötekilere dokunmak gerekmez, bir bozulma da yalnız kendi alanını etkiler.",
+    "normal": "Yerleşim, görünüş ve davranış farklı sebeplerle değişir: ekranın yeri başka, renkler başka, oyun kuralları başkadır. Bunları ayrı klasörlerde tutmak, bir değişikliğin yalnız kendi alanına dokunmasını sağlar. Böylece görünüşü yenilemek ya da yeni bir istasyon eklemek öteki iki alana el sürmeden yapılabilir.",
+    "gelismis": "Üç klasörün ayrı olması, değişim nedenlerinin ayrı olmasından gelir. Kabuk yalnız yer verir, görünüş yalnız biçim verir, betikler yalnız iş görür. Böylece tasarımcı görünüşü oyunun işleyişini bilmeden yenileyebilir, oyunun içeriği büyürken iskelet değişmez. Biri bozulduğunda da sorunun hangi alanda olduğu hemen ayırt edilir: boş ya da dağınık ekran görünüşte, çalışmayan oyun betiklerde aranır.",
+    "detayli": "Üç klasörün ayrı olması, değişim nedenlerinin ayrı olmasından gelir. Kabuk yalnız yer verir, görünüş yalnız biçim verir, betikler yalnız iş görür. Böylece görünüşü yenilemek oyunun işleyişini bilmeyi gerektirmez, oyunun içeriği büyürken iskelet değişmez. Biri bozulduğunda da sorunun hangi alanda olduğu hemen ayırt edilir: boş ya da dağınık ekran görünüşte, çalışmayan oyun betiklerde aranır. Kararların kasıtlı olarak karıştırılmaması, örneğin görünüş kurallarının davranış kararı vermemesi, bu sınırın zamanla aşınmasını önler."
+   },
+   "nasil": {
+    "basit": "Sayfa açılınca önce iskelet ve görünüş kuralları ekranı hazırlar. Sonra betikler çalışır, kaydı yükler ve oyunu başlatır; değerler iskeletteki yerlere yazılır.",
+    "normal": "Tarayıcı önce sayfa kabuğunu alır; görünüş kuralları bu iskeleti biçimlendirir ve ekranın düzenini kurar. Ardından betikler yüklenir: ortak zemin hazırlanır, oyuncunun kaydı okunur ve açılış parçası karşılamayı gösterir. Koşu sırasında betikler oyun alanına sahneyi çizer, göstergelere voltaj ve süreyi yazar, soru ve bildirimleri alttaki panel ile katmanlara getirir.",
+    "gelismis": "Sayfa kabuğu iskeleti verir ve görünüş kuralları bu iskeleti biçimlendirir: önce ortak değerler, sonra ekran düzeni, sonra bileşenler, en son oyun alanının üstündeki katman. Betikler yüklenince ortak zemin kurulur, oyuncunun kaydı okunur ve karşılama açılır. İstasyon başlayınca koşu yürütücüsü oyun alanına sahneyi çizdirir, göstergelere voltaj ile süreyi yazar, engel geldiğinde soru ve bulmacayı panele ve katmanlara getirir. Sonuç hesaplanıp durum kaydedilir. Görünüşle ilgili hiçbir karar betiklere, davranışla ilgili hiçbir karar görünüşe bırakılmaz.",
+    "detayli": "Sayfa kabuğu iskeleti verir ve görünüş kuralları bu iskeleti biçimlendirir: önce ortak değerler, sonra ekran düzeni, sonra bileşenler, en son oyun alanının üstündeki katman. Bu aşamada henüz oyun yoktur; yalnız boş ve biçimli bir ekran vardır. Betikler yüklenince ortak zemin kurulur, oyuncunun kaydı okunur ve karşılama açılır. İstasyon başlayınca koşu yürütücüsü oyun alanına sahneyi çizdirir, göstergelere voltaj ile süreyi yazar, engel geldiğinde soruyu ya da bulmacayı panele ve katmanlara getirir. Cevap hesaplanır, voltaj ve şarj güncellenir, durum kaydedilir. Koşu bitince harita yeniden açılır. Görünüşle ilgili karar betiklere, davranışla ilgili karar görünüşe bırakılmaz; bu yüzden biri değişirken öteki yerinde kalır."
+   },
+   "detay": {
+    "girdiler": [
+     "Tarayıcının sunduğu sayfa ve ekran boyutu, oyuncunun kayıtlı ilerlemesi, cevaplar ve ayar tercihleri.",
+     "İstasyon içeriği olarak ad, makine, konu ve engel sırası."
+    ],
+    "ciktilar": [
+     "Biçimlenmiş sayfa, çizilmiş koşu sahnesi, soru ve bulmaca arayüzü, güncellenen voltaj ve kaydedilen durum."
+    ],
+    "degismezler": [
+     "Kabuktaki göstergelerin ve oyun alanının yerleri betiklerin yazdığı değerlerle uyumlu kalır.",
+     "Görünüş kuralları davranış kararı vermez."
+    ],
+    "kenar": [
+     "Kayıt yoksa ya da bozuksa oyun varsayılan durumla başlar.",
+     "Dar ya da kısa ekranda görünüş kuralları bazı bilgileri gizler ya da oyun alanını genişletir."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kabuktaki yerlerin adları betiklerin değer yazdığı adlarla örtüşmelidir.",
+     "Görünüşün ortak değer adları bileşenlerin dayandığı adlardır.",
+     "Betiklerin ilk yüklenen ortak zemini ötekilerin dayandığı sözdür."
+    ],
+    "degisebilir": [
+     "Renkler, yazı tipleri ve aralıklar adlar aynı kaldıkça serbestçe değiştirilebilir.",
+     "Yeni bir istasyon, deney ya da engel yalnız betik tarafında eklenebilir."
+    ]
+   },
+   "kurulus": [
+    {
+     "baslik": "Önce sayfa kabuğu",
+     "metin": "Kimseye dayanmayan iskeleti kur: göstergelerin, oyun alanının ve alt panelin yerlerini boş bırak.",
+     "parcalar": [
+      "k:oyun/src/html"
+     ]
+    },
+    {
+     "baslik": "Sonra görünüş kuralları",
+     "metin": "İskeleti biçimlendir: ortak değerleri, ekran düzenini, bileşenleri ve üst katmanı sırayla ekle.",
+     "parcalar": [
+      "k:oyun/src/styles"
+     ]
+    },
+    {
+     "baslik": "En son oyun betikleri",
+     "metin": "Yerleri dolduran davranışı yaz: ortak zemin, durum, çizim, etkileşim, hesap, istasyon içeriği ve açılış.",
+     "parcalar": [
+      "k:oyun/src/js"
+     ]
+    }
+   ],
+   "sorular": [
+    {
+     "soru": "Oyunun renklerini baştan yenilemek hangi klasörlere dokunur?",
+     "yanit": "Yalnız görünüş klasörüne. Renkler orada ortak değerler olarak tutulur; adlar korunursa kabuk ve betikler aynı kalır."
+    },
+    {
+     "soru": "Yeni bir istasyon eklemek neden kabuğu ve görünüşü değiştirmeyi gerektirmez?",
+     "yanit": "Çünkü istasyonun içeriği betik tarafındaki veri parçalarında durur. Kabuk yalnız yer, görünüş yalnız biçim verir; ikisi içerikten habersizdir."
+    },
+    {
+     "soru": "Kabuktaki bir göstergenin adı değişirse ne bozulur?",
+     "yanit": "Betiklerin değer yazdığı yer bulunamaz ve gösterge boş kalır. Bu adlar kabuk ile betikler arasındaki sözdür, bu yüzden birlikte değişmelidir."
+    }
+   ],
+   "kritik_neden": "Bu bölüm bozulursa oyunun iskeleti, görünüşü ya da çalışan kısmı eksik kalır; oyun ya hiç açılmaz ya da boş, dağınık veya cevap vermeyen bir ekranla açılır.",
+   "terimler": [],
+   "belirsiz": [
+    "Üç klasörün tarayıcıda tek sayfa olarak hangi yolla birleştirildiği görülemedi.",
+    "Kabuktaki yerlerin adlarının betiklerde nasıl bulunduğu belli değil."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "k:oyun/src/html",
+   "tur": "birim",
+   "ozet": "47ca7366b209",
+   "iskelet": "04e2b8cf0f43",
+   "baslik": "Sayfa kabuğu",
+   "ne": {
+    "cok_basit": "Bu bölüm oyun ekranının boş iskeletini tutar: üstte bilgi çubuğu, ortada oyun alanı, altta bir panel.",
+    "basit": "Bu bölüm oyun sayfasının iskeletini tutar. Üstte ayar düğmesi, istasyon adı, voltaj ve süre görünür; ortada oyunun yerleştirileceği boş alan, altta pencereler için bir panel durur.",
+    "normal": "Bu bölüm oyunun tek sayfalık kabuğunu taşır. Üstte ayar düğmesi, istasyon adı, engel şeridi, voltaj ve zamanlayıcı bulunur; ortada oyun görüntüsünün yerleştirileceği boş alan ayrılmıştır; altta pencere ve kısa bildirimleri taşıyan panel ile katmanlar yer alır. Yanında klasörü yerinde tutan boş bir yer tutucu durur.",
+    "gelismis": "Bölüm, oyunun sayfa kabuğunu `shell.html` içinde toplar: üstte ayar düğmesi, istasyon adı, engel şeridi, voltaj ve zamanlayıcı; ortada oyun görüntüsü için ayrılmış boş alan; altta pencere ve kısa bildirim taşıyan panel ile katmanlar. Kabuk yalnız yerleşimi verir, oyunun kendisi ortadaki boşluğa sonradan konur. `.gitkeep` ise hiçbir iş yapmayan bir yer tutucudur; klasörün depoda kalmasını sağlar.",
+    "detayli": "Bölüm, oyunun sayfa kabuğunu `shell.html` içinde toplar: üstte ayar düğmesi, istasyon adı, engel şeridi, voltaj ve zamanlayıcı; ortada oyun görüntüsü için ayrılmış boş alan; altta pencere ve kısa bildirim taşıyan panel ile katmanlar. Kabuk yalnız yerleşimi verir; oyunun kendisi ortadaki boşluğa sonradan konur, üstteki göstergeler ve alttaki katmanlar da bu boşluğun çevresinde durur. `.gitkeep` ise hiçbir iş yapmayan, oyunun değer okumadığı bir yer tutucudur; klasörün depoda kalmasını sağlar ve klasörde asıl parçalar belirdikçe gereksizleşebilir."
+   },
+   "mantik": {
+    "cok_basit": "Ekranın yeri baştan hazır olunca oyunu çizen kısım yalnız kendi işine bakar, yerleşimle uğraşmaz.",
+    "basit": "Sayfanın yerleşimi tek bir yerde durur. Böylece oyunu çizen parçalar yalnız kendi işine bakar, göstergeler ve paneller için yer aramaz.",
+    "normal": "Yerleşim ile oyunun kendisi ayrı tutulmuştur. Kabuk göstergelerin, oyun alanının ve panelin yerini önceden belirler; böylece oyunu çizen ve değerleri yazan parçalar yer meselesiyle uğraşmadan yalnız içeriği doldurur.",
+    "gelismis": "Sayfanın iskeleti bir yerde toplandığı için yerleşimi değiştirmek oyunun işleyişine dokunmayı gerektirmez. Kabuk yalnız yerleri hazırlar; içerik başka parçalara bırakılmıştır. Bu ayrım, göstergelerin ve panelin düzenini oyundan bağımsız düşünmeyi kolaylaştırır. Yer tutucu dosyanın varlık nedeni ise boş bir klasörün depoda kaybolmamasıdır.",
+    "detayli": "Sayfanın iskeleti tek bir yerde toplandığı için yerleşimi değiştirmek oyunun işleyişine dokunmayı gerektirmez. Kabuk yalnız yerleri hazırlar; değerleri yazmak ve görüntüyü çizmek başka parçalara bırakılmıştır. Bu ayrım, göstergelerin ve panelin düzenini oyundan bağımsız düşünmeyi kolaylaştırır ve oyunu çizen parçaların yalnız ortadaki alanı bilmesini yeter kılar. Yer tutucu dosyanın varlık nedeni ise boş bir klasörün depoda kaybolmamasıdır; klasörde asıl parçalar belirdikçe bu gerekçe de ortadan kalkar."
+   },
+   "nasil": {
+    "basit": "Sayfa açılınca önce bu iskelet gelir. Üst çubuk bilgileri gösterir, oyun ortadaki boş alana yerleşir, pencereler ve bildirimler alttaki panelde belirir.",
+    "normal": "Sayfa açıldığında kabuk yerleşimi hazır verir: üstte ayar düğmesi ile istasyon, engel, voltaj ve zaman göstergeleri durur. Oyun görüntüsü ortadaki ayrılmış boşluğa yerleştirilir. Pencereler ve kısa bildirimler alttaki panel ile katmanlarda gösterilir. Yer tutucu bu akışa katılmaz.",
+    "gelismis": "Kabuk sayfanın en dış yerleşimini belirler. Üst şeritte ayar düğmesi ile istasyon adı, engel şeridi, voltaj ve zamanlayıcı için yerler bulunur; bu yerler başka bölümlerin yazacağı değerleri bekler. Ortadaki alan oyun görüntüsü için boş bırakılmıştır ve görüntü oraya yerleştirilir. Alttaki panel ve katmanlar pencere ile kısa bildirimleri taşır. Yer tutucu dosyası sayfanın çalışmasında hiçbir rol oynamaz, yalnız klasörün var olmasını sağlar.",
+    "detayli": "Kabuk sayfanın en dış yerleşimini belirler ve iş bölümü açıktır: kabuk yerleri hazırlar, değerleri ve görüntüyü başkaları doldurur. Üst şeritte ayar düğmesi, istasyon adı, engel şeridi, voltaj ve zamanlayıcı için yerler bulunur; bu yerler başka bölümlerin yazacağı değerleri bekler. Ortadaki alan oyun görüntüsü için boş bırakılmıştır ve görüntü oraya yerleştirilir. Alttaki panel ile katmanlar pencere ve kısa bildirimleri taşır: bir pencere ya da bildirim gerektiğinde bu katmanlarda görünür, işi bitince yerini boş bırakır. Yer tutucu dosyası sayfanın çalışmasında hiçbir rol oynamaz ve oyun ondan değer okumaz; yalnız klasörün depoda var olmasını sağlar. Klasörde asıl parçalar belirdiğinde bu yer tutucuya gerek kalmaz."
+   },
+   "detay": {
+    "girdiler": [
+     "Kabuk kendi başına sabit bir yerleşimdir; çalışması için dışarıdan veri almaz."
+    ],
+    "ciktilar": [
+     "Üst göstergeler, oyun alanı, pencere paneli ve katmanlar için yerleşmiş boş yerler çıkar."
+    ],
+    "degismezler": [
+     "Oyun alanı sayfanın ortasında ayrılmış bir boşluk olarak kalır.",
+     "Yer tutucu dosya hiçbir değer taşımaz."
+    ],
+    "kenar": [
+     "Klasörde asıl parçalar çoğalırsa yer tutucu dosya gereksiz hale gelir."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Ortadaki boşluk oyun görüntüsünü karşılayacak biçimde ayrılı kalmalıdır.",
+     "Üst göstergelerin ve alt panelin yerleri başkalarının yazdığı değerlere göre durur."
+    ],
+    "degisebilir": [
+     "Göstergelerin ve panelin görünüşü, aralıkları ve sırası oyunun işleyişini bozmadan düzenlenebilir.",
+     "Yer tutucu dosya klasörde başka dosya belirince kaldırılabilir."
+    ]
+   },
+   "sorular": [
+    {
+     "soru": "Göstergelerin yerini değiştirmek oyunun işleyişini bozar mı?",
+     "yanit": "Bozmaz. Kabuk yalnız yerleşimi verir. Ama oyun alanının ortada ayrılmış boşluk olarak kalması gerekir; çünkü oyun görüntüsü oraya yerleştirilir."
+    },
+    {
+     "soru": "Bu bölümde değer okuyan bir parça var mı, yer tutucu ne işe yarar?",
+     "yanit": "Yoktur. Yer tutucu hiçbir iş yapmaz ve oyun ondan değer okumaz; yalnız klasörün depoda kalmasını sağlar, asıl parçalar gelince kaldırılabilir."
+    }
+   ],
+   "kritik_neden": "Kabuk bozulursa göstergeler, oyun alanı ve panel yerlerinde olmaz; oyun görüntüsü yerleşeceği boşluğu bulamaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Kabuğun hangi parça tarafından yüklendiği ve göstergelere değeri kimin yazdığı görülemedi."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "k:oyun/src/js",
+   "tur": "birim",
+   "ozet": "36cf4a8f658a",
+   "iskelet": "61cf5ee9ac6a",
+   "baslik": "Oyun betikleri",
+   "ne": {
+    "cok_basit": "Oyunun bütün işleyen kısmı burada: ekranı çizer, soruları sorar, puanı hesaplar, ilerlemeyi saklar.",
+    "basit": "Bu klasör oyunun beynidir. Karakterleri ve arka planı çizer, soruları ve bulmacaları gösterir, cevaba göre puan hesaplar, ilerlemeyi saklar ve oyunu başlatır.",
+    "normal": "Bu klasör oyunun bütün çalışan işini bölüşür. Bir kısmı ortak zemini ve oyuncunun durumunu tutar, bir kısmı karakterleri ve arka planı çizer, bir kısmı soruları ve bulmacaları ekrana getirir, bir kısmı cevabın sonucunu hesaplar. İstasyonların içeriği ayrı veri parçalarında durur, en sonda da açılışı yöneten parça gelir.",
+    "gelismis": "Klasör, oyunun çalışan işini rollere ayırır. `00-q.js` ortak zemini kurar ve hiçbir şeye bağlı olmadığı için ilk yüklenir; `10-state.js` oyuncunun durumunu tek nesnede tutup kaydeder; ayar, yapay zekâ puanlama, arayüz ve savaş hesabı kendi parçalarında durur. Çizimler ayrı parçalardadır. Bilim deneyleri simülasyon parçalarında, her engel türü kendi parçasında, istasyon içeriği veri parçalarında yaşar. Koşu yürütücüsü bunları birleştirir, açılış parçası oyunu başlatır.",
+    "detayli": "Klasör, oyunun çalışan işini rollere ayırır. `00-q.js` ortak zemini kurar ve hiçbir şeye bağlı olmadığı için ilk yüklenir; `10-state.js` oyuncunun durumunu tek nesnede tutup tarayıcı kaydına yazar; `20-settings.js` ayar penceresini ve haritayı, `30-claude.js` yapay zekâ puanlamasını, `50-ui.js` soru arayüzünü, `60-battle.js` voltaj ve şarj hesabını üstlenir. Çizim parçaları yalnız çizer, durumu dışarıdan alır. Bilim deneyleri simülasyon parçalarında, her engel türü kendi parçasında, istasyon içeriği veri parçalarında yaşar. Koşu yürütücüsü bunları birleştirir; `99-main.js` açılışı yönetir: kayıt yüklenir, karşılama açılır, koşu bitince harita gelir."
+   },
+   "mantik": {
+    "cok_basit": "İşler küçük parçalara bölünmüş, böylece biri değişse bile öbürleri yerinde ve çalışır kalıyor.",
+    "basit": "Oyunun işi tek büyük dosyada değil, rollere ayrılmış küçük parçalarda durur. Böylece çizim, soru, puan ve içerik birbirinden bağımsız değişebilir.",
+    "normal": "İş rollere ayrılmıştır: durum, çizim, etkileşim, hesap ve içerik ayrı parçalardadır. Bir engel türünü ya da istasyon içeriğini değiştirmek geri kalanı bozmaz, yeni deney ya da istasyon eklemek de yalnız yeni bir parça gerektirir. Ortak zeminin hiçbir şeye bağlı olmaması da yükleme sırasını sade tutar.",
+    "gelismis": "Parçalar rollerine göre ayrıldığı için sorumluluklar karışmaz: çizim parçaları yalnız çizer ve durumu dışarıdan alır, hesap parçası yalnız sonucu hesaplar, içerik parçaları yalnız veri taşır. Bu ayrım yeni istasyon, simülasyon ya da engel eklemeyi mevcut parçalara dokunmadan mümkün kılar. Ortak zeminin bağımsız olması hem tarayıcıda hem test ortamında aynı biçimde çalışmasını sağlar. Yapay zekâ puanlamasının tek merkezde toplanması, kullanılamadığında geri dönüşü de tek yerden yönetmeyi sağlar.",
+    "detayli": "Parçalar rollerine göre ayrıldığı için sorumluluklar karışmaz: çizim parçaları yalnız çizer ve durumu dışarıdan alır, hesap parçası yalnız voltaj ve şarjı hesaplar, içerik parçaları yalnız veri taşır, etkileşim parçaları kendi engel türünü yönetir. Bu ayrım yeni istasyon, simülasyon ya da engel eklemeyi mevcut parçalara dokunmadan mümkün kılar. Ortak zeminin hiçbir şeye bağlı olmaması, onu ilk yüklenebilir kılar ve hem tarayıcıda hem test ortamında aynı biçimde çalışmasına izin verir. Yapay zekâ puanlamasının tek merkezde toplanması, kullanılamadığında çoktan seçmeliye dönüşü de tek yerden yönetmeyi sağlar. Durumun tek nesnede tutulması ise kaydetmeyi ve geri okumayı tek bir noktaya indirir."
+   },
+   "nasil": {
+    "basit": "Oyun açılınca önce ortak zemin ve oyuncunun kaydı yüklenir. Sonra bir istasyon seçilir, yol ilerler, engeller sırayla gelir. Her engelin cevabı hesaplanır, durum güncellenir ve saklanır.",
+    "normal": "Açılış parçası kaydı yükler ve karşılamayı gösterir. Bir istasyon başlayınca içerik kontrol edilir ve koşu yürütücüsü yolu ilerletir. Karakter koşarken bir engel gelir; ilgili engel parçası sorusunu ya da bulmacasını gösterir. Cevap ve eminlik alınınca savaş parçası voltaj ile şarjı hesaplar, hata defteri güncellenir. Durum kaydedilir, koşu bitince harita açılır.",
+    "gelismis": "Başlangıçta ortak zemin kurulur, sonra durum kayıttan okunur; kayıt yoksa ya da bozuksa varsayılanla başlanır. Her istasyondan önce veri parçası kontrol edilir. Koşu yürütücüsü yolu ilerletir, çizim parçaları karakteri, engeli ve arka planı gösterir. Engel gelince koşu durur, o türün parçası kendi etkileşimini açar: köprüde sıra kurulur, tahminde eminlik sorulur, kavramda deney yapılır, tuzakta hatalı parça bulunur. Sonuç savaş parçasına gider; yanlışlar defterde tutulup sonra tekrar sorulur. Açık cevaplar yapay zekâ ile puanlanır, kullanılamazsa çoktan seçmeliye dönülür. İstasyon sonunda sandık kaydı alır.",
+    "detayli": "Başlangıçta ortak zemin kurulur, sonra durum kayıttan okunur; kayıt yoksa ya da bozuksa varsayılan durumla başlanır ve karşılama penceresi açılır. Her istasyondan önce veri parçası kontrol edilir: ad, makine, konu ve sıralı engeller buradan gelir. Koşu yürütücüsü yolu ilerletir; çizim parçaları karakteri, engeli ve katmanlı arka planı gösterir, uzak katmanlar yavaş, yakın olanlar hızlı kayar. Engel gelince koşu durur ve o türün parçası kendi etkileşimini açar: köprüde adımlar doğru sıraya konur, hikâyede konuşma sahneleri geçilir, tahminde eminlik sorulur, kavramda deney yapılır, tuzakta hatalı parça bulunur, düşmanda kısa soru sorulur. Sonuç savaş parçasına gider: doğruluk ve eminliğe göre voltaj düşer ya da şarj kazanılır, yanlışlar defterde tutulup sonra tekrar sorulur. Açık cevaplar yapay zekâ ile puanlanır, kullanılamazsa çoktan seçmeliye dönülür. İstasyonun son dövüşünde patron aşamalı sorular sorar. Sandık ekranı konuyu özetler ve kayıt alır; koşu bitince durum saklanır ve harita yeniden açılır."
+   },
+   "detay": {
+    "girdiler": [
+     "Tarayıcı kaydındaki ilerleme, oyuncunun cevapları ve eminlik seçimleri, ayarlardaki ses, hız, model ve efor tercihleri.",
+     "İstasyon veri parçalarındaki ad, makine, konu, engel sırası ve sorular."
+    ],
+    "ciktilar": [
+     "Ekrana çizilen koşu sahnesi, arayüz, pencereler ve bildirimler.",
+     "Güncellenen voltaj, şarj, hata defteri ve kaydedilen ilerleme."
+    ],
+    "degismezler": [
+     "Ortak zemin her şeyden önce yüklenir; başka parçalar ona dayanır.",
+     "Durum tek nesnede tutulur ve kayıt bozuksa varsayılana dönülür."
+    ],
+    "kenar": [
+     "Yapay zekâ kullanılamazsa açık cevaplı sorular çoktan seçmeliye geçer.",
+     "Klasördeki yer tutucu dosya hiçbir iş yapmaz, yalnız klasörü yerinde tutar."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Ortak zemin hiçbir parçaya bağlı kalmadan ilk yüklenmelidir.",
+     "Oyuncu durumunun alan adları kayıtla uyumlu kalmalıdır, yoksa eski kayıtlar okunamaz.",
+     "Her engel türü, sonucunu hasarı uygulayan yere aynı biçimde geri vermelidir."
+    ],
+    "degisebilir": [
+     "Çizim parçalarındaki karakter ve arka plan görünüşü oyunun işleyişine dokunmadan değiştirilebilir.",
+     "Yeni bir simülasyon, yeni bir istasyon verisi ya da yeni bir engel türü mevcut parçalara dokunmadan eklenebilir."
+    ]
+   },
+   "kurulus": [
+    {
+     "baslik": "Önce ortak zemin ve durum",
+     "metin": "Hiçbir şeye bağlı olmayan ortak zemini kur, sonra oyuncunun durumunu tek nesnede tutan ve kaydeden parçayı ekle.",
+     "parcalar": [
+      "oyun/src/js/00-q.js",
+      "oyun/src/js/10-state.js"
+     ]
+    },
+    {
+     "baslik": "Ayar ve puanlama",
+     "metin": "Ayar penceresini ve haritayı, ardından cevapları puanlayan merkezi ekle. Yapay zekâ yoksa çoktan seçmeliye dönüş burada kurulur.",
+     "parcalar": [
+      "oyun/src/js/20-settings.js",
+      "oyun/src/js/30-claude.js"
+     ]
+    },
+    {
+     "baslik": "Çizimler",
+     "metin": "Karakterleri, koşan kişiyi ve arka planı çizen parçaları yaz. Hepsi yalnız çizer, durumu dışarıdan alır.",
+     "parcalar": [
+      "oyun/src/js/40-art-chars.js",
+      "oyun/src/js/41-art-runner.js",
+      "oyun/src/js/42-art-world.js"
+     ]
+    },
+    {
+     "baslik": "Arayüz ve savaş hesabı",
+     "metin": "Soru arayüzünü kur, sonra doğruluk ve eminliğe göre voltaj ve şarjı hesaplayan parçayı ekle.",
+     "parcalar": [
+      "oyun/src/js/50-ui.js",
+      "oyun/src/js/60-battle.js"
+     ]
+    },
+    {
+     "baslik": "Deneyler ve engeller",
+     "metin": "Bilim deneylerini ve her engel türünü ayrı parçalarda yaz. Her biri sonucunu aynı biçimde geri verir.",
+     "parcalar": [
+      "oyun/src/js/70-sim-fotoelektrik.js",
+      "oyun/src/js/80-obs-kopru.js",
+      "oyun/src/js/80-obs-tahmin.js",
+      "oyun/src/js/85-obs-patron.js"
+     ]
+    },
+    {
+     "baslik": "İçerik, koşu ve açılış",
+     "metin": "İstasyon verilerini yaz, koşu yürütücüsüyle bağla ve en sonda açılışı yöneten parçayı ekle.",
+     "parcalar": [
+      "oyun/src/js/90-data-s01.js",
+      "oyun/src/js/95-runner.js",
+      "oyun/src/js/99-main.js"
+     ]
+    }
+   ],
+   "sorular": [
+    {
+     "soru": "Yeni bir istasyon eklemek için hangi parçalara dokunmak gerekir?",
+     "yanit": "Esas olarak yeni bir veri parçası gerekir; ad, makine, konu ve engel sırası orada tanımlanır. Çizim, hesap ve engel parçaları aynı kalır."
+    },
+    {
+     "soru": "Ortak zeminin başka parçalara bağlı olmaması neden önemli?",
+     "yanit": "Çünkü herkes ona dayanır ve ilk o yüklenir. O da başkasına bağlı olsaydı yükleme sırası dolanır, hem tarayıcıda hem testte aynı çalışması zorlaşırdı."
+    },
+    {
+     "soru": "Yapay zekâ puanlaması çalışmazsa oyun durur mu?",
+     "yanit": "Durmaz. Puanlama merkezi çoktan seçmeliye geçişi sağlar, böylece açık cevaplı sorular da yanıtlanabilir kalır."
+    }
+   ],
+   "kritik_neden": "Bu klasör bozulursa oyun açılmaz ya da istasyonlar çalışmaz; çünkü çizim, soru, puan, kayıt ve açılış işi hep burada yürür.",
+   "terimler": [],
+   "belirsiz": [
+    "Parçaların tarayıcıda hangi mekanizmayla birleştirilip yüklendiği görülemedi.",
+    "Hata defterinin hangi parçada tutulduğu belli değil."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "k:oyun/src/styles",
+   "tur": "birim",
+   "ozet": "a106b36b1280",
+   "iskelet": "aa94f2498890",
+   "baslik": "Görünüş kuralları",
+   "ne": {
+    "cok_basit": "Oyunun görünüşünü belirler: renkler, yazılar, düğmeler ve ekranın nasıl dizileceği burada kararlaştırılır.",
+    "basit": "Bu klasör oyunun görünüşünü belirler. Renkler ve yazı türleri tek yerde tutulur; düğmeler, kutular ve balonlar bunlarla biçimlenir, ekranın dizilişi ayrı bir parçada kurulur.",
+    "normal": "Bu klasör oyunun görünüşünü dört işe böler. Biri renk, kenar ve yazı tipi gibi ortak değerleri adlandırır, biri ekranın iskeletini kurar, biri panel, düğme ve balon gibi tekrar kullanılan parçaları biçimler, biri de oyun alanının üstüne binen katmanı tanımlar. Yanında klasörü yerinde tutan boş bir yer tutucu durur.",
+    "gelismis": "Klasör görünüşü katmanlara ayırır. `00-tokens.css` renkleri, kenar kalınlıklarını, köşe yuvarlaklarını ve yazı tiplerini adlandırılmış değerler olarak tutar. `10-layout.css` üstte bilgi çubuğu, ortada oyun alanı, altta panel olacak biçimde ekranı kurar. `20-components.css` panel, düğme, seçenek, metin kutusu, konuşma balonu, kart, bildirim ve voltaj çubuğunu biçimler. `30-runway-overlay.css` oyun alanının üstündeki katmanı tanımlar; `.gitkeep` içeriği olmayan bir yer tutucudur.",
+    "detayli": "Klasör görünüşü katmanlara ayırır ve her katman bir öncekine dayanır. `00-tokens.css` renkleri, kenar kalınlıklarını, köşe yuvarlaklarını ve yazı tiplerini adlandırılmış değerler olarak tutar; zemindeki nokta deseni de oradadır. `10-layout.css` üstte bilgi çubuğu, ortada oyun alanı, altta panel olacak biçimde ekranı kurar; sayfa kaydırılmaz, dar ekranda bilgiler gizlenir. `20-components.css` panel, düğme, seçenek, metin kutusu, konuşma balonu, bilim insanı kartı, bildirim ve voltaj çubuğunu ortak değerlerle biçimler. `30-runway-overlay.css` oyun alanının üstündeki katmanı tanımlar: patron paneli, düşen hasar sayıları ve sarsılma hareketi. `.gitkeep` içeriği olmayan, klasörü depoda tutan bir yer tutucudur."
+   },
+   "mantik": {
+    "cok_basit": "Renkleri tek yerde tutunca bir rengi değiştirmek bütün oyunu aynı anda değiştirir.",
+    "basit": "Renk ve yazı değerleri tek yerde tutulur, öteki parçalar onlardan alır. Böylece görünüşü değiştirmek için her yeri tek tek gezmek gerekmez.",
+    "normal": "Görünüş katmanlara ayrılmıştır: önce ortak değerler, sonra düzen, sonra bileşenler, en son üst katman. Her parça renk ve ölçüyü kendisi yazmak yerine ortak değerlerden aldığı için tek bir değişiklik bütün oyuna yayılır, görünüş tutarlı kalır. Düzenin bileşenlerden ayrı olması ekran boyutuna uyumu tek yerde toplar.",
+    "gelismis": "Değerlerin adlandırılıp tek yerde tutulması, aynı rengin onlarca yerde yinelenip birbirinden ayrışmasını önler. Düzen ile bileşenlerin ayrılması ekran boyutuna uyumu tek yerde toplar: dar ya da kısa ekran kararları bileşenlere sızmaz. Üst katmanın ayrı olması, oyun alanı çizilirken patron panelinin ve hasar sayılarının onu bozmadan üstüne binmesini sağlar. Hareket azaltma tercihine saygı da bu katmanda toplanır.",
+    "detayli": "Değerlerin adlandırılıp tek yerde tutulması, aynı rengin onlarca yerde yinelenip birbirinden ayrışmasını önler ve görünüşü baştan değiştirmeyi tek noktaya indirir. Düzen ile bileşenlerin ayrılması ekran boyutuna uyumu tek yerde toplar: dar ya da kısa ekran kararları bileşenlere sızmaz, bileşenler her ekranda aynı kalır. Üst katmanın ayrı olması, oyun alanı çizilirken patron panelinin ve hasar sayılarının onu bozmadan üstüne binmesini sağlar; katmanın tıklamaları yalnız kendi düğmelerine geçirmesi altındaki alanın kullanılabilir kalmasını korur. Hareket azaltma tercihine saygı da bu katmanda toplanır, böylece hareket duyarlı kullanıcılar için animasyonlar her yerde birlikte kısalır."
+   },
+   "nasil": {
+    "basit": "Önce renk ve yazı değerleri adlandırılır. Ekranın dizilişi kurulur, sonra düğme ve kutular bu değerlerle biçimlenir. En son oyun alanının üstüne binen katman gelir.",
+    "normal": "Sıra değerlerden ayrıntıya doğrudur. İlk parça ortak renk, kenar ve yazı değerlerini adlandırır. Düzen parçası ekranı üstte bilgi çubuğu, ortada oyun alanı, altta panel olarak diziler. Bileşen parçası düğme, kutu ve balonları bu ortak değerlerle biçimler. Katman parçası oyun alanının üstüne patron paneli ve hasar sayılarını yerleştirir.",
+    "gelismis": "Ortak değerler en başta tanımlanır; sonraki parçalar renk ve ölçüyü doğrudan yazmaz, adlandırılmış değerlerden alır. Düzen parçası sayfayı kaydırmaz: her şey ekran yüksekliğine sığar, dar ekranda bilgi çubuğundaki bazı bilgiler gizlenir, kısa ekranda oyun alanı kalan yeri doldurur. Bileşen parçası tekrar kullanılan öğeleri biçimler. Katman parçası ana alanın üstünde durur ve tıklamaları yalnız kendi panel düğmelerine geçirir; altındaki oyun alanı bu sayede etkilenmez. Hareket azaltma tercihi açıksa animasyonlar neredeyse anında biter.",
+    "detayli": "Ortak değerler en başta tanımlanır; sonraki parçalar renk ve ölçüyü doğrudan yazmaz, adlandırılmış değerlerden alır, böylece tek değişiklik bütün görünüşe yayılır. Düzen parçası sayfayı kaydırmaz: her şey ekran yüksekliğine sığar, dar ekranda bilgi çubuğundaki bazı bilgiler gizlenir, kısa ekranda oyun alanı kalan yeri doldurur. Bileşen parçası panel, düğme, seçenek, metin kutusu, konuşma balonu, bilim insanı kartı, bildirim ve voltaj çubuğunu ortak değerlerle biçimler. Katman parçası ana alanın üstünde durur; patron panelini, düşen hasar sayılarını ve sarsılma hareketini tanımlar ve tıklamaları yalnız panel düğmelerine geçirir, altındaki alan bu sayede etkilenmez. Hareket azaltma tercihi açıksa animasyonlar neredeyse anında biter. Yer tutucu bu akışa katılmaz, yalnız klasörün depoda kalmasını sağlar."
+   },
+   "detay": {
+    "girdiler": [
+     "Kullanıcının hareket azaltma tercihi ve ekranın genişlik ile yüksekliği görünüşü etkiler."
+    ],
+    "ciktilar": [
+     "Renk, kenar, yazı tipi, ekran dizilişi, bileşen biçimleri ve üst katman tanımları çıkar."
+    ],
+    "degismezler": [
+     "Diğer parçalar renk ve ölçü değerlerini ortak değerlerden alır.",
+     "Sayfa kaydırılmaz; her şey ekran yüksekliğine sığar."
+    ],
+    "kenar": [
+     "Dar ekranda bazı bilgiler gizlenir, kısa ekranda oyun alanı kalan yeri alır.",
+     "Hareket azaltma açıksa animasyonlar neredeyse anında biter."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Ortak değerlerin adları korunmalıdır; bileşen ve katman parçaları bu adlara dayanır.",
+     "Üst katman tıklamaları yalnız panel düğmelerine geçirmelidir, yoksa altındaki alan tıklanamaz."
+    ],
+    "degisebilir": [
+     "Renklerin, köşe yuvarlaklarının ve yazı tiplerinin değerleri adlar aynı kaldıkça serbestçe değiştirilebilir.",
+     "Nokta deseni ve animasyon süreleri oyunun işleyişine dokunmadan ayarlanabilir."
+    ]
+   },
+   "sorular": [
+    {
+     "soru": "Oyunun ana rengini değiştirmek için kaç yere dokunmak gerekir?",
+     "yanit": "Tek yere. Renkler adlandırılmış ortak değerlerde tutulur ve bileşenler onlardan alır; değerin adı korunduğu sürece değişiklik bütün oyuna yayılır."
+    },
+    {
+     "soru": "Üst katman tıklamaları neden yalnız panel düğmelerine geçirir?",
+     "yanit": "Katman oyun alanının üstünde durur. Her tıklamayı yutsaydı altındaki alan kullanılamazdı; bu yüzden yalnız kendi düğmeleri tıklamayı alır."
+    }
+   ],
+   "kritik_neden": "Bu klasör bozulursa oyun renksiz, düzensiz ya da sığmayan bir ekranla açılır; bileşenler ve üst katman ortak değerlere dayandığı için hepsi birden bozulur.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu klasördeki parçaların sayfaya hangi sırayla ve hangi yolla eklendiği görülemedi."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/build.sh",
+   "tur": "dosya",
+   "ozet": "461c7bb06ef8",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Oyunu tek sayfaya derleme",
+   "ne": {
+    "cok_basit": "Bu betik oyunun bütün parçalarını tek bir sayfada birleştirir.",
+    "basit": "Betik önce gerekli parçaların yerinde olup olmadığına bakar, eksik varsa durur. Sonra parçaları birleştirip tek sayfa yapar.",
+    "normal": "Betik önce gerekli parçaların yerinde olup olmadığına bakar; eksikse durur ya da uyarıp devam eder. Parçaları dosya adlarının sırasıyla tek sayfada birleştirir. Birleşik metni ayrıca denetler ve sayfa boyutunu sınırlar.",
+    "gelismis": "Betik oyunun derleme adımıdır. Önce zorunlu parçaların var olduğunu denetler; eksikse durur ya da isteğe bağlı kipte uyarır. Ardından stilleri, arayüz kabuğunu ve betikleri tek bir sayfada sırayla birleştirir. Son olarak birleşik betiğin sözdizimini ve sayfa boyutunu sınar.",
+    "detayli": "Betik, oyunun parçalarını tek bir sayfaya çeviren derleme adımıdır. Önce zorunlu stil, betik ve arayüz parçalarının yerinde olduğunu denetler; eksikse durur ya da isteğe bağlı kipte uyarıp devam eder. Stiller, arayüz kabuğu ve betikler belli bir sırayla birleştirilir; betikler sayısal önek sırasıyla dizilir. Birleşik betik sözdizimi açısından sınanır ve sayfa boyutu aşılırsa hata verilir."
+   },
+   "mantik": {
+    "cok_basit": "Eksik bir parça oyunu bozuk açardı, bu yüzden önce kontrol edilir.",
+    "basit": "Oyun birçok parçadan oluşur ve elle birleştirmek yanlış sıraya açıktır. Bu betik işi tekrar edilebilir biçimde otomatik yapar.",
+    "normal": "Parçaların sırası önemlidir, çünkü bir parça diğerinden önce yüklenmelidir. Betik sırayı dosya adlarına bağlar; böylece sıra elle değil kuralla korunur. Eksik parça ya da yanlış ad sayfa oluşmadan yakalanır.",
+    "gelismis": "Parçalar ayrı ayrı geliştirilir, ama yayında tek sayfa olarak çıkması gerekir. Zorunlu liste ve ad kuralı, eksik ya da sırası bozuk bir parçanın sessizce geçilmesini önler. Hata böylece derleme anında yakalanır.",
+    "detayli": "Her parça ayrı bir dosyada tutulduğu için üzerinde çalışmak kolaydır; ama oyun tek bir sayfa olarak açılır. Betik bu ikiliği köprüler. Zorunlu liste olmasa eksik bir parça fark edilmeden kalırdı; ad kuralı olmasa yükleme sırası sessizce değişirdi. Her denetim, bu tür sessiz hataları derleme anında görünür hataya çevirmek için vardır."
+   },
+   "nasil": {
+    "basit": "Betik önce zorunlu parçaların listesini tarar ve eksik olanları toplar. Eksik varsa durur. Eksik yoksa parçaları sırayla tek bir sayfada birleştirip sonucu yazar.",
+    "normal": "Betik zorunlu parçaların listesini kendi içinde tutar ve varlıklarını kontrol eder. Eksikler toplanır; varsayılan kipte bir eksik bile varsa durur, isteğe bağlı kipte ise uyarıp devam eder. Parçalar sırayla okunup tek bir sayfaya yazılır. Yazılan birleşik betik sözdizimi açısından sınanır.",
+    "gelismis": "Betik önce zorunlu stil, betik ve arayüz dosyalarının varlığını denetler; eksikler bir listede toplanır. Varsayılan kipte bir eksik bile varsa durur; isteğe bağlı kipte uyarıp devam eder. Betik dosyalarının adları sayısal önekle başlamalı, çünkü adların sıralaması yükleme sırasını belirler. Stiller, arayüz kabuğu ve betikler tek bir sayfaya bu sırayla yazılır. Birleşik betik geçici bir alanda sözdizimi açısından sınanır ve sayfa boyutu kontrol edilir.",
+    "detayli": "Betik, komut satırından bir kez çalıştırılır ve sırasıyla birkaç iş görür. Önce yolları betiğin bulunduğu klasöre göre çözer, sonra zorunlu parçaların listesini kontrol eder. Eksik varsa varsayılan kipte hata yazıp çıkar; isteğe bağlı kipte sarı uyarıları listeler ve devam eder. Ardından parça adlarının sayısal önek kuralına uyduğuna bakar; uymayan bir ad görülürse hata verip çıkar. Sonra çıktı klasörünü hazırlar ve tek sayfayı stiller, arayüz kabuğu ve betiklerle sırayla oluşturur. Son adımda birleşik betiği geçici bir klasörde ayıklayıp sözdizimi denetiminden geçirir; sayfa boyutu sınırı aşarsa hata verir."
+   },
+   "detay": {
+    "girdiler": [
+     "Zorunlu stil, betik ve arayüz parçalarının listesi.",
+     "Betik dosyalarının adları, yükleme sırasını belirlemek için okunur."
+    ],
+    "ciktilar": [
+     "Oyunun tek sayfa hâlindeki hali, derleme sonunda ayrı bir çıktı klasörüne yazılır.",
+     "Derleme sonunda üretilen sayfanın boyutu ekranda yazılır."
+    ],
+    "degismezler": [
+     "Betik dosyalarının adları sayısal önekle başlamalı ve sıralama alfabetik kalmalı.",
+     "Birleşik sayfada stiller, arayüz kabuğu ve betikler bu sırayla yer almalı."
+    ],
+    "kenar": [
+     "Eksik parça varsa varsayılan kipte betik hiçbir sayfa üretmeden durur.",
+     "Bir betik dosyasının adı önek kuralına uymazsa betik hata verip çıkar."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Betik dosyalarının sayısal önek düzeni ve alfabetik sıralama yöntemi aynı kalmalı; yükleme sırası buna dayanır.",
+     "Zorunlu listelerdeki dosya adları, depodaki gerçek dosya adlarıyla birebir eşleşmeli.",
+     "Derleme sonunda üretilen sayfa, dışarıdan tek bir sayfa olarak açılabilecek biçimde kalmalı.",
+     "Komut satırındaki isteğe bağlı kip bayrağının adı aynı kalmalı."
+    ],
+    "degisebilir": [
+     "Zorunlu stil, betik ve arayüz listeleri, oyun büyüdükçe yeni dosya adlarıyla güncellenebilir.",
+     "Uyarı ve hata metinlerinin dili ve renkleri serbestçe değiştirilebilir.",
+     "Geçici klasörün adı ve oluşturulma yeri, sonucu etkilemeden başka bir yere alınabilir."
+    ]
+   },
+   "kritik_neden": "Bu betik bozulursa oyun eksik ya da yanlış sırayla birleşir ve bu, derleme aşamasında fark edilmeden yayına gidebilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Betiğin ne zaman ve kimin tarafından çağrıldığı bilinmiyor.",
+    "Dağıtımda bu sayfanın nasıl kullanıldığı bilinmiyor."
+   ],
+   "okunan": [
+    "oyun/build.sh"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/html/.gitkeep",
+   "tur": "dosya",
+   "ozet": "e3b0c44298fc",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Boş klasör yer tutucusu",
+   "ne": {
+    "cok_basit": "Bu klasörde şimdilik yalnızca boş bir yer tutucu var, içinde hiçbir şey yazmıyor.",
+    "normal": "Bu parça boş olduğu için çalışırken hiçbir işlem yapmaz ve oyun ondan değer okumaz. Varlığı yalnızca klasörün yerinde kalmasını sağlar ve klasörde asıl parçalar belirince gereksiz hale gelebilir."
+   },
+   "nasil": {
+    "normal": "Bu parçanın içinde satır yoktur, bu yüzden okunacak bir şey bulunmaz. Oyun ondan veri istemez ve hiçbir karar bu parçaya dayanmaz. Klasörde başka dosyalar oluştuğunda yer tutma görevi ortadan kalkar. İçine yazılan her satır, bu parçayı boş yer tutucu olmaktan çıkarır."
+   },
+   "sinir": {
+    "sabit": [
+     "İçinin boş kalması, yer tutucu işlevinin bozulmaması için gerekir."
+    ],
+    "degisebilir": [
+     "Klasöre başka bir içerik eklendiğinde bu yer tutucunun gerekliliği ortadan kalkabilir."
+    ]
+   },
+   "kritik_neden": "Bu yer tutucu silinse ya da değişse de başka parçalar buna dayanmadığı için bir şey bozulmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Klasörün bu yer tutucuya neden ihtiyaç duyduğu bu parçadan okunamadı; açıklama genel bilgiye dayanıyor."
+   ],
+   "okunan": [
+    "oyun/src/html/.gitkeep"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/html/shell.html",
+   "tur": "dosya",
+   "ozet": "3b0d5dd5f1e4",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Oyun ekranının iskeleti",
+   "ne": {
+    "cok_basit": "Bu sayfa, oyunun ekranda görünen düzenini yerleştirir.",
+    "basit": "Üstte ayar düğmesi, istasyon adı, voltaj çubuğu ve zamanlayıcı yer alır. Ortada oyun alanı, altta panel ve bildirim katmanları durur.",
+    "normal": "Üstte ayar düğmesi, istasyon adı, engel şeridi, voltaj ve zamanlayıcı bulunur. Ortadaki oyun alanı, oyun görüntüsünün yerleştirileceği boşluk olarak ayrılmıştır. Alttaki panel ve katmanlar pencere ve kısa bildirimleri taşır.",
+    "gelismis": "Bu sayfa oyunun dış iskeletidir; oyun alanı ortada boş bırakılmış, etrafında kontrol öğeleri hazır durur. Üstte ayar düğmesi, istasyon, engel şeridi, voltaj, Claude durumu ve zamanlayıcı bulunur. Alttaki panel ve gizli katmanlar, pencere ve bildirimler için ayrılmıştır.",
+    "detayli": "Bu sayfa, oyunun ekran düzenini bir yere toplayan kabuktur ve derlemede tek sayfanın içine girer. Üst çubukta ayar düğmesi, istasyon adı, engel şeridi, voltaj göstergesi, Claude durumu ve zamanlayıcı bulunur. Ortada oyun alanı için boş bir kap ayrılmıştır. Hemen altında alt panel, pencere katmanı ve kısa bildirim katmanı durur; gizli başlayanlar ilk açılışta görünmez."
+   },
+   "mantik": {
+    "cok_basit": "Oyunun ekranı tek bir yerde toplanır, böylece parçalar birbirine karışmaz.",
+    "basit": "Ekran düzeni tek yerde durduğu için oyun parçaları kendi yerlerini bilir. Yerleşim bir kez kurulunca değişiklik tek yerden yapılır.",
+    "normal": "Ekran iskeleti ayrı tutulduğu için görsel düzen, oyun mantığından bağımsız kalır. Üst çubuk ve katmanlar önceden yerinde durur; oyun sırasında yalnızca içerikleri değişir.",
+    "gelismis": "Düzeni ayrı bir sayfada tutmak, görünüm değişikliklerinin oyun mantığına dokunmasını gereksiz kılar. Üst çubuk, alt panel ve katmanlar sabit yerlerde durur; bir değişiklik çoğunlukla yalnızca kendi bölgesini etkiler.",
+    "detayli": "Kabuk ayrı tutulunca görsel değişiklik ile oyun kuralları birbirinden ayrılır. Üst çubuk ve alt panel sabit yerlerde durur; katmanlar gizli başlayıp gerektiğinde içerik kazanır. Sayfa tek dosya olarak derlendiği için stiller ve betikler arasında hep aynı sıra korunur."
+   },
+   "nasil": {
+    "basit": "Sayfa bir kapsayıcı içinde üst çubuk, oyun alanı, alt panel ve katmanlardan oluşur. Her öğe bir kimlik adı taşır, çoğu da başlangıçta boş bırakılmış bir kap olarak durur.",
+    "normal": "Sayfa üç bölgeye ayrılır: üst çubuk, oyun alanı ve alt panel. Üst çubukta ayar düğmesi, istasyon adı, engel şeridi, voltaj göstergesi, Claude durumu ve zamanlayıcı bulunur. Oyun alanındaki katmanlarda patron paneli, balon, hasar sayıları ve sahne başlığı yer alır. Pencere katmanı gizli başlar; bildirim katmanı kısa mesajları en sonda tutar.",
+    "gelismis": "Sayfa, bir dış kapsayıcının içinde üst çubuk, oyun alanı, alt panel ve katmanlardan oluşur. Üst çubukta ayar düğmesi, istasyon adı, engel şeridi, voltaj, Claude durumu ve zamanlayıcı bulunur. Oyun alanında patron paneli gizli başlar; konuşma balonları, hasar sayıları ve sahne başlığı için ayrı kaplar vardır. Oyun tuvali için alan şimdilik boştur. Alt panel, ekran okuyucuya yönelik canlı bildirim olarak işaretlidir. Pencere ve bildirim katmanları sayfanın sonunda durur; pencere katmanı gizli başlar.",
+    "detayli": "Sayfa, dış kapsayıcının içinde sırayla bir üst çubuk, bir oyun alanı, bir alt panel, bir pencere katmanı ve bir bildirim katmanı taşır. Üst çubuğun içinde ayar düğmesi, istasyon adı, engel şeridi, voltaj göstergesi, Claude durumu ve zamanlayıcı bulunur; voltaj çubuğu ve sayısal değer ayrı öğelerdir. Oyun alanı kendi içinde patron paneli, konuşma balonu, hasar sayısı ve sahne başlığı kaplarını barındırır; bu kapların çoğu başlangıçta boştur. Oyun tuvali için alan şimdilik boş bırakılmıştır. Alt panel, ekran okuyucuya canlı bildirim olarak işaretlenmiştir. Pencere katmanı gizli başlar. Bildirim katmanı kısa mesajları en sonda tutar."
+   },
+   "detay": {
+    "girdiler": [
+     "Üst çubuk, katman ve bildirim kaplarına oyun sırasında yazılacak değerler.",
+     "Derleme akışında bu dosya, derleme betiğinden sonra sıradaki adımda okunur."
+    ],
+    "ciktilar": [
+     "Tarayıcıda görünen oyun ekranının boş iskeleti.",
+     "Derlenmiş sayfada stillerden sonra, betiklerden önce yerleşmiş bir gövde."
+    ],
+    "degismezler": [
+     "Öğelerin kimlik adları aynı kalmalı.",
+     "Üst çubuk, oyun alanı, alt panel ve katmanların sayfadaki sırası korunmalı."
+    ],
+    "kenar": [
+     "Oyun alanı başlangıçta boş olduğu için sayfa tek başına açıldığında oyun görüntüsü yoktur.",
+     "Gizli başlayan pencere ve patron katmanları ilk açılışta görünmez."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Öğelerin kimlik adları aynı kalmalı; öğeler bu adlarla bulunur.",
+     "Üst çubuk, oyun alanı, alt panel ve katmanların sayfadaki sırası korunmalı.",
+     "Bu sayfa derlemede stillerden sonra, betiklerden önce eklenir; bu sıra değişirse yükleme düzeni bozulur.",
+     "Başlangıçta gizli olan katmanların gizli başlaması korunmalı."
+    ],
+    "degisebilir": [
+     "Üst çubuktaki yazılar, simgeler ve başlıklar serbestçe değiştirilebilir.",
+     "Oyun alanının içindeki katmanların içeriği ve yerleşimi, sayfanın yapısını bozmadan yeniden düzenlenebilir.",
+     "Ekran okuyucuya yönelik etiket metinleri düzeltilebilir ya da zenginleştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa bozulursa oyun ekranındaki öğeler kaybolur ya da yanlış yere düşer, çünkü görünümün iskeleti bu dosyadadır.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu kabuğun hangi betiklerce kullanıldığı bu parçadan görülemiyor.",
+    "Canlı bildirim alanının ekran okuyucuda nasıl okunduğu bilinmiyor."
+   ],
+   "okunan": [
+    "oyun/src/html/shell.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/.gitkeep",
+   "tur": "dosya",
+   "ozet": "e3b0c44298fc",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Boş klasör yer tutucusu",
+   "ne": {
+    "cok_basit": "Bu klasörde şimdilik yalnızca boş bir yer tutucu var, içinde hiçbir şey yazmıyor.",
+    "normal": "Bu parça boş olduğu için çalışırken hiçbir işlem yapmaz ve oyun ondan değer okumaz. Varlığı yalnızca klasörün yerinde kalmasını sağlar ve klasörde asıl parçalar belirince gereksiz hale gelebilir."
+   },
+   "nasil": {
+    "normal": "Bu parçanın içinde satır yoktur, bu yüzden okunacak bir şey bulunmaz. Oyun ondan veri istemez ve hiçbir karar bu parçaya dayanmaz. Klasörde başka dosyalar oluştuğunda yer tutma görevi ortadan kalkar. İçine yazılan her satır, bu parçayı boş yer tutucu olmaktan çıkarır."
+   },
+   "sinir": {
+    "sabit": [
+     "İçinin boş kalması, yer tutucu işlevinin bozulmaması için gerekir."
+    ],
+    "degisebilir": [
+     "Klasöre başka bir içerik eklendiğinde bu yer tutucunun gerekliliği ortadan kalkabilir."
+    ]
+   },
+   "kritik_neden": "Bu yer tutucu silinse ya da değişse de başka parçalar buna dayanmadığı için bir şey bozulmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Klasörün bu yer tutucuya neden ihtiyaç duyduğu bu parçadan okunamadı; açıklama genel bilgiye dayanıyor."
+   ],
+   "okunan": [
+    "oyun/src/js/.gitkeep"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/00-q.js",
+   "tur": "dosya",
+   "ozet": "4574c7dc7afa",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Oyunun çekirdek parçası",
+   "ne": {
+    "cok_basit": "Oyunun ilk yüklenen ana parçasıdır; diğerleri ortak malzemelerini buradan alır.",
+    "normal": "Bu parça oyunun çekirdeğidir: ortak bir nesne kurar ve içine mesaj kanalı, yardımcı işlevler ile simülasyon kaydını yerleştirir. Hiçbir başka parçaya bağlı değildir, bu yüzden ilk yüklenir. Hem tarayıcıda hem de test ortamında aynı biçimde çalışır."
+   },
+   "nasil": {
+    "normal": "Parça önce ortak nesneyi bulur ya da yaratır ve eksik bölümleri boş olarak açar. Mesaj kanalı, abone olma ve mesaj yayma işlevlerini taşır; bir abonenin hatası diğerlerini durdurmaz. Yardımcı işlevler ve simülasyon kaydı aynı nesnenin altında toplanır."
+   },
+   "sinir": {
+    "sabit": [
+     "Ortak nesnenin adı ve içindeki bölüm adları, diğer parçaların bu adlarla erişmesi için aynen kalmalı.",
+     "Mesaj adları ile abonelik işlevlerinin imzası, parçalar arası konuşmanın bozulmaması için korunmalı.",
+     "Bu parça ilk yüklenen parça olduğu için yükleme sırasında önce gelmesi gerekir."
+    ],
+    "degisebilir": [
+     "Yardımcı işlevlerin iç uygulaması, aynı girdi ve çıktıyı verdiği sürece serbestçe değiştirilebilir.",
+     "Süre biçimlendirmenin metin düzeni, ekranda okunuşu bozmadığı sürece yeniden düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa ortak nesne kurulamaz ve bu parçanın üstüne kurulan durum parçası da çalışamaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Simülasyon modüllerinin hangi sırayla kaydedildiği ve gözlem işleyicilerinin kimlerce kullanıldığı bu parçadan çıkarılamadı; yalnızca kayıt yeri yazıldı."
+   ],
+   "okunan": [
+    "oyun/src/js/00-q.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/10-state.js",
+   "tur": "dosya",
+   "ozet": "e4770c07e27c",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Durum ve kayıt parçası",
+   "ne": {
+    "cok_basit": "Oyunun ne kadar ilerlediğini tutar ve bu bilgiyi tarayıcıya kaydedip geri yükler.",
+    "normal": "Bu parça oyuncunun durumunu tek nesnede tutar: ilerleme, hata defteri, kartlar, fabrika, voltaj, süre ve ayarlar. Durum tarayıcıdaki kayıt alanına yazılır ve sayfa yeniden açıldığında geri okunur. Kayıt bozuk ya da yoksa varsayılan durumla başlanır."
+   },
+   "nasil": {
+    "normal": "Parça önce varsayılan değerleri hazırlar ve durumu onunla açar. Kayıt okunurken veri geçerli değilse varsayılanlar kullanılır; geçerliyse her alan kontrol edilip sınır dışı değerler düzeltilir. Yazma işlemi her değişiklikte hemen yapılmaz; kısa bir gecikmeyle toplu olarak kaydedilir. Sıfırlama, dışa aktarma ve içe aktarma da bu parçada bulunur; içe aktarılan veri geçersizse yüklenmez."
+   },
+   "sinir": {
+    "sabit": [
+     "Kayıt alanının adı ve sürüm numarası, daha önce yapılmış kayıtların okunabilmesi için aynen korunmalı.",
+     "Durum nesnesinin alan adları ve tipleri, kaydedilmiş veriyle uyuşmak zorunda olduğu için değiştirilmemeli.",
+     "Geçerlilik denetimi, bozuk ya da eski bir kaydın oyunu kırmamasını sağlar; bu denetim kaldırılmamalı."
+    ],
+    "degisebilir": [
+     "Varsayılan ayarların değerleri, ilk kez açılan oyun için serbestçe değiştirilebilir.",
+     "Kaydetme gecikmesinin süresi, oyunun kayıt sıklığını bozmayacak biçimde ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa oyuncunun ilerlemesi kaybolabilir ya da açılışta oyun varsayılan durumla başlar.",
+   "terimler": [],
+   "belirsiz": [
+    "Durum nesnesinin oyunun ekranlarında nasıl kullanıldığı bu parçadan görülemedi; yalnızca kendi içindeki işlemler yazıldı."
+   ],
+   "okunan": [
+    "oyun/src/js/10-state.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/20-settings.js",
+   "tur": "dosya",
+   "ozet": "ffc287b62361",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Ayarlar ve istasyon haritası",
+   "ne": {
+    "cok_basit": "Oyunun ayar penceresi, istasyon haritası ve süre sayacı burada yapılır.",
+    "normal": "Ayarlar penceresini, istasyon haritasını ve süre sayacını kurar. Ayarlarda ses, hız, model ve efor seçilir; ilerleme kopyalanıp yapıştırılabilir ya da sıfırlanabilir. Harita istasyonların kilidini ve durumunu gösterir."
+   },
+   "nasil": {
+    "normal": "Ayarlar ve harita ayrı katmanda açılır; açıkken oyun duraklar, kapanınca devam eder. Her ayar değiştiğinde hemen kaydedilir ve diğer parçalara haber verilir. Harita, bir önceki istasyon bitene kadar sonraki istasyonu kilitli tutar. Süre sayacı her saniye ilerler, sayfa gizliyken saymaz. Süre hedefine yaklaşınca ve az istasyon bittiyse hızlı modu önerir."
+   },
+   "sinir": {
+    "sabit": [
+     "Ayar adları ve türleri sabit kalır: yalnızca varsayılan ayar listesindeki adlar kabul edilir, değerler de o adlarla aynı türde olmalıdır.",
+     "Ayarın değerleri sınırlar içinde tutulur: oyun hızı belirli bir aralığa sıkıştırılır ve efor yalnızca üç değerden biri olabilir.",
+     "İstasyonlar sırayla açılır: bir öncekinin bitmesi olmadan sonraki istasyon açılmaz; bu sıra oyunun ilerleme mantığının temelidir.",
+     "Dışa aktarılan ilerleme metni ile içe alınan metin aynı biçimde kalmalıdır, iki yön birbirine uyumlu olmalıdır."
+    ],
+    "degisebilir": [
+     "Pencerelerin yerleşimi ve boyutu serbestçe değiştirilebilir; görünümün çoğu ayrı bir dosyadan gelir.",
+     "Ayar penceresindeki düğmelerin sırası, yazıları ve açıklamaları değiştirilebilir.",
+     "Süre hedefi, hızlı mod önerisinin eşiği ve model listesi ihtiyaca göre güncellenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa ayar penceresi, istasyon haritası ve süre sayacı çalışmaz; başka parçalar buna dayanmadığı için etki bu alanla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Satır 223 gizli kaldığı için Claude durumunun adının hangi kaynaktan geldiği yazılmadı.",
+    "Kayıt biçiminin ayrıntıları bu dosyada yer almıyor; ilerleme kaydının içeriği yazılmadı."
+   ],
+   "okunan": [
+    "oyun/src/js/20-settings.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/30-claude.js",
+   "tur": "dosya",
+   "ozet": "130523091a8d",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Yapay zekâ puanlaması",
+   "ne": {
+    "cok_basit": "Yapay zekâya soru sorup öğrencinin cevabını puanlatan bağlantı.",
+    "normal": "Oyundaki yapay zekâ puanlamasının merkezi bu parçadır. Öğrencinin kısa cevabını soru ve ideal cevapla yapay zekâya gönderir, dönen yanıtı bir puana ve geri bildirime çevirir. Yapay zekâ kullanılamazsa çoktan seçmeliye geçişi o sağlar."
+   },
+   "nasil": {
+    "normal": "Önce hangi yapay zekâ yolunun kullanılabileceğine bakılır: oyunun kendi kanalı, kullanıcının girdiği anahtar ya da hiçbiri. Puanlamada soru, anahtar fikirler, bilinen yanlışlar ve ideal cevap öğrencinin cevabıyla tek istemde toplanır. Öğrencinin cevabı veri sayılır, içindeki talimatlar dikkate alınmaz. Dönen metinden düzenli veri parçası ayıklanır, bozuksa hata kodu üretilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Dışarıya açılan adlar, yani hazır olma, puanlama, iptal, anahtar tanımlama ve sınama, aynı kalmalı.",
+     "Puanlamanın döndürdüğü alan adları ve hata kodları, örneğin çok fazla istek ya da izin yok, aynı kalmalı.",
+     "Anahtar yalnızca bellekte ya da oturum alanında tutulur ve kalıcı depoya asla yazılmaz.",
+     "Denenme sırası oyunun kendi kanalı, sonra kullanıcının anahtarı, en sonda hiçbiri biçiminde kalmalı."
+    ],
+    "degisebilir": [
+     "Yapay zekâya gönderilen istem metninin kelimeleri ve soru biçimi serbestçe değiştirilebilir.",
+     "Denenecek model adı ve çalışma çabası ayardan okunur, varsayılan değerler ayrıca değiştirilebilir.",
+     "Yanıt bekleme süresi, en çok yanıt uzunluğu ve gösterilecek geri bildirim sayısı serbestçe ayarlanabilir.",
+     "Hata mesajlarının Türkçe metinleri ve gösterilen bildirim kutuları, hata kodları aynı kaldığı sürece değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama öğrencinin kısa cevabını yapay zekâyla puanlayan özellik çalışmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu puanlamanın hangi ekrandan çağrıldığı bu dosyada görülemedi.",
+    "Oyunun kendi yapay zekâ kanalının nasıl kurulduğu bu dosyada yer almıyor."
+   ],
+   "okunan": [
+    "oyun/src/js/30-claude.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/40-art-chars.js",
+   "tur": "dosya",
+   "ozet": "8d35d4be25d9",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Karakter ve canavar çizimi",
+   "ne": {
+    "cok_basit": "Oyundaki fizikçi karikatürlerini ve canavarları çizen parça.",
+    "normal": "Bu parça oyundaki fizikçi karikatürlerini ve canavarları ekranda çizer. Her karakter kendi saç, göz ve ağız tanımıyla çizilir. Canavarların konuşma, vurulma ve yenilme halleri de bu parçada hazırlanır."
+   },
+   "nasil": {
+    "normal": "Parça her karakterin tanımını önce kaydeder: saç biçimi, göz sayısı, ağız, gözlük ve aksesuar gibi özellikler. Çizim, yüz ve gövdenin üstüne saç, göz, kaş ve ağzın eklenmesiyle oluşur. Konuşma halinde ağız açılır, vurulunca gözler çarpı olur ve sarsılır, yenilince kaşlar kalkar. Stil bilgisi sayfaya ilk çizimde bir kez eklenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Dışarıya açılan adlar, yani çizim, canavar ve portre işlevleri ile karakter kimlik listeleri, aynı kalmalı.",
+     "Karakter kimlikleri, yani kayıt sırasında verilen adlar, değişirse o karakterler hiç çizilmez.",
+     "Durum adları, yani konuşma, vurulma ve yenilme halleri için kullanılan sınıf adları, aynı kalmalı."
+    ],
+    "degisebilir": [
+     "Saç, göz, ağız ve aksesuarların biçimleri ile yerleşim koordinatları serbestçe çizilebilir ve değiştirilebilir.",
+     "Renk değerleri, gölge ve kenar kalınlıkları sayfanın stil değişkenlerinden okunduğu sürece serbestçe değiştirilebilir.",
+     "Canavarlara eklenen ışın ve süsleme biçimleri serbestçe yeniden çizilebilir.",
+     "Erişilebilirlik için verilen metin etiketleri serbestçe yeniden yazılabilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama oyundaki karakter ve canavar görselleri çizilemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu görsellerin oyunda hangi ekranlarda kullanıldığı bu dosyadan anlaşılmıyor.",
+    "Kişi etiketlerinin oyunda nasıl gösterildiği bu dosyaya bakılarak yazılamadı."
+   ],
+   "okunan": [
+    "oyun/src/js/40-art-chars.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/41-art-runner.js",
+   "tur": "dosya",
+   "ozet": "7db8768999ec",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Koşucu ve engel çizimleri",
+   "ne": {
+    "cok_basit": "Oyundaki koşan kahramanı ve karşısına çıkan engelleri çizen yer.",
+    "normal": "Oyundaki koşan karakteri ve karşısına çıkan engelleri ekrana çizer. Her engel türünün kendi görünümü vardır; kapı, sandık ve köprü gibi engeller durumuna göre değişir. Bu dosya yalnızca çizer; durumu dışarıdan alır."
+   },
+   "nasil": {
+    "normal": "Koşucu, ayaklarının bulunduğu taban çizgisine göre yatay merkezinden çizilir. Duruşlar koşma, zıplama, saldırma, düşme ve zafer için ayrı hesaplanır. Her engel türünün kendi çizimi vardır: çözülünce kapı yukarı kayar, köprü tahtaları yerine oturur. Giriş anında engel soluk başlayıp büyür."
+   },
+   "sinir": {
+    "sabit": [
+     "Çizim işlevlerinin çağrılma biçimi sabit kalır: konum, durum, zaman ve seçenekler aynı sırayla verilmelidir.",
+     "Koordinat düzeni sabit kalır: yatay konum merkez, dikey konum zemin çizgisidir ve bu düzen her çizimin yerini belirler.",
+     "Dışa açık engel boyut tablosunun biçimi sabit kalır; dışarıdaki kullanım bu tabloya dayanır.",
+     "Renk değerleri ortak tanımlardan okunur; tanım bulunamazsa yedek renkler kullanılır ve bu sıra bozulmamalıdır."
+    ],
+    "degisebilir": [
+     "Duruş açıları, hız ve kare sayıları serbestçe ayarlanabilir; sonuç yalnızca bu dosyadaki çizimi değiştirir.",
+     "Engellerin renkleri, gölgeleri ve parlama etkileri değiştirilebilir; biçim korunduğu sürece görünüm serbesttir.",
+     "Her engel türünün çizimi diğerlerinden bağımsız olduğu için tek bir engel türü yeniden tasarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa koşucu ve engeller ekranda görünmez ya da yanlış çizilir; başka parçalar buna dayanmadığı için etki yalnızca görünümle sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Dışarıdan çağrılan yerler bu dosyada görünmediği için kimin hangi durumu hangi zamanda gönderdiği yazılmadı.",
+    "Renk tanımlarının hangi dosyada tutulduğu ve yedek renklerin o tanımlarla ne kadar uyumlu olduğu yazılmadı."
+   ],
+   "okunan": [
+    "oyun/src/js/41-art-runner.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/42-art-world.js",
+   "tur": "dosya",
+   "ozet": "8de0a481cd6c",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Arka plan manzarası",
+   "ne": {
+    "cok_basit": "Ekranın arkasında kayan manzarayı, yani gökyüzünü ve uzak kenti çizen parça.",
+    "normal": "Bu parça ekranın arka planını çizer: gökyüzü, uzak kent silüeti, orta katmandaki borular ve zemin. İstasyonun rengi orta katmandaki ışıklarda ve zemin çizgisinde kullanılır. Uzak katmanlar yavaş, yakın olanlar hızlı kayar."
+   },
+   "nasil": {
+    "normal": "Gökyüzü, uzak kent ve orta katman önceden bir kez çizilip görüntü olarak saklanır. Gökyüzü ile uzak kent ekran boyutu değişince, orta katman ise renk ya da istasyon numarası değişince yeniden hazırlanır. Her karede yalnızca bu görüntüler kamera konumuna göre kaydırılır, zemin çizgileri çizilir. Ay ise her karede kameraya göre çizilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Dışarıya açılan çizim işlevi ile tema değerinin biçimi, yani renk metni ya da renk ve numara alanları, aynı kalmalı.",
+     "Sayfanın renk değişkenlerinin adları aynı kalmalı, yoksa renkler sessizce yedek değerlerle çizilir.",
+     "Mantıksal yükseklik ve zemin çizgisinin konumu sabit kalmalı; katmanların hepsi bu ölçüye göre hizalanır."
+    ],
+    "degisebilir": [
+     "Katmanların kayma hızları, yani uzak, orta ve zemin için seçilen oranlar, serbestçe ayarlanabilir.",
+     "Gökyüzündeki yıldızların sayısı ve konumu ile ayın büyüklüğü ve parıltısı serbestçe değiştirilebilir.",
+     "Orta katmandaki tabelaların metinleri, boru ve destek biçimleri serbestçe yeniden çizilebilir.",
+     "Zemin ızgarasının çizgi aralığı ve hareket çentiklerinin sıklığı serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama oyun ekranının arka plan manzarası çizilemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu manzaranın oyunda hangi sırayla başlatıldığı bu dosyadan anlaşılmıyor.",
+    "Renk değişkenlerinin sayfada tanımlı olup olmadığı bu dosyadan doğrulanamadı."
+   ],
+   "okunan": [
+    "oyun/src/js/42-art-world.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/50-ui.js",
+   "tur": "dosya",
+   "ozet": "c6f956d14e3d",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Oyun arayüz parçaları",
+   "ne": {
+    "cok_basit": "Oyun ekranında gördüğün düğmeleri, balonları ve çubukları kuran parça.",
+    "normal": "Bu parça oyunun ekranda görünen arayüz parçalarını kurar: soru alanı, konuşma balonları, seçenek düğmeleri, metin kutusu ve durum çubuğu. Her soru biçimi için ayrı bir kurucu bulunur. Yazılan metinler düz yazı olarak eklenir."
+   },
+   "nasil": {
+    "normal": "Alt soru alanı, bir kurucu çağrıldığında yeni bir kutu açar ve düğmeleri ya da metin kutusunu bu kutunun içine koyar. Seçenekler karıştırılır, ilk seçim kesinleşir ve sonraki tıklamalar yok sayılır. Hazırlanırken Düşünüyor yazısı ve Dur düğmesi gösterilir, Dur yapay zekâ puanlamasını iptal eder. Üst çubuktaki değerler olay sinyalleriyle güncellenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Seçim sonuçlarının biçimi aynı kalmalı, yani seçenek sırası, eminlik dizini ve cevapsız bırakma için boş değer.",
+     "Dinlenen olay adları, yani voltaj değişimi, patron canı ve yapay zekâ durumu, aynı kalmalı.",
+     "Canavarın ruh hâli sınıf adları, yani boşta, konuşma, vurulma ve yenilme, aynı kalmalı, çünkü çizim onları tanır.",
+     "Kullanıcı metni her yerde yalnızca düz yazı olarak eklenmeli, kod olarak eklenmemeli."
+    ],
+    "degisebilir": [
+     "Balon, hasar sayısı ve sarsıntı süreleri, yani ekranda kalma süreleri, serbestçe ayarlanabilir.",
+     "Düğmelerin yazıları, kutuların görünümü ve renkleri serbestçe yeniden tasarlanabilir.",
+     "Metin kutusunun en çok karakter sayısı ve sayaç biçimi serbestçe değiştirilebilir.",
+     "Yol üzerindeki düğümlerin şekilleri ve gösterilen ad eşleşmeleri serbestçe değiştirilebilir.",
+     "Bildirim metinleri, yani uyarılar ve kısa mesajlar, serbestçe yeniden yazılabilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama oyuncunun soruya cevap verebildiği düğmeler ve metin kutusu görünmez.",
+   "terimler": [],
+   "belirsiz": [
+    "Üst çubuktaki durum metinlerinin hangi sırayla güncellendiği bu dosyadan tam anlaşılmıyor.",
+    "Konuşma balonunun konumlarının oyunda nasıl seçildiği bu dosyada görülemedi."
+   ],
+   "okunan": [
+    "oyun/src/js/50-ui.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/60-battle.js",
+   "tur": "dosya",
+   "ozet": "180d33c397aa",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Savaş ve hasar hesabı",
+   "ne": {
+    "cok_basit": "Doğru ya da yanlış cevabın oyuna ne kadar zarar vereceğini hesaplayan parça.",
+    "normal": "Bu parça cevabın doğruluğuna ve emin olma düzeyine göre voltajdan düşülecek miktarı ile kazanılan şarjı hesaplar. Yanlış cevap voltajı düşürür, emin ve doğru cevap canavara çok hasar verir. Hatalar bir defterde tutulup sonra tekrar sorulur."
+   },
+   "nasil": {
+    "normal": "Önce cevap, doğru, kısmen doğru ya da yanlış olarak sınıflanır ve eminlik düzeyiyle birlikte bir tabloda aranır. Bulunan değerler soru ağırlığıyla çarpılıp yuvarlanır, sonra voltajdan düşülür ve şarj eklenir. Bir istasyonda belli sayıda kısa devre olduğunda tamir modu açılır ve alınan hasar yarıya iner."
+   },
+   "sinir": {
+    "sabit": [
+     "Eminlik düzeylerinin sırası, yani en düşük, orta ve en yüksek eminlik, aynı kalmalı, çünkü arayüz bu sıraya göre çalışır.",
+     "Hata defterindeki kayıt biçimi, yani kimlik, kavram, tür, tekrar ve çözüldü alanları, değişirse kayıtlı öğrenme geçmişi bozulur.",
+     "Dışarıya açılan savaş işlevleri, yani hasar hesabı, uygulama, sıfırlama, patron canı ve kısa devre, aynı adlarla kalmalı.",
+     "Voltaj sıfır ile yüz arasında tutulmalı, patron canı da sıfır ile başlangıç değeri arasında kalmalı."
+    ],
+    "degisebilir": [
+     "Her cevap türü için hasar, enerji ve şarj değerleri tablosu, yani sayılar, serbestçe ayarlanabilir.",
+     "Patron canının başlangıç değeri ile her vuruşta düşen miktar serbestçe değiştirilebilir.",
+     "Tamir modunun açılma eşiği ve hasarın yarıya inme oranı serbestçe ayarlanabilir.",
+     "Kısa devre sonrası voltajın dönüş değeri ile temel tur kartlarının metinleri serbestçe değiştirilebilir.",
+     "Yeniden sorulacak kavramların seçim sırası ve adet sınırı serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama oyuncunun voltajı, patron canı ve hata defteri yanlış hesaplanır.",
+   "terimler": [],
+   "belirsiz": [
+    "Kayıt işleminin ne zaman tetiklendiği bu dosyadan yalnızca kısmen anlaşılıyor.",
+    "Tekrar için seçilen soruların oyun ekranında nasıl sunulduğu bu dosyada yer almıyor."
+   ],
+   "okunan": [
+    "oyun/src/js/60-battle.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/70-sim-fotoelektrik.js",
+   "tur": "dosya",
+   "ozet": "f8c44eff1ae0",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Fotoelektrik deney",
+   "ne": {
+    "cok_basit": "Işığın metal yüzeye çarpınca elektron koparıp koparmadığını gösteren küçük deney.",
+    "normal": "Bu parça fotoelektrik olayını canlandıran bir deney kurar: kullanıcı ışığın frekansını, şiddetini ve metali değiştirir. Işık metal için yeterli enerjiyi taşırsa elektron koparır. Eşiğin altında ışık ne kadar parlak olursa olsun elektron çıkmaz."
+   },
+   "nasil": {
+    "normal": "Işığın enerjisi frekansla orantılı olarak hesaplanır ve metalin eşik enerjisiyle karşılaştırılır. Eşik aşılırsa elektronun kazandığı kinetik enerji, ışık enerjisinden eşik enerjisi çıkarılarak bulunur. Elektron sayısı ışığın şiddetiyle artar, ama yalnızca eşik aşıldığında başlar. Kaydırıcılar değiştikçe sayılar ve hareketli ışık noktaları yeniden hesaplanır."
+   },
+   "sinir": {
+    "sabit": [
+     "Eşik kuralı, yani ışık enerjisi metal eşiğine ulaşmadan elektron çıkmaması, değişmemeli.",
+     "Dışarıya açılan kayıt adı ve yöntemler, yani başlatma, yıkma, durum okuma ve durum yazma, aynı kalmalı.",
+     "Başarı koşulunun alan adları, yani eşik altı ve kinetik aralık, ile bitiş sonucunun biçimi aynı kalmalı.",
+     "Sonucun ölçüm alanları, yani frekans, şiddet, metal, kinetik enerji ve elektron sayısı, aynı adlarla kalmalı."
+    ],
+    "degisebilir": [
+     "Metal listesi genişletilebilir ya da her metalin eşik değeri yeniden ayarlanabilir.",
+     "Kaydırıcı aralıkları, adım büyüklükleri ve yazılı ipucu cümlesi serbestçe değiştirilebilir.",
+     "Işık noktalarının hızı, sayısı ve elektronların renkleri serbestçe ayarlanabilir.",
+     "Ekran boyutu, kenar yuvarlaklığı ve kontrol düzeni serbestçe yeniden düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama fotoelektrik deney çalışmaz ve öğrenci sonucu gözlemleyemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu deneyin hangi ders bölümünde kullanıldığı bu dosyadan anlaşılmıyor.",
+    "Ölçümlerin oyunda kaydedilip kaydedilmediği bu dosyada görülemedi."
+   ],
+   "okunan": [
+    "oyun/src/js/70-sim-fotoelektrik.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/70-sim-kafes.js",
+   "tur": "dosya",
+   "ozet": "9512a69974e6",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kristal kafes sayımı",
+   "ne": {
+    "cok_basit": "Atomların kristalde nasıl dizildiğini küp biçiminde gösterip saydıran parça.",
+    "normal": "Bu parça, katı maddelerde atomların düzenli dizilişinin dört biçimini küp üzerinde gösterir: basit, gövde merkezli, yüz merkezli ve elmas. Kullanıcı bir türü seçer, atomları sayar ve tahminini kontrol ettirir."
+   },
+   "nasil": {
+    "normal": "Köşedeki atomlar komşu küplerle paylaşıldığı için her biri hücreye yalnızca bir kısmı kadar katkı verir. Yüzdeki atomlar komşu küplerle paylaşıldığı için yarım katkı verir, gövde içindeki atom ise tamamen o hücreye aittir. Böylece her türün hücre başına atom sayısı, bu katkıların toplamı olarak bulunur ve atomlar sayılarak kontrol edilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Tür adları, yani basit, gövde merkezli, yüz merkezli ve elmas, aynı kalmalı, çünkü dışarıdan bu adlarla seçilir.",
+     "Köşe ve yüz atomlarının pay oranları aynı kalmalı, sayım bu oranlara dayanır.",
+     "Dışarıya açılan kayıt adı ve yöntemler, yani başlatma, durum okuma, durum yazma ve yıkma, aynı kalmalı.",
+     "Sonuç bilgisinin alanları, yani tür ve atom sayısı, aynı adlarla kalmalı."
+    ],
+    "degisebilir": [
+     "Atomların boyutları, renkleri ve küpün görünüm açısı serbestçe ayarlanabilir.",
+     "Ekrandaki açıklama metinleri, ipucu cümlesi ve düğme yazıları serbestçe yeniden yazılabilir.",
+     "Sayma modundaki en büyük tahmin değeri ve ayrıntı çizgilerinin kesikli biçimi serbestçe değiştirilebilir.",
+     "Elmas yapının bağ çizgileri ve gizli arka kenarların görünümü serbestçe yeniden çizilebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama kristal türlerinin atom sayıları yanlış gösterilir ve sayma alıştırması çalışmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu kafes alıştırmasının hangi bölümde kullanıldığı bu dosyada yer almıyor.",
+    "Sayma modunda kontrolden sonra ödül ya da ilerleme kaydının nasıl tutulduğu görülemedi."
+   ],
+   "okunan": [
+    "oyun/src/js/70-sim-kafes.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/70-sim-karacisim.js",
+   "tur": "dosya",
+   "ozet": "c026fb7235ca",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kara cisim ışıması",
+   "ne": {
+    "cok_basit": "Isınan bir cismin hangi renkte ışık yaydığını sıcaklığa göre gösteren deney.",
+    "normal": "Bu parça bir cismin sıcaklığına göre yaydığı ışığın dağılımını grafikte çizer. Sıcaklık kaydırıldıkça en yüksek nokta kısa dalgaya kayar. Klasik kuramın tahmini kesikli kırmızı eğriyle karşılaştırılabilir."
+   },
+   "nasil": {
+    "normal": "Eğri Planck yasasından hesaplanır ve her değer, eğrinin en yüksek noktasına bölünerek ölçeklenir. En yüksek nokta, Wien yasasına göre sıcaklık arttıkça kısa dalgaya kayar. Klasik eğri Rayleigh-Jeans formülüyle çizilir, kısa dalgalarda sınırsız büyür ve bu tahminin tutmadığını gösterir. Köşedeki kutu, o sıcaklıkta cismin yaklaşık rengini gösterir."
+   },
+   "sinir": {
+    "sabit": [
+     "Planck eğrisinin şekli ve Wien yasasıyla bulunan en yüksek nokta, yani fizik formülleri, değişmemeli.",
+     "Dışarıya açılan kayıt adı ve yöntemler, yani başlatma, durum okuma, durum yazma ve yıkma, aynı kalmalı.",
+     "Başarı ve durum alanlarının adları, yani sıcaklık, klasik gösterim ve dalga boyu değeri, aynı kalmalı.",
+     "Sıcaklık sınırları ve değerin kelvin cinsinden sayı olarak verilmesi aynı kalmalı."
+    ],
+    "degisebilir": [
+     "Grafiğin renkleri, çizgi kalınlıkları ve eksen yazıları serbestçe değiştirilebilir.",
+     "Sıcaklık kaydırıcısının adım aralığı ve geçiş animasyonunun süresi serbestçe ayarlanabilir.",
+     "Yardımcı ipucu cümleleri ile erişilebilirlik için verilen grafik etiketleri serbestçe yeniden yazılabilir.",
+     "Renk kutusunun büyüklüğü ve yeri serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama sıcaklığa bağlı ışıma grafiği ve klasik kuramla kıyas ekranı çalışmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu grafiğin hangi görev sırasında gösterildiği bu dosyada yer almıyor.",
+    "Renk kutusu için kullanılan yaklaşık yöntemin doğruluk aralığı dosyadan anlaşılamıyor."
+   ],
+   "okunan": [
+    "oyun/src/js/70-sim-karacisim.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/70-sim-kristal_tur.js",
+   "tur": "dosya",
+   "ozet": "3aaf84aaa2ea",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Katı türlerinde saçılma",
+   "ne": {
+    "cok_basit": "Oyunda katı maddeleri gösterir ve içlerine elektron gönderip geçişini izler.",
+    "normal": "Katı maddelerde elektronun saçılmasını canlandırır. Tek kristal, çok kristalli ve amorf türleri yan yana kutularda gösterir; her kutuya elektron gönderilir, çarpıp yön değiştirdikçe sayılır ve ortalama ilerleme ölçülür."
+   },
+   "nasil": {
+    "normal": "Her elektron soldan sağa, adım adım ilerler; her adımda küçük bir olasılıkla yönü rastgele değişir ve saçılma halkası çıkar. Tek kristalde saçılma nadirdir, amorfta sıktır. Çok kristallide tane sınırını geçmek saçılmayı belirgin biçimde artırır. Serbest yol modunda tüm elektronlar birlikte gönderilir ve tek ile çok kristal karşılaştırılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Parça kendini tek bir adla kaydeder ve oyunun geri kalanı bu ada ile aynı biçimde çağırır.",
+     "Dışarıdan gelen ayarların adları ve anlamları, yani tür modu, otomatik gönderme, başarı koşulu ve başlangıç durumu, aynı kalmalıdır.",
+     "Tamamlandı bildirimindeki başarı bilgisi ve ölçüm alanları, dışarıdaki tarafın beklediği sözdür."
+    ],
+    "degisebilir": [
+     "Çizim biçimi, renkler, kutu boyutları ve elektron izinin uzunluğu içeride serbestçe ayarlanabilir.",
+     "Adım uzunluğu ile canlandırma hızı serbesttir; değiştiğinde elektronların geçiş süresi değişir, başka bir şey etkilenmez.",
+     "Tane yerleşimi, tohum noktaları ve açılar dosyanın başındaki sabitlerde tutulur; değiştirilirse görünüm değişir ama dışarıdan görülen sözler etkilenmez."
+    ]
+   },
+   "kritik_neden": "Bu dosya bozulursa yalnız katı türü simülasyonu etkilenir; başka parça buna dayanmadığı için etki bu dosyayla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu simülasyonun hangi ekranda açıldığını ve hangi ayarlarla çağrıldığını bu dosyadan göremedim.",
+    "Dışarıdan verilen ara yüzün tam sözleşmesini bu dosyadan çıkaramadım; yalnız kullanılan çağrılar görüldü."
+   ],
+   "okunan": [
+    "oyun/src/js/70-sim-kristal_tur.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/70-sim-miller.js",
+   "tur": "dosya",
+   "ozet": "0f3de886e003",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Düzlem ve yön kodları",
+   "ne": {
+    "cok_basit": "Kristaldeki düzlemleri ve yönleri harf ve sayı kodlarıyla adlandıran deney.",
+    "normal": "Bu parça kristaldeki bir düzlemin ya da yönün kısa kodunu, yani Miller kodunu, bulup gösterir. Düzlem modunda kesişimlerin tersleri alınıp tam sayıya çevrilir, yön modunda ise bileşenler sadeleştirilir. Doğru kodu bulunca deney tamamlanır."
+   },
+   "nasil": {
+    "normal": "Düzlem modunda her eksenin kesişim değerinin tersi alınır, sonra bu değerler ortak bir çarpanla tam sayıya çevrilir. En küçük tam sayılara inilince kalan sayılar düzlemin kodunu oluşturur. Yön modunda vektörün bileşenleri ortak bölenlerine bölünerek sadeleştirilir. Düzlemler arası uzaklık, küpün kenarı cinsinden, karekök içeren bir formülle hesaplanır."
+   },
+   "sinir": {
+    "sabit": [
+     "Düzlem ve yön kodlarının biçimi, yani parantez ya da köşeli parantez içinde sayılar, aynı kalmalı.",
+     "Kesişim seçenekleri ile vektör bileşenlerinin aralığı, yani sonsuz dahil seçenekler, aynı kalmalı.",
+     "Hedef karşılaştırmasında kullanılan yazı biçimi ve sonuç alanları, yani düzlem ve yön kodları, aynı kalmalı.",
+     "Üç eksen için sonsuz değerin sıfıra dönüşmesi ve üç eksenin de sonsuz olamaması kuralı değişmemeli."
+    ],
+    "degisebilir": [
+     "Küpün izometrik görünümünün ölçeği, renkleri ve yön okunun boyutu serbestçe değiştirilebilir.",
+     "Adım şeridindeki yazılar, ipucu cümleleri ve animasyon süresi serbestçe ayarlanabilir.",
+     "Düzlem dolgusunun saydamlığı ve eksen etiketlerinin yerleşimi serbestçe yeniden düzenlenebilir.",
+     "Vektör seçim kutularının aralığı, yani hangi bileşen değerlerinin sunulacağı, serbestçe genişletilebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama düzlem ve yön kodlarını hesaplayan alıştırma çalışmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu alıştırmanın hangi bölümde kullanıldığı bu dosyada yer almıyor.",
+    "Hedef kodların öğrenciye nasıl verildiği bu dosyadan görülemedi."
+   ],
+   "okunan": [
+    "oyun/src/js/70-sim-miller.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/80-obs-dusman.js",
+   "tur": "dosya",
+   "ozet": "6fbd343744bd",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Düşman engeli",
+   "ne": {
+    "cok_basit": "Oyunda yolu kapatan düşmanın sorusunu sorup cevabına göre tepki veren parça.",
+    "normal": "Bu parça, yol üzerinde düşman engeli çıktığında öğrenciye kısa bir kavram sorusu sorar ve seçenekleri gösterir. Cevap ve eminlik alındıktan sonra açıklama gösterilir ve sonuç, hasarı uygulayan yere geri verilir."
+   },
+   "nasil": {
+    "normal": "Düşman girildiğinde yol durumu aktif yapılır ve soru, sahne konuşması olarak gösterilir. Hata defterinden gelen düşmanlarda bunu belli eden bir etiket de eklenir. Seçenekler karıştırılmış biçimde sunulur, seçilen seçeneğin doğruluğu ve eminlik düzeyi alınır. Doğru ya da yanlış sonucuna göre açıklama gösterilir ve kullanıcı Devam ile geçer."
+   },
+   "sinir": {
+    "sabit": [
+     "Geri dönen sonuç, yani doğru mu, eminlik, kavram, ağırlık ve notlar alanları, aynı kalmalı, çünkü hasarı uygulayan kısım bunlarla çalışır.",
+     "Düşman kaydının alanları, yani soru, seçenekler, kavram, ağırlık ve ipucu, aynı adlarla kalmalı.",
+     "Engel türü adı, yani düşman, aynı kalmalı, çünkü engel sistemi bu adla tanır.",
+     "Devam düğmesi ya da Enter ile geçilir ve sonuç yalnızca bir kez verilir."
+    ],
+    "degisebilir": [
+     "Açıklama metinlerinin cümleleri ve tepki yazıları serbestçe yeniden yazılabilir.",
+     "Hata defterinden gelen düşmana eklenen etiketin yazısı ve rengi serbestçe değiştirilebilir.",
+     "Tamir modundaki ek ipucunun metni ve gösterilme biçimi serbestçe ayarlanabilir.",
+     "Hata durumunda gösterilen uyarı metni serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa çevredeki parçalar doğrudan etkilenmez, ama yol üzerindeki düşman soruları çalışmaz ve öğrenci cevap veremez.",
+   "terimler": [],
+   "belirsiz": [
+    "Düşman sorularının hangi sırayla seçildiği bu dosyada yer almıyor.",
+    "Hasarın yol tarafında nasıl hesaplandığı bu dosyada görülemedi."
+   ],
+   "okunan": [
+    "oyun/src/js/80-obs-dusman.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/80-obs-hikaye.js",
+   "tur": "dosya",
+   "ozet": "0d136d50ac94",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Hikaye sahnesi",
+   "ne": {
+    "cok_basit": "Oyunda konuşma sahnesi gösterir: kişiler sırayla konuşur, sen de ilerlersin.",
+    "normal": "Konuşmaları sahne olarak tek tek gösterir. Her satır bir kutuda belirir, konuşanın resmi yanda çıkar. Enter'a basarak ya da tıklayarak sıradaki satıra geçilir, basılmazsa kendiliğinden ilerler. Son satırdan sonra Devam düğmesi çıkar."
+   },
+   "nasil": {
+    "normal": "Sahne bir satır listesi alır ve satırları kutu kutu ekler; her konuşma motora da bildirilir. Sahne açılırken kapı animasyonu oynar. Ayarlarda sahneyi atlama seçeneği açıksa hiçbir şey gösterilmeden sonuç hemen döner. Bir aksilik olursa kısa bir uyarı çıkar ve sonuç yanlış döner. Sahne hasar uygulamaz; yalnız bir sonuç bilgisi döndürür."
+   },
+   "sinir": {
+    "sabit": [
+     "Oyunun motoru bu parçayı kendi adıyla kaydedip çağırır; kayıt adı ve çağrı biçimi değişmemeli.",
+     "Sahne bittiğinde döndürdüğü sonuç alanları (doğru, eminlik, kavram, ağırlık, notlar) motorun beklediği biçimde kalmalı."
+    ],
+    "degisebilir": [
+     "Sahnenin görünümü, yazı boyutları, renkler ve resmin yeri serbestçe değiştirilebilir.",
+     "Kutuların birbirini izleme biçimi ve bekleme davranışı içeride serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa hikaye sahneleri açılmaz ya da hata verir; başka parçalar buna dayanmadığı için etki bu sahnelerle sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Sahnenin hangi sırayla ve hangi yerden çağrıldığını göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/80-obs-hikaye.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/80-obs-kavram.js",
+   "tur": "dosya",
+   "ozet": "2bc4e24ebaab",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kavram kapısı",
+   "ne": {
+    "cok_basit": "Bir görev ile küçük bir deneme gösterir, denemeyi çözersen kapı açılır.",
+    "normal": "Bir kavramı deneyerek öğreten kapıdır. Üstte görev, altta bir deneme durur; deneme tamamlanınca kapı açılır ve öğrenilen cümle gösterilir. Takılırsan önce ipucu, sonra geç düğmesi çıkar. Geçersen sonuç yanlış sayılır, konu defterde kalır."
+   },
+   "nasil": {
+    "normal": "Kapı önce görev yazısını ve denemeyi ekrana koyar; deneme bitince bekleme sona erer. Kapı animasyonu oynar, öğrenilen metin gösterilir ve Devam ya da Enter ile çıkılır. Deneme kapatılır ve zamanlayıcılar temizlenir. Bir aksilik olursa uyarı çıkar ve sonuç yanlış döner. Motora yalnız sonuç alanları gider."
+   },
+   "sinir": {
+    "sabit": [
+     "Deneme tamamlandığında haber veren arayüz ve kapının döndürdüğü sonuç alanları aynı kalmalı.",
+     "Kayıt adı kavram olarak kalmalı; motor kavram kapılarını bu adla bulur."
+    ],
+    "degisebilir": [
+     "Görev yazısının yerleşimi, düğmelerin görünümü ve ipucunun yazılışı serbestçe değiştirilebilir.",
+     "Sayaç ve zamanlayıcıların nasıl temizlendiği içeride yeniden düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa kavram kapıları çalışmaz; başka parçalar buna dayanmadığı için etki bu kapılarla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Kapının hangi sırayla çağrıldığını göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/80-obs-kavram.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/80-obs-kopru.js",
+   "tur": "dosya",
+   "ozet": "31cc392513af",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Köprü bulmacası",
+   "ne": {
+    "cok_basit": "Karışık parçaları doğru sıraya dizdiğin bir bulmaca; dizince Kontrol'e basarsın.",
+    "normal": "Adımları doğru sıraya koyma bulmacasıdır. Parçalar karışık gelir; sürükleyerek ya da dokunarak boş yuvalara konur, dokunulan yuva geri alınır. Kontrol'e basınca yanlış yerler kırmızı görünür ve doğru sıra gösterilir."
+   },
+   "nasil": {
+    "normal": "Parçalar her açılışta karıştırılır ve tam doğru sırayla başlamaz. Sürükleme ile dokunma ayrı ayrı tanınır; klavyeyle de yerleştirilir. Tüm yuvalar dolunca Kontrol açılır ve her yuva kendi sırasıyla karşılaştırılır. Tek bir yer bile yanlışsa sonuç yanlış sayılır ve doğru sıra gösterilir. Eminlik sorulmaz, sonuç her zaman kesin sayılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Doğru sıra blokların dizisinden okunur; bu dizinin sırası değişirse bulmacanın çözümü de kayar.",
+     "Kontrol sonucunu döndüren alanlar ve kayıt adı aynı kalmalı; motor bu alanları okur."
+    ],
+    "degisebilir": [
+     "Kartların ve yuvaların görünümü, renkleri ve yanlış cevapta sallanma efekti serbestçe değiştirilebilir.",
+     "Sürükleme ile dokunmayı ayırt eden eşik ve ipucu metninin yerleşimi içeride yeniden düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa köprü bulmacaları açılmaz ya da çözüm yanlış sayılır; başka parçalar buna dayanmadığı için etki bu sahnelerle sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Bulmacanın hangi kayıtlardan geldiğini ve tamir modunun nereden açıldığını göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/80-obs-kopru.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/80-obs-sandik.js",
+   "tur": "dosya",
+   "ozet": "2e6416b4a7f0",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kontrol noktası kartı",
+   "ne": {
+    "cok_basit": "Bilim insanının kartını gösterir, kısa bir özet verir ve oyunu kaydeder.",
+    "normal": "Bir istasyonda kontrol noktası olarak çıkan kart ekranıdır. Bilim insanını tanıtır, yeni makinenin kurulduğunu bildirir ve konunun kısa özetini maddeler halinde sırayla gösterir. En sonda kayıt alındı yazısı çıkar ve oyun kaydedilir."
+   },
+   "nasil": {
+    "normal": "Kartı ve bilim insanının portresini kutu içinde gösterir; kart kayıtlı kartlara eklenir. Makine adını yazar ve istasyonu kurulmuş olarak işaretler. Özet satırlarını kısa aralıklarla tek tek belirtir, sonra kayıt rozetini koyup oyunu kaydeder. Devam ya da Enter ile çıkılır. Sahne hasar uygulamaz; bir aksilik olursa uyarı çıkar."
+   },
+   "sinir": {
+    "sabit": [
+     "Kart listesi ve kurulu istasyon listesi oyun durumunda tutulur; bu listelerin adı ve biçimi değişmemeli.",
+     "Kaydetme işlevi sahnenin sonunda çağrılır ve bu sıra korunmalı."
+    ],
+    "degisebilir": [
+     "Kartın yerleşimi, portre ve yazı stilleri, animasyon zamanlamaları serbestçe değiştirilebilir.",
+     "Makine kutusunun renklendirilmesi ve rozetin görünümü içeride serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa istasyon sonundaki kayıt noktası çalışmaz ve ilerleme kaydedilmeyebilir; başka parçalar buna dayanmadığı için etki bu ekranla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Kart kimliklerinin hangi kaynaktan geldiğini göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/80-obs-sandik.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/80-obs-tahmin.js",
+   "tur": "dosya",
+   "ozet": "76b4040a7414",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Tahmin çukuru",
+   "ne": {
+    "cok_basit": "Bir soru sorar; cevabını seçtikten sonra deneyin sonucunu gözlersin.",
+    "normal": "Bir soruyu seçeneklerle sorar ve ne kadar emin olduğunu sorar. Sonra deney ekranında değerler yavaşça değişir; doğru cevap ve açıklama gösterilir. Doğruysa zıplama, yanlışsa düşme canlandırması oynar."
+   },
+   "nasil": {
+    "normal": "Soru ve seçenekler gösterilir; seçimden sonra eminlik sorulur. Sonra deney başlangıç durumuyla açılır, kısa bir bekleyişten sonra hedef duruma doğru adım adım kaydırılır. Hareketi azaltma tercihi açıksa geçiş tek adımda yapılır. Açıklama ve Devam en sonda çıkar; sonuç seçimin doğruluğuna ve eminliğe göre döner."
+   },
+   "sinir": {
+    "sabit": [
+     "Dönen sonuç alanları (doğru, eminlik, kavram, ağırlık, notlar) motorun beklediği biçimde kalmalı.",
+     "Deney durumlarındaki sayısal değerler başlangıç ve hedef durumda aynı adlarla verilmeli; adlar uyuşmazsa kaydırma yapılamaz."
+    ],
+    "degisebilir": [
+     "Soru ve seçeneklerin yerleşimi, düğmelerin görünümü ve açıklama kutusunun biçimi serbestçe değiştirilebilir.",
+     "Değerlerin kaydırılma adımlarının sayısı ve aralığı içeride yeniden ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa tahmin çukurları açılmaz ya da seçim yanlış değerlendirilir; başka parçalar buna dayanmadığı için etki bu çukurlarla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Çukurun hangi sırayla çağrıldığını göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/80-obs-tahmin.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/80-obs-tuzak.js",
+   "tur": "dosya",
+   "ozet": "3b1c2ab09ec6",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Hatalı parçayı bulma",
+   "ne": {
+    "cok_basit": "Yanlış bir iddianın hangi parçasının yanlış olduğunu bulursun.",
+    "normal": "Bir yanlış iddia, parçalara bölünmüş halde ekrana gelir. Hatalı parçaya dokunulur ya da klavyedeki numarasına basılır, sonra eminlik seçilir. Doğruysa düzeltilmiş cümle çıkar; yanlışsa hatalı parça vurgulanır ve doğrusu yazılır."
+   },
+   "nasil": {
+    "normal": "Anlatıcı iddiayı söyler ve parçalar düğme olarak dizilir; klavyede tuşla da seçilebilir. Seçimden sonra eminlik sorulur ve sonuç hesaplanır. Doğruysa olumlu, yanlışsa olumsuz bir canlandırma oynar. Tamir modunda ipucu da gösterilir. Bir aksilik olursa uyarı çıkar ve sonuç yanlış döner."
+   },
+   "sinir": {
+    "sabit": [
+     "Seçilen parçanın sırası ile hatalı parçanın sırası karşılaştırılır; parça sıralaması değişirse sonuç yanlış hesaplanır.",
+     "Sonuç alanları (doğru, eminlik, kavram, ağırlık, notlar) motorun beklediği biçimde kalmalı."
+    ],
+    "degisebilir": [
+     "Parçaların düzeni, düğmelerin renkleri ve vurgu biçimi serbestçe değiştirilebilir.",
+     "Düzeltme ve açıklama kutularının yazılış biçimi içeride serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa tuzak sahneleri çalışmaz ya da yanlış seçim doğru sayılır; başka parçalar buna dayanmadığı için etki bu sahnelerle sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Tuzağın hangi sırayla çağrıldığını göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/80-obs-tuzak.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/85-obs-patron.js",
+   "tur": "dosya",
+   "ozet": "db56081fce47",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Canavarla son dövüş",
+   "ne": {
+    "cok_basit": "Canavarla birkaç soru üzerinden dövüşürsün; doğru cevaplar canavara vurur.",
+    "normal": "Bir istasyonun son dövüşüdür; canavar aşamalı sorular sorar. Yanlışta ikinci bir soru gelir. Açık cevaplar Claude ile puanlanır, Claude yoksa çoktan seçmeliye geçilir. Her aşama canavara zarar verir, yanlış cevap da sana zarar verebilir."
+   },
+   "nasil": {
+    "normal": "Her aşamada soru gelir; açık soruda cevap yazılır, eminlik sorulur ve Claude cevabı yüzde olarak puanlar. Oran tam, kısmi ya da yanlış sayılır ve yanlışta ikinci soru açılır. Sonuçlar savaş sistemine gider; aşama sonunda canavar zarar görür. Voltaj tükenirse dövüş erken biter. Claude kapalıysa çoktan seçmeliye geçilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Her aşamanın ana soru ile yedek çoktan seçmeli soru çifti aynı yapıda kalmalı; veri bu düzenle okunur.",
+     "Sonuç alanları ve yüzde puan biçimi (doğruluk, eminlik, kavram) değişmemeli; savaş sistemi bunları bekler."
+    ],
+    "degisebilir": [
+     "Canavarın konuşma metinleri, ara ekranın yerleşimi ve düğmelerin görünümü serbestçe değiştirilebilir.",
+     "Bekleme ekranındaki mesajların yazılışı ve ara animasyonlar içeride serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa son dövüşler açılmaz ya da hasar yanlış hesaplanır; başka parçalar buna dayanmadığı için etki bu dövüşle sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Dövüşün hangi sırayla çağrıldığını göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/85-obs-patron.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/90-data-s01.js",
+   "tur": "dosya",
+   "ozet": "eb93ca4c2e5e",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Birinci istasyonun verisi",
+   "ne": {
+    "cok_basit": "Birinci istasyonun konuşmalarını, sorularını ve bulmacalarını bir arada tutar.",
+    "normal": "Birinci istasyonun bütün içeriğini toplar: adı, makinesi, konusu ve sırayla gelecek engeller. Engeller konuşma, kapı, tahmin, tuzak, köprü, dövüş ve sandık türündedir. Tekrar soruları ve temel kartlar da burada durur."
+   },
+   "nasil": {
+    "normal": "Bu veri, oyun bu veriyi okuyarak istasyonu kurar. Her engelin türü, sorusu ve seçenekleri burada tanımlanır; davranışı ayrı işleyiciler yapar. Sorularda doğru seçenek işaretlenir ve her seçeneğin kısa açıklaması yazılır. Kavramlar her engelde bir kimlikle bağlanır."
+   },
+   "sinir": {
+    "sabit": [
+     "Engellerin listedeki sırası oyunun akışını belirler; sırayı değiştirmek akışı değiştirir.",
+     "İstasyon kaydının alan adları (kimlik, sıra, ad, makine, renk, engeller ve tekrar havuzu) aynı kalmalı; başka parçalar bu adlara göre okur."
+    ],
+    "degisebilir": [
+     "Soruların ve seçeneklerin yazılışı, açıklama cümlelerinin tonu ve konuşma metinleri serbestçe değiştirilebilir.",
+     "İstasyonun rengi, makine adı ve konu cümlesi, anlam değişmediği sürece serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu veri bozulursa birinci istasyon hiç kurulamaz ya da eksik açılır; başka istasyonlar bu kayda dayanmadığı için etki yalnız bu istasyonla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Tekrar havuzunun oyun içinde nasıl seçildiğini göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/90-data-s01.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/90-data-s02.js",
+   "tur": "dosya",
+   "ozet": "aefc3bedb814",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "İkinci istasyonun verisi",
+   "ne": {
+    "cok_basit": "İkinci istasyonun konuşmalarını, sorularını ve kesim bulmacalarını bir arada tutar.",
+    "normal": "İkinci istasyonun içeriğini toplar: adı, makinesi, konusu ve sırayla gelecek engeller. Engeller konuşma, kapı, kusur düşmanı, tahmin, tuzak, köprü, dövüş ve sandık türündedir. Kristal düzlemlerini anlatan sorular da burada durur."
+   },
+   "nasil": {
+    "normal": "Oyun bu veriyi okuyarak istasyonu kurar. Her engelin türü, sorusu ve seçenekleri burada tanımlanır; davranışı ayrı işleyiciler yapar. Sorularda doğru seçenek işaretlenir ve her seçeneğe kısa bir açıklama yazılır. Açık sorularda cevabın dayanacağı anahtar fikirler ile yanlış kavramlar da listelenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Her engelin kimliği, türü ve doğru seçenek bilgisi motorun okuduğu alanlardır; bu adlar ve biçimler değişmemeli.",
+     "İstasyon kaydının alan adları ile tekrar havuzunun yapısı aynı kalmalı; başka parçalar bu yapıya göre okur."
+    ],
+    "degisebilir": [
+     "Soruların, seçeneklerin ve açıklama cümlelerinin yazılışı serbestçe düzenlenebilir.",
+     "İstasyonun rengi, makine adı ve konu cümlesi anlam değişmediği sürece serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu veri bozulursa ikinci istasyon hiç kurulamaz ya da eksik açılır; başka istasyonlar bu kayda dayanmadığı için etki yalnız bu istasyonla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Tekrar havuzunun oyun içinde nasıl seçildiğini göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/90-data-s02.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/90-data-s03.js",
+   "tur": "dosya",
+   "ozet": "3ffa87503042",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Işık test odasının verisi",
+   "ne": {
+    "cok_basit": "Işık test odası adlı istasyonun konuşmalarını ve sorularını tutar.",
+    "normal": "Işık test odası istasyonunun içeriğini toplar: adı, makinesi, konusu ve engeller. Engeller konuşma, kapı, kusur düşmanı, tahmin, tuzak, köprü, dövüş ve sandık türündedir. Işığın davranışını anlatan sorular da burada durur."
+   },
+   "nasil": {
+    "normal": "Oyun bu veriyi okuyarak istasyonu kurar. Her engelin türü, sorusu ve seçenekleri burada tanımlanır; davranışı ayrı işleyiciler yapar. Sorularda doğru seçenek işaretlenir ve her seçeneğe kısa bir açıklama yazılır. Açık sorularda cevabın dayanacağı anahtar fikirler ile yanlış kavramlar da listelenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Her engelin kimliği, türü ve doğru seçenek bilgisi motorun okuduğu alanlardır; bu adlar ve biçimler değişmemeli.",
+     "Deney engellerinde başlangıç ve hedef değerleri aynı anahtarlarla verilmeli; anahtarlar uyuşmazsa geçiş yapılamaz."
+    ],
+    "degisebilir": [
+     "Soruların, seçeneklerin ve açıklamaların yazılışı serbestçe düzenlenebilir.",
+     "Konuşma metinleri, istasyonun rengi ve konu cümlesi anlam bozulmadığı sürece değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu veri bozulursa ışık test odası hiç kurulamaz ya da eksik açılır; başka istasyonlar bu kayda dayanmadığı için etki yalnız bu istasyonla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Tekrar havuzunun oyun içinde nasıl seçildiğini göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/90-data-s03.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/95-runner-b.js",
+   "tur": "dosya",
+   "ozet": "ecc90b86ca66",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Koşu sahnesi yardımcıları",
+   "ne": {
+    "cok_basit": "Oyun ekranına çizim yapan ve üstüne yazı katmanları koyan yardımcı parçadır.",
+    "normal": "Koşu sahnesinin görünümüne yardım eden parçadır: arka plan, koşan kişi, engel ve parçacıkları çizer. Patron paneli, konuşma balonu, hasar sayıları ve duraklatma menüsünü ekran üstünde ayrı katmanlar olarak açar."
+   },
+   "nasil": {
+    "normal": "Görsel sanat hazır değilse basit şekillerle sahte bir dünya çizilir. Renkler oyunun renk tanımlarından okunur, bulunamazsa yedek renk kullanılır. Patron paneli sağdan kayarak girer ve çıkar. Duraklatma menüsü ayrı bir pencerede, o da yoksa yedek bir kutuda açılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Koşu motoru bu parçadaki işlevleri çalışma anında adıyla çağırır; işlev adları ve parametre sırası aynı kalmalı.",
+     "Patron panelinin kimliği başka parçalarca bulunur ve aynı kalmalı."
+    ],
+    "degisebilir": [
+     "Parçacıkların biçimi, hasar sayılarının boyutu ve renkleri serbestçe değiştirilebilir.",
+     "Sahte dünyanın ızgara çizgileri ve zemin deseni içeride serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa koşu sahnesi görünmez ya da patron paneli açılmaz; başka parçalar buna dayanmadığı için etki yalnız görünüm katmanlarıyla sınırlı kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu işlevlerin hangi sırayla çağrıldığını göremedim."
+   ],
+   "okunan": [
+    "oyun/src/js/95-runner-b.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/95-runner.js",
+   "tur": "dosya",
+   "ozet": "2a45c6af9d68",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Koşu motoru",
+   "ne": {
+    "cok_basit": "Koşuyu yöneten parça: engeller sırayla gelir, karakter yerinde koşar gibi durur.",
+    "normal": "Bu parça istasyonlardaki koşu bölümünü yürütür. Yol ilerler, karakter ekranda yerinde koşar gibi görünür. Önüne bir engel gelince durur, engelin çözülmesini bekler, çözülünce ya da başarısız olunca koşuyu sürdürür."
+   },
+   "nasil": {
+    "normal": "Koşu başlayınca engel akışı sırayla dizilir ve aralarına mesafe konur. Yol önce yavaşlayıp durur, engel çözülünce hızlanarak devam eder. Engelin içeriği ayrı bir işleyiciye verilir; sonucu doğruysa olumlu hareket, yanlışsa olumsuz hareket oynanır ve ilerleme kaydedilir. Voltaj bitince son kontrol noktasına dönülür. Duraklatma ve çıkış koşuyu durdurur."
+   },
+   "sinir": {
+    "sabit": [
+     "Koşu sonucunun tamam ya da çıkış olarak geri dönmesi bu parçada yorumlandığı için aynen kalmalıdır.",
+     "Engel türü adları ve engel işleyicisine verilen bağlam alanları, işleyicilerin beklediği biçimde sabit kalmalıdır.",
+     "Yayımlanan olay adları, istasyonun başlangıç ve bitiş olayları ile engel giriş ve çıkış olayları dinleyenler için sabittir."
+    ],
+    "degisebilir": [
+     "Hız, ekran yüksekliği ve yavaşlama süreleri gibi sabitler koşunun hissini değiştirir; bunlar serbestçe ayarlanabilir.",
+     "Engel türleri arasındaki mesafeler ve hareket süreleri içeride değiştirilebilir; tabloda olmayan tür varsayılan mesafeyle çalışır.",
+     "Çizim ayrıntıları, parçacık efektleri ve sarsıntı gibi görsel öğeler tamamen içeride serbesttir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa istasyonlarda koşu, engel sırası ve ilerleme kaydı durur ya da yanlış ilerler.",
+   "terimler": [
+    "akis"
+   ],
+   "belirsiz": [
+    "Bu dosyaya dayanan bir parça görünmüyor; ana başlatma parçasının bu bağı nasıl kullandığı ayrıca doğrulanmadı."
+   ],
+   "okunan": [
+    "oyun/src/js/95-runner.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/js/99-main.js",
+   "tur": "dosya",
+   "ozet": "d52cdba5e1d0",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Açılış ve istasyon başlatma",
+   "ne": {
+    "cok_basit": "Oyunu açınca her şeyi sırayla hazırlar ve karşılama penceresini gösterir.",
+    "normal": "Bu parça oyunun açılış sırasını yönetir: kayıtlı ilerleme yüklenir, karşılama penceresi açılır. Her istasyon başlamadan veri kontrol edilir ve koşu bitince harita yeniden açılır."
+   },
+   "nasil": {
+    "normal": "Açılışta kayıtlı veri okunur, ardından yapay zekâ asistanı bağlantısı arka planda denenir; bağlantı yoksa oyun kendi yedek davranışıyla çalışır. Karşılama penceresindeki düğme haritayı açar. Süre sayacı her saniye ilerler, sekme gizlenince durur. Koşu tamamlanır ve bütün istasyonlar bitmişse son bölüm başlar; değilse harita açılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Koşu başlatma sonucunun tamam ya da çıkış olarak dönmesi bu parçada yorumlandığı için sabit kalmalıdır.",
+     "İstasyon engel sayısı ve tip sırası kontrolü, istasyon verisindeki sırayla birebir uyumlu kalmalıdır; sıra değişirse uyarı çıkar.",
+     "Kayıtlı ilerleme ve süre alanlarının adları, eski kayıtlarla eşleşmesi için değişmeden kalmalıdır."
+    ],
+    "degisebilir": [
+     "Karşılama penceresinin metinleri, düğmelerin adları ve sırası serbestçe değiştirilebilir.",
+     "Süre sayacının kayıt aralığı ve son bölümün başlatılma biçimi içeride değiştirilebilir.",
+     "Toplam istasyon sayısı ve sıra listesi birlikte yeniden düzenlenebilir; ancak ikisi aynı anda güncellenmelidir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa oyunun açılışı ve istasyon başlatma durur; ilerleme ve süre kaydı da etkilenir.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu parçaya dayanan başka bir parça açıkça görünmüyor; kullanım yeri tam bilinmiyor."
+   ],
+   "okunan": [
+    "oyun/src/js/99-main.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/styles/.gitkeep",
+   "tur": "dosya",
+   "ozet": "e3b0c44298fc",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Boş yer tutucu",
+   "ne": {
+    "cok_basit": "Boş bir yer tutucu dosya; stil klasörünün kaydedilmesini sağlar.",
+    "normal": "Bu dosyanın içeriği yoktur. Boş bir klasör kaydedilemediği için stil klasörünün depoda görünmesini bu boş yer tutucu sağlar. Dosyada kod ya da ayar bulunmaz."
+   },
+   "nasil": {
+    "normal": "Dosya bir kural ya da işlev taşımaz; kendi başına hiçbir şey yapmaz. Stil dosyaları klasöre eklenince yer tutucu gereksizleşir ve silinebilir. Bu dosya silinse bile başka bir parça bozulmaz; yalnızca boş klasör depoda görünmez hâle gelir."
+   },
+   "sinir": {
+    "sabit": [
+     "Klasörün yeri değişirse bu yer tutucu da birlikte taşınmalıdır."
+    ],
+    "degisebilir": [
+     "Klasöre stil dosyaları eklenince bu yer tutucu serbestçe silinebilir.",
+     "Yer tutucuya ileride not ya da başka bir içerik konabilir; bu başka bir parçayı etkilemez."
+    ]
+   },
+   "kritik_neden": "Bu dosya silinirse yalnızca boş stil klasörü depoda görünmez hâle gelir; başka bir parça bozulmaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/src/styles/.gitkeep"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/styles/00-tokens.css",
+   "tur": "dosya",
+   "ozet": "12c660511d75",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Renk ve biçim ayarları",
+   "ne": {
+    "cok_basit": "Oyunun renklerini, köşelerini ve yazı boyutlarını tek yerde tutan ayar parçası.",
+    "normal": "Bu parça oyunun bütün renklerini, kenar kalınlıklarını, köşe yuvarlaklarını ve yazı tiplerini adlandırılmış değerler olarak tutar. Diğer parçalar görünüş değerlerini buradan alır. Sayfanın zemininde hafif bir nokta deseni de burada tanımlanır."
+   },
+   "nasil": {
+    "normal": "Parça önce zemin, panel, metin ve vurgu renklerini adlandırır ve durum renklerini ekler. Ardından kenar kalınlığı, köşe yuvarlaklığı, gölge biçimleri, parıltı ve yazı tipi ailelerini tanımlar. Son olarak sayfanın zeminini ve odak çerçevesinin biçimini belirler. Diğer parçalar renkleri yalnızca bu adlardan alır ve kendi renk tanımını yazmaz."
+   },
+   "sinir": {
+    "sabit": [
+     "Değişken adları, bu parçayı izleyen biçim parçalarında aynen kullanıldığı için değiştirilmemeli.",
+     "İkincil metin rengi, panel üstünde yeterli kontrast sağlayacak kadar açık kalmalı.",
+     "Yuvarlaklık ve kenar kalınlığı değerleri, bileşenlerin ortak biçimini taşıdığı için tek yerden yönetilmeli."
+    ],
+    "degisebilir": [
+     "Renk tonları, bu adlar aynı kaldığı sürece serbestçe değiştirilebilir.",
+     "Canavar çizimine ait renkler ayrı bir grupta olduğu için kendi değerleri içinde yeniden ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu ayarlar bozulursa diğer biçim parçaları buradaki adları bulamaz ve oyunun renkleri ile köşeleri birden bozulur.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu renklerin oyunun hangi ekranında nasıl göründüğü bu parçadan çıkarılamadı; görünüm anlatımı yalnızca tanımlardan yazıldı."
+   ],
+   "okunan": [
+    "oyun/src/styles/00-tokens.css"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/styles/10-layout.css",
+   "tur": "dosya",
+   "ozet": "65aadf05a5f2",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Ekran düzeni",
+   "ne": {
+    "cok_basit": "Ekranı üstte bilgi çubuğu, ortada oyun alanı ve altta alt panel olarak dizer.",
+    "normal": "Bu parça ekranın iskeletini kurar: en üstte bilgi çubuğu, ardından oyun alanı ve en altta alt panel. Sayfa kaydırılmaz; her şey ekran yüksekliğine sığacak biçimde düzenlenir. Dar ekranlarda bilgiler gizlenir, kısa ekranlarda oyun alanı kalan yeri alır."
+   },
+   "nasil": {
+    "normal": "Parça önce sayfanın kaydırılmasını kapatır ve her şeyi ekran yüksekliğine göre yerleştirir. Alt panel ekran yüksekliğinin yaklaşık üçte birini alır; oyun alanı kalan boşluğu doldurur. Dar ekranlarda voltaj ölçüsü daralır ve ek bilgi alanı gizlenir. Kısa ekranlarda oyun alanının en düşük yüksekliği kaldırılır, alan kalan yeri alır."
+   },
+   "sinir": {
+    "sabit": [
+     "Sayfanın kaydırılmama kuralı korunmalı; aksi halde alt panel ve oyun alanı ekran dışına taşar.",
+     "Üst çubuk, oyun alanı ve alt panel sırası ekranda yukarıdan aşağıya düzenlendiği için değişmemeli.",
+     "Düğme ve bilgi alanlarının asgari ölçüleri, dokunmatik kullanım için korunmalı."
+    ],
+    "degisebilir": [
+     "Ekran genişliğine göre belirlenen daralma noktaları, görünüş bozulmadan ayarlanabilir.",
+     "Üst çubuğun ve alt panelin yükseklik değerleri, ekrana sığdıkları sürece yeniden seçilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa üst çubuk, oyun alanı ve alt panel ekran dışına taşabilir; başka parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Oyun alanının içinde hangi çizimin çalıştığını bu belgeden çıkaramadım; yalnızca ekran düzeni yazıldı."
+   ],
+   "okunan": [
+    "oyun/src/styles/10-layout.css"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/styles/20-components.css",
+   "tur": "dosya",
+   "ozet": "f43b6507ddc8",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Hazır görünüm parçaları",
+   "ne": {
+    "cok_basit": "Oyundaki kutu, düğme, balon ve kart gibi hazır parçaların görünüşünü tanımlar.",
+    "normal": "Bu parça oyunun yeniden kullanılan parçalarını tanımlar: panel, düğme, seçenek, metin kutusu, konuşma balonu, bilim insanı kartı, bildirim ve voltaj çubuğu. Her biri renk ve kenar değerlerini ortak ayarlardan alır."
+   },
+   "nasil": {
+    "normal": "Parça önce panel ve düğme gibi temel kutuları tanımlar; basılan düğme hafifçe kayar. Ardından seçenek, eminlik düğmeleri ve metin kutusu gelir; en sonda balon, kart, bildirim ve pencere sıralanır. Seçili, doğru ve yanlış durumları renk ve parıltı değişimiyle gösterilir; kilitli kart soluk görünür."
+   },
+   "sinir": {
+    "sabit": [
+     "Düğme ve seçenek bileşenlerinin asgari ölçüleri, dokunma alanlarının küçülmemesi için korunmalı.",
+     "Doğru ve yanlış cevap renkleri, oyuncunun sonucu anlaması için her durumda aynı anlamda kalmalı.",
+     "Konuşma balonunun konumu ve kuyruğu, konuşanın hangi tarafta durduğunu gösterdiği için korunmalı."
+    ],
+    "degisebilir": [
+     "Kartların ve kutuların gölge derinliği, aynı renk dili içinde serbestçe ayarlanabilir.",
+     "Düşünme noktalarının hareket hızı, görünüşü bozmadan yeniden ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa düğme, kart ve balon gibi görünüm parçaları eksik ya da bozuk görünür; diğer parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu parçanın hangi ekranda hangi bileşeni kullandığını bu belgeden çıkaramadım; görünüm anlatımı yalnızca tanımlardan yazıldı."
+   ],
+   "okunan": [
+    "oyun/src/styles/20-components.css"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/src/styles/30-runway-overlay.css",
+   "tur": "dosya",
+   "ozet": "3c1432c3f972",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Patron ve afiş katmanı",
+   "ne": {
+    "cok_basit": "Ekranın üstüne binen patron paneli, hasar sayıları ve afiş gibi katmanı ayarlar.",
+    "normal": "Bu parça, ana alanın üstünde duran tüm katmanı tanımlar: patron paneli, düşen hasar sayıları ve sarsılma hareketi. Katman tıklamaları yalnızca panel düğmelerine geçirir. Hareket azaltma tercihi açıksa animasyonlar neredeyse anında biter."
+   },
+   "nasil": {
+    "normal": "Katman ekranın üstüne yerleşen saydam bir tabakadır; yalnızca patron paneli tıklanabilir. Patron paneli sağda kayarak gelir ve alt kısmında sağlık çubuğu bulunur. Hasar sayıları vurulunca belirir, yukarı süzülüp kaybolur; istasyon afişi kısa süre ortada belirir. Sarsıntı ve canavarın hal çizimleri de bu katmanın içinde yer alır."
+   },
+   "sinir": {
+    "sabit": [
+     "Katmanın tıklamaya kapalı olması, alttaki alanın tıklamalarını kesmemek için korunmalı.",
+     "Patron paneli ve afiş öğelerinin kimlik adları, bu öğeleri adıyla bulan kodun çalışması için aynen kalmalı.",
+     "Canavar çizimindeki renk sınıfları, aynı çizimin farklı hallerinde ortak anlam taşıdığı için korunmalı."
+    ],
+    "degisebilir": [
+     "Sarsıntı ve hasar sayısı animasyonlarının süreleri, görünüşü bozmadan yeniden ayarlanabilir.",
+     "Patron panelinin genişlik ve yükseklik oranı, ekran boyutlarına göre serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu katman bozulursa patron paneli, hasar sayıları ve afiş görünmez ya da tıklanmaz hale gelir; başka parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Hasar sayısının ve afişin hangi anda tetiklendiği bu parçadan görülemedi; yalnızca görünüş tanımları yazıldı."
+   ],
+   "okunan": [
+    "oyun/src/styles/30-runway-overlay.css"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  }
+ ]
+}

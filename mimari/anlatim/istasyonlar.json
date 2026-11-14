@@ -1,0 +1,1241 @@
+{
+ "surum": 1,
+ "bolum": "istasyonlar",
+ "dil": "tr",
+ "kayitlar": [
+  {
+   "kimlik": "b:istasyonlar",
+   "tur": "birim",
+   "ozet": "f954d01eecb2",
+   "iskelet": "9285ca9daf9d",
+   "baslik": "İstasyon tasarımları",
+   "ne": {
+    "cok_basit": "Oyunun her durağı bir fizik konusunu öğretir ve durakların hepsi kolaydan zora doğru sıralanır.",
+    "basit": "Her durak oyuncuya tek bir fizik konusunu öğretir: önce konuyu gösteren engeller gelir, sonra konuyu tek kararda sınayan bir büyük düşman çıkar. Konular kristalden başlayıp ölçüme ve belirsizliğe uzanır.",
+    "normal": "Bu bölüm oyunun öğrettiği konuları duraklara böler. Her durağın tasarım belgesi konunun hangi sırayla anlatılacağını, hangi engellerin çıkacağını ve sonda hangi büyük düşmanın bilgiyi tek kararda sınayacağını kararlaştırır. Konular kristal yapıdan, ışığa, atoma, dalgaya, tünellemeye, ölçüme ve belirsizlik ilkesine doğru ilerler.",
+    "gelismis": "Bu bölüm oyunun fizik konularını istasyonlara böler ve her istasyonun öğretim akışını belirler. Her istasyon belgesi tek bir konuyu ele alır: önce engeller kavramı küçük parçalarla gösterir, en sonda bir patron o parçaları tek bir kararda sınar. Konu sırası kristal katılardan başlar; kesim düzlemleri, ışığın paketli yapısı, atom kararlılığı, dalga denklemi, tünelleme, ölçüm kuralları ve belirsizlik ilkesi sırayla gelir. Bu belgeler oyunun engel ve veri belgelerine konu içeriği sağlar.",
+    "detayli": "Bu bölüm oyunun fizik konularını istasyonlara böler ve her istasyonun öğretim akışını kararlaştırır. Her istasyon belgesi tek bir konuyu ele alır: önce engeller kavramı küçük parçalarla gösterir, en sonda bir patron o parçaları tek bir kararda sınar. Kristal fırınında düzenli ve düzensiz katılar ile tane sınırlarında saçılma, kesim testeresinde birim hücre ve düzlemler, ışık odasında ısıdan yayılan ışımanın çıkmazı ve ışığın paketli yapısı işlenir. Atom mikroskobunda enerji seviyeleri, dalga odasında Schrödinger denklemi ve kuantalaşma, tünel istasyonunda yansıma ve sızma, ölçüm laboratuvarında postülatlar, kalibrasyon odasında belirsizlik ilkesi vardır."
+   },
+   "mantik": {
+    "cok_basit": "Konular küçük duraklara bölününce her biri tek başına öğrenilir ve sonrakine temel olur.",
+    "basit": "Büyük bir konu bir anda öğrenilmez. Küçük duraklara bölünce oyuncu her seferinde tek konuya odaklanır ve öğrendiğini hemen sınar.",
+    "normal": "Fizik konuları birbirine dayandığı için tek parça anlatılmaz; her istasyon tek bir konuya odaklanır. Engellerle parça parça göstermek, sonunda patronla toplu sınamak öğrenmeyi sınamaya çevirir. Konular tek bir sırada dizildiği için oyuncu sonraki durağa önceki bilgiyle hazır girer.",
+    "gelismis": "Konular birbirine dayandığı için hepsini aynı anda anlatmak yerine her istasyon tek bir kavrama odaklanır. Önce parçaları engellerle göstermek, sonra patronla topluca sormak öğrenileni bir karara dönüştürür. Her belgenin aynı kalıbı izlemesi, oyunun engel işleyicilerinin tek kalıptan beslenmesini sağlar. Konu içeriğinin tasarım belgesinde durması, oyun verisinin metinleri belgeden aynen alabilmesini sağlar.",
+    "detayli": "Konular birbirine dayandığı için hepsini aynı anda anlatmak yerine her istasyon tek bir kavrama odaklanır; böylece oyuncu her adımda ne öğrendiğini bilir. Önce parçaları engellerle göstermek, sonra patronla topluca sormak öğrenileni bir karara dönüştürür ve eminlikle birlikte ölçülür. Her belgenin aynı kalıbı izlemesi, oyunun engel işleyicilerinin tek kalıptan beslenmesini sağlar; yeni istasyon eklemek yalnız yeni bir konu belgesi yazmaya iner. Konu içeriğinin tasarım belgesinde durması, oyun verisinin metinleri belgeden aynen alabilmesini ve oyun ile belgenin aynı sözleri söylemesini sağlar."
+   },
+   "nasil": {
+    "basit": "Oyuncu bir durağa girince önce konuyu gösteren küçük engellerle karşılaşır. En sonda büyük düşman çıkar ve öğrenilenleri tek bir kararda sınar. Sonra sıradaki durak başlar.",
+    "normal": "Her durak aynı kalıpla ilerler: önce konunun temel parçaları engellerle gösterilir, sonra bu parçalar tek bir büyük düşmanda toplanıp sınanır. Duraklar birbirine konu sırasıyla bağlanır; öncekinde öğrenilen kavram sonrakinin dayanağı olur. Örneğin ışık paketli yapısını anlatan durak atom düzeylerini anlatana, dalga denklemi tünelleme ve ölçüm durağına yol açar.",
+    "gelismis": "Her istasyon belgesi aynı kalıbı izler: önce kavramın temel parçaları engellerle verilir, en sonda patron bu parçaları tek bir kararda ister. Kristal fırını düzenli ve düzensiz katıları ve tane sınırlarında saçılmayı, tek kristal çekmeyi anlatır. Kesim testeresi birim hücreyi, komşuluğu ve düzlem adlandırmayı işler. Işık odası klasik çıkmazı ve paketli ışığı, atom mikroskobu seviye kararlılığını, dalga odası denklemi ve kuantalaşmayı, tünel istasyonu yansıma ile sızmayı, ölçüm laboratuvarı postülatları, kalibrasyon odası belirsizlik ilkesini ele alır.",
+    "detayli": "Her istasyon belgesi aynı kalıbı izler: önce kavramın temel parçaları engellerle verilir, en sonda patron bu parçaları tek bir kararda ister. Kristal fırınında oyuncu düzenli ve düzensiz katıları görür, tane sınırlarının elektronu nasıl saçtığını öğrenir, tek kristal çekmeyi sorgulayan canavarla karşılaşır. Kesim testeresinde birim hücredeki atom sayısı ve komşuluk, düzlem adlandırma ve kesim yönü işlenir, düzlem canavarı bunları tek kararda toplar. Işık odasında ısınan cismin klasik çıkmazı, ışığın paket paket yayılması ve frekansın önemi vardır, Foton Canavarı sınar. Atom mikroskobunda yalnız belirli enerji seviyeleri, en alt seviyenin altına inilemeyeceği ve madde dalgası fikri, patronda atomun neden çökmediği işlenir. Dalga odasında dalga fonksiyonu, sınır koşulu ve kuantalaşma, Kuantum Kedisi patronunda çökme gelir. Tünel istasyonunda dalganın basamakta kısmen yansıması, bariyerde sönümlenip sızması ve geçiş olasılığının kalınlıkla üstel azalması, ölçüm laboratuvarında özdeğer, olasılık ve çökme, kalibrasyon odasında konum ile momentumun birlikte ölçülememesi ve değişme bağıntısı anlatılır."
+   },
+   "detay": {
+    "girdiler": [
+     "Her istasyon belgesi, öğretilecek tek bir fizik konusunu girdi olarak alır.",
+     "Konu sırası, bir önceki istasyonda öğretilen kavramlara dayanır."
+    ],
+    "ciktilar": [
+     "Her belge o istasyonun engellerini ve patronunu, yani öğretim akışını tanımlar.",
+     "Engellerin ve patronun sorduğu konu içeriği oyunun veri belgelerine kaynak olur."
+    ],
+    "degismezler": [
+     "Her istasyon aynı kalıbı izler: önce engeller kavramın parçalarını gösterir, patron hepsini tek kararda sorar.",
+     "İstasyonların konu sırası öncekini dayanak alacak biçimde korunur."
+    ],
+    "kenar": [
+     "Bir istasyonun patronu, o istasyonun engellerinde işlenmeyen bir konuyu sormamalıdır.",
+     "İstasyonlar tek bir konuya odaklandığı için bir kavram iki istasyona yayılmaz."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Her istasyonun engel ve patron kalıbı, oyunun engel işleyicilerinin dayandığı yapıdır.",
+     "İstasyonların konu sırası, sonraki istasyonun önceki kavrama dayanması için korunur.",
+     "Patronun sorduğu şeyler istasyonun engellerinde öğretilenlerle sınırlı kalır."
+    ],
+    "degisebilir": [
+     "Bir engelin anlatım cümleleri, konunun kapsamını değiştirmedikçe serbestçe yeniden yazılabilir.",
+     "Bir istasyondaki canavarın adı ve görünüşü, sorduğu konuya dokunmadan değişebilir."
+    ]
+   },
+   "sorular": [
+    {
+     "soru": "Yeni bir istasyon eklerken hangi şeye dikkat etmelisin?",
+     "yanit": "Konunun önceki istasyonlardaki kavramlara dayanıp dayanmadığına ve engellerle patronun aynı kalıbı izleyip izlemediğine. Kalıp bozulursa engel işleyicileri istasyonu beklendiği gibi işleyemez."
+    },
+    {
+     "soru": "Patron engellerde işlenmeyen bir şey sorarsa ne olur?",
+     "yanit": "Oyuncu öğrenmediği bir şeyle sınanır. Patron engellerin işlediği konuyu tek kararda toplamak için vardır, yeni konu açmak için değil."
+    }
+   ],
+   "kritik_neden": "İstasyon belgeleri yanlış ya da kalıbı bozuk olursa oyuncu yanlış fizik öğrenir ya da patron, engellerde öğretilmeyen bir şeyi sorar.",
+   "terimler": [],
+   "belirsiz": [
+    "İstasyonların oyunda hangi sırayla açıldığı ve oyuncunun istasyonlar arasında serbestçe gezip gezemediği bilinmiyor.",
+    "Her istasyonda kaç engel olduğu ve engellerin sırasının nasıl belirlendiği bilinmiyor."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md",
+   "tur": "dosya",
+   "ozet": "39c22348d358",
+   "iskelet": "2dc5dd4ef8be",
+   "baslik": "Kristal fırını istasyonu",
+   "ne": {
+    "cok_basit": "Oyunun ilk istasyonu: kristal malzemeyi ve tek kristal üretimini öğreten kısım.",
+    "basit": "Oyuncu kristal katıların düzenini ve tek kristal çekmeyi öğrenir, sonunda bir canavarı yener.",
+    "normal": "Bu istasyonda oyuncu önce kristal katıların düzenli ve düzensiz türlerini görür. Ardından tane sınırlarının elektronu nasıl saçtığını öğrenir. Son olarak tek kristal çekme yöntemi üzerine bir canavarla karşılaşır.",
+    "gelismis": "İstasyon, kristal türlerini, tane sınırlarını ve tek kristal çekmeyi sırayla öğreten kapılardan oluşur. Her kapıda bir soru, düşman, tahmin, tuzak ya da köprü bulunur. En sonda kristal fırını canavarı fazlar halinde sorular sorar ve oyuncu doğru cevaplarla onu yener.",
+    "detayli": "Bu istasyon oyuncunun kristal fırında karşılaşacağı her şeyi tek tek tanımlar. Önce hikâye kapısı gelir ve tek kristalin doğuşunu anlatır. Ardından kavram kapıları kristal türlerini ve tane sınırlarını işler, düşmanlar doğru yanıtla yenilir. Tahmin, tuzak ve köprü engelleri elektronun yolunu, yanılgıları ve bilgi sırasını sınar. En sonda canavar, açık uçlu sorularla oyuncuyu sınar ve sandık özet verir."
+   },
+   "mantik": {
+    "cok_basit": "İlk istasyon, oyuncuya kristal bilgisini küçük parçalarla vererek alıştırır.",
+    "basit": "Bilgi tek seferde verilirse kavramlar karışabilir. Bu yüzden her kavram kendi kapısında sınanır.",
+    "normal": "Kavramlar teker teker sınanır, böylece bir kavram anlaşılmadan öbürüne geçilmez. Canavar, öğrenilenleri birleştiren son sınavdır.",
+    "gelismis": "Tane sınırı ve tek kristal gibi kavramlar, birbirini tamamlayan sıralı bir zincir oluşturur. Canavar, bu zincirin tamamını tek bir sınavda toplayarak oyuncunun bütün istasyonu kavrayıp kavramadığını ölçer. Böylece son sınav bir tekrar olarak değil, birleştirme olarak işler.",
+    "detayli": "Oyuncu önce bir hikâyeyle içine çekilir, sonra kavramlar sırayla öğretilir. Kavramlar birbirine dayandığı için sıra önemlidir. Her kapıda seçimin nedeni açıklanır ve yanlış seçeneğin neden yanlış olduğu görünür. Tuzak ve köprü engelleri sık karıştırılan kavramları ayırır. Canavar en sonda tüm istasyonu bir arada kullanan açık uçlu sorularla bitirir."
+   },
+   "nasil": {
+    "basit": "Oyun önce kısa bir hikâye gösterir, sonra kapılara geçer. Her kapıda bir soru ya da engel vardır. Doğru cevap ilerletir, yanlış cevapta açıklama okunur.",
+    "normal": "Oyun önce kısa bir hikâye gösterir. Ardından kavram kapıları sırayla açılır. Düşmanda doğru seçeneği seçmek gerekir, seçimden sonra açıklama okunur. Tahmin engelinde oyuncu bir sonucu tahmin eder, tuzakta yanlış bir iddia düzeltilir ve köprüde kavramlar doğru sıraya konur. En sonda canavar, birkaç aşamada oyuncunun bilgisini ölçer.",
+    "gelismis": "Oyun önce kısa bir hikâye gösterir ve kristal üretiminin nereden geldiğini anlatır. Kavram kapılarında düşmanlar doğru seçeneği seçtirir ve her seçimden sonra nedenini açıklar. Tahmin çukurunda oyuncu serbest yol hakkında tahminde bulunur, simülasyon bunu sınar. Tuzakta yaygın yanılgı düzeltmesiyle gösterilir, köprüde kavramlar doğru sıraya dizilir. En sonda canavar önce seçmeli, sonra açık uçlu sorularla oyuncuyu sınar.",
+    "detayli": "Bu istasyonun akışı, hikâyeden başlayıp kavramlardan geçerek canavara ulaşan doğrusal bir sıradır. Hikâye kapısında kristal çekmenin doğduğu yer ve tek bir telin eriyikten çıkışı anlatılır. Kavram kapısında malzemeler düzen açısından karşılaştırılır, düzen bozuldukça elektron daha çok saçılır. Düşman kapılarında oyuncu doğru seçeneği seçer ve her seçeneğin nedeni açıklanır. Tahmin çukurunda serbest yol için bir tahmin yapılır, tuzakta yaygın bir yanılgı düzeltilir, köprüde bilgi zinciri sıraya dizilir. En sonda canavar önce seçmeli, sonra açık uçlu sorularla oyuncuyu sınar, yenilince sandık açılır ve özet verilir."
+   },
+   "detay": {
+    "girdiler": [
+     "Oyuncunun seçtiği cevaplar ve bu istasyona ait kavram kapıları",
+     "Kristal türleri, tane sınırları ve tek kristal çekme gibi kavramlar"
+    ],
+    "ciktilar": [
+     "Doğru cevaplarla ilerleyen oyuncu ve kazanılan kavramların kayıtlı hali",
+     "Canavarın yenilmesiyle açılan sandık ve bilgi özeti"
+    ],
+    "degismezler": [
+     "Hikâye, kavram ve sınav sıraları bu istasyonun kendi içinde aynı kalır.",
+     "Her soruda doğru ve yanlış seçenekler ile açıklamalar birlikte yer alır.",
+     "Canavar önce seçmeli, sonra açık uçlu sorularla ilerler."
+    ],
+    "kenar": [
+     "Yanlış cevapta açıklama okunur ve oyuncu ilerlemeye devam eder.",
+     "Açık uçlu soruda kullanılacak yedek bir seçmeli soru da tanımlıdır."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kavram adları, engellerin ve soruların bağlandığı adlardır, değişirse bağlantılar kopar.",
+     "Her soruda doğru seçeneğin işaretli kalması ve açıklamanın doğru seçenekle eşleşmesi gerekir.",
+     "Canavarın faz sırası, seçmeli ve açık uçlu soru sırası sabittir.",
+     "Sandığın özet alanları ve kontrol noktası işareti, oyunun ilerlemesini takip eder."
+    ],
+    "degisebilir": [
+     "Canavarın giriş cümlesinin ve sandığın özet satırlarının sözcük seçimi, oyunun akışını bozmadan değişebilir."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa kristal kavramları yanlış sırayla öğretilir ve sınav sorusu bilgiyle eşleşmez.",
+   "terimler": [],
+   "belirsiz": [
+    "Simülasyonların iç işleyişi bu istasyonun veri kısmında yazmaz, yalnızca hangi simülasyonun çağrıldığı yazılıdır."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::Engeller (bu sırada)",
+   "tur": "alt",
+   "ozet": "e8f3ab5f8fe9",
+   "iskelet": "8f66da6461e7",
+   "ne": {
+    "cok_basit": "Bu kısım, oyuncunun istasyonda karşılaştığı engelleri sırayla anlatır.",
+    "normal": "Engeller, hikâye kapısından başlayıp canavara kadar uzanan sıralı kapılardır. Her kapı bir soru, bir tahmin, bir tuzak ya da bir köprü olarak tasarlanmıştır. Sıranın korunması, kavramların birbirine bağlı olduğunu gösterir."
+   },
+   "kritik_neden": "Engel sırası bozulursa kavramlar birbirine dayanmadan öğretilir ve oyuncu bilgi boşluğuyla canavara gelir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::Temel tur (`temelTur`)",
+   "tur": "alt",
+   "ozet": "bfd775ffcbda",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "İstasyonun temel turunda, kısa kartlar ve bir simülasyon gösterilir.",
+    "normal": "Temel tur, oyuncuya kristal nedir, neden saçılma ve CZ nedir sorularını kartlarla anlatır. Her kart kısa bir başlık ve bir cümleden oluşur."
+   },
+   "kritik_neden": "Temel tur bozulursa kristalin temel tanımı eksik kalır ve sonraki sorular boşlukta görünür.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o01 · hikaye · \"Zaman kapısı\"",
+   "tur": "alt",
+   "ozet": "74ec797c671c",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyunun başında kısa bir hikâye, kristal üretiminin doğduğu yeri anlatır.",
+    "normal": "Bu hikâye, 1916 yılında Polonya'da kristal çekmenin doğuşunu anlatan bir sahnedir. Oyuncu, bir tel eriyikten çekilince tek kristalin çıktığını öğrenir. Sahne, sonraki kavramlar için bir giriş görevi görür."
+   },
+   "kritik_neden": "Hikâye bozulursa istasyonun açılış bağlamı kaybolur ve oyuncu neden kristal konusuna geldiğini anlamaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o02 · kavram · \"Kavram kapısı\" · kavram `kati_turleri`",
+   "tur": "alt",
+   "ozet": "6b820ed63e88",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu malzemeleri aynı elektron testinden geçirerek düzenin önemini görür.",
+    "normal": "Bu kapıda oyuncu, elektronun farklı katı türlerinde nasıl ilerlediğini bir simülasyonda izler. Düzen bozuldukça elektron daha çok saçılır, tek kristalde yol en açıktır."
+   },
+   "kritik_neden": "Kavram kapısı bozulursa düşman soruları dayanaksız kalır ve yanlış düzen bilgisi öğretilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o03 · dusman · \"Kusur düşmanı\" · kavram `kati_turleri` · `kusurSkin` `vakans`",
+   "tur": "alt",
+   "ozet": "62b6ac963c34",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu bir düşmanı yenmek için düzenli dizilişe dair soruyu doğru yanıtlar.",
+    "normal": "Bu düşman, bir maddenin uzun menzilde düzenli olup olmadığını sorar. Doğru seçenek, düzenin yalnızca yakın komşularda olduğunu söyler. Oyuncu böylece kristal ile diğer katıyı ayırır."
+   },
+   "kritik_neden": "Düşman sorusunun doğru seçeneği değişirse yanlış düzen bilgisi öğretilir ve açıklama çelişir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o04 · dusman · \"Kusur düşmanı\" · kavram `tane_siniri` · `kusurSkin` `tane_siniri`",
+   "tur": "alt",
+   "ozet": "f969d4dbd78d",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, kristal tanelerinin buluştuğu ara yüzün ne olduğunu soran soruyu cevaplar.",
+    "normal": "Bu düşman, çok kristalli malzemedeki tane sınırını sorar. Doğru cevap, kristal yönünün değiştiği ara yüzdür. Oyuncu, tane sınırının malzemenin içinde olduğunu öğrenir."
+   },
+   "kritik_neden": "Tane sınırı soruları bozulursa malzeme yapısı yanlış anlaşılır ve sonraki sorular tutarsız olur.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o05 · tahmin · \"Tahmin çukuru\" · kavram `tane_siniri` · agirlik 1.5",
+   "tur": "alt",
+   "ozet": "34ccfacfd609",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, çok kristalli malzemede elektronun yolunun ne olacağını tahmin eder.",
+    "normal": "Bu engelde oyuncu bir tahmin yapar ve sonuç, tahminin doğru olup olmadığını gösteren bir simülasyonla sınanır. Doğru tahmin, tane sınırlarının her biri bir engel olduğu için serbest yolun kısaldığını söyler."
+   },
+   "kritik_neden": "Tahmin engeli bozulursa serbest yol kavramı yanlış sonuçla öğretilir ve simülasyon ile cevap çelişir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o06 · tuzak · \"Yanılgı tuzağı\" · kavram `kristal_pahali`",
+   "tur": "alt",
+   "ozet": "5e7b9ace335c",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, kristalin pahalı olduğu için tercih edildiği yanlış fikrini düzeltir.",
+    "normal": "Bu tuzakta bir iddia parçalara ayrılır ve oyuncu yanlış parçayı işaretler. Doğru açıklama, kristalin periyodik olduğu için bantlarının öngörülebilir olduğunu ve özelliklerinin kontrol edilebildiğini söyler."
+   },
+   "kritik_neden": "Tuzak bozulursa yaygın yanılgı düzeltilmez ve oyuncu fiyat ile yapı arasındaki farkı kaçırır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o07 · kopru · \"Mantık köprüsü\" · kavram `kristal_neden`",
+   "tur": "alt",
+   "ozet": "53d8588e1018",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, kristal bilgisini doğru sıraya dizer ve mantık zincirini tamamlar.",
+    "normal": "Bu köprüde karışık gelen parçalar oyuncu tarafından mantıksal sıraya konur. Doğru sıra, kafesin periyodik tekrarından başlayıp özelliklerin öngörülebilir olmasıyla biter. Bu kapı, kristalin neden kullanıldığını adım adım kurar."
+   },
+   "kritik_neden": "Köprü bozulursa bilgi zinciri yanlış sırayla kurulur ve son açıklama anlamını yitirir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o08 · patron · \"Tane Sınırı Canavarı\"",
+   "tur": "alt",
+   "ozet": "3ac301da3a84",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Canavar, oyuncuya elektronun tanelerin arasında saçıldığını anımsatarak onu sınar.",
+    "normal": "Bu canavar, kristal fırını istasyonunun son engelidir. Önce seçmeli bir soru sorar: tohum kristal ne işe yarar. Sonra açık uçlu sorularla tek kristalin neden istendiğini sorar."
+   },
+   "kritik_neden": "Canavar bozulursa istasyonun sonu bilgiyi sınayamaz ve oyuncu kavramları birleştiremez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::o09 · sandik · \"Sandık\"",
+   "tur": "alt",
+   "ozet": "8d3de57dbde1",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Canavar yenilince açılan sandıkta istasyonun kısa özeti bulunur.",
+    "normal": "Sandık, öğrenilen kavramların kısa bir özetini ve bir bilim insanının tanıtımını verir. Bu anda kontrol noktası kaydedilir, oyuncu kaldığı yerden devam edebilir."
+   },
+   "kritik_neden": "Sandık bozulursa istasyonun özeti ve kontrol noktası kaybolur, oyuncu ilerlemesini yitirebilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/01-kristal-firini.md::İstasyon 01 · Kristal fırını (`s01`)",
+   "tur": "alt",
+   "ozet": "39c22348d358",
+   "iskelet": "db5eb610b882",
+   "ne": {
+    "cok_basit": "Bu kısım, ilk istasyonun neyi öğrettiğini ve nasıl bir sırayla ilerlediğini özetler.",
+    "normal": "Bu kısım istasyonun kimliğini ve konusunu tanıtır: kristal katılar, neden kristal ve tek kristal çekme. Hikâye ile başlayıp canavarla biten bir yol izlenir."
+   },
+   "kritik_neden": "Bu kısım bozulursa istasyonun amacı ve sırası yanlış anlaşılır, sonraki kısımların bağlamı kaybolur.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/01-kristal-firini.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md",
+   "tur": "dosya",
+   "ozet": "a164e73f6470",
+   "iskelet": "adaff3566659",
+   "baslik": "Kesim testeresi istasyonu",
+   "ne": {
+    "cok_basit": "Oyunun ikinci istasyonu: kristalin iç düzenini ve kesim yönlerini öğreten kısım.",
+    "basit": "Oyuncu kristalin atom dizilişini ve hangi düzlemden kesileceğini öğrenir. Sonunda bir canavarı yener.",
+    "normal": "Bu istasyonda oyuncu önce birim hücredeki atom sayısını ve komşuluğu görür. Ardından düzlemleri adlandırmayı öğrenir, kesim yönlerinin hangi düzlemde seçildiğini anlar. Son olarak düzlem canavarı, bilgiyi tek kararda toplamasını ister.",
+    "gelismis": "İstasyon, atom dizilişinden Miller adlandırmasına uzanan kavramları sırayla öğretir. Her kapıda bir simülasyon ve bir soru bulunur, yanlış cevap açıklamayla birlikte düzeltilir. En sonda düzlem canavarı, seçmeli ve açık uçlu sorularla düzlemleri okuma becerisini ölçer.",
+    "detayli": "Bu istasyon, oyuncunun kesim testeresiyle ilerlerken karşılaşacağı engelleri tanımlar. Kavram kapılarında birim hücredeki atom sayısı ve elmas yapıdaki komşuluk işlenir. Düşmanlar doğru seçeneği ister, tuzak ise bir yanılgıyı düzeltir. Tahmin çukurunda bir düzlemin indisi tahmin edilir ve simülasyonla sınanır. En sonda düzlem canavarı, seçmeli ve açık uçlu sorularla oyuncuyu sınar, yenilince sandık özet verir."
+   },
+   "mantik": {
+    "cok_basit": "Kristalin iç düzenini küçük adımlarla öğretmek, oyuncunun karışıklığını azaltır.",
+    "basit": "Düzlemleri adlandırmak ortak bir dil sağlar. Bu yüzden önce atom dizilişi, sonra adlandırma öğretilir.",
+    "normal": "Atom dizilişini bilmeden düzlem adları anlamsız kalır. Bu yüzden istasyon önce birim hücreyi, sonra düzlemleri öğretir. Canavar, bu bilgileri bir kesim kararında birleştirir.",
+    "gelismis": "Düzlem adları, atomların nasıl dizildiğine bağlı bir sistem üzerine kurulur. Bu yüzden her adım bir öncekine dayanır ve sıra bozulursa sonuç yanlış çıkar. Canavar, öğrenilenleri birleştirerek bu sırayı sınar.",
+    "detayli": "Düzlem adlandırması, kesim yönünü herkesin aynı biçimde okuyabilmesi için sabit kurallara bağlanır. Atom sayısı ve komşuluk gibi temel bilgiler düzlemden önce gelir. Tuzak ve köprü engelleri, sık yapılan hataları ayırarak düzeltir. Canavar, tüm adımları tek bir kesim kararında bir araya getirir ve oyuncunun düzlemi gerçekten okuyup okuyamadığını ölçer."
+   },
+   "nasil": {
+    "basit": "Oyun önce kısa bir hikâye gösterir. Ardından kapılar sırayla açılır, her kapıda bir soru ya da engel bulunur. Doğru cevap ilerletir, yanlış cevapta açıklama okunur.",
+    "normal": "Kavram kapıları atom sayısı ve düzlem adlandırması gibi konuları sırayla açar. Düşmanlar doğru seçeneği seçtirir ve her seçeneğin nedenini gösterir. Tahmin çukurunda oyuncu bir düzlemin indisini tahmin edip simülasyonla sınar. Tuzakta yanlış bir iddia düzeltilir, köprüde adımlar sıraya dizilir. En sonda düzlem canavarı önce seçmeli, sonra açık uçlu sorularla oyuncuyu sınar.",
+    "gelismis": "Oyun önce kısa bir hikâye gösterir ve düzlemlerin nereden geldiğini anlatır. Kavram kapılarında atom sayısı, komşuluk ve düzlem adlandırması sırayla işlenir. Düşman kapılarında oyuncu doğru seçeneği seçer ve her seçimden sonra nedeni açıklanır. Tahmin çukurunda bir düzlemin adı tahmin edilir ve simülasyon sonucu gösterir. Tuzak yanlış bir iddianın parçalarını ayırır, köprüde adımlar doğru sıraya dizilir. En sonda canavar, seçmeli ve açık uçlu sorularla düzlemleri okuma becerisini ölçer.",
+    "detayli": "Bu istasyonun akışı, hikâyeden başlayıp kavram kapılarından geçerek canavara ulaşan doğrusal bir sıradır. Hikâye kapısında düzlemleri adlandırmanın nereden geldiği anlatılır. Kavram kapılarında birim hücredeki atomların nasıl paylaşıldığı ve elmas yapıdaki komşuluk gösterilir, simülasyon bu düzeni kafes üzerinden gösterir. Düşman kapılarında doğru seçenek seçilir ve seçimden sonra her seçeneğin nedeni açıklanır. Tahmin çukurunda bir düzlemin indisi tahmin edilir, simülasyon bunu sınar. Tuzakta eksene paralel düzlemin indisi hakkındaki yanılgı düzeltilir. Köprüde kesişim, ters alma, tam sayıya çevirme ve adlandırma adımları doğru sıraya dizilir. En sonda canavar önce seçmeli, sonra açık uçlu sorularla oyuncuyu sınar, yenilince sandık özet verir."
+   },
+   "detay": {
+    "girdiler": [
+     "Oyuncunun seçtiği cevaplar ve bu istasyonun kavram kapıları",
+     "Atom dizilişi, birim hücre, düzlem adları gibi kavramlar"
+    ],
+    "ciktilar": [
+     "Doğru cevaplarla ilerleyen oyuncu ve kazanılan bilgilerin kaydı",
+     "Canavarın yenilmesiyle açılan sandık ve bilgi özeti"
+    ],
+    "degismezler": [
+     "Hikâye, kavram ve sınav sıraları bu istasyonun içinde aynı kalır.",
+     "Her soruda doğru ve yanlış seçenekler ile açıklamalar birlikte yer alır.",
+     "Canavar önce seçmeli, sonra açık uçlu sorularla ilerler."
+    ],
+    "kenar": [
+     "Yanlış cevapta açıklama okunur ve oyuncu ilerlemeye devam eder.",
+     "Açık uçlu soruda kullanılacak yedek bir seçmeli soru da tanımlıdır."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kavram adları, engellerin ve soruların bağlandığı adlardır, değişirse bağlantılar kopar.",
+     "Düzlem adlandırma adımlarının sırası, yani kesişim, ters alma, tam sayıya çevirme ve adlandırma, sabittir.",
+     "Canavarın faz sırası, seçmeli ve açık uçlu soru sırası sabittir.",
+     "Sandığın özet alanları ve kontrol noktası işareti, oyunun ilerlemesini takip eder."
+    ],
+    "degisebilir": [
+     "Canavarın giriş cümlesinin sözcük seçimi, oyunun akışını bozmadan değişebilir."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa düzlem adları yanlış okunur ve kesim yönüne dair bilgi yanlış öğretilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Simülasyonların iç işleyişi bu istasyonun veri kısmında yazmaz, yalnızca hangi simülasyonun çağrıldığı yazılıdır."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::Engeller",
+   "tur": "alt",
+   "ozet": "2de61d9091a3",
+   "iskelet": "68fb838ca6a4",
+   "ne": {
+    "cok_basit": "Bu kısım, oyuncunun istasyonda karşılaştığı engelleri sırayla anlatır.",
+    "normal": "Engeller, hikâyeden canavara uzanan sıralı kapılardır. Her kapı soru, tahmin, tuzak ya da köprü biçiminde kurulmuştur. Sıra, kavramların birbirine dayandığını gösterir."
+   },
+   "kritik_neden": "Engel sırası bozulursa kavramlar birbirine dayanmadan öğretilir ve oyuncu bilgi boşluğuyla canavara gelir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::Temel tur",
+   "tur": "alt",
+   "ozet": "cb2940562010",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Temel turda kısa kartlar okunur ve bir simülasyon gösterilir.",
+    "normal": "Temel tur, hücre ve atom, Miller adımları ile sonsuz kesişim kavramlarını kartlarla anlatır. Her kart kısa bir başlık ve tek bir cümleden oluşur."
+   },
+   "kritik_neden": "Temel tur bozulursa hücre, düzlem adı ve sonsuz kesişim gibi temel tanımlar eksik kalır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o01 · hikaye · \"Zaman kapısı\"",
+   "tur": "alt",
+   "ozet": "39ba74b7ce63",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyunun başında kısa bir hikâye, düzlemlerin adlandırılmasının doğuşunu anlatır.",
+    "normal": "Bu hikâye, 1839 yılında Cambridge'de düzlemlerin tam sayılarla adlandırıldığı sahneyi anlatır. Adlandırma, kristalciler arasında ortak bir dil olur. Sahne, kavram kapılarına giriş yapar."
+   },
+   "kritik_neden": "Hikâye bozulursa istasyonun açılış bağlamı kaybolur ve oyuncu düzlem adlarının neden önemli olduğunu anlamaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o02 · kavram · \"Kavram kapısı\" · kavram `atom_sayisi`",
+   "tur": "alt",
+   "ozet": "55adb1da8368",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, bir kristal hücresinde kaç atom olduğunu bulmak için simülasyonda çalışır.",
+    "normal": "Bu kapıda oyuncu, bir hücredeki atomların köşe ve yüzlerde nasıl paylaşıldığını simülasyonda görür. Köşe ve yüz atomlarının paylaşımı toplam atom sayısını belirler. Bu bilgi, sonraki düşmanların temelini kurar."
+   },
+   "kritik_neden": "Atom sayısı kavramı bozulursa düşmanlardaki hesaplar yanlış çıkar ve tutarsız geri bildirim verilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o03 · dusman · \"Kusur düşmanı\" · kavram `atom_sayisi` · `kusurSkin` `vakans`",
+   "tur": "alt",
+   "ozet": "ab469d2a67cb",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu bir düşmanı yenmek için hücre başına düşen atom sayısını doğru bulur.",
+    "normal": "Bu düşman, bir yapıda hücre başına kaç atom düştüğünü sorar. Doğru cevap, merkez atomuyla birlikte köşe paylaşımının toplamını gösterir. Yanlış seçenekler, farklı yapıların sonuçlarıyla karıştırılır."
+   },
+   "kritik_neden": "Düşman sorusunun doğru seçeneği değişirse hücredeki atom sayısı yanlış öğretilir ve açıklama çelişir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o04 · dusman · \"Kusur düşmanı\" · kavram `birim_hucre` · `kusurSkin` `safsizlik`",
+   "tur": "alt",
+   "ozet": "8d84cd4c9736",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, elmas yapıda bir atomun kaç yakın komşusu olduğunu soran soruyu cevaplar.",
+    "normal": "Bu düşman, elmas yapıdaki her atomun kaç en yakın komşusu olduğunu sorar. Doğru cevap, her atomun yönlü bağlarla çevrili olduğunu ve komşu sayısının bu yapıya özgü olduğunu gösterir."
+   },
+   "kritik_neden": "Birim hücre düşmanı bozulursa yapılara göre komşu sayısı karışır ve yapılar birbirine karıştırılır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o05 · tahmin · \"Tahmin çukuru\" · kavram `miller_duzlem` · agirlik 1.5",
+   "tur": "alt",
+   "ozet": "de9190085bd9",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, düzlemin eksenleri kestiği yere bakıp adını tahmin eder.",
+    "normal": "Bu engelde oyuncu bir düzlemin adını tahmin eder, sonra simülasyon eksenlerdeki kesişimleri gösterip tahminin doğruluğunu sınar. Doğru tahmin, adlandırmanın kesişim, ters alma ve tam sayı adımlarından geçtiğini gösterir."
+   },
+   "kritik_neden": "Tahmin engeli bozulursa düzlem adlandırma adımları yanlış sırayla öğretilir ve simülasyon ile cevap çelişir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o06 · tuzak · \"Yanılgı tuzağı\" · kavram `miller_duzlem`",
+   "tur": "alt",
+   "ozet": "f59d793b454b",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, eksene paralel bir düzlemin adının sonsuz olduğu yanlış fikrini düzeltir.",
+    "normal": "Bu tuzakta bir iddia parçalara ayrılır ve oyuncu yanlış parçayı işaretler. Doğru açıklama, o eksende sonsuzda kesişen düzlemin değerinin sıfır olduğunu söyler."
+   },
+   "kritik_neden": "Tuzak bozulursa yaygın bir yanılgı düzeltilmez ve oyuncu sıfır ile sonsuz arasındaki farkı kaçırır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o07 · kopru · \"Mantık köprüsü\" · kavram `miller_duzlem`",
+   "tur": "alt",
+   "ozet": "24443203bd4d",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, bir düzlemi adlandırma adımlarını doğru sıraya dizer.",
+    "normal": "Bu köprüde karışık gelen adımlar oyuncu tarafından doğru sıraya konur. Doğru sıra, eksen kesişimlerini bulmakla başlayıp adlandırmayla biter. Bu kapı, adımları birleştirir."
+   },
+   "kritik_neden": "Köprü bozulursa adlandırma adımları yanlış sırayla kurulur ve son açıklama anlamını yitirir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o08 · patron · \"Düzlem Canavarı\"",
+   "tur": "alt",
+   "ozet": "bff739018fd0",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Canavar, oyuncunun düzlemleri okuyup okuyamadığını sorularla sınar.",
+    "normal": "Bu canavar, kristal kesme istasyonunun son engelidir. Önce seçmeli bir soru sorar: düzlemin eksenleri nerede keser. Sonra açık uçlu sorularla düzlem adlarının wafer kesimindeki önemini sorar."
+   },
+   "kritik_neden": "Canavar bozulursa istasyonun sonu bilgiyi sınayamaz ve oyuncu düzlemleri birleştiremez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::o09 · sandik · \"Sandık\"",
+   "tur": "alt",
+   "ozet": "ead0fff7082e",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Canavar yenilince açılan sandıkta istasyonun kısa bir özeti bulunur.",
+    "normal": "Sandık, düzlemlerin adlandırılmasına dair kısa bir özet verir ve adı geçen bilim insanının kısa tanıtımını yapar. Bu anda kontrol noktası kaydedilir ve oyuncu kaldığı yerden devam edebilir."
+   },
+   "kritik_neden": "Sandık bozulursa istasyonun özeti ve kontrol noktası kaybolur, oyuncu ilerlemesini yitirebilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/02-kesim-testeresi.md::İstasyon 02 · Kesim testeresi (`s02`)",
+   "tur": "alt",
+   "ozet": "a164e73f6470",
+   "iskelet": "2eaed313b1ec",
+   "ne": {
+    "cok_basit": "Bu kısım, ikinci istasyonun ne öğrettiğini ve hangi sırayla ilerlediğini özetler.",
+    "normal": "Bu kısım istasyonun kimliğini ve konusunu tanıtır: atom dizilişi, birim hücre ve düzlem adları. Hikâye ile başlayıp düzlem canavarıyla biten bir yol izlenir."
+   },
+   "kritik_neden": "Bu kısım bozulursa istasyonun amacı ve sırası yanlış anlaşılır, sonraki kısımların bağlamı kaybolur.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/02-kesim-testeresi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md",
+   "tur": "dosya",
+   "ozet": "56491ad57af4",
+   "iskelet": "b8653d4f21d3",
+   "baslik": "Işık test odası istasyonu",
+   "ne": {
+    "cok_basit": "Oyunun üçüncü istasyonu: ışığın küçük paketler halinde geldiğini öğreten kısım.",
+    "basit": "Oyuncu ışığın paketler halinde geldiğini ve yeterli frekansın elektron kopardığını öğrenir. Sonunda bir canavarı yener.",
+    "normal": "Bu istasyonda oyuncu önce ısınan bir cismin ışımasındaki klasik çıkmazı görür. Sonra ışığın paket paket yayıldığını ve frekansın önemini öğrenir. En sonda Foton Canavarı, bu bilgileri tek bir kararda sınar.",
+    "gelismis": "İstasyon, klasik fiziğin takıldığı yerlerden ışığın paket doğasına uzanan kavramları öğretir. Her kapıda bir soru, düşman, tahmin, tuzak ya da köprü bulunur. En sonda Foton Canavarı, seçmeli ve açık uçlu sorularla oyuncunun kuantum fikrini ne kadar kavradığını ölçer.",
+    "detayli": "Bu istasyonun verisi, oyuncunun karşılaşacağı her engeli tek tek tanımlar. Hikâye kapısı, ışığın ölçülmesinin klasik fiziği zorladığını anlatır. Kavram kapılarında kara cisim ışıması, paket fikri ve fotoelektrik olay işlenir. Düşmanlar doğru cevabı ister, tahmin ve tuzaklar ise frekans ile parlaklığı ayırır. En sonda Foton Canavarı, seçmeli ve açık uçlu sorularla oyuncuyu sınar ve sandık özet verir."
+   },
+   "mantik": {
+    "cok_basit": "Işığı küçük adımlarla paket paket göstermek, öğrenmeyi kolaylaştırır.",
+    "basit": "Klasik fizik açıklayamadığı gözlemlerle karşılaştı. Bu yüzden ışığı paket olarak düşünmek gerekti.",
+    "normal": "Bu istasyon, bir gözlemin klasik açıklamayla çelişmesinin ardından gelen yeni fikri öğretir. Yeni fikir, eski fikrin nerede yetmediği gösterilince anlamlı olur. Bu yüzden önce çıkmaz gösterilir, sonra çözüm verilir.",
+    "gelismis": "Klasik fiziğin ışımada ve fotoelektrik olayda açıklayamadığı gözlemler, enerjinin paketler halinde geldiği fikrine götürür. Bu fikir, birbirinden bağımsız gözlemleri tek bir kuralla açıklar. Canavar, bu bağlantıyı tek bir sınavda toplayarak ölçer.",
+    "detayli": "Işık paketleri fikri, klasik fiziğin çözemediği gözlemleri birlikte açıklar. Bu yüzden istasyon, önce sorunu gösterir, sonra kuralı öğretir. Frekans ile parlaklığın ayrılması, eşik altı yanılgısını düzeltmek için vurgulanır. Tahmin ve tuzak engelleri, bilgiyi karşıt örneklerle pekiştirir. Canavar en sonda tüm bu fikirleri birleştirmeyi ister."
+   },
+   "nasil": {
+    "basit": "Oyuncu önce bir hikâyeyi izler, sonra kavram kapılarına geçer. Her kapıda bir soru ya da engel vardır. Doğru cevap yolu açar, yanlış cevapta neden gösterilir.",
+    "normal": "Oyuncu önce bir hikâyeyi izler, sonra kapılara geçer. Düşmanlar doğru seçeneği seçtirir ve her seçeneğin nedenini gösterir. Tahmin çukurunda oyuncu parlaklığın etkisini tahmin eder ve simülasyonla sınar. Tuzakta yanlış bir iddia parçalara ayrılır, köprüde adımlar sıraya dizilir. En sonda Foton Canavarı önce seçmeli, sonra açık uçlu sorularla sınar.",
+    "gelismis": "Oyun önce bir hikâye ile ışığın klasik fiziği zorladığı anı gösterir. Kavram kapılarında kara cisim, paket enerjisi ve fotoelektrik olay sırayla gösterilir. Tahmin ve tuzak engelleri, frekans ile parlaklığın farkını sınayarak yanılgıları düzeltir. Köprüde fotoelektrik mantık zinciri doğru sıraya dizilir. En sonda Foton Canavarı, önce seçmeli, sonra açık uçlu sorularla kuantum mekaniğinin neden doğduğunu sorar.",
+    "detayli": "Bu istasyonun akışı, hikâyeden başlayıp kavramlardan geçerek canavara ulaşan doğrusal bir sıradır. Kavram kapılarında kara cisim ışıması, paket enerjisi ve fotoelektrik olay sırayla gösterilir. Düşman kapılarında doğru seçenek seçilir ve her seçimden sonra nedeni açıklanır. Tahmin çukurunda eşik altındaki ışığın elektron koparıp koparmayacağı tahmin edilir. Tuzakta eşik altında parlaklığın işe yaramadığı yanılgısı düzeltilir. Köprüde enerji, eşik ve şiddet adımları doğru sıraya dizilir. En sonda Foton Canavarı önce seçmeli, sonra açık uçlu sorularla oyuncuyu sınar, yenilince sandık özet verir."
+   },
+   "detay": {
+    "girdiler": [
+     "Oyuncunun seçtiği cevaplar ve bu istasyonun kavram kapıları",
+     "Kara cisim, Planck paketi ve fotoelektrik olay gibi kavramlar"
+    ],
+    "ciktilar": [
+     "Doğru cevaplarla ilerleyen oyuncu ve kazanılan bilgilerin kaydı",
+     "Canavarın yenilmesiyle açılan sandık ve bilgi özeti"
+    ],
+    "degismezler": [
+     "Hikâye, kavram ve sınav sıraları bu istasyonun içinde aynı kalır.",
+     "Her soruda doğru ve yanlış seçenekler ile açıklamalar birlikte yer alır.",
+     "Canavar önce seçmeli, sonra açık uçlu sorularla ilerler."
+    ],
+    "kenar": [
+     "Yanlış cevapta açıklama okunur ve oyuncu ilerlemeye devam eder.",
+     "Açık uçlu soruda kullanılacak yedek bir seçmeli soru da tanımlıdır."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kavram adları, engellerin ve soruların bağlandığı adlardır, değişirse bağlantılar kopar.",
+     "Enerjinin frekansla belirlendiği kuralı bütün engellerde aynı biçimde kullanılır.",
+     "Canavarın faz sırası, seçmeli ve açık uçlu soru sırası sabittir.",
+     "Sandığın özet alanları ve kontrol noktası işareti, oyunun ilerlemesini takip eder."
+    ],
+    "degisebilir": [
+     "Canavarın giriş cümlesinin sözcük seçimi, oyunun akışını bozmadan değişebilir."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa ışığın paket doğası ve eşik kavramı yanlış öğretilir ve sınav sorusu bilgiye uymaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Simülasyonların iç işleyişi bu istasyonun veri kısmında yazmaz, yalnızca hangi simülasyonun çağrıldığı yazılıdır."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::Engeller",
+   "tur": "alt",
+   "ozet": "2bd22306c4ec",
+   "iskelet": "f0f4b53f6886",
+   "ne": {
+    "cok_basit": "Bu kısım, oyuncunun istasyonda karşılaştığı engelleri sırayla anlatır.",
+    "normal": "Engeller, bir hikâyeden başlayıp canavara uzanan sıralı kapılardan oluşur. Her kapı soru, tahmin, tuzak ya da köprü olarak kurulur. Sıra, kavramların birbirine bağlı olduğunu gösterir."
+   },
+   "kritik_neden": "Engel sırası bozulursa kavramlar birbirine dayanmadan öğretilir ve oyuncu bilgi boşluğuyla canavara gelir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::Temel tur",
+   "tur": "alt",
+   "ozet": "f9d6e8bb06b2",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Temel turda kısa kartlar ve bir ışık simülasyonu gösterilir.",
+    "normal": "Temel tur, ışığın paketler halinde yayıldığını, eşiğin ne olduğunu ve klasik felaketi kısa kartlarla anlatır. Her kart kısa bir başlık ve bir cümleden oluşur."
+   },
+   "kritik_neden": "Temel tur bozulursa paket enerjisi ve eşik gibi temel tanımlar eksik kalır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o01 · hikaye · \"Zaman kapısı\"",
+   "tur": "alt",
+   "ozet": "9c0a543c8ac9",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyunun başında kısa bir sahne, ışığa bakılırken çıkan bir sorunu gösterir.",
+    "normal": "Bu hikâye, Berlin'de ışığın ölçülmesinin klasik fiziği zorladığı anı anlatır. Bir fizikçi enerjinin paketler halinde verildiğini söyler. Sahne, kavram kapılarına giriş yapar."
+   },
+   "kritik_neden": "Hikâye bozulursa istasyonun açılış bağlamı kaybolur ve oyuncu paket fikrinin neden gerektiğini anlamaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o02 · kavram · \"Kavram kapısı\" · kavram `karacisim_felaket`",
+   "tur": "alt",
+   "ozet": "169bcf32078a",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, ısınan bir cismin ışımasını klasik açıklamayla karşılaştırarak hatayı görür.",
+    "normal": "Bu kapıda oyuncu, sıcaklığı yükseltilen bir cismin klasik eğrisini simülasyonda izler. Klasik eğri kısa dalga boyunda patlar, Planck eğrisi ise patlamaz. Bu fark sonraki soruların temelidir."
+   },
+   "kritik_neden": "Kavram kapısı bozulursa klasik teorinin çöküşü yanlış anlatılır ve sonraki sorular boşlukta kalır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o03 · dusman · \"Kusur düşmanı\" · kavram `karacisim_felaket` · `kusurSkin` `vakans`",
+   "tur": "alt",
+   "ozet": "00783db63731",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu bir düşmanı yenmek için klasik teorinin kısa dalgada ne öngördüğünü bilir.",
+    "normal": "Bu düşman, klasik teorinin mor ötesi bölgede hangi yanlışı yaptığını sorar. Doğru cevap, yüksek frekansta enerjinin sonsuz çıkmasını gösterir. Yanlış seçenekler ise konuyu başka yöne çeker."
+   },
+   "kritik_neden": "Düşman sorusunun doğru seçeneği değişirse klasik teorinin çıkmazı yanlış öğretilir ve açıklama çelişir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o04 · dusman · \"Kusur düşmanı\" · kavram `planck_paket` · `kusurSkin` `tane_siniri`",
+   "tur": "alt",
+   "ozet": "b4f5b5c960fc",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, bir ışık paketinin enerjisinin neye bağlı olduğunu soran soruyu cevaplar.",
+    "normal": "Bu düşman, Planck'ın paketlerinde enerjinin frekansa bağlı olduğunu sorar. Doğru cevap, yüksek frekansın büyük paket anlamına geldiğini gösterir. Yanlış seçenekler şiddet ve hızı karıştırır."
+   },
+   "kritik_neden": "Frekans ile enerji arasındaki ilişki bozulursa paket fikri yanlış öğretilir ve sonraki sorular çelişir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o05 · tahmin · \"Tahmin çukuru\" · kavram `fotoelektrik_siddet` · agirlik 1.5",
+   "tur": "alt",
+   "ozet": "6b68b3feaef8",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, eşik altındaki ışığı parlatınca elektron kopup kopmayacağını tahmin eder.",
+    "normal": "Bu engelde oyuncu, eşik frekansın altında parlaklığı artırmanın etkisini tahmin eder ve simülasyonla sınar. Doğru tahmin, şiddetin elektron sayısını artırdığını ama tek bir fotonun enerjisini değiştirmediğini gösterir."
+   },
+   "kritik_neden": "Tahmin engeli bozulursa parlaklık ile enerji ayrımı yanlış öğretilir ve simülasyon cevapla çelişir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o06 · tuzak · \"Yanılgı tuzağı\" · kavram `fotoelektrik_siddet`",
+   "tur": "alt",
+   "ozet": "f0ad4ee1fa98",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, parlak ışığın eşik altında elektron kopardığı fikrini düzeltir.",
+    "normal": "Bu tuzakta bir iddia parçalara ayrılır ve oyuncu yanlış parçayı işaretler. Doğru açıklama, eşik altında parlaklığın işe yaramadığını ve elektron için foton başına yeterli enerjinin gerektiğini söyler."
+   },
+   "kritik_neden": "Tuzak bozulursa yaygın bir yanılgı düzeltilmez ve oyuncu parlaklık ile enerji arasındaki farkı kaçırır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o07 · kopru · \"Mantık köprüsü\" · kavram `fotoelektrik_siddet`",
+   "tur": "alt",
+   "ozet": "1fe83904f188",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Oyuncu, ışığın elektron kopardığı adımları doğru sıraya koyarak mantığı tamamlar.",
+    "normal": "Bu köprüde karışık gelen adımlar oyuncu tarafından doğru sıraya konur. Doğru sıra, enerjinin frekansla belirlendiğini ve eşik aşılınca elektron koptuğunu gösterir. Şiddet yalnızca sayıyı artırır."
+   },
+   "kritik_neden": "Köprü bozulursa adımlar yanlış sırayla kurulur ve şiddetin rolü enerjiyle karışır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o08 · patron · \"Foton Canavarı\"",
+   "tur": "alt",
+   "ozet": "bfd27393072c",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Canavar, parlaklığın tek başına bir şey değiştirmediğini sorularla sınar.",
+    "normal": "Bu canavar, ışık test odası istasyonunun son engelidir. Önce seçmeli bir soru sorar: kinetik enerji neye bağlıdır. Sonra açık uçlu sorularla klasik fiziğin neden yetersiz kaldığını sorar."
+   },
+   "kritik_neden": "Canavar bozulursa istasyonun sonu bilgiyi sınayamaz ve oyuncu ışığın paket fikrini birleştiremez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::o09 · sandik · \"Sandık\"",
+   "tur": "alt",
+   "ozet": "67bf4cc4777a",
+   "iskelet": "e3b0c44298fc",
+   "ne": {
+    "cok_basit": "Canavar yenilince açılan sandıkta istasyonun kısa özeti bulunur.",
+    "normal": "Sandık, istasyonda öğrenilen konuların kısa bir özetini ve bir bilim insanının tanıtımını verir. Bu anda kontrol noktası kaydedilir ve oyuncu kaldığı yerden devam edebilir."
+   },
+   "kritik_neden": "Sandık bozulursa istasyonun özeti ve kontrol noktası kaybolur, oyuncu ilerlemesini yitirebilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/03-isik-test-odasi.md::İstasyon 03 · Işık-test odası (`s03`)",
+   "tur": "alt",
+   "ozet": "56491ad57af4",
+   "iskelet": "211422d112cd",
+   "ne": {
+    "cok_basit": "Bu kısım, üçüncü istasyonun ne öğrettiğini ve hangi sırayla ilerlediğini özetler.",
+    "normal": "Bu kısım istasyonun kimliğini ve konusunu tanıtır: kara cisim, ışığın paketleri ve fotoelektrik olay. Hikâye ile başlayıp Foton Canavarıyla biten bir yol izlenir."
+   },
+   "kritik_neden": "Bu kısım bozulursa istasyonun amacı ve sırası yanlış anlaşılır, sonraki kısımların bağlamı kaybolur.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/istasyonlar/03-isik-test-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/04-atom-mikroskobu.md",
+   "tur": "dosya",
+   "ozet": "0c0821a898dc",
+   "iskelet": "55ed21af0ca3",
+   "baslik": "Atom mikroskobu istasyonu",
+   "ne": {
+    "cok_basit": "Atomun neden dağılmadığını ve neden ışık yaydığını burada öğrenirsin.",
+    "normal": "Bu istasyonda atom kararlılığı işlenir: elektron yalnızca belirli enerji seviyelerinde durur. Engeller en alt seviyenin altına inilemeyeceğini ve madde dalgası fikrini ele alır. Patron ise atomun neden çökmediğini sorar."
+   },
+   "nasil": {
+    "normal": "Önce hikaye sahnesi ve kavram kapısı gelir; oyuncu seviye geçişinin rengini bulur. Sonra kusur düşmanları ve tahmin çukuru karşıya çıkar, her seçenekte doğru olanın nedeni gösterilir. Patron üç fazda ilerler: önce seçmeli soru, sonra açık yazılı cevap, en son madde dalgası sorusu."
+   },
+   "sinir": {
+    "sabit": [
+     "İstasyonun kimliği, sıra numarası ve patron kimliği, bu istasyonu veriye çeviren belgelerle eşleşmek zorunda olduğu için aynen korunmalı.",
+     "Doğru cevap işaretleri ile her seçeneğin açıklaması birlikte değişmeli; biri değişirse okuyucu yanlış seçeneği doğru sanabilir.",
+     "Kavram adları ve sınav etiketleri öteki belgelerle eşleştiği için aynen korunmalı."
+    ],
+    "degisebilir": [
+     "Tekrar havuzunda hangi soruların yeniden sorulacağı yalnızca bu istasyonun içinde kalır.",
+     "Engellerin sırası, istasyonun kendi içindeki sahne akışı olarak yeniden düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa yalnızca atom konusu eksik kalır, çünkü diğer parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu istasyonun veriye çevrilmiş hali okunmadı; anlatım yalnızca bu belgeden yazıldı."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/04-atom-mikroskobu.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/05-dalga-odasi.md",
+   "tur": "dosya",
+   "ozet": "ee062974251a",
+   "iskelet": "3da31dd05e8d",
+   "baslik": "Dalga odası istasyonu",
+   "ne": {
+    "cok_basit": "Burada sıkışmış bir dalganın hangi enerjilerde durabildiğini öğrenirsin.",
+    "normal": "Bu istasyonda Schrödinger denklemi tanıtılır: dalga fonksiyonu, girdi ile çıktı ve sınır koşulu. Duvarlarda dalganın sıfır olması yalnızca belirli enerjilere izin verir, bu da kuantalaşmadır. Kuantum Kedisi patronu ise çökmeyi sorar."
+   },
+   "nasil": {
+    "normal": "Önce kuyu genişliğini daraltma görevi gelir; oyuncu genişliği yarıya indirince enerjinin arttığını görür. Kusur düşmanları ve tahmin çukuru, ψ'nin anlamını ve kuyu genişliğinin enerjiye etkisini sorar. Patron üç fazda ilerler: önce zamana bağlı denklem, sonra sonsuz kuyu, en son çökme sorulur."
+   },
+   "sinir": {
+    "sabit": [
+     "Patron kimliği, kavram adları ve sıra numarası, bu istasyonu veriye çeviren belgelerle eşleşmek zorunda olduğu için aynen korunmalı.",
+     "Doğru cevap işaretleri ile açıklama metinleri birlikte değişmeli; biri değişirse okuyucu yanlış seçeneği doğru sanabilir.",
+     "Kuyu genişliği ile enerji arasındaki ters orantı, bu istasyonun öğrettiği ana bilgi olduğu için anlatımda korunmalı."
+    ],
+    "degisebilir": [
+     "Tekrar havuzunda hangi soruların yeniden sorulacağı yalnızca bu istasyonun içinde kalır.",
+     "Engel dizisinin düzeni, istasyonun kendi içindeki sahne akışı olarak yeniden kurulabilir."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa yalnızca dalga konusu eksik kalır, çünkü diğer parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu istasyonun veriye çevrilmiş hali okunmadı; anlatım yalnızca bu belgeden yazıldı."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/05-dalga-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/06-tunel-istasyonu.md",
+   "tur": "dosya",
+   "ozet": "795f52cdc0e0",
+   "iskelet": "8134fe256d71",
+   "baslik": "Tünel istasyonu",
+   "ne": {
+    "cok_basit": "Burada bir duvarın ardına geçebilen dalganın tünel gibi sızmasını öğrenirsin.",
+    "normal": "Bu istasyonda dalga, basamakta kısmen yansır; bariyerde ise içinde sönümlenip öbür yana sızabilir. Tünelleme, geçiş olasılığının kalınlıkla üstel azaldığını gösterir. Dalga Canavarı patronu ise basamak yansımasını ve sürekliliği sorar."
+   },
+   "nasil": {
+    "normal": "Önce kavram kapısında enerji basamağın üstüne çıkarılır ve yansımanın yine de kaldığı görülür. Sonra bariyer gelir; kalınlık artınca geçiş olasılığının düştüğü izlenir. Patron üç fazda ilerler: önce yansıma katsayısı, sonra açık yazılı basamak sorusu, en son tünelleme sorulur."
+   },
+   "sinir": {
+    "sabit": [
+     "Patron kimliği ve kavram adları, bu istasyonu veriye çeviren belgelerle eşleşmek zorunda olduğu için aynen korunmalı.",
+     "Doğru cevap işaretleri ile açıklama metinleri birlikte değişmeli; biri değişirse okuyucu yanlış seçeneği doğru sanabilir.",
+     "Enerjinin engelin yüksekliğinden küçük olması durumu ile klasik beklenti arasındaki fark, bu istasyonun ana bilgisi olduğu için korunmalı."
+    ],
+    "degisebilir": [
+     "Engel dizisinin düzeni, istasyonun kendi içindeki sahne akışı olarak yeniden kurulabilir.",
+     "Tekrar havuzunda hangi soruların yeniden sorulacağı yalnızca bu istasyonun içinde kalır."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa yalnızca tünelleme konusu eksik kalır, çünkü diğer parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu istasyonun veriye çevrilmiş hali okunmadı; anlatım yalnızca bu belgeden yazıldı."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/06-tunel-istasyonu.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/07-olcum-laboratuvari.md",
+   "tur": "dosya",
+   "ozet": "29e4586d6f25",
+   "iskelet": "23e5348d0080",
+   "baslik": "Ölçüm laboratuvarı istasyonu",
+   "ne": {
+    "cok_basit": "Burada bir şeye bakınca sonucun neden şansa bağlı çıktığını öğrenirsin.",
+    "normal": "Bu istasyonda kuantumun temel kuralları, yani postülatlar, anlatılır. Ölçüm bir özdeğer verir; sonucun olasılığı katsayının karesiyle belirlenir ve durum o özdurumuna çöker. Olasılık Canavarı patronu ise süperpozisyonu, postülatları ve ölçümü sorar."
+   },
+   "nasil": {
+    "normal": "Önce ölçüm kapısında aynı ölçümün iki kez yapıldığı görülür; ikinci sonuç ilkiyle aynı çıkar. Sonra kusur düşmanları özdeğer ve olasılık katsayısını sorar. Tahmin çukuru ölçümden sonra durumun değişip değişmediğini tartışır. Patron üç fazda ilerler: önce seçmeli soru, sonra postülatları açıklayan yazılı cevap, en son ölçümde durumun değişimi sorulur."
+   },
+   "sinir": {
+    "sabit": [
+     "Patron kimliği ve kavram adları, bu istasyonu veriye çeviren belgelerle eşleşmek zorunda olduğu için aynen korunmalı.",
+     "Doğru cevap işaretleri ile açıklama metinleri birlikte değişmeli; biri değişirse okuyucu yanlış seçeneği doğru sanabilir.",
+     "Ölçümün bir özdeğer verdiği ve durumun ölçümle değiştiği ilkesi, bu istasyonun ana bilgisi olduğu için korunmalı."
+    ],
+    "degisebilir": [
+     "Engel dizisinin düzeni, istasyonun kendi içindeki sahne akışı olarak yeniden kurulabilir.",
+     "Tekrar havuzunda hangi soruların yeniden sorulacağı yalnızca bu istasyonun içinde kalır."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa yalnızca ölçüm konusu eksik kalır, çünkü diğer parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu istasyonun veriye çevrilmiş hali okunmadı; anlatım yalnızca bu belgeden yazıldı."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/07-olcum-laboratuvari.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/istasyonlar/08-kalibrasyon-odasi.md",
+   "tur": "dosya",
+   "ozet": "f4a0fdd4a3c8",
+   "iskelet": "d5b42fdaf753",
+   "baslik": "Kalibrasyon odası istasyonu",
+   "ne": {
+    "cok_basit": "Burada bir şeyin yerini ve hızını aynı anda keskin bilemeyeceğini öğrenirsin.",
+    "normal": "Bu istasyonda belirsizlik ilkesi işlenir: konum ve momentum aynı anda keyfi hassas ölçülemez. Engeller aletin kusurunu ve büyük cisimlerdeki etkiyi sorar. Patron ise eşlenik değişkenleri ve değişme bağıntısını sorar."
+   },
+   "nasil": {
+    "normal": "Önce konum genişliğini daraltma görevi gelir; oyuncu konum keskinleşince momentumun yayıldığını görür. Kusur düşmanları ve tahmin çukuru, dalga paketinde bu dengeyi ve iki katına çıkan yayılmayı sorar. Patron üç fazda ilerler: önce operatör ve değişme bağıntısı, sonra açık yazılı ilke sorusu, en son eşlenik değişkenin ne olduğu sorulur."
+   },
+   "sinir": {
+    "sabit": [
+     "Patron kimliği, kavram adları ve sıra numarası, bu istasyonu veriye çeviren belgelerle eşleşmek zorunda olduğu için aynen korunmalı.",
+     "Doğru cevap işaretleri ile açıklama metinleri birlikte değişmeli; biri değişirse okuyucu yanlış seçeneği doğru sanabilir.",
+     "Konum ve momentum arasındaki sınırın bu istasyonun ana bilgisi olduğu için anlatımda korunmalı."
+    ],
+    "degisebilir": [
+     "Engel dizisinin düzeni, istasyonun kendi içindeki sahne akışı olarak yeniden kurulabilir.",
+     "Tekrar havuzunda hangi soruların yeniden sorulacağı yalnızca bu istasyonun içinde kalır."
+    ]
+   },
+   "kritik_neden": "Bu istasyon bozulursa yalnızca belirsizlik konusu eksik kalır, çünkü diğer parçalar buna dayanmıyor.",
+   "terimler": [],
+   "belirsiz": [
+    "Bu istasyonun veriye çevrilmiş hali okunmadı; anlatım yalnızca bu belgeden yazıldı."
+   ],
+   "okunan": [
+    "oyun/istasyonlar/08-kalibrasyon-odasi.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  }
+ ]
+}
