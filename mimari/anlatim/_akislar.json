@@ -1,0 +1,45 @@
+{
+ "surum": 1,
+ "bolum": "akislar",
+ "dil": "tr",
+ "kayitlar": [
+  {
+   "kimlik": "akis:ayar:derleme-src-tek-dosya",
+   "tur": "akis",
+   "ozet": "473c4670e535",
+   "iskelet": "482bb3f092b2",
+   "ne": {
+    "cok_basit": "Oyunun ayrı ayrı yazılmış parçaları kontrol edilir, sırayla yan yana dizilir ve oyuncuya verilecek tek bir sayfa olur.",
+    "normal": "Oyun, iskelet sayfası ve öteki parçalar halinde yazılır. Birleştirme betiği önce gerekli parçaların yerinde olduğuna bakar, eksik varsa durur ya da uyarıp sürer. Sonra parçaları dosya adlarının sırasıyla tek sayfada toplar, birleşik metni denetler ve sayfa boyutunu sınırlar. Yayın belgesi bu derlemenin neden ve nasıl yapıldığını anlatır."
+   },
+   "kritik_neden": "Bu adım bozulursa oyuncuya ulaşacak tek sayfa üretilemez ya da eksik parçalarla bozuk çıkar.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "akis:ayar:node-testi",
+   "tur": "akis",
+   "ozet": "cd5fa297285a",
+   "iskelet": "39e7e30a0764",
+   "ne": {
+    "cok_basit": "Oyunun temel işleyişi, gerçek bir tarayıcı açılmadan bilgisayarda taklit edilen bir ortamda denenir ve doğru çalışıp çalışmadığına bakılır.",
+    "normal": "Ortak bir yardımcı dosya, oyunun gerçek dosyalarını sanal bir ortamda çalıştırır ve sayfaya görünüm kurallarını ekler. Asıl test dosyası bu ortamda oyunun temel altyapısını sınar: parçaların birbirine mesaj göndermesini, yardımcı hesapları ve kaydı. Kayıt denemeleri bozuk veriyi, eksik depolamayı ve dışa aktarmayı da kapsar."
+   },
+   "kritik_neden": "Bu test bozulursa oyunun altyapısındaki hatalar tarayıcıya çıkmadan yakalanamaz ve kayıt gibi önemli işler sessizce bozulabilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  }
+ ]
+}

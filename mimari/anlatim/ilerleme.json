@@ -1,0 +1,957 @@
+{
+ "surum": 1,
+ "bolum": "ilerleme",
+ "dil": "tr",
+ "kayitlar": [
+  {
+   "kimlik": "b:ilerleme",
+   "tur": "birim",
+   "ozet": "025db9efa5e5",
+   "iskelet": "da69046c3965",
+   "baslik": "İlerleme kayıtları",
+   "ne": {
+    "cok_basit": "Oyunu yapan her işin bittiğini ve neyi yaptığını anlatan kısa notlar burada birikir.",
+    "basit": "Bu bölüm oyunu yapan her işin sonunda bırakılan notları tutar. Her not işin ne yaptığını ve nerede kaldığını söyler; böylece kimse neyin bittiğini başka yerde aramaz.",
+    "normal": "Bu bölüm oyunun yapım işlerinin teslim notlarını toplar. Notlar dört işi kapsar: oyunun çekirdeği (ekran, koşu, savaş, çizim, bağlantı, birleştirme), engel türleri, deney ekranları ve istasyon verileri. Her not ilgili parçanın ne yaptığını ve kalan işi söyler.",
+    "gelismis": "Bu bölüm oyunun yapım işlerinin teslim notlarını tutar ve notlar işin türüne göre ayrılır. Çekirdek notları ekranı, koşuyu, savaşı, çizimi, serbest cevap bağlantısını ve birleştirmeyi anlatır. Engel notları köprü, patron, kavram, tahmin, hikâye, sandık, düşman ve tuzak gibi engellerin davranışını yazar. Deney notları etkileşimli ekranları, istasyon notları ise her istasyonun oyun verisini anlatır. Bir ek dosya klasörün boş da olsa yerinde durmasını sağlar.",
+    "detayli": "Bu bölüm oyunun yapım işlerinin teslim notlarını tutar ve her not bir işi kapatır ya da yarım bırakır. Çekirdek notları ortak temeli, ekranın görünen yüzünü, koşu bölümünü, savaş kurallarını, çizimleri, serbest cevap bağlantısını, ayar ve menü pencerelerini ve parçaları birleştiren betiği anlatır. Engel notları köprü, patron, kavram, tahmin, hikâye, sandık, düşman ve tuzak engellerinin davranışını yazar. Deney notları kristal, ışık eğrisi, parçacık sayımı ve elektron koparma gibi etkileşimli ekranları tanımlar. İstasyon notları her istasyonun engel, temel tur ve tekrar havuzu verisini tutar. Bir ek dosya ise klasörü boş olsa da yerinde tutar."
+   },
+   "mantik": {
+    "cok_basit": "Çok kişi işi paylaşınca herkesin neyin bittiğini görmesi gerekir, notlar bunun içindir.",
+    "basit": "İşler farklı yapay zekâlara dağıldığı için her biri bitirdiğini yazar. Sonraki iş böylece neyin hazır olduğunu bilerek başlar.",
+    "normal": "Oyunun parçaları farklı ajanlarca yapıldığı için her işin sonucu ayrı bir notta durur. Sonraki iş, bir önceki işin ne bıraktığını başka dosyaları açmadan bu notlardan öğrenir. Her not tek bir işi anlattığı için hangi işin bittiği ve neyin kaldığı kolay görülür.",
+    "gelismis": "Parçaları paralel yazan ajanlar birbirinin işini göremez, bu yüzden her biri sonucunu kendi notuna yazar. Notların işe göre ayrı olması kimin neyi bitirdiğini karıştırmaz. Birleştirme notunun parçaların hazır olduğunu ama sınamanın bekleyen iş olduğunu açıkça söylemesi, bitmemiş bir işin bitmiş sanılmasını önler.",
+    "detayli": "Parçaları paralel yazan ajanlar birbirinin işini göremez, bu yüzden her biri sonucunu kendi notuna yazar; sonraki iş bu notlardan başlar. Notların işe göre ayrı olması kimin neyi bitirdiğini karıştırmaz ve bir işin durumu tek yerde bulunur. Birleştirme notunun parçaların hazır olduğunu ama sınamanın henüz çalıştırılmadığını açıkça söylemesi, bitmemiş bir işin bitmiş sanılmasını önler. Metinlerin istasyon belgesinden aynen alınması oyun ile belgenin aynı sözleri söylemesini sağlar."
+   },
+   "nasil": {
+    "basit": "Bir iş bitince onu yapan ajan notunu bu klasöre bırakır. Sonraki işi alan, ne olduğunu ve neyin kaldığını bu notlardan okuyarak devam eder.",
+    "normal": "Her iş kapanırken ilgili parçanın ne yaptığını, nasıl çalıştığını ve varsa kalan işi bir nota yazar. Çekirdek işleri ortak temelden başlar, ekran, koşu, savaş ve çizim gibi parçalara dallanır; en sonda birleştirme notu gelir. Engel, deney ve istasyon notları bunlara paralel yazılır.",
+    "gelismis": "Notlar iş türüne göre ayrı adlandırılır ve aynı iş için tek not yazılır. Çekirdek zinciri ortak temelle başlar, ekran, koşu, savaş, çizim ve bağlantı notlarına dallanır, en sonda birleştirme notuna varır. Engel notları her engelin nasıl çalıştığını, deney notları başarının hangi koşulda bildirildiğini, istasyon notları ise verinin istasyon belgesinden nasıl alındığını yazar. Birleştirme notu parçaların hazırlandığını ama birleştirme ve sınamanın henüz çalıştırılmadığını söyler.",
+    "detayli": "Notlar iş türüne göre ayrı adlandırılır ve her iş için tek not yazılır. Çekirdek zinciri ortak temelle başlar; bu not ortak araçların, oyun durumunun başlangıç değerlerinin, kaydetme ve yüklemenin, bellek içi depolamanın ve birim testlerin bittiğini ve kalan iş olmadığını bildirir. Sonra ekran, koşu, savaş, çizim, serbest cevap bağlantısı ve ayar pencereleri notlarına dallanır. En sonda birleştirme notu gelir ve parçaların hazırlandığını, ama birleştirme ile sınamanın henüz çalıştırılmadığını söyler. Engel notları her engelin davranışını yazar; deney notları başarının hangi koşulda yalnız bir kez bildirildiğini anlatır; istasyon notları verinin metinlerinin istasyon belgesinden aynen alındığını ve istasyonların aynı biçimde olduğunu yazar."
+   },
+   "detay": {
+    "girdiler": [
+     "Her not, ilgili işi bitiren ajanın bildirdiği sonuçtan yazılır.",
+     "İstasyon notları metinleri istasyon belgesinden alır."
+    ],
+    "ciktilar": [
+     "Her not bir parçanın ne yaptığını ve varsa kalan işi söyler.",
+     "Birleştirme notu parçaların hazır olup sınamanın bekleyip beklemediğini bildirir."
+    ],
+    "degismezler": [
+     "Her iş için tek not tutulur ve not işin türüne göre adlandırılır.",
+     "İstasyon verilerinin biçimi aynı kalır, oyun iki istasyonu aynı yoldan okur."
+    ],
+    "kenar": [
+     "Bir ek dosya klasörün boş kalsa da yerinde durmasını sağlar.",
+     "Deney ekranlarında başarı bildirimi yalnız bir kez verilir."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "İstasyon verilerinin biçimi iki istasyonda da aynı kalmalıdır; oyun hepsini aynı yoldan okur.",
+     "Her not yaptığı işe göre adlandırılır; adlandırma düzeni notların bulunmasını sağlar.",
+     "Notlar yapılan işi anlatır; yapılmayan bir işi bitmiş gibi göstermemelidir."
+    ],
+    "degisebilir": [
+     "Bir notun içindeki anlatım cümleleri, işin sonucunu doğru yansıttıkça serbestçe düzeltilebilir.",
+     "Notlar tamamlandıkça birleştirme notundaki durum güncellenebilir."
+    ]
+   },
+   "kurulus": [
+    {
+     "baslik": "Ortak temeli bitir ve not düş",
+     "metin": "İlk iş ortak araçları, oyun durumunun başlangıç değerlerini, kaydetme ve yüklemeyi kurar; bittiğini ve kalan işin olmadığını bir nota yazar.",
+     "parcalar": [
+      "oyun/ilerleme/A1.md"
+     ]
+    },
+    {
+     "baslik": "Ekran, koşu ve savaş notları",
+     "metin": "Ekranın görünen yüzü, koşu bölümü ve savaş kuralları temele dayanır; her biri bitince kendi notunu bırakır.",
+     "parcalar": [
+      "oyun/ilerleme/A4.md",
+      "oyun/ilerleme/A2.md",
+      "oyun/ilerleme/A3.md"
+     ]
+    },
+    {
+     "baslik": "Çizim ve bağlantı notları",
+     "metin": "Canavar ve koşu çizimleri ile serbest cevap bağlantısı ayrı notlarda anlatılır.",
+     "parcalar": [
+      "oyun/ilerleme/A5a.md",
+      "oyun/ilerleme/A5b.md",
+      "oyun/ilerleme/A6.md"
+     ]
+    },
+    {
+     "baslik": "Engel ve deney notları",
+     "metin": "Engel türlerinin davranışı ve etkileşimli deney ekranları çekirdekten bağımsız ilerler; her biri kendi notuyla kapanır.",
+     "parcalar": [
+      "oyun/ilerleme/H1.md",
+      "oyun/ilerleme/H4.md",
+      "oyun/ilerleme/H5.md",
+      "oyun/ilerleme/S1.md",
+      "oyun/ilerleme/S6.md"
+     ]
+    },
+    {
+     "baslik": "İstasyon verileri ve birleştirme",
+     "metin": "İstasyon verileri aynı biçimde yazılır. Birleştirme notu en sonda parçaların hazır olduğunu, sınamanın bekleyen iş olduğunu bildirir.",
+     "parcalar": [
+      "oyun/ilerleme/E1.md",
+      "oyun/ilerleme/E2.md",
+      "oyun/ilerleme/E3.md",
+      "oyun/ilerleme/A9.md"
+     ]
+    }
+   ],
+   "sorular": [
+    {
+     "soru": "Bir not yapılmamış bir işi bitmiş gibi gösterse ne olur?",
+     "yanit": "Sonraki iş o parçanın hazır olduğunu varsayıp başlar ve eksik parçada takılır. Bu yüzden birleştirme notu sınamanın bekleyen iş olduğunu açıkça yazar."
+    },
+    {
+     "soru": "İstasyon verilerinin biçimini neden aynı tutmak gerekir?",
+     "yanit": "Oyun istasyonları aynı yoldan okur. Biçim bir istasyonda değişirse okuyan yer o istasyonda bozulur."
+    }
+   ],
+   "kritik_neden": "Notlar yanlış ya da eksik olursa sonraki işler hazır olmayan parçalara dayanır; istasyon veri biçimi bozulursa oyun o istasyonu okuyamaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Notların adlandırma düzeninin (harfli kodların neyi ifade ettiği) kesin anlamı bilinmiyor; yalnız notların içeriğinden gruplandı.",
+    "Bazı notlarda geçen iş kodlarının hangi aşamaya karşılık geldiği doğrulanmadı."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/.gitkeep",
+   "tur": "dosya",
+   "ozet": "e3b0c44298fc",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Boş yer tutucu dosya",
+   "ne": {
+    "cok_basit": "Bu dosya boş; içinde yazı yok, yalnızca klasörü yerinde tutuyor.",
+    "normal": "Bu dosyanın içinde hiç metin ya da kod yoktur ve kendisi bir işlev ya da ayar taşımaz. Adına bakılırsa görevi, klasörün boş kalsa da yerinde durmasını sağlamaktır."
+   },
+   "nasil": {
+    "normal": "Dosyanın satır sayısı sıfırdır; açıldığında okunacak bir şey çıkmaz. Kendi başına hiçbir davranış üretmez. Bu yüzden içinde açıklanacak bir mekanizma bulunmaz."
+   },
+   "sinir": {
+    "sabit": [
+     "Dosyanın boş kalması korunmalı; içine yazı eklenirse içerik artık yer tutucu olmaktan çıkar."
+    ],
+    "degisebilir": [
+     "Klasörün içine başka dosyalar eklendiğinde bu dosyanın gerekip gerekmediği içeride serbestçe yeniden değerlendirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu dosya boş olduğu için bozulursa en fazla klasörün durumu değişir.",
+   "terimler": [],
+   "belirsiz": [
+    "Dosyanın neden bu klasörde tutulduğu yalnızca adından çıkarılıyor; bu notta ayrıca bir açıklama yok."
+   ],
+   "okunan": [
+    "oyun/ilerleme/.gitkeep"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A1.md",
+   "tur": "dosya",
+   "ozet": "6fc2260225d8",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Ortak temel ve kayıt",
+   "ne": {
+    "cok_basit": "Oyunun ortak temeli: herkesin kullandığı ortak parçalar ve kayıt işleri burada.",
+    "normal": "Bu not, oyunun ortak temelinin bittiğini bildirir. Ortak araçlar, oyun durumunun başlangıç değerleri, kaydetme ve yükleme işleri ile bellek içi depolama ve birim testleri tamamlanmış; kalan iş yok."
+   },
+   "nasil": {
+    "normal": "Oyun durumu tek bir yerde tutulur ve değişiklikler bu nesnenin içinde yapılır; böylece ona bağlanan parçalar her zaman güncel veriyi görür. Kayıt işi, bekletmeden hemen yazma yolunu da sunar. Tarayıcı deposuna erişim hata verirse oyun bellekte çalışmaya devam eder."
+   },
+   "sinir": {
+    "sabit": [
+     "Oyun durumu nesnesinin yerinde güncellenmesi korunmalı; yeni bir nesneye çevrilirse ona bağlanan kodlar eski veriyi görür.",
+     "Depoya erişimin hata yakalamayla sarılması ve bellekte devam edebilmesi korunmalı; aksi halde açılış hata verebilir."
+    ],
+    "degisebilir": [
+     "Sınama için kullanılan bellek içi depolamanın kurulma biçimi, testlerle birlikte serbestçe yeniden yazılabilir.",
+     "Kayıt yazma sıklığı, yani her değişiklikte hemen yazma ile bekleyerek yazma arasındaki seçim, içeride değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa oyunun durumu ve kayıt işi çalışmaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/A1.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A2.md",
+   "tur": "dosya",
+   "ozet": "e5077cbaaadd",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Koşu motoru ve menü",
+   "ne": {
+    "cok_basit": "Koşu bölümünün motoru: engeller, hız, kayıt noktası ve durdurma menüsü.",
+    "normal": "Koşu bölümünün ana parçası: karakter, sıralı engeller, yavaşlama, kayıt noktası ve Esc menüsü burada. Patron paneli, hasar sayıları ve parçacık çizimleri ayrı ikinci bir dosyada, yalnızca oyun çalışırken kullanılır."
+   },
+   "nasil": {
+    "normal": "Engeller sıraya dizilir ve yavaşlama devreye girer; kısa devre olunca oyuncu son kontrol noktasından devam eder. Yol kabı ana sayfada varsa onu kullanır, yoksa yedek kabı seçer. Başlatma, duraklatma, sürdürme ve belirli bir noktaya atlama işleri bu parçadan dışarıya açılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Dışarıya açılan başlatma, duraklatma, sürdürme ve atlama işlevlerinin adları korunmalı; değişirse çağıranlar da değişmelidir.",
+     "Ana sayfadaki yol kabı ile yedek kabı seçme kuralı aynı kalmalı; aksi halde çizim yanlış yere gidebilir."
+    ],
+    "degisebilir": [
+     "Engellerin dizilim sırası ve yavaşlama eğrisi, oyunun zorluk ayarı için serbestçe değiştirilebilir.",
+     "Ölçüm için tutulan yavaşlama günlüğü, oyun davranışını etkilemeden kaldırılabilir ya da değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa koşu bölümü oynanamaz hale gelir ya da kontrol noktası çalışmaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/A2.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A3.md",
+   "tur": "dosya",
+   "ozet": "8d156802495f",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Savaş kuralları ve hasar",
+   "ne": {
+    "cok_basit": "Savaş bölümünün kuralları: hasar, hata kayıtları, patron canı ve kısa devre.",
+    "normal": "Savaşın kurallarını tutar: gelen sonucun hasarını hesaplar, hataları defterde toplar ve patronun canını düşürür. Tamir modunda hasar yarıya iner; kısa devre olunca temel tur penceresi açılır."
+   },
+   "nasil": {
+    "normal": "Hasar tablosu, sonuca ve voltaja göre hasarı belirler; uygulama işlevi bu hasarla canı, voltajı ve hata defterini günceller. Kısmi sonuç yeni kayıt açmaz; yalnızca kesinliği sıfır olan bilinmeyen sonuçlar bu kuraldan çıkar. Gözden geçirme seçimi, önceki istasyonların hatalarını sırayla çıkarır."
+   },
+   "sinir": {
+    "sabit": [
+     "Hasar tablosunun değerleri ve tamir modunun yarı hasarı birim testlerle sabitlenmiştir; değişirse testler de güncellenmeli.",
+     "Gözden geçirme seçiminin istasyon sırasına bağlı çalışması korunmalı; aksi halde hatalar yanlış istasyondan gelir."
+    ],
+    "degisebilir": [
+     "Temel kart metninin hangi öğrenilen alandan alınacağı içeride serbestçe değiştirilebilir.",
+     "Kısa devre penceresinin içindeki metinler ve görünüş serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa savaşta hasar, can ve hata kayıtları yanlış hesaplanır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/A3.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A4.md",
+   "tur": "dosya",
+   "ozet": "e13e3b237b8b",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Ekran öğeleri ve kabuk",
+   "ne": {
+    "cok_basit": "Oyunun ekran parçaları: konuşma balonu, seçenekler, bilgi çubuğu ve pencereler.",
+    "normal": "Oyunun ekranda görünen yüzünü kurar: alttaki çubuk, konuşma balonu, seçenek ve metin kutuları, düşünme göstergesi, uyarı mesajları, pencereler ve onay kutusu. Sayfanın iskeleti ve renkleri de bu parçada toplanmış."
+   },
+   "nasil": {
+    "normal": "Her ekran öğesi için hazır bir işlev vardır; sahne bu işlevleri çağırarak balonu, seçenekleri ya da pencereyi açar. Pencere alçaldığında yol alanı en küçük yüksekliğe izin verir. Her öğeyi ayrı görebilen bir deneme sayfası ve tarayıcı sınamaları da bu parçada yer alır."
+   },
+   "sinir": {
+    "sabit": [
+     "Sayfa kabuğunun öğe kimlikleri aynı kalmalı; deneme sayfasındaki kopya ile birebir uyuşmalı, yoksa sınama başarısız olur.",
+     "Balon, seçenek ve pencere işlevlerinin aldığı bilgi biçimi korunmalı; aksi halde bu işlevleri çağıran yer bozulur."
+    ],
+    "degisebilir": [
+     "Renk ve boşluk değerleri, yani görsel tema, içeride serbestçe ayarlanabilir.",
+     "Hasar sayılarının ve patron panelinin görsel ayrıntıları, ekran düzenini bozmadan serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa konuşma, seçenek ve pencere öğeleri ekrana gelmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/A4.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A5a.md",
+   "tur": "dosya",
+   "ozet": "9f11e88a4983",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Canavar çizimleri",
+   "ne": {
+    "cok_basit": "Canavarların ve konuk figürlerin çizimleri burada hazırlanmış.",
+    "normal": "Oyundaki canavarları ve konuk figürleri çizen parça. Her canavar boşta, konuşurken, vurulduğunda ya da yenildiğinde ayrı bir hal alır ve rengi her seferinde ayarlanabilir. Çizimler küçük ve büyük boyutta hazırlanmış."
+   },
+   "nasil": {
+    "normal": "Her canavar çizim olarak üretilir; çizim işlevi durum ve renk bilgisini alır ve o anki halin görüntüsünü verir. Yedek stil kuralları sayfanın başına eklenir; sonradan gelen ayrıntılı kurallar bunların üstüne yazar."
+   },
+   "sinir": {
+    "sabit": [
+     "Canavar hallerinin adları, yani boşta, konuşma, vurulma ve yenilme, çizim ile sahne arasında ortak sözleşmedir.",
+     "Yedek stil kurallarının başa eklenip sonradan gelen kuralların onları geçmesi düzeni korunmalı; sıra değişirse canavarlar yanlış görünür."
+    ],
+    "degisebilir": [
+     "Canavarların gövde biçimi, renk tonları ve ayrıntılı çizgileri içeride serbestçe yeniden çizilebilir.",
+     "Konuk figürlerin ayrıntıları, canavarlardan bağımsız olarak değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa patron panelinde canavar görünmez ya da yanlış hal gösterilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/A5a.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A5b.md",
+   "tur": "dosya",
+   "ozet": "de267ab777a7",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Koşu ve dünya çizimleri",
+   "ne": {
+    "cok_basit": "Koşan karakterin, engellerin ve arka plan manzarasının çizimleri burada.",
+    "normal": "Koşu bölümünün çizimleri: karakterin farklı halleri, engel türleri ve arka plan katmanları burada çizilir. Arka plan bir kez hazırlanıp saklanır, böylece her karede baştan çizilmez."
+   },
+   "nasil": {
+    "normal": "Her çizim işlevi, sahnenin verdiği konum ve durum bilgisini alır. Konum bilgisinde yatay değer ortanın, dikey değer zeminin referansıdır. İsteğe bağlı bir ilerleme değeri verilirse çözülme animasyonları da aynı işlevle oynar. Tema, düz bir renk metni ya da renk ve ek bilgi içeren bir kutu olabilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Konum bilgisinde yatay değerin merkez, dikey değerin zemin olması korunmalı; aksi halde karakter ile engeller birbirinden kayar.",
+     "Dışarıdan çağrılan çizim işlevlerinin adları ve aldıkları bilgi biçimi sabit kalmalı."
+    ],
+    "degisebilir": [
+     "Karakterin halleri ve engellerin görünüşü, renk ve biçim ayrıntısı içeride serbestçe yeniden çizilebilir.",
+     "Arka plan önbelleğinin ne zaman yenileneceği, performans ölçümüne göre içeride değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa koşu bölümünde karakter, engel ya da arka plan görünmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/A5b.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A6.md",
+   "tur": "dosya",
+   "ozet": "abc6467f9632",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Yapay zekâ değerlendirmesi",
+   "ne": {
+    "cok_basit": "Oyuncunun cevabını yapay zekâyla değerlendiren bağlantı burada.",
+    "normal": "Oyuncunun serbest cevabını değerlendiren bağlantı parçası. Değerlendirme hazır örnekle, girilen anahtarla ya da kapalı durumda çalışır. Aynı anda ikinci istek reddedilir."
+   },
+   "nasil": {
+    "normal": "Parça önce hangi kaynağın kullanılabildiğini bulur ve bunu yeniler. Anahtar girilmişse değerlendirme isteği bağlantıya gönderilir; anahtar yalnızca bellekte tutulur ve kalıcı depoya hiç yazılmaz. Hatırla seçilirse yalnızca oturum süresince geçici depoda tutulur. Bağlantı hata verirse oyuncuya kısa bir uyarı gösterilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Anahtarın kalıcı depoya hiç yazılmaması kuralı korunmalı; oyuncunun anahtarı bu kuralla güvende tutulur.",
+     "Aynı anda tek bir değerlendirme isteğine izin verilmesi korunmalı; aksi halde yanıtlar karışabilir."
+    ],
+    "degisebilir": [
+     "Bağlantıya gönderilen istemin metni, yani soruyu nasıl anlattığı, içeride serbestçe iyileştirilebilir.",
+     "Hata durumunda gösterilen uyarı metinleri ve bildirimin biçimi serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa serbest cevaplar değerlendirilemez ve anahtar koruma kuralı çiğnenebilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Ek düşünme ve çaba ayarlarının bağlantı isteğinde neden gönderilmediği bu notta doğrulanmamış."
+   ],
+   "okunan": [
+    "oyun/ilerleme/A6.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A8.md",
+   "tur": "dosya",
+   "ozet": "3b3bc6749c28",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Ayarlar ve yardımcı pencereler",
+   "ne": {
+    "cok_basit": "Ayarlar, harita menüsü ve süre sayacı gibi oyun penceresinin yardımcıları burada.",
+    "normal": "Ayar penceresini, harita menüsünü, kart koleksiyonunu ve hata defterini açıp kapatan parça. Süre sayacını, hızlı mod önerisini ve engele atlama işini de bu parça yönetir."
+   },
+   "nasil": {
+    "normal": "Pencereler kendi katmanında açılır ve onay penceresinin üstünde kalması stil kurallarına bağlıdır. Ayar penceresi açılınca koşu duraklatılır, kapanınca aktif bir istasyon varsa koşu sürdürülür. Engele atlamada üst çubuğa bir etiket eklenir ve ilerleme bu atlamayı kaydeder. Parça yüklendiğinde kendini kurar ve kısayol tuşlarını dinlemeye başlar."
+   },
+   "sinir": {
+    "sabit": [
+     "Ayar penceresi açılınca koşunun duraklatılması ve kapanınca sürdürülmesi birlikte korunmalı; biri eksik kalırsa koşu yarıda kalır.",
+     "Atlama bilgisinin kayıttaki adı korunmalı; değiştirilirse eski kayıtlardaki işaret tanınmaz."
+    ],
+    "degisebilir": [
+     "Ayar penceresindeki yazılar ve görsel düzen içeride serbestçe değiştirilebilir.",
+     "Hızlı mod önerisinin metni ve gösterim biçimi, oyuncunun ilerlemesine göre içeride ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa ayar penceresi açılmaz ve koşu duraklatılamaz ya da sürdürülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Harita menüsünün açılışta otomatik açılıp açılmayacağı bu notta kesinleşmemiş."
+   ],
+   "okunan": [
+    "oyun/ilerleme/A8.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/A9.md",
+   "tur": "dosya",
+   "ozet": "a731f8435496",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Birleştirme ve açılış",
+   "ne": {
+    "cok_basit": "Oyunun parçalarını bir araya getirip açılışta başlatan bağlantı notu burada.",
+    "normal": "Oyunun parçalarını birleştiren betik ile açılışta başlatan ana parça hazırlandı. Tüm parçalar gelince birleştirme ve sınama henüz çalıştırılmadı; bu iş bir sonraki aşamaya bırakıldı."
+   },
+   "nasil": {
+    "normal": "Betik, parçaları belirli bir sırayla birleştirir ve isteğe bağlı kipte bazı parçalar eksikken de çalışabilir. Ana parça koşu bölümünün başlatma işlevini sarar; haritadaki Başla düğmesi bunu çağırırsa akış kendiliğinden işler. Duman sınaması, birleşik oyunun temel akışta hata vermediğini denetlemek için yazılmıştır."
+   },
+   "sinir": {
+    "sabit": [
+     "Başla düğmesinin ana parçadaki başlatma işlevini çağırması korunmalı; aksi halde açılışta akış kendiliğinden başlamaz.",
+     "Ana parçanın birleştirmenin son adımı olarak yüklenmesi korunmalı; önce yüklenirse başlatılacak parçalar henüz hazır olmayabilir."
+    ],
+    "degisebilir": [
+     "Eksik parçalara izin veren isteğe bağlı kip ve uyarı metinleri içeride serbestçe ayarlanabilir.",
+     "Duman sınamasının hangi kontrolleri kapsayacağı, parçalar tamamlandıkça içeride genişletilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa oyunun parçaları bir araya gelmez ya da açılışta başlatılamaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/A9.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/E1.md",
+   "tur": "dosya",
+   "ozet": "0a024861ff59",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Bir istasyonun verisi",
+   "ne": {
+    "cok_basit": "Bir istasyonun oyun verisi: engeller, temel tur ve tekrar edilen düşmanlar.",
+    "normal": "İstasyonun oyun verisini tutan parça: engeller, temel tur ve tekrar havuzundaki düşmanlar burada tanımlanır. Metinler istasyon belgesinden aynen alınmış; böylece oyun ile belge aynı sözleri söyler."
+   },
+   "nasil": {
+    "normal": "Veri, oyunun okuduğu yapıda tutulur; her engelde metin, tek doğru seçenek, yedek seçmeli seçenekler ve bir tuzak parça birleşimi bulunur. Patron aşamalarına, kayıt şemasında olmayan bir kavram alanı eklenmiş; sebebi istasyon belgesinde aşama kavramının yazılı olmasıdır."
+   },
+   "sinir": {
+    "sabit": [
+     "Engel kayıtlarının şeması, yani metin, doğru seçenek ve yedek seçenek alanlarının biçimi, oyunun okuyacağı sözleşmedir; değişirse veri okunmaz.",
+     "Tekrar havuzu kimliklerinin biçimi, bu havuzu okuyan kısımla uyumlu kalmalı; aksi halde havuz ile kayıtlar eşleşmez."
+    ],
+    "degisebilir": [
+     "Engellerin ayrıntılı metinleri, öğretici dili korunarak içeride değiştirilebilir.",
+     "Patron aşamalarındaki ek kavram alanının adı ve kullanılış yeri içeride yeniden düşünülebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa istasyonun engelleri, sorular ya da düşman havuzu yüklenmez.",
+   "terimler": [],
+   "belirsiz": [
+    "Doğrulama sınaması bu notta henüz çalıştırılmamış; verinin oyunda doğru okunup okunmadığı kanıtlanmış değil."
+   ],
+   "okunan": [
+    "oyun/ilerleme/E1.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/E2.md",
+   "tur": "dosya",
+   "ozet": "741673a0730b",
+   "iskelet": "c6215091a3b7",
+   "baslik": "İkinci istasyon verisi",
+   "ne": {
+    "cok_basit": "İkinci istasyonun oyun verisi: engeller, temel tur ve tekrar edilen düşmanlar.",
+    "normal": "İkinci istasyonun oyun verisini tutan parça: engeller, temel tur ve tekrar havuzundaki düşmanlar burada tanımlanır. Yapısı birinci istasyon verisiyle aynı biçimdedir, böylece oyun iki istasyonu aynı yoldan okur."
+   },
+   "nasil": {
+    "normal": "Her engelde metin, doğru seçenek, yedek seçmeli seçenekler ve tuzak bir birleşim tutulur; patron aşamalarına kayıt şemasında olmayan bir kavram alanı eklenmiştir. Dosya sözdizimi denetiminden geçmiştir ve şema içerik açısından el ile kontrol edilmiştir."
+   },
+   "sinir": {
+    "sabit": [
+     "Engel kayıtlarının alan adları ve biçimi, oyunun bu veriyi okuyan kısmıyla aynı sözleşmede kalmalı; değişirse veri okunmaz.",
+     "Tekrar havuzu kimliklerinin istasyonu gösteren ön ek düzeni korunmalı; aksi halde kayıtlar eşleşmez."
+    ],
+    "degisebilir": [
+     "Seçenek metinleri ve tuzak birleşimlerinin ayrıntıları, içerikteki doğruluk korunarak değiştirilebilir.",
+     "Patron aşamalarındaki ek kavram alanının adı, kayıt şemasına eklenip eklenmeyeceği içeride yeniden düşünülebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa ikinci istasyonun engelleri, sorular ya da düşman havuzu yüklenmez.",
+   "terimler": [],
+   "belirsiz": [
+    "Doğrulama sınaması henüz yazılmadığı için verinin oyunda doğru okunup okunmadığı bu notta kanıtlanmamış."
+   ],
+   "okunan": [
+    "oyun/ilerleme/E2.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/E3.md",
+   "tur": "dosya",
+   "ozet": "2c13bb29d182",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Üçüncü istasyon verisi",
+   "ne": {
+    "cok_basit": "Üçüncü istasyonun oyun verisi: engeller, temel tur ve tekrar edilen düşmanlar.",
+    "normal": "Üçüncü istasyonun oyun verisi burada yazılmış: engeller, temel tur ve tekrar havuzundaki düşmanlar tanımlanır. Bu veri, istasyonda oyuncunun karşılaşacağı engelleri ve düşmanları belirler."
+   },
+   "nasil": {
+    "normal": "Veri oyunun okuduğu yapıda tutulur; her engelde metin, doğru seçenek, yedek seçenekler ve tuzak birleşimi bulunur. Düşman havuzu kendi kimlikleriyle listelenir ve her düşman bu kimlikle anılır. Verinin doğruluğu, sonraki denetimlerle birlikte teyit edilecektir."
+   },
+   "sinir": {
+    "sabit": [
+     "Engel kayıtlarının alan adları ve biçimi, diğer istasyon verileriyle aynı sözleşmede kalmalı; değişirse veri okunmaz.",
+     "Düşman havuzu kimliklerinin istasyonu gösteren ön ek düzeni korunmalı; aksi halde kayıtlar eşleşmez."
+    ],
+    "degisebilir": [
+     "Engellerin ayrıntılı metinleri ve seçenek ifadeleri, öğretici dili bozmadan içeride değiştirilebilir.",
+     "Düşman metinlerinin ses tonu ve kısa açıklamalar içeride serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa üçüncü istasyonun engelleri, sorular ya da düşman havuzu yüklenmez.",
+   "terimler": [],
+   "belirsiz": [
+    "Durum bitti yazılı, ama sözdizimi ve şema denetiminin yapılıp yapılmadığı bu notta net değil."
+   ],
+   "okunan": [
+    "oyun/ilerleme/E3.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/H1.md",
+   "tur": "dosya",
+   "ozet": "ba276bcf136c",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Hikâye ve sandık engelleri",
+   "ne": {
+    "cok_basit": "Hikâye ve sandık adlı iki özel engelin davranışları burada.",
+    "normal": "Hikâye ve sandık adlı iki özel engelin davranışını yazan parça. Hikâye engelinde satırlar sırayla gösterilir; sandık engeli oyuncuya bir kart verir ve bunu tekrar etmeden kaydeder."
+   },
+   "nasil": {
+    "normal": "Hikâye engelinde her satır kısa bir süre görünür; satır geçişi zaman dolunca ya da Enter ve tıklamayla olur. Üç satırdan sonra Devam düğmesi çıkar. Bir ayar hikâye sahnesini atlatabilir. Sandık engeli kartı ilerleme durumuna ekler ve kayıt yazma işini çağırır."
+   },
+   "sinir": {
+    "sabit": [
+     "Hikâye engelinin atlama ayarı ile sahnesiz dönme davranışı birlikte korunmalı; aksi halde atlanan sahne yine açılır.",
+     "Sandık engelinin kartı ilerleme durumuna eklemesi ve kaydı çağırması birlikte korunmalı; yoksa kart kaybolabilir."
+    ],
+    "degisebilir": [
+     "Hikâye satırlarının metinleri ve görünüş biçimi içeride serbestçe değiştirilebilir.",
+     "Sandık kartının metni ve görünüşü içeride serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa hikâye sahneleri oynamaz ya da sandık kartı kaydedilmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/H1.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/H2.md",
+   "tur": "dosya",
+   "ozet": "72cff6e2fcb7",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Düşman ve tuzak engelleri",
+   "ne": {
+    "cok_basit": "Düşman ve tuzak adlı iki özel engelin davranışları burada tanımlanır.",
+    "normal": "Düşman ve tuzak adlı iki özel engelin davranışını yazan parça. İkisi de oyuncuya seçenekli soru sorar ve bunu ortak ekran işlevleri üzerinden yapar."
+   },
+   "nasil": {
+    "normal": "Test sayfaları sahte bağlam ve arayüz kullanır; böylece engeller oyunun geri kalanına bağlı olmadan tarayıcıda ayrı ayrı sınanabilir. Bu düzen, bir engelde hata olursa hatanın hangi parçadan geldiğini ayırmayı kolaylaştırır."
+   },
+   "sinir": {
+    "sabit": [
+     "Düşman ve tuzak engellerinin dışarıya açılan adları ve aldıkları bilgi biçimi sabit kalmalı; değişirse onları çağıran yer bozulur."
+    ],
+    "degisebilir": [
+     "Düşman ve tuzak engellerindeki soruların metinleri ve şıkların ifadesi içeride serbestçe değiştirilebilir.",
+     "Test sayfalarının sahte bağlamı ve örnek verileri, sınama kapsamını bozmadan değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa düşman ve tuzak engelleri oyuncuya soru soramaz ya da sonucu işleyemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Seçenek sorusunun seçilen şıkkın özgün sırasını döndürdüğü varsayımı bu notta doğrulanmamış."
+   ],
+   "okunan": [
+    "oyun/ilerleme/H2.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/H3.md",
+   "tur": "dosya",
+   "ozet": "0e7560968714",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Kavram ve tahmin engelleri",
+   "ne": {
+    "cok_basit": "Kavram ve tahmin adlı iki engelin sorusu, ipucu ve bekleme süreleri burada.",
+    "normal": "Kavram ve tahmin adlı iki engelin davranışını yazan parça. Kavram engelinde süre dolunca ipucu, daha sonra da geçme seçeneği açılır. Tahmin engelinde oyuncu emin olduğu düzeyi seçer, sistemin adımlarını izler ve açıklamayla devam eder."
+   },
+   "nasil": {
+    "normal": "Kavram engelinde ilerleme, işleyici tamamlandı işareti verene kadar kapalı kalır. Geç seçilirse yanıt yanlış sayılır ve sonuç bilinmeyen olarak işlenir. Süreler test ortamında kısaltılabilir; oyunda varsayılan değerler kullanılır. Devam düğmesi ya da Enter ile geçilir; açılıştaki ilk Enter kısa bir süre yutulur."
+   },
+   "sinir": {
+    "sabit": [
+     "Geç yolunun sonucunu bilinmeyen olarak işlemesi korunmalı; aksi halde atlanan sorular hata sayısını yanlış etkiler.",
+     "Kavram engelinin tamamlandı işareti ile ilerleme kapısı birlikte korunmalı; aksi halde soru ilerlemeden geçilebilir."
+    ],
+    "degisebilir": [
+     "İpucu ve açıklama metinlerinin ayrıntıları, içerikteki doğruluk korunarak içeride değiştirilebilir.",
+     "Test ortamında kullanılan kısaltılmış süreler, oyunu bozmadan içeride ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa kavram ve tahmin engellerinde soru, ipucu ya da sonuç yanlış işlenir.",
+   "terimler": [],
+   "belirsiz": [
+    "Gerçek seçenek ve koşu bölümü bağlantısıyla denemesi bu notta yapılmamış görünüyor."
+   ],
+   "okunan": [
+    "oyun/ilerleme/H3.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/H4.md",
+   "tur": "dosya",
+   "ozet": "88ba3a8322c1",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Köprü kurma engeli",
+   "ne": {
+    "cok_basit": "Köprü kurma adlı engelde parçalar sürüklenip yuvalara yerleştirilir.",
+    "normal": "Köprü kurma engelini yazan parça. Oyuncu parçaları sürükler, dokunarak ya da klavyeyle yerleştirir. Doğru kurulumda köprü tamamlanır; yanlışta yuvalar kırmızı sallanır ve doğru sıra gösterilir."
+   },
+   "nasil": {
+    "normal": "Parçalar fareyle ya da dokunmayla taşınır; yuvaya dokunarak parça geri alınabilir. Klavye yolunda Enter ya da Boşluk seçimi yapar. Kontrol düğmesi yerleşimi denetler; doğruysa sonuç işlenir ve köprü kurulur. İşleyici arayüze bağlı olmadığı için tek başına sınanabilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Doğru sıranın tanımı ve kontrol sonucunun sonuç nesnesine yazılma biçimi korunmalı; aksi halde engelin sonucu yanlış işlenir.",
+     "Klavye yolunun Enter ve Boşluk tuşlarıyla çalışması korunmalı; aksi halde klavyeyle oynayan oyuncu köprüyü kuramaz."
+    ],
+    "degisebilir": [
+     "Yanlış sıradaki sallanma efekti ve yuvaların renkleri içeride serbestçe değiştirilebilir.",
+     "Doğru sıra listesinin gösterim biçimi ve yazıları, oyuncuya açıklık sağlamak için serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa köprü engelinde parçalar yerleşmez ya da yanlış sonuç işlenir.",
+   "terimler": [],
+   "belirsiz": [
+    "Bir satırın sonu bu notta eksik göründüğü için yanlış yerleşimdeki ayrıntılar tam bilinmiyor."
+   ],
+   "okunan": [
+    "oyun/ilerleme/H4.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/H5.md",
+   "tur": "dosya",
+   "ozet": "097c1f3ba60b",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Patron engeli aşamaları",
+   "ne": {
+    "cok_basit": "Patron engelinin aşamaları: seçmeli ve açık sorular, ikinci şans ve durdurma.",
+    "normal": "Patron engelini yöneten parça: seçmeli ve açık aşamaları, ikinci şansı, durdurma ve yeniden deneme düğmelerini burada toplar. Kısa devre durumu da bu parçada ele alınır."
+   },
+   "nasil": {
+    "normal": "Aşamalar ya seçmeli ya da açık metin cevabı ister; yanlış cevapta bir ikinci şans tanınır. Yedek seçmeli seçenekler de sunulabilir. Durdurma düğmesine basılınca yazılmış metin korunur. Patronun ruh hali, panel içindeki görünüm sınıfının değişmesiyle gösterilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Metin kutusu çağrısının değer parametresini kabul etmesi korunmalı; aksi halde durdurma sonrası yazılan metin kaybolur.",
+     "Patronun ruh hali, panel içindeki görünüm sınıflarının adlarıyla eşleşmeli; ad değişirse canavar doğru halini göstermez."
+    ],
+    "degisebilir": [
+     "Aşamalar arasındaki geçiş metinleri ve yedek seçeneklerin içeriği serbestçe ayarlanabilir.",
+     "Kısa devre durumunun ne kadar açık kalacağı, oyunun akışına göre içeride değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa patron engeli aşamaları ilerlemez ya da ikinci şans ve durdurma çalışmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Arayüz tarafının bu değer parametresini gerçekten desteklediği bu notta doğrulanmamış."
+   ],
+   "okunan": [
+    "oyun/ilerleme/H5.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/S1.md",
+   "tur": "dosya",
+   "ozet": "7a038cf6944d",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Kristal türleri ve serbest yol",
+   "ne": {
+    "cok_basit": "Kristal türlerini sırayla gezme ve serbest deneme bölümü burada.",
+    "normal": "Kristal türlerini tur ya da serbest yol kipinde gösteren etkileşimli parça. Tur kipinde kristal türleri sırayla gelir; serbest yolda oyuncu saçılmaları izleyip sonucu ölçer. Başarıya ulaşınca bu bilgi bir kez bildirilir."
+   },
+   "nasil": {
+    "normal": "Serbest yolda birikimli bir oran hesaplanır; hiç saçılma yoksa sonuç alt sınır olarak gösterilir. Başarı, bütün türlerin denenmesi ve kıyaslanmasıyla oluşur. Hareket azaltma tercihi açıksa canlandırmalar sadeleşir. Kapatıldığında parça kendi çizdiklerini temizler."
+   },
+   "sinir": {
+    "sabit": [
+     "Serbest yol değerinin toplam adım bölü saçılma biçiminde hesaplanması ve alt sınır gösterimi korunmalı; değişirse ölçümler karşılaştırılamaz.",
+     "Ölçüm sonucunun tek, çok ve amorf biçiminde dönmesi korunmalı; deneme yapılmadıysa boş değer verilmelidir."
+    ],
+    "degisebilir": [
+     "Kristal çizimlerinin renk ve ayrıntıları içeride serbestçe değiştirilebilir.",
+     "Canlandırmaların akıcılığı, hareket azaltma tercihine uymak kaydıyla serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa kristal türleri gösterilemez ya da başarı ve ölçüm yanlış hesaplanır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/S1.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/S3.md",
+   "tur": "dosya",
+   "ozet": "7efa4c12b37e",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Kafes sayım deneyi",
+   "ne": {
+    "cok_basit": "Bir kafes içinde parçacıkları sayan deney alanı burada.",
+    "normal": "Bir kafesin içindeki parçacık sayısını değiştiren deney alanı. Oyuncu sayımı değiştirir, kafes yeniden çizilir. Tür ve parçacık eşleşince bitiş yalnızca bir kez bildirilir."
+   },
+   "nasil": {
+    "normal": "Sayım değiştikçe çizim ve başarı kontrolü birlikte güncellenir; başarı sayacı tür ve parçacık eşleşmesine bakar. Parça kapatıldığında çizilen sahne temizlenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Başarı sayacının tür ve parçacık eşleşmesine göre çalışması korunmalı; aksi halde başarı yanlış anda bildirilir.",
+     "Bitiş bildiriminin bir kez gönderilmesi korunmalı; aksi halde aynı başarı birden fazla kez kaydedilebilir."
+    ],
+    "degisebilir": [
+     "Kafesin çizim biçimi, kutu ve parçacık ayrıntıları içeride serbestçe değiştirilebilir.",
+     "Sayım değiştirme düğmelerinin görünümü ve yerleşimi ekrana uyacak şekilde serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa kafes deneyinde sayım yanlış çizilir ya da başarı bildirilmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/S3.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/S4.md",
+   "tur": "dosya",
+   "ozet": "e83876af9160",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Kristal düzlemi ve yön",
+   "ne": {
+    "cok_basit": "Kristal içindeki düzlem ve yönleri sayılarla gösteren deney alanı burada.",
+    "normal": "Kristal içindeki düzlemleri ve yönleri sayı dizileriyle gösteren deney alanı. Düzlem kipi ve yön kipi vardır; doğru seçim başarı olarak bildirilir. Bu parçanın çizimi sıfırdan üretilmiştir."
+   },
+   "nasil": {
+    "normal": "Düzlem ve yön, sayı dizisinden hesaplanır ve kafes üzerinde eğik bir görünümle çizilir. Başarı kontrolü seçimi hesaplanan sonuçla karşılaştırır ve bitiş yalnızca bir kez bildirilir. Kapatıldığında parça kendi çizdiklerini temizler."
+   },
+   "sinir": {
+    "sabit": [
+     "Düzlem ve yön sayı dizilerinin parantez biçimi korunmalı; aksi halde seçim eşleşmez ve başarı oluşmaz.",
+     "Yön ve düzlem kiplerinin adları, dışarıdan seçilen kipin adıyla birebir eşleşmeli."
+    ],
+    "degisebilir": [
+     "Eksen ve kafes simgelerinin renkleri ile çizim ayrıntıları içeride serbestçe değiştirilebilir.",
+     "Seçilebilir düzlem ve yön sayısı, oyunun öğretim akışına göre içeride genişletilebilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa düzlem ve yön deneyi yanlış çizilir ya da başarı yanlış hesaplanır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/S4.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/S5.md",
+   "tur": "dosya",
+   "ozet": "8150f5f70e69",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Kara cisim ışıma eğrisi",
+   "ne": {
+    "cok_basit": "Sıcaklık değişince ısınan bir cismin ışık eğrisini gösteren alan burada.",
+    "normal": "Sıcaklık kaydırıcısıyla ısınan bir cismin ışık eğrisini gösteren deney alanı. Kuantum eğrisi her zaman görünür; klasik eğri ise bir anahtarla açılır. Sıcaklık belli bir aralığa getirilip klasik eğri açılınca başarı bildirilir."
+   },
+   "nasil": {
+    "normal": "Sıcaklık değiştikçe eğrinin tepe noktası kayar; tepe noktasının konumu ayrıca bir renk örneğiyle gösterilir. Görünüm değişiklikleri akıcı bir geçişle yapar ve parça kapatıldığında temizlenir. Ölçüm için tepe noktası, ışığın en çok yaydığı dalga boyu olarak hesaplanır."
+   },
+   "sinir": {
+    "sabit": [
+     "Sıcaklık kaydırıcısının aralığı ve adımı, başarı aralığıyla uyumlu kalmalı; değişirse başarı kolayca kaçırılır ya da hiç ulaşılmaz.",
+     "Klasik eğrinin varsayılan olarak kapalı başlaması ve başarı için açılması gerekmesi korunmalı; aksi halde başarı baştan verilebilir."
+    ],
+    "degisebilir": [
+     "Eğrinin renkleri, ışık örneğinin görünümü ve ızgara çizgileri içeride serbestçe değiştirilebilir.",
+     "Tepe noktası bilgisinin yazı biçimi ve yuvarlama düzeyi, okunaklılık için serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa ışıma eğrisi çizilmez, sıcaklık ayarı çalışmaz ya da başarı yanlış bildirilir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/ilerleme/S5.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/ilerleme/S6.md",
+   "tur": "dosya",
+   "ozet": "2ba66ab328d1",
+   "iskelet": "c6215091a3b7",
+   "baslik": "Fotoelektrik etki deneyi",
+   "ne": {
+    "cok_basit": "Işık metal yüzeye vurunca elektron çıkarır; bu deney alanı bunu gösterir.",
+    "normal": "Işığın bir yüzeyden elektron koparmasını gösteren deney alanı. Birkaç denetimle oynanır; başarı, eşik altı ya da kinetik enerji koşuluna göre belirlenir."
+   },
+   "nasil": {
+    "normal": "Elektronlar saniyede çıkar; oyun modelinde bu sayı ışık şiddetinden belli bir çarpanla hesaplanır. Sonuçlar yumuşak bir geçişle değişir ve parça kapatılınca çizim temizlenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Saniyedeki elektron sayısının şiddetten hesaplanma çarpanı, oyun modelinin temel kuralıdır; değişirse ölçülen sonuçlar değişir.",
+     "Başarı koşulunun eşik altı ya da kinetik enerji seçeneklerinden birine bağlı çalışması korunmalı; aksi halde başarı yanlış bildirilir."
+    ],
+    "degisebilir": [
+     "Elektronların ve ışığın çizim biçimi, renkleri ve animasyon ayrıntıları içeride serbestçe değiştirilebilir.",
+     "Denetim kaydırıcılarının yerleşimi ve yazıları, ekrana uygun olacak şekilde serbestçe ayarlanabilir."
+    ]
+   },
+   "kritik_neden": "Bu parça bozulursa elektron çizimi yapılmaz ya da başarı koşulu yanlış değerlendirilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Durum çalışıyor yazılı; tarayıcı sınaması ve bitiş bildiriminin tek sefer çalıştığı bu notta henüz görülmüyor."
+   ],
+   "okunan": [
+    "oyun/ilerleme/S6.md"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  }
+ ]
+}

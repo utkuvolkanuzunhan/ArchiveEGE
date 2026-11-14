@@ -1,0 +1,121 @@
+{
+ "surum": 1,
+ "bolum": "depo",
+ "dil": "tr",
+ "kayitlar": [
+  {
+   "kimlik": "@depo",
+   "tur": "depo",
+   "ozet": "0da9f1cae6b7",
+   "iskelet": "fa8d435a9acd",
+   "baslik": "Kuantum öğretim oyunu",
+   "ne": {
+    "cok_basit": "Tarayıcıda oynanan, kuantum fiziğini öğreten bir oyunun her şeyi burada durur: oyunun kendisi, kontrolleri ve yazılı planları.",
+    "basit": "Bu depo, kuantum fiziğini durak durak öğreten tarayıcı oyununun bütününü tutar. Oyunun parçaları, onu denetleyen kontroller, tasarım yazıları ve yapım notları ayrı bölümlerde durur.",
+    "normal": "Depo, kuantum fiziği konularını durak durak öğreten tarayıcı oyununun kaynağını, kontrollerini ve tasarım belgelerini bir arada tutar. İş bölümü şöyledir: bir bölüm oyunu üretir, bir bölüm yapımı yönlendiren yazıları taşır, bir bölüm doğruluğu güvenceye alır, kalanlar durakları, ilerlemeyi ve oyun dışı işleri kaydeder.",
+    "gelismis": "Depo, tarayıcıda çalışan ve kuantum fiziğini istasyon istasyon öğreten oyunun üretim hattıdır: kaynak parçaları, onları sınayan kontroller ve yapımı yönlendiren belgeler birlikte durur. Kaynak bölümü oyunu üretir, tasarım belgeleri ve durak tasarımları ne yapılacağını söyler, testler doğruluğu güvenceye alır, ilerleme kayıtları teslimleri tutar, öteki bölüm oyun dışı planları ve depo ayarını barındırır.",
+    "detayli": "Depo, tarayıcıda çalışan ve kuantum fiziğini istasyon istasyon öğreten oyunun üretim hattıdır. Okur bu konulara yabancıdır; oyun, her istasyonda bir konuyu anlatır, engellerle pekiştirir ve sonda bir büyük düşmanla bilgiyi tek kararda sınar. Depo bu oyunun üç ayrı yüzünü bir arada tutar: çalışan oyunu üreten kaynak, oyunun doğru çalıştığını gösteren kontroller ve ne yapılacağını kararlaştıran yazılı belgeler. Kaynak bölümü oyunu üretir, tasarım belgeleri ve durak tasarımları kararı verir, testler doğruluğu güvenceye alır, ilerleme kayıtları teslimleri saklar, öteki bölüm oyunun parçası olmayan planları ve depoyu çizen yazılımın ayarını barındırır."
+   },
+   "mantik": {
+    "cok_basit": "Oyun, onu sınayan kontroller ve planlar aynı yerde durunca her işin nerede yapılacağı belli olur.",
+    "basit": "Oyun, kontroller ve yazılı kararlar ayrı yerlerde durur. Böylece biri değişince hangi yazının ya da kontrolün buna bakması gerektiği kolayca bulunur.",
+    "normal": "Oyunun kaynağı, doğruluğunu gösteren kontroller ve yapımı yönlendiren belgeler tek depoda ama ayrı bölümlerde durur. Bu ayrım karar, üretim ve güvence işlerini birbirine karıştırmaz: bir tasarım değişince hangi parçanın ve hangi kontrolün etkileneceği bölümden anlaşılır. Oyun dışı planlar ayrı tutulduğu için oyunun hattını kalabalıklaştırmaz.",
+    "gelismis": "Depo, oyunu yazan kişinin üç soruya aynı yerde yanıt bulması için kurulmuştur: ne yapılacak, nasıl yapıldı ve çalıştığı nereden biliniyor. Karar tasarım belgelerinde, üretim kaynak bölümünde, güvence testlerde durur. Böylece bir karar değişince hangi parçaya ve hangi kontrole dokunulacağı bellidir. Oyuncuya tek sayfanın ulaşması dağıtımı basit tutar; parçaların ayrı yazılması ise yapımı rahatlatır. Oyun dışı planlar ayrı bölümde tutulur, oyunun hattına karışmaz.",
+    "detayli": "Depo, oyunu yazan ve sonradan değiştiren kişinin üç soruya aynı yerde yanıt bulması için kurulmuştur: ne yapılacağı, nasıl yapıldığı ve çalıştığının nereden bilindiği. Karar tasarım belgelerinde ve durak tasarımlarında, üretim kaynak bölümünde, güvence testlerde ve denetimde, kayıt ise ilerleme notlarında durur. Bu ayrımın yararı, bir kararın değişmesi durumunda etkilenecek parçaların ve kontrollerin bölümden okunabilmesidir. Oyunun parçalar halinde yazılıp tek sayfada toplanması, yapım sırasında rahatlık, dağıtımda yalnız tek dosya sağlar. Çalışma planı, kanıtlama planı ve depo ayarı gibi oyunun hattına girmeyen işler ayrı bölümde barındırılarak oyunun bölümleri kalabalıklaştırılmaz."
+   },
+   "nasil": {
+    "basit": "Önce tasarım yazıları oyunun ne olacağını kararlaştırır. Sonra oyun parçalar halinde yazılır ve tek sayfada birleştirilir. Kontroller bu sayfayı sınar, yapım notları da ne bittiğini kaydeder.",
+    "normal": "Bir iş önce tasarım belgelerinde karara bağlanır: oyunun ne olduğu, parçaların birbiriyle nasıl konuştuğu ve her bölümün nasıl davranacağı orada yazılıdır. Durak tasarımları her konunun sırasını ve sondaki sınav düşmanını belirler. Sonra oyun kaynak bölümünde parça parça yazılır; birleştirme betiği parçaları denetleyip oyuncuya ulaşan tek sayfaya çevirir. Testler ve denetim bölümü bu sayfayı hem hesap hem baştan sona gezi olarak sınar. İş bitince ilerleme kayıtlarına teslim notu düşülür, oyun dışı planlar ve depo ayarı ayrı bölümde kalır.",
+    "gelismis": "Karar sırası şöyle işler: tasarım belgeleri oyunun kimliğini, parçaların konuşma biçimini ve her bölümün davranışını sabitler; durak tasarımları konuları kristal yapıdan ışığa, atoma, dalgaya, tünellemeye, ölçüme ve belirsizlik ilkesine doğru sıralar. Kaynak bölümü bu kararları iskelet, görünüş ve çalışan kısım olarak parçalara döker; birleştirme betiği parçaları denetler ve dosya adlarının sırasıyla tek sayfada toplar. Testler bölümü hesapları ve altyapıyı otomatik kontrollerle, engelleri ve deneyleri deneme sayfalarıyla, tüm oyunu genel denemelerle sınar. İş bitince ilerleme kayıtlarına ne yapıldığı ve ne kaldığı yazılır. Oyun dışı çalışma planı ile depoyu çizen yazılımın ayarı bu hattın dışında kalır.",
+    "detayli": "Bir iş depoda şu sırayla ilerler. Birincisi karar: tasarım belgeleri oyunun ne olduğunu, parçaların birbiriyle konuşma biçimini, her bölümün davranışını ve yapımın nasıl yürütüleceğini yazar; aynı ekranı farklı görünümlerle gösteren örnek sayfalar da bu bölümde durur. Durak tasarımları ise her konunun hangi sırayla anlatılacağını, hangi engellerin çıkacağını ve sonda hangi büyük düşmanın bilgiyi tek kararda sınayacağını belirler; konular kristal yapıdan ışığa, atoma, dalgaya, tünellemeye, ölçüme ve belirsizlik ilkesine doğru ilerler. Sonra üretim: kaynak bölümü oyunu iskelet, görünüş ve çalışan kısım olarak parçalara ayırır; birleştirme betiği bu parçaları denetler ve dosya adlarının sırasıyla tek sayfada toplar, oyuncuya yalnız bu sayfa ulaşır. Sonra güvence: otomatik kontroller hesapları ve altyapıyı sınar, deneme sayfaları engelleri ve deneyleri tek başına gösterir, genel denemeler veriyi tarar ve oyunu baştan sona gezer. Denetim klasörü yerinde durur ama henüz iş yapan bir parça taşımaz. Son olarak kayıt: ilerleme notları çekirdeğin, engel türlerinin, deney ekranlarının ve istasyon verilerinin ne yaptığını ve ne kaldığını söyler. Çalışma planı ve kanıtlama planı oyunun hattına girmez; depoyu çizen yazılımın ayarı ve açıklama notu da aynı şekilde kenarda kalır."
+   },
+   "detay": {
+    "girdiler": [
+     "Tasarım kararları: oyunun ne olduğu, parçaların konuşma biçimi, bölüm davranışları ve durak planları.",
+     "Oyunun kaynak parçaları: iskelet, görünüş ve çalışan kısım olarak ayrı yazılmış dosyalar."
+    ],
+    "ciktilar": [
+     "Oyuncuya ulaşan tek sayfalık oyun.",
+     "Kontrol sonuçları: hesapların, altyapının, engellerin ve deneylerin doğru çalıştığının kanıtı.",
+     "Teslim notları: her işin ne yaptığı ve ne kaldığı."
+    ],
+    "degismezler": [
+     "Oyuncuya tek sayfa ulaşır; parçalar yalnız yapım sırasında ayrı durur.",
+     "Parçalar dosya adlarının sırasıyla birleşir; sıra birleşik sayfanın düzenini belirler.",
+     "Her durağın sonunda bilgiyi tek kararda sınayan büyük bir düşman bulunur."
+    ],
+    "kenar": [
+     "Denetim klasöründe henüz iş yapan parça yoktur; yalnız klasörü yerinde tutan boş bir yer tutucu durur.",
+     "Çalışma planı ve kanıtlama planı oyunun parçası değildir ama depoda yaşar."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Parçaların dosya adlarındaki sıra, birleşik sayfanın içeriğini ve düzenini belirler.",
+     "Tasarım belgelerinde yazılan parça konuşma biçimi, kaynak parçalarının birbirine dayandığı sözleşmedir.",
+     "Her bölümün ayardaki adı ve türü, depoyu çizen yazılımın okuduğu biçimdir."
+    ],
+    "degisebilir": [
+     "Kaynak parçalarının içindeki yazım ayrıntısı, tek sayfaya çıkan sonucu bozmadığı sürece serbesttir.",
+     "Deneme sayfalarının içeriği, oyunun kendisini etkilemeden değişebilir.",
+     "İlerleme notlarının ve oyun dışı planların metni dilediğince güncellenebilir."
+    ]
+   },
+   "kurulus": [
+    {
+     "baslik": "Önce kararları yaz",
+     "metin": "Hiçbir şeye dayanmayan tasarım belgelerini ve durak tasarımlarını yaz: oyun ne öğretecek, parçalar nasıl konuşacak, her durak hangi sırayla ilerleyecek.",
+     "parcalar": [
+      "b:tasarim",
+      "b:istasyonlar"
+     ]
+    },
+    {
+     "baslik": "Oyunun kaynağını kur",
+     "metin": "Kararlara göre oyunu iskelet, görünüş ve çalışan kısım olarak parçala; birleştirme betiğiyle parçaları dosya adı sırasıyla tek sayfaya topla.",
+     "parcalar": [
+      "b:kaynak"
+     ]
+    },
+    {
+     "baslik": "Kontrolleri ekle",
+     "metin": "Hesapları, altyapıyı, engelleri ve deneyleri sınayan kontrolleri ve oyunu baştan sona gezen genel denemeleri kur.",
+     "parcalar": [
+      "b:testler"
+     ]
+    },
+    {
+     "baslik": "Kayıtları ve kenar işleri tut",
+     "metin": "Her teslimde ilerleme notu düş; oyun dışı planları ve depo ayarını ayrı bölümde sakla.",
+     "parcalar": [
+      "b:ilerleme",
+      "b:diger"
+     ]
+    }
+   ],
+   "sorular": [
+    {
+     "soru": "Oyunun parçalarını tasarım belgelerinden ayrı tutmak neyi sağlar?",
+     "yanit": "Karar ile üretim karışmaz. Bir karar değişince hangi parçanın etkileneceği bölümden bellidir, parçalar da kararı bozmadan serbestçe yazılabilir."
+    },
+    {
+     "soru": "Birleştirme sırası neden sabit kalmalıdır?",
+     "yanit": "Parçalar dosya adlarının sırasıyla tek sayfaya girer. Sıra değişirse birleşik sayfanın düzeni ve içeriği değişir, oyun beklenmedik biçimde bozulabilir."
+    },
+    {
+     "soru": "Oyun dışı planlar değişirse oyun etkilenir mi?",
+     "yanit": "Hayır. Çalışma planı ve kanıtlama planı oyunun hattının dışında durur; metinleri oyunu etkilemeden değiştirilebilir."
+    }
+   ],
+   "kritik_neden": "Bozulursa oyunun tek sayfası üretilemez ya da doğruluğu sınanamaz; yapım kararları da hangi parçayı etkilediği belli olmadan dağılır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  }
+ ]
+}

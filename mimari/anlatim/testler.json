@@ -1,0 +1,2196 @@
+{
+ "surum": 1,
+ "bolum": "testler",
+ "dil": "tr",
+ "kayitlar": [
+  {
+   "kimlik": "b:testler",
+   "tur": "birim",
+   "ozet": "6f0d94c8ae21",
+   "iskelet": "e89ecf1645af",
+   "baslik": "Testler ve denetim",
+   "ne": {
+    "cok_basit": "Oyunun doğru çalıştığını kontrol eden her şey burada toplanır, yanında henüz boş bir denetim klasörü durur.",
+    "basit": "Bu bölüm oyunun sağlamlığını denetler. Asıl iş deneme klasöründe olur: otomatik kontroller ve tek başına deneme sayfaları; denetim klasörü şimdilik boştur, yalnızca yerini korur.",
+    "normal": "Bu bölüm oyunun doğru çalıştığını güvenceye alır. Deneme klasörü işin tamamını yürütür: otomatik kontroller hesapları ve altyapıyı sınar, deneme sayfaları engelleri ve deneyleri tek başına gösterir, genel denemeler veriyi tarar ve oyunu baştan sona gezer. Denetim klasöründe henüz iş yapan bir parça yoktur, yalnız klasörü yerinde tutan boş bir yer tutucu bulunur.",
+    "gelismis": "Bölüm oyunu denetleyen her şeyi bir çatı altında toplar. Deneme klasörü bütün işi taşır: ortak yardımcı oyunun gerçek dosyalarını sanal ortamda çalıştırır, kontroller hesabı, altyapıyı, koşuyu ve puanlamayı sınar, deneme sayfaları her engeli ve deneyi tek başına açar, veri denetimi istasyon sorularını kurallara göre tarar. Denetim klasörü iş yapmaz; içindeki tek dosya boştur ve klasörün depoda kalmasını sağlar.",
+    "detayli": "Bölüm oyunu denetleyen her şeyi bir çatı altında toplar. Deneme klasörü bütün işi taşır: ortak yardımcı oyunun gerçek dosyalarını sanal ortamda çalıştırır, kontroller savaş hesabını, temel altyapıyı, koşuyu ve yapay zekâ puanlamasını sınar, deneme sayfaları her engeli, bilim deneyini ve çizimi tek başına açar, veri denetimi istasyon sorularını kurallara göre tarar, genel deneme oyunu baştan sona gezer. Denetim klasörü iş yapmaz; içindeki tek dosya boştur, hiçbir değer taşımaz ve yalnızca klasörün depoda yerinde durmasını sağlar. Gelecekte oraya denetim parçaları gelirse bölümün ikinci ayağı o olur."
+   },
+   "mantik": {
+    "cok_basit": "Denetimi oyundan ayrı tutmak, oyunu bozmadan sınamayı mümkün kılar.",
+    "basit": "Denetimin oyundan ayrı bir bölümde durması, oyunu değiştirmeden onu sınamayı sağlar. Denetim klasörü ise ileride başka denetimler gelirse diye yerini korur.",
+    "normal": "Sınama kodu oyunun kaynağından ayrı tutulur; böylece oyunla birlikte dağıtılmaz ve oyunun kendisi büyümez. Bütün denetim işinin deneme klasöründe toplanması, bir değişiklikten sonra nereye bakılacağını bellidir kılar. Denetim klasörü ayrı bir yer olarak ayrılmıştır ama içinde henüz iş yoktur.",
+    "gelismis": "Sınama kodunun kaynaktan ayrı durması, oyunun yalnız oynanan parçalardan oluşmasını ve sınama için eklenen şeylerin oyuna karışmamasını sağlar. Bütün denetim işinin deneme klasöründe toplanması bir değişiklikten sonra nereye bakılacağını bellidir kılar. Denetim klasörü ayrı bir yer olarak ayrılmıştır; içindeki boş dosya klasörün depoda kaybolmamasını sağlar ve ileride oraya denetim parçaları konabilmesine yer bırakır.",
+    "detayli": "Sınama kodunun kaynaktan ayrı durması, oyunun yalnız oynanan parçalardan oluşmasını ve sınama için eklenen şeylerin oyuna karışmamasını sağlar. Bütün denetim işinin deneme klasöründe toplanması bir değişiklikten sonra nereye bakılacağını bellidir kılar. Denetim klasörü ayrı bir yer olarak ayrılmıştır; içindeki boş dosya klasörün depoda kaybolmamasını sağlar ve ileride oraya denetim parçaları konabilmesine yer bırakır. Boş klasörün şimdiden durması, yeni bir denetim türü eklenirken klasör yapısını yeniden kurma gereğini ortadan kaldırır."
+   },
+   "nasil": {
+    "basit": "Oyun değiştiğinde deneme klasöründeki kontroller çalıştırılır. Biri bozulmuşsa hata satırı yazılır, sonuç başarısız olur. Denetim klasörü bu akışa katılmaz.",
+    "normal": "Oyunda bir değişiklik yapılınca deneme klasöründeki kontroller çalıştırılır. Ortak yardımcı gerçek dosyaları sanal ortamda yükler, kontroller hesapları ve altyapıyı sınar, veri denetimi istasyon sorularını tarar, genel deneme oyunu gezer. Bir şey bozulmuşsa hata satırı yazılır ve sonuç başarısız çıkar. Denetim klasörü bu akışa katılmaz.",
+    "gelismis": "Akışın tamamı deneme klasöründe geçer. Önce ortak yardımcı oyunun gerçek dosyalarını sanal ortamda hazırlar. Kontroller bu ortamda savaş hesabını, temel altyapıyı, koşuyu ve puanlamayı sınar. Veri denetimi istasyon sorularını tarayıcısız okur, genel deneme oyunu açıp ilk istasyonu gezer. Her adımda başarılı ya da hata satırı yazılır; en az bir hata varsa sonuç başarısız olur. Elle bakmak isteyen, deneme sayfalarından birini tek başına açar. Denetim klasörü bu akışın dışında kalır.",
+    "detayli": "Akışın tamamı deneme klasöründe geçer. Önce ortak yardımcı oyunun gerçek dosyalarını sanal ortamda hazırlar ve sayfaya görünüm kurallarını ekler. Kontroller bu ortamda savaş hesabını, temel altyapıyı, koşuyu ve yapay zekâ puanlamasını sınar; veri denetimi istasyon sorularını tarayıcısız okuyup kurallarla karşılaştırır; genel deneme oyunu açar ve ilk istasyonu baştan sona gezer. Her adımda başarılı ya da hata satırı yazılır; en az bir hata varsa sonuç başarısız olur. Elle bakmak isteyen, deneme sayfalarından birini tek başına açar: sahte modüller cevapları önceden verir, sonuç sayfada yazılı görünür. Denetim klasörü bu akışın dışında kalır, içindeki yer tutucu çalışma sırasında hiçbir işlem yapmaz."
+   },
+   "detay": {
+    "girdiler": [
+     "Oyunun gerçek dosyaları ve istasyon verileri."
+    ],
+    "ciktilar": [
+     "Her kontrol için başarılı ya da hata satırı ve bütünün başarılı ya da başarısız sonucu."
+    ],
+    "degismezler": [
+     "Kontroller oyunun gerçek dosyalarını sınar.",
+     "Denetim klasöründeki dosya hiçbir iş yapmaz."
+    ],
+    "kenar": [
+     "Denetim klasörü boştur; ona dayanan bir akış yoktur."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Deneme klasörünün başarılı ya da başarısız sonucu, oyunun kabul edilip edilmediğinin ölçüsüdür.",
+     "Kontroller gerçek oyun dosyalarına dayanır; oyun dosyalarının yükleme biçimi değişirse kontroller de uyarlanmalıdır."
+    ],
+    "degisebilir": [
+     "Yeni kontroller ve deneme sayfaları mevcut olanlara dokunmadan eklenebilir.",
+     "Denetim klasörüne gelecekte yeni parçalar konabilir; şimdiki boş yer tutucu buna engel olmaz."
+    ]
+   },
+   "kurulus": [
+    {
+     "baslik": "Deneme klasörünü kur",
+     "metin": "Ortak yardımcıyı, otomatik kontrolleri, tek başına deneme sayfalarını, veri denetimini ve genel denemeyi içeren deneme klasörünü kur.",
+     "parcalar": [
+      "k:oyun/test"
+     ]
+    },
+    {
+     "baslik": "Denetim klasörünü ayır",
+     "metin": "Gelecekteki denetim parçaları için ayrı bir klasör aç. İçinde iş yapan bir şey yoksa klasörün depoda kalmasını sağlayan boş bir yer tutucu bırak.",
+     "parcalar": [
+      "oyun/denetim/.gitkeep"
+     ]
+    },
+    {
+     "baslik": "Sonucu tek ölçüye bağla",
+     "metin": "Bütün kontrolleri her değişiklikten sonra çalıştır; en az bir hata varsa sonucu başarısız say.",
+     "parcalar": [
+      "k:oyun/test"
+     ]
+    }
+   ],
+   "sorular": [
+    {
+     "soru": "Denetim klasörü şu an ne işe yarar?",
+     "yanit": "Hiçbir işe yaramaz; içindeki tek dosya boştur ve yalnız klasörün depoda kalmasını sağlar. Gerçek denetim işi deneme klasöründe yürür."
+    },
+    {
+     "soru": "Sınama kodunu oyunun kaynağından neden ayrı tutarız?",
+     "yanit": "Çünkü sınama kodu oynanmaz. Ayrı durunca oyuna karışmaz, oyunla birlikte dağıtılmaz ve bir değişiklikten sonra nereye bakılacağı net olur."
+    },
+    {
+     "soru": "Bir kontrol başarısız çıkarsa bütünün sonucu ne olur?",
+     "yanit": "Bütünün sonucu da başarısız olur. En az bir hata varsa oyun kabul edilmez; bu yüzden hatalar tek tek satırlarda yazılır ve gözden kaçmaz."
+    }
+   ],
+   "kritik_neden": "Bu bölüm bozulursa oyundaki hatalar fark edilmeden kalır; değişiklikler denetimsiz yayılır ve bir bozulmanın nerede olduğu anlaşılmaz.",
+   "terimler": [],
+   "belirsiz": [
+    "Denetim klasörünün ileride hangi işi alacağı belli değil.",
+    "Kontrollerin hangi komutla çalıştırıldığı görülemedi."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "k:oyun/test",
+   "tur": "birim",
+   "ozet": "5081501d73e1",
+   "iskelet": "789f5b782a34",
+   "baslik": "Oyun denetimleri",
+   "ne": {
+    "cok_basit": "Oyunun doğru çalışıp çalışmadığını deneyen şeyler burada: tek tek deneme sayfaları ve otomatik kontroller.",
+    "basit": "Bu klasör oyunun sağlamlığını denetler. Otomatik kontroller kuralları ve hesapları sınar; deneme sayfaları bir engeli, deneyi ya da çizimi oyunun geri kalanından ayırıp tek başına gösterir.",
+    "normal": "Bu klasör oyunu üç yoldan denetler. Otomatik kontroller savaş hesabını, temel altyapıyı, koşuyu ve yapay zekâ puanlamasını sınar. Deneme sayfaları her engeli, bilim deneyini ve çizimi tek başına açıp elle bakılabilir kılar. Genel denemeler ise istasyon verisini kurallara göre tarar ve oyunu baştan sona gezip bozukluk arar; ortak yardımcı bir dosya hepsinin altında durur.",
+    "gelismis": "Klasör iş bölümünü şöyle kurar. `harness.js` oyunun gerçek dosyalarını sanal bir ortamda çalıştıran ortak yardımcıdır; savaş, temel altyapı ve yapay zekâ puanlaması kontrolleri ona dayanır. Engel ve deney sayfaları, her biri oyunun geri kalanından ayrılmış tek bir parçayı sahte modüllerle açar. Çizim sayfaları karakterleri ve dünya katmanlarını yan yana gösterir. `veri-dogrula.js` istasyon verisini tarayıcısız denetler; `smoke.js` oyunu baştan sona gezer.",
+    "detayli": "Klasör iş bölümünü şöyle kurar. `harness.js` oyunun gerçek dosyalarını sanal bir ortamda çalıştıran ortak yardımcıdır; savaş hesabı, temel altyapı ve yapay zekâ puanlaması kontrolleri ona dayanır. Her engel ve bilim deneyi için ayrı bir sayfa, o parçayı sahte modüllerle oyunun geri kalanından ayırıp tek başına açar; yanındaki kontroller aynı parçayı otomatik sınar. Çizim sayfaları karakterleri küçük ve büyük boyutta, koşucuyu, engelleri ve dünya katmanlarını yan yana gösterir. `veri-dogrula.js` istasyon verisini tarayıcısız denetler ve hata varsa hata koduyla kapanır. `smoke.js` oyunu açıp ilk istasyonu baştan sona gezer."
+   },
+   "mantik": {
+    "cok_basit": "Oyunu her değiştirdiğimizde bozulan bir şey var mı diye kendiliğinden bakılabilsin diye.",
+    "basit": "Oyun parçalarla yazıldığı için bir değişiklik başka yeri bozabilir. Otomatik kontroller bunu hemen yakalar, tek başına deneme sayfaları ise sorunu dar bir yerde bulmayı kolaylaştırır.",
+    "normal": "Oyun birçok parçadan kurulduğu için bir değişikliğin başka yeri bozup bozmadığı gözle anlaşılmaz. Otomatik kontroller bunu hızla yakalar. Engel ve deney parçalarının tek başına açılması, sorunu bütün oyunu oynamadan dar bir alanda bulmaya yarar. Veri denetimi ise istasyon sorularının kurallara uymasını elle bakmadan güvenceye alır.",
+    "gelismis": "Kontrollerin gerçek dosyaları yüklemesi, sahte bir kopyanın geçip gerçeğin bozulması riskini ortadan kaldırır. Ortak yardımcının tek yerde durması, her kontrolün aynı ortamı yeniden kurmasını önler. Tek başına deneme sayfaları, bir engeli ya da deneyi oyunun geri kalanından ayırarak sorunu dar bir alanda bulmayı ve görsel değişikliği gözle doğrulamayı sağlar. Veri denetimi tarayıcı gerektirmediği için çok hızlıdır, genel deneme ise parçaların birlikte çalıştığını doğrular.",
+    "detayli": "Kontrollerin gerçek dosyaları yüklemesi, sahte bir kopyanın geçip gerçeğin bozulması riskini ortadan kaldırır. Ortak yardımcının tek yerde durması, her kontrolün aynı ortamı yeniden kurmasını önler. Tek başına deneme sayfaları, bir engeli ya da deneyi oyunun geri kalanından ayırarak sorunu dar bir alanda bulmayı ve görsel değişikliği gözle doğrulamayı sağlar; çizim sayfaları da bir değişiklikten sonra çizimlerin bozulup bozulmadığını tek bakışta gösterir. Veri denetimi tarayıcı gerektirmediği için çok hızlıdır, genel deneme ise parçaların birlikte çalıştığını doğrular. Bu üç yol birbirini tamamlar: hesap, parça ve bütün ayrı katmanlarda denetlenir."
+   },
+   "nasil": {
+    "basit": "Önce ortak yardımcı oyunun gerçek dosyalarını sanal bir ortamda hazırlar. Kontroller bu ortamda hesapları ve davranışları sınar. Deneme sayfaları elle açılıp bakılır, genel denemeler de veri ve akışı tarar.",
+    "normal": "Kontroller ortak yardımcıyla oyunun gerçek dosyalarını sanal bir ortamda yükler ve savaş hesabını, temel altyapıyı, koşuyu ve puanlamayı sınar. Deneme sayfalarında bir engel ya da deney sahte modüllerle tek başına açılır, sonuç sayfada yazılı görünür. Veri denetimi istasyon sorularını kurallarla karşılaştırır. Genel deneme oyunu açıp ilk istasyonu başlatır, her adımın sonucunu yazar.",
+    "gelismis": "Kontrol dosyaları ortak yardımcıdan yararlanır: o, oyunun gerçek dosyalarını sanal bir ortamda çalıştırır ve sayfaya görünüm kurallarını ekler, böylece sınama sahte bir kopyaya değil gerçek koda yapılır. Savaş kontrolü hasar tablosunu, voltaj sınırlarını ve hata defterini; yapay zekâ kontrolü puanı, eksik fikirleri ve hata durumlarını sınar. Deneme sayfaları sahte modüllerle tek bir engeli ya da deneyi açar ve sonucu sayfada tutar. Veri denetimi soru ve seçenek sayılarını ile kelime sınırlarını tarar. Genel deneme her adımın sonucunu tek tek yazar, beklenmeyen hatayı da bir adım olarak bildirir.",
+    "detayli": "Kontrol dosyaları ortak yardımcıdan yararlanır: o, oyunun gerçek dosyalarını sanal bir ortamda çalıştırır ve sayfaya görünüm kurallarını ekler, böylece sınama sahte bir kopyaya değil gerçek koda yapılır. Savaş kontrolü hasar tablosunu, voltaj sınırlarını, hata defterini ve tekrar seçimini; yapay zekâ kontrolü doğruluk puanını, eksik fikirleri, hata durumlarını ve anahtar girildiğinde ayrı yoldan değerlendirmeyi sınar. Temel altyapı kontrolü mesajlaşmayı ve bozuk ya da eksik kayıtları kapsar. Deneme sayfaları sahte modüllerle tek bir engeli ya da deneyi açar, sonuç sayfada tutulur ve yanındaki kontrol aynı parçayı otomatik sınar. Veri denetimi soru ve seçenek sayılarını, kelime sınırlarını, kavram ve modül adlarını tarar; sorunları ayrı satırlarda yazar. Genel deneme oyunu açar, ilk istasyonu başlatır, her adımın sonucunu tek tek yazar ve beklenmeyen hatayı da bir adım olarak bildirir."
+   },
+   "detay": {
+    "girdiler": [
+     "Oyunun gerçek dosyaları ve istasyon verileri.",
+     "Sahte modüllerin önceden yazılmış cevapları ve sahte deney değerleri."
+    ],
+    "ciktilar": [
+     "Her kontrol için başarılı ya da hata satırı; hata varsa başarısız sonuç.",
+     "Elle bakılabilen tek başına deneme sayfaları."
+    ],
+    "degismezler": [
+     "Kontroller oyunun gerçek dosyalarını yükler, sahte kopyalarını değil.",
+     "İstasyon verisi hata içerirse veri denetimi hata koduyla kapanır."
+    ],
+    "kenar": [
+     "Genel deneme beklenmeyen bir hatayla karşılaşırsa durur ve bunu da bir adım olarak yazar.",
+     "Yer tutucu dosya hiçbir iş yapmaz, yalnız klasörü depoda tutar."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Ortak yardımcının sunduğu yükleme biçimi değişirse ona dayanan bütün kontroller bozulur.",
+     "Deneme sayfaları sonucu sayfada yazılı tutar; kontroller bu sözleşmeye dayanır."
+    ],
+    "degisebilir": [
+     "Sahte modüllerin verdiği cevaplar ve deneme sayfalarındaki başlangıç değerleri serbestçe değiştirilebilir.",
+     "Yeni bir engel ya da deney için ayrı bir deneme sayfası mevcut olanlara dokunmadan eklenebilir."
+    ]
+   },
+   "kurulus": [
+    {
+     "baslik": "Ortak yardımcıyı yaz",
+     "metin": "Oyunun gerçek dosyalarını sanal bir ortamda çalıştıran ve görünüm kurallarını ekleyen ortak yardımcıyı kur. Diğer kontroller ona dayanır.",
+     "parcalar": [
+      "oyun/test/harness.js"
+     ]
+    },
+    {
+     "baslik": "Hesap ve altyapı kontrolleri",
+     "metin": "Savaş hesabını, temel altyapıyı, koşuyu ve yapay zekâ puanlamasını sınayan kontrolleri yaz.",
+     "parcalar": [
+      "oyun/test/battle.test.js",
+      "oyun/test/core.test.js",
+      "oyun/test/runner.test.js",
+      "oyun/test/claude.test.js"
+     ]
+    },
+    {
+     "baslik": "Tek başına deneme sayfaları",
+     "metin": "Her engel, bilim deneyi ve çizim için o parçayı sahte modüllerle tek başına açan sayfalar ekle.",
+     "parcalar": [
+      "oyun/test/obs-kopru.html",
+      "oyun/test/sim-kafes.html",
+      "oyun/test/sanat.html",
+      "oyun/test/ui.html"
+     ]
+    },
+    {
+     "baslik": "Veri denetimi",
+     "metin": "İstasyon verisini tarayıcısız okuyup kurallara göre tarayan ve hata varsa hata koduyla kapanan programı yaz.",
+     "parcalar": [
+      "oyun/test/veri-dogrula.js"
+     ]
+    },
+    {
+     "baslik": "Baştan sona deneme",
+     "metin": "Oyunu açıp ilk istasyonu gezen ve her adımın sonucunu yazan genel denemeyi en sona ekle.",
+     "parcalar": [
+      "oyun/test/smoke.js"
+     ]
+    }
+   ],
+   "sorular": [
+    {
+     "soru": "Kontroller neden oyunun sahte kopyası yerine gerçek dosyalarını yükler?",
+     "yanit": "Sahte kopya geçip gerçek dosya bozuk kalabilir. Gerçek dosyayı sanal ortamda çalıştırmak, kontrolün tam olarak oyunun kendisini sınadığını garanti eder."
+    },
+    {
+     "soru": "Ortak yardımcının yükleme biçimini değiştirirsem ne olur?",
+     "yanit": "Ona dayanan savaş, altyapı ve puanlama kontrollerinin hepsi aynı anda bozulur. Bu yüzden yardımcının dışarıya verdiği biçim sabit tutulmalıdır."
+    },
+    {
+     "soru": "Yeni bir engel türü eklersem hangi denetim eklenir?",
+     "yanit": "O engel için tek başına açılan bir deneme sayfası, gerekirse yanına otomatik kontrol. Mevcut sayfalara dokunmak gerekmez; veri denetimi de yeni engeli kurallara göre tarar."
+    }
+   ],
+   "kritik_neden": "Bu klasör bozulursa oyundaki hatalar fark edilmeden kalır; ortak yardımcı bozulursa ona dayanan bütün kontroller birden başarısız olur.",
+   "terimler": [],
+   "belirsiz": [
+    "Kontrollerin hangi komutla ve hangi sırayla çalıştırıldığı görülemedi.",
+    "Deneme sayfalarının tarayıcıda otomatik mi, elle mi açıldığı belli değil."
+   ],
+   "okunan": [],
+   "yazan": {
+    "model": "sonnet",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/denetim/.gitkeep",
+   "tur": "dosya",
+   "ozet": "e3b0c44298fc",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Boş yer tutucu dosyası",
+   "ne": {
+    "cok_basit": "Bu dosya boş bir yer tutucudur; klasörün içi boş olsa da kalmasını sağlar.",
+    "normal": "Bu dosyanın içinde hiçbir şey yoktur. Görevi, içeriği boş bir klasörü sürüm takibinde tutmaktır; böylece klasör yapısı deponun içinde kalır ve dosyanın kendisi bir iş yapmaz."
+   },
+   "nasil": {
+    "normal": "Bu dosya, içi boş kalan bir klasörün sürüm takibinde yer alabilmesi için konur. Kendisi hiçbir iş yapmaz; içinde bilgi ya da ayar bulunmadığı için değişiklik gerektirecek bir ayrıntı da yoktur."
+   },
+   "sinir": {
+    "sabit": [
+     "Dosyanın bu klasörde ve bu adla durması, boş klasörün korunmasını sağlayan şeydir.",
+     "İçeriğin boş tutulması, bu dosyanın amacına uygun biçimdir ve değişirse yer tutma işlevi ortadan kalkar."
+    ],
+    "degisebilir": [
+     "Klasörün içine başka dosyalar konabilir; bu işlem bu dosyanın içeriğine dokunmaz."
+    ]
+   },
+   "kritik_neden": "Bu dosya boş klasörün korunmasını sağlar; yeri değişirse ya da kaldırılırsa klasörün sürüm takibinde kalmaya devam edip etmeyeceği belirsizleşir.",
+   "terimler": [],
+   "belirsiz": [
+    "Dosyanın sürüm takibi aracıyla nasıl okunduğu bu dosyadan görülemiyor; amacı yalnızca adından çıkarılıyor."
+   ],
+   "okunan": [
+    "oyun/denetim/.gitkeep"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/.gitkeep",
+   "tur": "dosya",
+   "ozet": "e3b0c44298fc",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Boş test klasörü yer tutucusu",
+   "ne": {
+    "cok_basit": "Bu dosya, test klasörünün boş kalsa da yerinde durmasını sağlayan yer tutucudur.",
+    "normal": "Bu dosyanın içinde hiçbir şey yoktur. Görevi, içeriği boş bir test klasörünü sürüm takibinde tutmaktır; böylece klasör yapısı deponun içinde kalır ve dosyanın kendisi bir iş yapmaz."
+   },
+   "nasil": {
+    "normal": "Bu dosya, içi boş kalan test klasörünün sürüm takibinde yer alabilmesi için konur. Kendisi hiçbir iş yapmaz; içinde bilgi ya da ayar bulunmadığı için değişiklik gerektirecek bir ayrıntı da yoktur."
+   },
+   "sinir": {
+    "sabit": [
+     "Dosyanın bu klasörde ve bu adla durması, boş klasörün korunmasını sağlayan şeydir.",
+     "İçeriğin boş tutulması, bu dosyanın amacına uygun biçimdir ve değişirse yer tutma işlevi ortadan kalkar."
+    ],
+    "degisebilir": [
+     "Klasörün içine başka dosyalar konabilir; bu işlem bu dosyanın içeriğine dokunmaz."
+    ]
+   },
+   "kritik_neden": "Bu dosya boş test klasörünün korunmasını sağlar; yeri değişirse ya da kaldırılırsa klasörün sürüm takibinde kalmaya devam edip etmeyeceği belirsizleşir.",
+   "terimler": [],
+   "belirsiz": [
+    "Dosyanın sürüm takibi aracıyla nasıl okunduğu bu dosyadan görülemiyor; amacı yalnızca adından çıkarılıyor."
+   ],
+   "okunan": [
+    "oyun/test/.gitkeep"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/battle.test.js",
+   "tur": "dosya",
+   "ozet": "1f20020bbaf4",
+   "iskelet": "6328b44e6a09",
+   "baslik": "Savaş kurallarını sınama",
+   "ne": {
+    "cok_basit": "Oyunun savaş kurallarını kendi kendine sınayan küçük bir denetim.",
+    "basit": "Bu dosya, savaşta doğru ve yanlış cevabın verdiği hasarı sınar. Hata defterini de kontrol eder.",
+    "normal": "Dosya savaşın kurallarını sınar: hasar tablosu, voltaj sınırları, hata defteri ve tekrar seçimi. Her sınama oyunun savaş dosyasını gerçek haliyle yükler.",
+    "gelismis": "Dosya, savaşın kurallarını yalıtılmış bir ortamda sınar: hasar tablosu, voltaj sınırları, hata defteri ve tekrar seçimi. Her sınama kendi kurulumunu yapar, böylece bir sınamanın durumu diğerine sızmaz.",
+    "detayli": "Dosya, savaşın cevaplara verdiği tepkileri sınar. Doğru ve emin cevap düşmana büyük hasar verir, yanlış ve emin cevap oyuncuya ağır hasar verir. Voltaj sıfırın altına ya da tam değerin üstüne çıkmaz. Hata defteri aynı kavramdaki tekrarları tek kayıtta toplar ve doğru cevapla çözüldü işaretler. Tekrar seçimi defterden istenen sayıda kayıt geri getirir."
+   },
+   "mantik": {
+    "cok_basit": "Savaşın kuralları yanlış çalışırsa oyuncu haksız cezalandırılır.",
+    "basit": "Savaşın kuralları oyuncunun cevabını doğrudan etkiler. Küçük bir hata bile yanlış geri bildirim verir.",
+    "normal": "Savaş kuralları hem savaşın sonucunu hem de öğrenme kaydını etkiler, bu yüzden hasar ve hata defteri birlikte sınanır. Doğru ve yanlış cevap kayıtta iz bırakır; sınama bu izin korunduğunu gösterir.",
+    "gelismis": "Savaş sonucu ile hata defteri birbirine bağlı olduğu için bir kuraldaki değişiklik diğerini sessizce bozabilir. Bu dosya iki tarafı birlikte sınar; böylece değişiklik fark edilmeden ilerlemez.",
+    "detayli": "Savaşta bir cevap hasar durumunu, voltajı ve öğrenme kaydını birlikte değiştirir. Bu bağ yüzünden her kuralın tek başına doğru olması yetmez; birlikte doğru davranmaları gerekir. Dosya hasar tablosunu, voltaj sınırını ve defterin birleşme kuralını ayrı ayrı sınar, böylece sessiz bozulma hemen görülür. Tekrar seçimi defterin son hâlini kullandığı için kapsama dahil edilmiştir."
+   },
+   "nasil": {
+    "basit": "Her sınama, oyunun savaş dosyasını temiz bir ortamda açar ve başlangıç durumunu kurar. Sonra bir cevap verilir ve sonuç beklenen değerle karşılaştırılır.",
+    "normal": "Dosya, her sınama için oyunun savaş kurallarını kendi bağlamında yükler ve durumu bilinen bir istasyona ayarlar. Sonra bir cevap uygulanır: hasar tablosu, voltaj olayı ve hata defteri ayrı ayrı kontrol edilir. Beklenen değer tutmazsa ilk hatada dosya durur. Tekrar seçimi sınaması, seçilen kayıtların sırasını karşılaştırır.",
+    "gelismis": "Her sınama `yeni` ile yeni bir savaş ortamı kurar; ortam, savaş dosyasını gerçek haliyle yükler ve durumu ikinci istasyona yerleştirir. `t` her sınamayı hemen çalıştırır ve sayaç tutar. Hasar sınamalarında, verilen cevabın doğruluğu ve emin olma düzeyi girdi olur; sonuçlar `eq` ile ya da tek tek karşılaştırılır. Voltaj sınamasında olay dinlenir; hata defteri sınamasında aynı kavram iki kez yanlışlanır, sonra doğru cevapla çözülür. Son sınama, tekrar seçiminin kayıt sayısı sınırına uyduğunu denetler.",
+    "detayli": "Dosya savaş kurallarını birbirinden bağımsız sınamalara böler. Her sınama, başlangıçta savaş ortamını yeniden kurar ve sonucu beklenen değerle karşılaştırır. Hasar tablosu sınamalarında doğru, yanlış ve kısmi cevaplar ayrı ayrı denenir. Voltaj sınamasında olay dinlenir ve sınır değerlerde durum korunup korunmadığı izlenir. Hata defteri sınamasında aynı kavramdaki tekrarın tek kayıtta birleşmesi ve doğru cevapla çözülmesi denetlenir. Tekrar seçimi sınaması, seçilen kayıtların öncelik sırasını beklenenle karşılaştırır."
+   },
+   "detay": {
+    "girdiler": [
+     "Cevabın doğru ya da yanlış olması ve kısmi cevap durumu.",
+     "Emin olma düzeyi, bir kavram adı ve gerektiğinde voltajın sıfırlanması."
+    ],
+    "ciktilar": [
+     "Verilen ve alınan hasar, şarj ve kritik vuruş bilgisi.",
+     "Voltaj değeri ve değişim olayının değeri ile farkı.",
+     "Hata defterinin son hali ve seçilen tekrar kayıtları."
+    ],
+    "degismezler": [
+     "Hasar tablosunun alan adları verilen, alınan, şarj ve kritik olarak kalmalıdır.",
+     "Aynı kavramdaki tekrarlar tek kayıtta birleşir.",
+     "Voltaj sınırları her cevaptan sonra korunur."
+    ],
+    "kenar": [
+     "Voltaj zaten tam değerde iken doğru cevap sınırı aşmaz.",
+     "Voltaj sıfıra indiğinde daha fazla yanlış cevap onu sıfırın altına indirmez.",
+     "Hiç hata kaydı yoksa tekrar seçimi boş liste döner."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Hasar tablosunun alan adları ve olay biçimi değişirse bu sınamalar başarısız olur.",
+     "Hata defterinin kimlik, kavram, tür ve tekrar alanları sabit kalmalıdır.",
+     "Dosya tek başına çalışabilmelidir; komut satırından çalıştırılabilmesi sabittir."
+    ],
+    "degisebilir": [
+     "Sınamalara ad veren metinler ve sayaç çıktısı serbestçe değişebilir.",
+     "Yeni sınamalar eklenebilir; mevcut sınamaların beklenen değerleri aynı kalmalıdır.",
+     "Yardımcı işlevlerin içindeki kurulum ayrıntıları, dönüş biçimi korunduğu sürece değişebilir."
+    ]
+   },
+   "kritik_neden": "Bu sınama dosyası bozulursa savaş kuralındaki hata fark edilmeden kalır.",
+   "terimler": [],
+   "belirsiz": [
+    "Tekrar seçiminin ilk parametresinin ne anlama geldiği bu dosyadan anlaşılmıyor; yalnız sonuçları sınandı.",
+    "Beşinci istasyondaki kaydın seçilmemesinin gerekçesi, seçim kuralı okunmadığı için yazılmadı."
+   ],
+   "okunan": [
+    "oyun/test/battle.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/battle.test.js::eq",
+   "tur": "alt",
+   "ozet": "d859b7c6983c",
+   "iskelet": "ead6c454b8e6",
+   "ne": {
+    "cok_basit": "İki sonucun aynı olup olmadığına bakan ve farklıysa durduran kısa kontrol.",
+    "normal": "İki değeri metne çevirip karşılaştırır; eşit değilse hata fırlatır. Bu yüzden nesnelerin alanları ve alan sırası da birebir aynı olmalıdır."
+   },
+   "kritik_neden": "Bozulursa nesne sonuçları yanlış karşılaştırılır ve bu sınamaların anlamı kalmaz.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/battle.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/battle.test.js::t",
+   "tur": "alt",
+   "ozet": "06e97c789cad",
+   "iskelet": "d476715ff0cd",
+   "ne": {
+    "cok_basit": "Her sınamayı çalıştırıp başarılı sayıları sayan küçük yardımcı.",
+    "normal": "Her sınamanın adını ve içeriğini alır, içeriği hemen çalıştırır ve başarılı sayısını bir artırır. Sınama başarısız olursa içerik hata fırlatır ve sonraki sınamalar çalışmaz."
+   },
+   "kritik_neden": "Bozulursa sınamalar hiç çalışmadan ya da sayılmadan geçer ve sonuç yanıltıcı olur.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/battle.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/battle.test.js::yeni",
+   "tur": "alt",
+   "ozet": "0cdc1a356572",
+   "iskelet": "bf32b02cdfbf",
+   "ne": {
+    "cok_basit": "Her sınama için oyunun savaş bölümünü temiz bir durumda hazırlayan yardımcı.",
+    "normal": "Oyunun temel dosyalarını ve savaş dosyasını yeni bir ortamda yükler. Durumu ikinci istasyonun ara bir adımına ayarlar ve oyunun savaş nesnesini döndürür."
+   },
+   "kritik_neden": "Bozulursa her sınama yanlış ortamda çalışır ve diğer sonuçlara güvenilmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/battle.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/claude.test.js",
+   "tur": "dosya",
+   "ozet": "55d61a9e8b4c",
+   "iskelet": "778b79872013",
+   "baslik": "Değerlendirme yardımcısını sınama",
+   "ne": {
+    "cok_basit": "Yapay zekâ yardımcısının cevapları nasıl değerlendirdiğini sınayan denetim.",
+    "basit": "Bu dosya, oyundaki yapay zekâ yardımcısının cevabı nasıl puanladığını sınar. Bağlantı yoksa ne olacağını da kontrol eder.",
+    "normal": "Dosya, yapay zekâ yardımcısının değerlendirmesini sınar: doğruluk puanı, eksik fikirler ve hata durumları. Anahtar girildiğinde değerlendirmenin ayrı bir yoldan yapıldığını da denetler.",
+    "gelismis": "Dosya, yapay zekâ yardımcısının hazır örnek sunucu, kullanıcının kendi anahtarı ve bağlantısız durum yollarını sınar. Hata kodları oyunda farklı sonuçlara eşlenir; iptal, kota ve geçici hatalar birbirinden ayrılır. Puan en düşük ve en yüksek sınırlar arasında kıskaçlanır; eksik fikirler listelenir.",
+    "detayli": "Dosya, değerlendirmenin baştan sona güvenilir çalıştığını sınar. İstek; soru, öğrencinin cevabı, beklenen fikirler ve yanlış kavramlardan kurulur; cevabın içindeki üçlü tırnaklar temizlenir. Anahtar kalıcı depolamaya yazılmaz; isteyen için yalnız oturum depolamasına alınır. Hata kodları iptal, kota, geçici ve yetki sorunu olarak ayrı ayrı anlamlandırılır."
+   },
+   "mantik": {
+    "cok_basit": "Yapay zekâ bağlantısı yoksa oyun yine de çalışmalı.",
+    "basit": "Yapay zekâ dış bir servise bağlıdır ve servis bazen cevap vermez. Oyun bu durumda da takılmamalıdır.",
+    "normal": "Değerlendirme dış bir servise bağlı olduğu için iptal, kota ve ağ hataları her zaman olabilir. Bu sınama, her hatanın oyunun beklediği bir karşılığa dönüştüğünü ve bağlantı yokken oyunun durmadığını gösterir.",
+    "gelismis": "Yapay zekâ cevabı bir puan olarak kullanılır; yanlış biçimde gelen bir puan öğrencinin ilerlemesini yanıltır. Bu yüzden biçim ve sınır kontrolleri, sahte yanıtlarla ayrıca sınanır.",
+    "detayli": "Değerlendirme dış bir servise dayandığı için yanıt beklenen biçimde gelmeyebilir ya da hiç gelmeyebilir. Yardımcı yoksa değerlendirme yok hatasıyla reddedilir; oyunun bu hatayı doğru karşılaması gerekir. Anahtarın kalıcı depolamaya yazılmaması, kullanıcının anahtarını başka oturumlarda bırakmamasını sağlar. Sahte yanıtlarla yapılan sınama, bu kararların gerçek servise bağlı kalmadan korunduğunu gösterir."
+   },
+   "nasil": {
+    "basit": "Dosya, oyunun cevabı değerlendirmek için önce kullanılabilir yolu bulduğunu kontrol eder. Sonra sahte bir yanıtla puanın doğru taşındığını görür.",
+    "normal": "Her sınama sahte bir yanıt sağlayıcısı kurar ve değerlendirmeyi onun üzerinden çalıştırır. Başarılı yanıtta puan, geri bildirim ve fikir listesi beklenen biçimde döner. Hata sınamalarında her hata kodu oyunun beklediği koda çevrilir ve yardımcının durumu güncellenir. Anahtar sınamasında istek anahtarla gider; ağ hatası geçici sayılır.",
+    "gelismis": "Her sınama `withSample` ile yalıtılmış bir ortam kurar; yardımcının yerine sahte bir yanıt ya da hata veren bir örnek konur. `t` sınamayı çalıştırır ve sayar. Başarı sınamasında istek önbelleğe alınmaz, belirlenmiş model ve orta çaba düzeyi kullanılır. Hata sınamaları `errSample` ile hata kodu üretir ve `rejects` ile beklenen kodun döndüğü denetlenir; iptal, devam eden bir istek üzerinden sınanır. Anahtar sınamasında başlık ve üst sınır denetlenir; anahtar yalnız hafızada ve oturumda tutulur.",
+    "detayli": "Test dosyası, değerlendirme yardımcısının ayrı durumlarda doğru davranıp davranmadığını sınar: hazır sunucu, kullanıcı anahtarı, bağlantı yok ve hata durumları. Her sınama kendi ortamını kurar, böylece bir sınamadaki sahte yanıt başka sınamaya sızmaz. Yardımcı yokken değerlendirme yok koduyla reddedilmeli ve yardımcının durumu bağlantısız kalmalıdır. Hata eşlemesinde iptal, kota, geçici ve bozuk yanıt biçimi ayrı kodlara çevrilir; yetki reddi ise yardımcıyı yeniden bağlantısız duruma döndürür. Bozuk yanıt yalnız o isteği başarısız kılar ve yardımcıyı kullanılabilir bırakır. İstek metni bir kalıp üzerinden kurulur; cevap ve anahtar fikirler numaralı, yanlış kavramlar tire ile listelenir, kalıptan kalan yer tutucular temizlenir."
+   },
+   "detay": {
+    "girdiler": [
+     "Öğrencinin cevabı, soru, beklenen anahtar fikirler ve yanlış kavramlar.",
+     "Hazır sunucu ya da kullanıcının kendi anahtarı."
+    ],
+    "ciktilar": [
+     "Doğruluk puanı, fikir listesi, yanlış kavram bilgisi ve geri bildirim.",
+     "Hata kodu ve yardımcının kullanılabilirlik durumu."
+    ],
+    "degismezler": [
+     "Doğruluk puanı en düşük ve en yüksek sınırlar arasında tutulur.",
+     "Yanıt eksik fikir bilgisi içermiyorsa beklenen fikirler yanlış işaretli listelenir.",
+     "Hata kodları oyunun beklediği adlarla dönmelidir."
+    ],
+    "kenar": [
+     "Yardımcı yokken değerlendirme yok koduyla reddedilir.",
+     "Yetki reddinden sonra yardımcı bağlantısız duruma döner.",
+     "Bozuk yanıt biçimi yalnız o isteği başarısız kılar."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Hata kodlarının adları ve eşlemesi değişirse bu sınamalar başarısız olur.",
+     "İstek ayarlarında önbelleğe alma kapalı ve belirlenmiş model kullanılmalıdır.",
+     "Anahtar yalnız hafızada ve isteğe bağlı oturumda tutulur; kalıcı depolamaya yazılmaz."
+    ],
+    "degisebilir": [
+     "Yardımcının iç akışındaki istek gövdesinin ayrıntıları, test sonuçları değişmediği sürece serbesttir.",
+     "Test metinlerindeki sahte cevap içerikleri ve sınama adları serbestçe değiştirilebilir.",
+     "Örnek sınamalar eklenebilir; mevcut beklentiler aynı kalmalıdır."
+    ]
+   },
+   "kritik_neden": "Bu dosya bozulursa yapay zekâ değerlendirmesi yanlış puan verebilir ya da oyunu bağlantı yokken durdurabilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Hazır sunucunun gerçek bağlantı ayrıntısı bu dosyada görünmüyor; yalnız sahte sürümü sınanıyor.",
+    "Oyunun bu hata kodlarını nasıl karşıladığı bu parçadan okunmadı; yalnız yardımcının kodları sınanıyor."
+   ],
+   "okunan": [
+    "oyun/test/claude.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/claude.test.js::errSample",
+   "tur": "alt",
+   "ozet": "a6a844bee3fb",
+   "iskelet": "a7df51ac51fe",
+   "ne": {
+    "cok_basit": "Belirli bir hata kodu üreten sahte bir yanıt kaynağı hazırlar.",
+    "normal": "Verilen kod ile hata fırlatan sahte bir yanıt nesnesi üretir. Böylece her hata kodunun oyunda doğru karşılandığı, gerçek servise bağlanmadan denetlenebilir."
+   },
+   "kritik_neden": "Bozulursa hata eşlemeleri sınanmaz ve oyunun hata yolu hiç denenmeden kalır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/claude.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/claude.test.js::rejects",
+   "tur": "alt",
+   "ozet": "9ce694400dd9",
+   "iskelet": "3ae7ef364c7e",
+   "ne": {
+    "cok_basit": "Bir işin hata vermesi gerektiğini kontrol edip hatayı geri veren yardımcı.",
+    "normal": "Verilen işin reddedilip reddedilmediğine bakar; reddedilmemişse sınamayı başarısız sayar. Reddedildiyse hatayı döndürür ki sınama hata kodunu denetleyebilsin."
+   },
+   "kritik_neden": "Bozulursa hata beklenen sınamalar hatasız geçer ve hata kodu sınanmadan kalır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/claude.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/claude.test.js::t",
+   "tur": "alt",
+   "ozet": "e63dfcba97e4",
+   "iskelet": "d476715ff0cd",
+   "ne": {
+    "cok_basit": "Her sınamayı sırayla çalıştırıp başarılı sayılarını tutan küçük yardımcı.",
+    "normal": "Her sınamanın adını ve içeriğini alır, içeriği bekleyerek çalıştırır ve başarılı sayısını bir artırır. Bir sınama hata verirse hata üst katmana iletilir ve süreç başarısız biçimde sonlanır."
+   },
+   "kritik_neden": "Bozulursa sınamalar bitmeden ya da hata gizlenerek geçilir ve sonuç yanıltıcı olur.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/claude.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/claude.test.js::withSample",
+   "tur": "alt",
+   "ozet": "072a6d7c7dfa",
+   "iskelet": "cf07e91c390b",
+   "ne": {
+    "cok_basit": "Yapay zekâ yardımcısının yerine geçen sahte bir yardımcı kuran hazırlık.",
+    "normal": "Her sınama için gerçek kurulumu yükler, sonra yardımcının yerine verilen sahte yanıt veren bir yardımcı koyar. Böylece dış servise bağlanmadan değerlendirme yolu sınanır."
+   },
+   "kritik_neden": "Bozulursa sınamalar sahte yanıt yerine yanlış bir kaynaktan sonuç alır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/claude.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/core.test.js",
+   "tur": "dosya",
+   "ozet": "9544eec0bd04",
+   "iskelet": "3324c87c0618",
+   "baslik": "Temel altyapı sınamaları",
+   "ne": {
+    "cok_basit": "Oyunun temel parçalarını, kayıt işini ve yardımcı şeylerini sınayan denetim.",
+    "basit": "Bu dosya oyunun temel işlerini sınar: parçalar arası mesajlar, yardımcı hesaplar ve kayıt.",
+    "normal": "Dosya oyunun temel altyapısını sınar: parçaların birbirine mesaj göndermesi, yardımcı hesaplar ve kayıt. Kayıt testleri bozuk veriyi, eksik depolamayı ve dışa aktarmayı da kapsar.",
+    "gelismis": "Dosya, oyunun altyapı işlerini tek tek ayrı sınamalarla denetler. Mesaj sistemi, bir dinleyici hata verse de diğerlerinin çalışmaya devam ettiğini gösterir. Kayıt sınamaları bozuk veride varsayılan değerlere döner ve depolama yoksa oyunun yine çalıştığını gösterir.",
+    "detayli": "Dosya, oyunun altyapısındaki ayrı alanları tek tek sınar. Mesaj sisteminde bir dinleyicinin hatası diğerlerini etkilemez ve kaldırılan dinleyiciye mesaj gitmez. Yardımcılarda süre okunur biçimde gösterilir, değer aralığın dışına çıkmaz ve aynı tohum aynı rastgele dizisini üretir. Kayıtta bozuk veri, depolama yokluğu ve dışa aktarma ile içe aktarma sınanır."
+   },
+   "mantik": {
+    "cok_basit": "Oyunun altyapısı bozulursa her ekran yanlış çalışır.",
+    "basit": "Oyunun parçaları birbirine mesajla konuşur ve bilgiler kaydedilir. Bu temel işler bozulursa oyunun geri kalanı da bozulur.",
+    "normal": "Altyapı, bütün parçaların ortak kullandığı küçük işlerden oluşur; birinin bozulması herkesi etkiler. Bu yüzden temel işler ayrı ayrı sınanır; kayıt gibi veri kaybettiren işler özellikle denetlenir.",
+    "gelismis": "Mesaj sisteminde hata izolasyonu, bir dinleyicinin hatasının oyunu durdurmasını engeller. Kayıt sınamaları ilerlemenin bozuk veri ya da depolama yüzünden kaybolmamasını sağlar.",
+    "detayli": "Oyunun her parçası bu altyapıya dayandığı için küçük bir değişiklik geniş etki yapabilir. Mesaj sistemindeki hata izolasyonu, tek bir dinleyicinin hatasının öbürlerini durdurmasını engeller. Kayıt sınamaları ilerlemenin bozuk veriden ya da depolama hatasından etkilenmemesini ister. Yardımcılar aynı girdiyle aynı çıktıyı vermelidir; rastgele seçimlerin tekrarlanabilir olması bu yüzden önemlidir."
+   },
+   "nasil": {
+    "basit": "Her sınama, oyunun temel parçalarını yalıtılmış bir ortamda açar. Sonra mesaj gönderir ya da kayıt yapar ve sonucu beklenenle karşılaştırır.",
+    "normal": "Her sınama kendi kurulumunu yapar; her kurulum yeni bir ortam ve boş bir durum ile başlar. Mesaj sınamalarında bir olay birden çok dinleyiciye gider; silinen dinleyici artık çağrılmaz. Kayıt sınamalarında bozuk içerik, yokluk ve hata veren depolama tek tek denenir. Son sınamada yaz, oku, dışa aktar, içe aktar ve sıfırla akışı denenir.",
+    "gelismis": "Her sınama `t` ile sırayla çalışır ve işlev hemen çağrılır; sonuç anında denetlenir. Mesaj sınamasında olay bir dizi dinleyiciye iletilir; dinleyicilerden biri hata fırlatırsa hata konsola yazılır ve sonraki dinleyiciler yine çağrılır. Yardımcı sınamasında süre metni, aralık sınırı ve tekrar edilebilir rastgele sayılar denetlenir. Kayıt sınamaları bozuk veri, depolama yokluğu ve hata veren depolamayı tek tek dener.",
+    "detayli": "Dosya bir dizi sınamadan oluşur ve her sınama kendi yardımcı yükleyicisi ile yeni bir ortam kurar; böylece önceki sınamanın durumu sonrakini etkilemez. Mesaj sisteminde bir olay, kayıt sırasına göre dinleyicilere iletilir. Bir dinleyici hata fırlatırsa hata konsola yazılır ve kalan dinleyiciler çağrılmaya devam eder. Aboneliği kapatılan dinleyici artık çağrılmaz. Yardımcı sınamalarında süre, değer aralığı ve rastgele üretim denetlenir. Rastgele üretici aynı tohumla aynı diziyi verir; karıştırma ise dizinin kendisini değiştirmeden yeni bir sıra üretir. Kayıt sınamaları, bozuk içerikte varsayılan değerlere dönüldüğünü ve depolama yoksa oyunun çalışmaya devam ettiğini doğrular; dışa aktarma ile içe aktarma geri dönüşlü çalışır."
+   },
+   "detay": {
+    "girdiler": [
+     "Yardımcı için aralık, süre ve tohum değerleri; olay adları ve yük bilgisi.",
+     "Kayıt için bozuk metin, eksik depolama ya da içe aktarılacak metin."
+    ],
+    "ciktilar": [
+     "Olay dinleyicilerinin çağrılma sonucu ve yardımcıların döndürdüğü değerler.",
+     "Kayıt işleminin başarı durumu ve geri yüklenen oyun durumu."
+    ],
+    "degismezler": [
+     "Bir dinleyicinin hatası diğer dinleyicilerin çağrılmasını durdurmaz.",
+     "Aynı tohum her zaman aynı rastgele dizisini üretir.",
+     "Sıfırlama, oyun durumu nesnesinin kimliğini değiştirmeden içeriğini varsayılan yapar."
+    ],
+    "kenar": [
+     "Kayıt metni bozuk ya da yanlış sürümdeyse içe aktarma false döner.",
+     "Depolama hiç yoksa ya da erişimde hata veriyorsa oyun varsayılanlarla çalışır.",
+     "Aboneliği kapatılan dinleyici bir daha çağrılmaz."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kayıt metnindeki sürüm alanı ve kayıtlarda kullanılan anahtar adı sabit kalmalıdır; aksi halde kayıtlar okunamaz.",
+     "Yardımcıların döndürdüğü değer biçimleri, örneğin süre metni ve rastgele üretici davranışı, sabittir.",
+     "Olay dinleyicilerinin kayıt sırasına göre çağrılması değişmemelidir."
+    ],
+    "degisebilir": [
+     "Yardımcı işlevlerin iç hesap yöntemi, sonucu değiştirmediği sürece serbesttir.",
+     "Test metinleri ve konsol çıktısı serbestçe değiştirilebilir.",
+     "Yeni altyapı sınamaları eklenebilir; mevcut beklentiler aynı kalmalıdır."
+    ]
+   },
+   "kritik_neden": "Bu altyapı bozulursa oyunun her parçası yanlış çalışır ve kayıt kaybı ile ilerleme sıfırlanması görülebilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Bir dinleyici hatasının başka bir yere de bildirilip bildirilmediği bu dosyadan anlaşılmıyor.",
+    "Kayıtta kullanılan ve yalnız adlarıyla geçen diğer modüllerin davranışı okunmadı."
+   ],
+   "okunan": [
+    "oyun/test/core.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/core.test.js::t",
+   "tur": "alt",
+   "ozet": "06e97c789cad",
+   "iskelet": "d476715ff0cd",
+   "ne": {
+    "cok_basit": "Bir sınamanın adını ve içeriğini alıp hemen çalıştıran ve sayan küçük yardımcı.",
+    "normal": "Sınamanın adını ve içeriğini alır, içeriği hemen çalıştırır ve başarılı sayısını bir artırır. İçerikte hata çıkarsa hata yukarı iletilir ve kalan sınamalar çalışmaz."
+   },
+   "kritik_neden": "Bozulursa sınamalar sayılmadan geçebilir ya da hata gizlenerek sonuç yanıltıcı olur.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/core.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/harness.js",
+   "tur": "dosya",
+   "ozet": "6f843bfb0462",
+   "iskelet": "ff199aa114fc",
+   "baslik": "Test yardımcısı",
+   "ne": {
+    "cok_basit": "Bu dosya, oyunun kendini sınamak için kullandığı yardımcı şeyleri tutar.",
+    "basit": "Bu dosya, oyunu test ederken lazım olan yardımcı işleri toplar. Gerçek dosyaları sahte bir ortamda çalıştırır.",
+    "normal": "Bu dosya, oyunun testlerinin ortak yardımcı araçlarını tek yerde tutar. Testler oyunun gerçek dosyalarını sanal bir ortamda çalıştırır ve sayfaya görünüm kurallarını ekler.",
+    "gelismis": "Bu dosya iki ortamı destekler. Düz Node ortamında `loadCore` oyunun çekirdek dosyalarını yalıtılmış bir bağlamda çalıştırır ve çekirdek nesnesiyle pencereyi verir. Tarayıcı testlerinde `injectTokens` renk ve boyut değişkenlerini sayfaya ekler. Sahte bir çekirdek yoktur; gerçek dosyalar yüklenir.",
+    "detayli": "Bu dosya oyunun testlerinde ortak kullanılan yardımcı araçları tek yerde toplar. `loadCore` oyunun çekirdek dosyalarını yalıtılmış bir bağlamda çalıştırır ve sonuçta çekirdek nesnesiyle pencere nesnesini döndürür. `memStorage` bellekte çalışan sahte bir depolama verir; `loadCore` depolamayı yok ya da hata veren biçimde de kurabilir. `injectTokens` tarayıcı testlerinde renk ve boyut değişkenlerini sayfaya ekler."
+   },
+   "mantik": {
+    "cok_basit": "Testler gerçek oyun kodunu sınasın diye var; kopya kod kullanılmaz.",
+    "basit": "Testlerin aynı kurulumu her seferinde yazmaması için ortak bir yardımcı dosya var. Gerçek kodu sınamak için kopya yazılmaz.",
+    "normal": "Her test kendi sahte ortamını kurarsa testler gerçek oyundan ayrılır ve yanlış sonuç verebilir. Tek kurulum noktası sayesinde bütün testler aynı gerçek dosyaları çalıştırır.",
+    "gelismis": "Sahte bir çekirdek yazmak, oyunun asıl dosyalarındaki değişikliği testten gizler. Bu yüzden kurulum merkezde toplanır ve gerçek dosyalar yüklenir. Depolamanın engellendiği durumu da sınamak için hiç depolama vermeyen ve erişimde hata veren kurulumlar vardır.",
+    "detayli": "Testler oyunun asıl dosyalarını çalıştırdığında değişikliği hemen görür; kopya olsaydı bu gizlenirdi. Tek kurulum noktası her testin aynı şekilde başlamasını sağlar. Depolamanın hiç olmadığı, varsayılan olduğu ve hata verdiği üç durum da kaynaktan sınanabilir. Tarayıcı testleri de görünüm değişkenlerini aynı metinden alır."
+   },
+   "nasil": {
+    "basit": "Düz kodu sınayan testler, oyunun gerçek dosyalarını sanal bir ortamda açar. Tarayıcı testleri ise sayfaya renk değişkenlerini ekler.",
+    "normal": "Düz kodu sınayan testler, oyunun çekirdek dosyalarını yalıtılmış bir ortamda sırayla çalıştırır ve ana nesneyi verir. Depolama istenirse bellekte çalışan sahte bir kayıt alanı verilir; istenmezse hiç verilmez ya da hata verecek biçimde kurulur. Tarayıcı testlerinde renk ve boyut değişkenleri sayfaya stil olarak eklenir, böylece sayfa oyunun gerçek görünümüyle açılır.",
+    "gelismis": "Dosyanın iki girişi var. `loadCore` seçeneklere göre depolamayı ayarlar, çekirdek dosyaları yalıtılmış bir bağlamda sırayla çalıştırır ve çekirdek nesnesiyle pencereyi döndürür. Depolama seçeneği verilmezse bellekte çalışan `memStorage` kullanılır; boş bırakılırsa depolama hiç tanımlanmaz, hata veriyorsa her erişim hata atar. `injectTokens` sayfaya renk ve boyut tanımlarını içeren stil metnini ekler; tarayıcı testleri bu değişkenlerle açılır. Çekirdeği taklit etmez, gerçek dosyaları çalıştırır.",
+    "detayli": "Dosya üç işlev ile iki sabit dışarı verir. `loadCore` önce bir pencere nesnesi hazırlar; içine zamanlayıcılar, konsol ve Promise konur. Sonra depolama seçeneğine bakar: erişimde hata atan bir alan, hiç alan eklenmemesi ya da seçenek verilmemişse `memStorage` eklenmesi. Bu nesne bir sanal bağlama bağlanır ve çekirdek dosyalar bu bağlamda sırayla çalıştırılır. Dönüşte çekirdek nesnesi ve pencere nesnesi döner. `memStorage` anahtar değer deposudur; eksik anahtar boş sonuç verir, yazılan değer metne çevrilir. `injectTokens` sayfaya renk ve boyut tanımlarını içeren bir stil bloğu ekler; böylece tarayıcı testleri oyunun renk ve boyut değişkenlerini kullanır."
+   },
+   "detay": {
+    "girdiler": [
+     "Node testleri bir seçenek nesnesi verir: depolama tercihi ve isteğe bağlı dosya listesi.",
+     "Tarayıcı testleri açık bir sayfa nesnesi verir ve stil bu sayfaya eklenir."
+    ],
+    "ciktilar": [
+     "Node tarafında çekirdek nesnesi ve pencere nesnesi döner.",
+     "Tarayıcı tarafında sayfaya eklenmiş bir stil bloğu oluşur.",
+     "Bellek deposu okuma, yazma ve silme işlemlerini sağlar."
+    ],
+    "degismezler": [
+     "Çekirdek nesnesi gerçek çekirdek dosyalardan gelir, kopya ile üretilmez.",
+     "Seçenek verilmediğinde bellek deposu varsayılan olarak kullanılır.",
+     "Stil metni dışarıya aynı adla verilir."
+    ],
+    "kenar": [
+     "Depolama erişimde hata verecek biçimde kurulduysa her erişim hata atar.",
+     "Depolama hiç tanımlanmayacak biçimde verildiğinde pencerede depolama alanı olmaz.",
+     "Dosya listesi verilmezse varsayılan çekirdek dosyalar yüklenir."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Yüklenen dosyaların sırası çalıştırma sırasıdır; değiştirilirse kurulum farklı sonuç verebilir.",
+     "Dışarıya verilen adlar testlerin kullandığı adlardır; yeniden adlandırılamaz.",
+     "Depolama seçeneğinin üç hali, yani verilmemiş, boş ve hata veren, aynı anlamda kalmalıdır."
+    ],
+    "degisebilir": [
+     "Stil metnindeki renk ve boyut değerleri tasarım değiştikçe serbestçe güncellenebilir.",
+     "Bellek deposunun iç yapısı, dışarıdan görülen okuma ve yazma davranışı korunduğu sürece değişebilir.",
+     "Yardımcı işlevlerin içindeki yazım düzeni ve açıklama satırları değişebilir."
+    ]
+   },
+   "kritik_neden": "Bu dosya bozulursa birçok test kurulamaz ya da yanlış ortamda çalışır ve testlerin güvenilirliği düşer.",
+   "terimler": [],
+   "belirsiz": [
+    "Stil metninin başlangıç satırı okunamadı; değerlerin nasıl kurulduğu yazılmadı.",
+    "Alt parça listesi hafif çıkarımdan geldi; eksik olabilir."
+   ],
+   "okunan": [
+    "oyun/test/harness.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/harness.js::injectTokens",
+   "tur": "alt",
+   "ozet": "18159e1286e6",
+   "iskelet": "5d38db9e827b",
+   "ne": {
+    "cok_basit": "Sayfaya oyunun renk ve boyut ayarlarını stil olarak ekler.",
+    "normal": "Tarayıcı testlerinde kullanılan sayfaya, renk ve boyut değişkenlerini içeren bir stil bloğu ekler. Bu sayede sayfa oyunun gerçek görünümüyle açılır. İşlem beklemeli, sayfa hazır olduktan sonra test devam eder."
+   },
+   "kritik_neden": "Bozulursa tarayıcı testleri varsayılan görünümle çalışır ve görünüme dayalı sonuçlar yanlış çıkar.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/harness.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/harness.js::loadCore",
+   "tur": "alt",
+   "ozet": "695b962b0b09",
+   "iskelet": "8cfac4b63ea3",
+   "ne": {
+    "cok_basit": "Oyunun ana dosyalarını sanal bir ortamda çalıştırıp sonucu testlere verir.",
+    "normal": "Seçeneklere göre depolamayı ayarlar, çekirdek dosyaları yalıtılmış bir ortamda sırayla çalıştırır ve sonuçları döndürür. Depolama için varsayılan bellek deposu, yok ya da hata veren seçenekler vardır."
+   },
+   "kritik_neden": "Bozulursa testler oyunun çekirdeğini ya yüklemez ya da yanlış ortamda çalıştırır.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/harness.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/harness.js::memStorage",
+   "tur": "alt",
+   "ozet": "395197f44c7d",
+   "iskelet": "fe2ec88133fa",
+   "ne": {
+    "cok_basit": "Testlere sahte bir kayıt alanı verir; yazılan değer sonra geri okunabilir.",
+    "normal": "Bellekte tutulan sahte bir depolama üretir. Bir anahtara değer yazılabilir, okunabilir ve silinebilir. Anahtar yoksa okuma boş sonuç döner; yazılan her değer metne çevrilerek saklanır."
+   },
+   "kritik_neden": "Kurulumda varsayılan depolama olarak kullanıldığından bozulursa depolamaya bağlı testler yanlış sonuç verir.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/harness.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-dusman.html",
+   "tur": "dosya",
+   "ozet": "c0dc5d0a3475",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Vakans düşman testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, düşman engelini ve sorusunu tek başına denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, kristaldeki boş yer kusurunu bir soruyla birlikte engel olarak gösterir. Doğru seçenek engeli çözer; yanlış seçenekler için de nedeni gösterilir."
+   },
+   "nasil": {
+    "normal": "Sayfa, engelin kullandığı sahte bir ekran ve soru hazırlar, sonra işleyiciyi bu ortamla çağırır. Oyuncunun cevabı seçenek düğmeleriyle alınır; güven düzeyi de ayrı bir düğme grubuyla sorulur. İşlem bitince sonuç sayfada yazılır ve engel durumu ayrıca güncellenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Engel işleyicisinin giriş biçimi ve sonucun bekleme biçimi sayfadaki çağrıyla aynı kalmalıdır.",
+     "Seçenek ve güven düzeyi sorularının dönüş biçimi, sayfadaki sahte soru ekranlarıyla uyumlu kalmalıdır."
+    ],
+    "degisebilir": [
+     "Sorunun metni, seçeneklerin yazıları ve açıklamalar içerik olarak serbestçe değiştirilebilir.",
+     "Sayfanın görünümü ve düğmelerin biçimi, yani renkler ve boyutlar, serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa düşman engelini oyundan ayrı açar; bozulursa seçenekli soruların ve engel çözümünün değişiklikten sonra çalışıp çalışmadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Engelin sayfa dışında hangi durumda çözüldüğü ve kayıt mekanizmasının nasıl çalıştığı bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-dusman.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-hikaye.html",
+   "tur": "dosya",
+   "ozet": "99b8f7031375",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Hikaye sahnesi testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, bir hikaye sahnesini tek başına açıp denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, bilim tarihinden bir olayı kısa bir diyalogla anlatan hikaye sahnesini tek başına çalıştırır. Sahnede bir anlatıcı ve konuşan kişiler yer alır; her satır sırayla ekrana gelir ve sahne bitince sonuç sayfada tutulur."
+   },
+   "nasil": {
+    "normal": "Sayfa, sahne bilgilerini ve satır listesini hazırlar, sonra sahne işleyicisini bu bilgilerle çalıştırır. Adres satırında bir işaret varsa sahne kendiliğinden başlamaz; sonradan elle çağrılabilir. Canlandırma ve konuşma adımları bir günlüğe yazılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Sahne işleyicisinin giriş biçimi ve satır listesinin alan adları sayfadaki çağrıyla aynı kalmalıdır.",
+     "Satırların sırası, her satırın kişi ve metin alanları, sahnenin beklediği biçimde kalmalıdır."
+    ],
+    "degisebilir": [
+     "Sahnedeki konuşma metinleri ve konuşan kişilerin adları içerik olarak serbestçe değiştirilebilir.",
+     "Sayfanın renkleri ve yazı düzeni test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa hikaye sahnesini oyundan ayrı çalıştırır; bozulursa sahnenin satırlarını sırayla gösterip göstermediği bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Sahnenin ekranda hangi kişiyle eşleştiği ve sonuç değerinin oyunda nasıl kullanıldığı bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-hikaye.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-kavram.html",
+   "tur": "dosya",
+   "ozet": "74a84acc8e2a",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kavram kapısı testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, bir kavram kapısını sahte deneyle denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, bir kavram kapısının işleyişini sahte bir deneyle gösterir. Deney açılınca ipucu çıkar; kapı bitince sonuç sayfada görünür ve yapılan her canlandırma bir listeye yazılır."
+   },
+   "nasil": {
+    "normal": "Sayfa, kapının kullanacağı sahte deneyi ve bir ekran alanını önceden hazırlar. Adres satırında bir süre bilgisi varsa kapı hemen başlar ve ipucu ile gecikme süreleri oradan okunur. Kapı bittiğinde dönen sonuç sayfanın içinde saklanır ve sayfada gösterilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Kavram kapısının giriş biçimi ve sonucun bekleme biçimi sayfadaki çağrıyla aynı kalmalıdır.",
+     "Sahte deneyin hazır olma, tamamlanma ve değer güncelleme yolları kapının beklediği biçimde kalmalıdır."
+    ],
+    "degisebilir": [
+     "Sahte deneyin görünen metni ve ipucunun içeriği serbestçe değiştirilebilir.",
+     "Sayfanın görünümü, yani renkler ve kutu boyutları, test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa kavram kapısını gerçek deney olmadan çalıştırır; bozulursa kapının değişiklikten sonra çalışıp çalışmadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Kapının ipucu ve bildirimleri oyunda nasıl kullandığı bu sayfadan tam görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-kavram.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-kopru.html",
+   "tur": "dosya",
+   "ozet": "d94ad82cdfbd",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kırık köprü engeli testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, oyundaki kırık köprü engelini tek başına denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, kırık köprü engelinin mantığını oyunun geri kalanından ayırıp tek başına çalıştırır. Açılınca karışık bilgi blokları ve bir sıralama sorusu görünür; sorunun cevabı blokların doğru dizilişidir."
+   },
+   "nasil": {
+    "normal": "Sayfa açılışta boş bir kutu ve sahte bir koşu alanı hazırlar. Sonra oyunun köprü işleyicisini bu kutuyla çağırır; işleyici bulmacayı bu kutunun içinde çalıştırır. Sonuç gelince sayfanın içinde saklanır ve koşu alanına canlandırma bildirilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Köprü işleyicisinin giriş biçimi ve sonucun geri dönüş biçimi sayfadaki çağrıyla aynı kalmalıdır.",
+     "Engel verisinin alan adları işleyicinin beklediği adlarla aynı kalmalıdır."
+    ],
+    "degisebilir": [
+     "Bulmacadaki blok metinleri ve soru cümlesi içerik olarak serbestçe değiştirilebilir.",
+     "Sayfanın renkleri, kutu boyutları ve düzeni test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa kırık köprü engelini oyundan ayrı çalıştırır; bozulursa engelin değişikliklerden sonra çalışıp çalışmadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "İşleyicinin sonucu nasıl hesapladığı ve oyuncu cevabının nasıl alındığı bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-kopru.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-kopru.test.js",
+   "tur": "dosya",
+   "ozet": "d549a37a5d51",
+   "iskelet": "8f468dabbaea",
+   "baslik": "Köprü bulmacası testi",
+   "ne": {
+    "cok_basit": "Bir bulmacayı doğru ve yanlış sırayla çözerek sonuçlarını denetleyen bir kontrol.",
+    "basit": "Bir bulmacayı doğru ve yanlış sırayla çözerek sonuçlarını denetleyen bir kontrol. Kartları yerine koyup sonucun doğru çıkıp çıkmadığına bakar.",
+    "normal": "Bir bulmacayı doğru ve yanlış sırayla çözerek sonuçlarını denetleyen bir kontrol. Kartları yerine koyup sonucun doğru çıkıp çıkmadığına bakar. Kartlar yuvalara sürüklenerek de konabilir; bu yolla da aynı sonuç denetlenir.",
+    "gelismis": "Bir bulmacayı doğru ve yanlış sırayla çözerek sonuçlarını denetleyen bir kontrol. Kartları yerine koyup sonucun doğru çıkıp çıkmadığına bakar. Kartlar yuvalara sürüklenerek de konabilir; bu yolla da aynı sonuç denetlenir. Klavyeyle de kart eklenebilir ve bir ipucu çıkıp çıkmadığına bakılır.",
+    "detayli": "Bir bulmacayı doğru ve yanlış sırayla çözerek sonuçlarını denetleyen bir kontrol. Kartları yerine koyup sonucun doğru çıkıp çıkmadığına bakar. Kartlar yuvalara sürüklenerek de konabilir; bu yolla da aynı sonuç denetlenir. Klavyeyle de kart eklenebilir ve bir ipucu çıkıp çıkmadığına bakılır. Sonuçta doğru mu, hangi kavram olduğu ve cevaba verilen güven düzeyi okunur. Bazı aşamaların ekran görüntüleri de kaydedilir."
+   },
+   "mantik": {
+    "cok_basit": "Bulmacanın doğru ve yanlış çözümleri ayrı ayrı çalışıyor mu diye bakmak için var.",
+    "basit": "Doğru ve yanlış çözümün farklı sonuç vermesi gerekir; test bu farkın gerçekten oluştuğunu görmek için var.",
+    "normal": "Doğru ve yanlış çözümün farklı sonuç vermesi gerekir; test bu farkın gerçekten oluştuğunu görmek için var. Dokunmayla ve sürüklemeyle aynı sonuca varılması, bu yöntemlerin ayrı ayrı güvenilir olduğunu gösterir.",
+    "gelismis": "Doğru ve yanlış çözümün farklı sonuç vermesi gerekir; test bu farkın gerçekten oluştuğunu görmek için var. Dokunmayla ve sürüklemeyle aynı sonuca varılması, bu yöntemlerin ayrı ayrı güvenilir olduğunu gösterir. Klavyeyle ekleme ve tamir ipucunun da ayrıca denenmesi, erişilebilirliği korur.",
+    "detayli": "Doğru ve yanlış çözümün farklı sonuç vermesi gerekir; test bu farkın gerçekten oluştuğunu görmek için var. Dokunmayla ve sürüklemeyle aynı sonuca varılması, bu yöntemlerin ayrı ayrı güvenilir olduğunu gösterir. Klavyeyle ekleme ve tamir ipucunun da ayrıca denenmesi, erişilebilirliği korur. Test sayfayı her seferinde yeniden açtığı için önceki denemenin izi sonuca karışmaz."
+   },
+   "nasil": {
+    "basit": "Test bulmacayı tek tek dokunarak, sürükleyerek ve klavyeyle dener. Her denemede yanlış sıra da kontrol edilir.",
+    "normal": "Test bulmacayı tek tek dokunarak, sürükleyerek ve klavyeyle dener. Her denemede yanlış sıra da kontrol edilir. Önce kartlar doğru sırayla konur ve bulmacanın tamamlanınca doğru kabul edildiği görülür. Sonra bilerek yanlış sırayla konur ve sonucun yanlış çıktığı, doğru sıranın gösterildiği denetlenir.",
+    "gelismis": "Test bulmacayı tek tek dokunarak, sürükleyerek ve klavyeyle dener. Her denemede yanlış sıra da kontrol edilir. Önce kartlar doğru sırayla konur ve bulmacanın tamamlanınca doğru kabul edildiği görülür. Sonra bilerek yanlış sırayla konur ve sonucun yanlış çıktığı, doğru sıranın gösterildiği denetlenir. Yuvaya dokununca kartın geri alındığı ve yuvalar dolmadan kontrol düğmesinin kapalı kaldığı da sınanır.",
+    "detayli": "Test bulmacayı tek tek dokunarak, sürükleyerek ve klavyeyle dener. Her denemede yanlış sıra da kontrol edilir. Önce kartlar doğru sırayla konur ve bulmacanın tamamlanınca doğru kabul edildiği görülür. Sonra bilerek yanlış sırayla konur ve sonucun yanlış çıktığı, doğru sıranın gösterildiği denetlenir. Yuvaya dokununca kartın geri alındığı ve yuvalar dolmadan kontrol düğmesinin kapalı kaldığı da sınanır. Test her aşamada sayfayı yeniden açar, böylece bir önceki denemenin kalıntısı sonraki denemeyi etkilemez. Klavye aşamasında, tamir ipucunun görünür olduğu ve ilk kartın havuzdan çıktığı kontrol edilir. Tarayıcıyı süren kütüphane bu depoda olmayan bir dış bağımlılıktır."
+   },
+   "detay": {
+    "girdiler": [
+     "Sayfanın kendisi ve tarayıcıda yapılan fare, klavye ve dokunma hareketleri bu testin girdisidir."
+    ],
+    "ciktilar": [
+     "Her aşamada geçti ya da kaldı bilgisi ve en sonda kaç kontrol grubunun geçtiğini söyleyen bir satır."
+    ],
+    "degismezler": [
+     "Sayfadaki kart, yuva ve kontrol düğmesi adları ile sonuç alanının yapısı testin dayandığı sözdür."
+    ],
+    "kenar": [
+     "Yanlış sırada koyulan kartlar sonucu yanlış bırakır ve test bunu beklenen davranış olarak kabul eder."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kart, yuva ve kontrol düğmesi adlarının ve sonuç alanının yapısının değişmesi testin çalışmasını bozar.",
+     "Kontrol düğmesinin yuvalar dolmadan kapalı başlaması ve doğru sırada doğru sonucun döndürülmesi sabit kalmalı."
+    ],
+    "degisebilir": [
+     "Ekran görüntülerinin adları ve kaydedildiği klasör, testin sonucunu değiştirmeden ayarlanabilir.",
+     "Fare hareketinin ara adımları ve bekleme süreleri, sonucu değiştirmeden ayarlanabilir.",
+     "Mevcut bölümlerin yanına yeni bir sınama bölümü eklenebilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa bu test yanlış sonuç verir; sayfanın kendisi ve oyunun geri kalanı bundan etkilenmez.",
+   "terimler": [
+    "dis-bagimlilik"
+   ],
+   "belirsiz": [
+    "Sayfa dosyasının içeriği bu pakette gelmedi; kartların nasıl gösterildiği ve sonuç alanının nasıl doldurulduğu yalnız testin beklediği adlardan çıkarıldı.",
+    "Tamir ipucunun sayfada hangi koşulda kendiliğinden görüneceği bu dosyadan görülmedi."
+   ],
+   "okunan": [
+    "oyun/test/obs-kopru.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-kopru.test.js::dragCard",
+   "tur": "alt",
+   "ozet": "dc6621b4b167",
+   "iskelet": "6c0ad2f53e7f",
+   "ne": {
+    "cok_basit": "Bir kartı fareyle tutup yuvanın üstüne bırakan küçük bir yardımcı.",
+    "normal": "Kartın üstüne gelip fare basılı tutularak sürüklenir ve yuvanın üstünde bırakılır. Hareket ara adımlarla yapılır, böylece sürükleme her adımda ayrı ayrı görülür."
+   },
+   "kritik_neden": "Bozulursa kartların yuvaya sürüklenerek konduğu kontrol bölümleri başarısız olur; oyunun kendisi bundan etkilenmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/obs-kopru.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-kopru.test.js::slotTexts",
+   "tur": "alt",
+   "ozet": "dcefe42a5a22",
+   "iskelet": "3626d8ca1bda",
+   "ne": {
+    "cok_basit": "Yuvalardaki yazıları sırayla okuyup liste halinde veren küçük bir yardımcı.",
+    "normal": "Sayfadaki bütün yuvaların yazı içeriğini tek bir listede toplar; boş yuva boş metin olarak görünür. Testler bu listeyi beklenen sıra ile karşılaştırarak yerleşimi denetler."
+   },
+   "kritik_neden": "Bozulursa yerleşim kontrolleri yanlış okumalarla başarısız ya da yanlış başarılı çıkabilir; oyunun kendisi bundan etkilenmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/obs-kopru.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-kopru.test.js::tapCard",
+   "tur": "alt",
+   "ozet": "6c9e397ba4c5",
+   "iskelet": "9eee3c7ecd6a",
+   "ne": {
+    "cok_basit": "Ekranda bir kartı metnine bakarak bulup dokunan küçük bir yardımcı.",
+    "normal": "Verilen metne sahip kartı havuzda bulur ve dokunarak seçer. Kartın yuvaya gitmesi bu yardımcıda değil, sonraki işlemde olur. Yardımcı yalnızca tıklamayı yapar, sonucu kendisi kontrol etmez."
+   },
+   "kritik_neden": "Bozulursa bu yardımcıyı kullanan kontrol bölümü yanlış yere dokunup başarısız olur; oyunun kendisi değişmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/obs-kopru.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-patron.html",
+   "tur": "dosya",
+   "ozet": "45574f32b337",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Patron engeli deneme sahnesi",
+   "ne": {
+    "cok_basit": "Bu sayfa, patron engelini tarayıcıda denemek için hazırlanmış bir deneme sahnesidir.",
+    "basit": "Sayfa, gerçek patron kodunu sahte bir ekranla çalıştırır ve olanları bir günlüğe yazar. Sahte yardımcılar sıra gelince hazır cevapları verir.",
+    "normal": "Sayfa, patron karşılaşmasını gerçek kodla çalıştırır; seçmeli ve açık uçlu sorular sırayla gelir. Sahte modüller cevabı ve değerlendirmeyi önceden yazılmış biçimde verir. Sonuçta kalan can, voltaj ve kayıt döner.",
+    "gelismis": "Sayfa, patron engelinin gerçek kodunu tarayıcıda çalıştırır; ekran ve yardımcılar sahtedir. Aşamalar sırayla ilerler; açık uçlu sorularda yedek bir seçmeli soru tanımlıdır. Her cevap, hasar tablosuna göre patronun canını ya da voltajı değiştirir. Sonunda sonuç ve kayıt döner.",
+    "detayli": "Bu sayfa, patron engelinin davranışını gerçek kodla sınamak için hazırlanmış bir deneme sahnesidir; dış etkenler sahtedir. Sahnede patronun paneli, konuşma balonu ve hasar sayıları görünür; altta sorular ve düğmeler yer alır. Her cevap önce güven düzeyiyle alınır, ardından değerlendirilir ve hasar tablosu patronun canını ya da voltajı değiştirir. Her adım bir günlüğe yazılır."
+   },
+   "mantik": {
+    "cok_basit": "Patron engeli gerçek oyunda karmaşıktır, bu yüzden tek başına denenir.",
+    "basit": "Patron bir soru zinciridir ve her adım öncekine bağlıdır. Bu sayfa zinciri hazır cevaplarla baştan sona çalıştırır.",
+    "normal": "Patron engeli zincirleme bir sınavdır; yanlış bir karar hemen sonuç doğurur. Gerçek oyunda her değişikliği denemek uzun sürer. Aynı zinciri sabit cevaplarla tekrar çalıştırarak kuralların bozulmadığını hemen gösterir.",
+    "gelismis": "Gerçek patron ekran, değerlendirme ve hasar hesabına bağlıdır; bunlardan biri bozulursa davranış anlaşılmaz. Sayfa bu dış parçaları sahteleyerek patron mantığını tek başına sınar. Böylece bir hata patronun kendi mantığında mı, dış bağlantıda mı olduğu ayrılır.",
+    "detayli": "Bu engel oyunun en değişken parçalarından biridir: sorular sık değişir, değerlendirme dışarıdan gelir ve hasar tablosu bağlantılıdır. Sahte modüller her senaryoda aynı sonucu üretir; böylece bir hata her seferinde yeniden görülebilir. Bu tekrarlanabilirlik, bir değişikliğin neyi bozduğunu hızla görmek için gereklidir."
+   },
+   "nasil": {
+    "basit": "Sayfa önce ortak temel kodu ve patron kodunu yükler. Sonra patronu başlatır ve sahte ekranda sorular sırayla gelir. Her cevap değerlendirilip hasar hesaplanır.",
+    "normal": "Sayfa önce ortak temel kodu ve patron kodunu yükler, sonra patronu başlatır. İlk seçmeli soru gösterilir, güven düzeyi sorulur ve cevap sahte değerlendirmeye gönderilir. Hasar tablosu canı ve voltajı değiştirir; aşamalar bu döngüyle ilerler. Açık uçlu sorularda ise yedek bir seçmeli soru tanımlıdır. Sonunda kalan can, voltaj ve günlük döner.",
+    "gelismis": "Sayfa önce temel modülleri ve patron modülünü yükler; sonra sahte ekran, sahte yapay zekâ istemcisi ve hasar tablosunu tanımlar. Test çağrıldığında oyun durumu sıfırlanır; voltaj ve patron canı başlangıç değerlerine döner. Sorular sırayla gelir; cevap güven düzeyiyle alınır, değerlendirme sahte istemciden döner. Hasar tablosu hem canı hem voltajı değiştirir; istek asılı kalırsa iptal yolu devreye girer. Otomatik sürücü, devam düğmesini ya da ayarlanmış metin düğmesini kısa aralıklarla tıklar.",
+    "detayli": "Sayfa tarayıcıda açılınca önce temel modülleri ve patron modülünü betik olarak yükler. Ardından gerçek yardımcı modüllerin yerine sahte bir ekran, sahte bir yapay zekâ istemcisi, sahte bir hasar hesaplayıcısı ve sahte bir sahne tanımlanır. Bu sahteler, dışarıdan verilen ayarlara göre davranır: hangi cevabın verileceği, güven düzeyi ve değerlendirme sonucu önceden yazılabilir. Bir deneme başlatılınca oyun durumu sıfırlanır ve voltaj ile patron canı başlangıç değerlerine döner. Patron başlar; her cevaptan sonra hasar tablosu patronun canını ya da voltajı değiştirir. Bir değerlendirme isteği asılı kalırsa iptal yolu devreye girer. Otomatik sürücü, devam düğmesini ya da ayarlanmış metin düğmesini kısa aralıklarla tıklar. Sonunda sonuç, günlük, kalan can ve voltaj geri döner; bir test dosyası bu sonucu beklenenle karşılaştırır."
+   },
+   "detay": {
+    "girdiler": [
+     "Patron tanımı: fazlar, sorular, seçenekler, beklenen fikirler ve yedek sorular.",
+     "Test ayarları: önceden hazırlanmış cevaplar, güven düzeyleri, değerlendirme sonuçları ve tıklanacak düğme metinleri."
+    ],
+    "ciktilar": [
+     "Sonuç, günlük kaydı, patronun kalan canı ve kalan voltaj.",
+     "Ekranda çizilen panel, balon ve hasar sayıları."
+    ],
+    "degismezler": [
+     "Sahte ekran, istemci, hasar ve sahne nesnelerinin adları aynı kalmalı.",
+     "Hasar tablosunun doğru, kısmen ve yanlış satırları aynı biçimde kalmalı."
+    ],
+    "kenar": [
+     "Bir değerlendirme isteği asılı kalırsa deneme iptal koduyla biter.",
+     "Ayar listesi boşsa değerlendirme varsayılan olarak sıfır doğruluk döndürür."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Sahte modüllerin taklit ettiği arayüz biçimi aynı kalmalı; sınanan kod bu biçime güvenir.",
+     "Hasar tablosunun doğru, kısmen ve yanlış satırları ile sonuç alanları aynı biçimde kalmalı.",
+     "Patron tanımındaki faz, soru ve seçenek yapısı, sınanan kodun beklediği biçimde kalmalı.",
+     "Test sayfası, temel modülleri ve patron modülünü bu sırayla yüklemeli."
+    ],
+    "degisebilir": [
+     "Patron örnek verisindeki soru metinleri, seçenekler ve açıklamalar serbestçe değiştirilebilir.",
+     "Ayarlarda yer alan cevap, güven ve değerlendirme listeleri her senaryoya göre yeniden yazılabilir.",
+     "Sayfadaki stiller, renkler ve ekran yerleşimi, sınamayı etkilemeyecek biçimde değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa bozulursa patron engelindeki bir hata, değişiklik sonrası fark edilmeden kalabilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Yedek seçmeli soruların hangi durumda devreye girdiği bu sayfadan kesin görülmüyor.",
+    "Bu sayfayı hangi test senaryolarının kullandığı bu parçadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-patron.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-patron.test.js",
+   "tur": "dosya",
+   "ozet": "36a90aa0ef28",
+   "iskelet": "ca433c86585b",
+   "baslik": "Patron savaşı testi",
+   "ne": {
+    "cok_basit": "Patron karşılaşmasında cevapların nasıl puanlandığını deneyen bir kontrol.",
+    "basit": "Patron karşılaşmasında cevapların nasıl puanlandığını deneyen bir kontrol. Doğru cevap patronu yere indirir; yanlışta ek soru gelir.",
+    "normal": "Patron karşılaşmasında cevapların nasıl puanlandığını deneyen bir kontrol. Doğru cevap patronu yere indirir; yanlışta ek soru gelir. Patron birden fazla fazdan oluşur; fazlarda seçenek ve eminlik sorulur, açık fazlarda yazılı cevap da istenir.",
+    "gelismis": "Patron karşılaşmasında cevapların nasıl puanlandığını deneyen bir kontrol. Doğru cevap patronu yere indirir; yanlışta ek soru gelir. Patron birden fazla fazdan oluşur; fazlarda seçenek ve eminlik sorulur, açık fazlarda yazılı cevap da istenir. Yapay zekâ kapalıysa yedek sorular devreye girer.",
+    "detayli": "Patron karşılaşmasında cevapların nasıl puanlandığını deneyen bir kontrol. Doğru cevap patronu yere indirir; yanlışta ek soru gelir. Patron birden fazla fazdan oluşur; fazlarda seçenek ve eminlik sorulur, açık fazlarda yazılı cevap da istenir. Yapay zekâ kapalıysa yedek sorular devreye girer. Bekleme durdurulursa yazılan metin korunur."
+   },
+   "mantik": {
+    "cok_basit": "Patron karşılaşmasının sonucu beklendiği gibi mi diye hızlıca bakmak için var.",
+    "basit": "Cevabın doğruluğu patron karşılaşmasının sonucunu belirlediği için bu kuralın ayrıca denenmesi gerekir.",
+    "normal": "Cevabın doğruluğu patron karşılaşmasının sonucunu belirlediği için bu kuralın ayrıca denenmesi gerekir. Ayrıca yanlış, kısmen doğru ve boş açıklama gibi farklı durumların her birinin ayrı yola gittiği de sınanır.",
+    "gelismis": "Cevabın doğruluğu patron karşılaşmasının sonucunu belirlediği için bu kuralın ayrıca denenmesi gerekir. Ayrıca yanlış, kısmen doğru ve boş açıklama gibi farklı durumların her birinin ayrı yola gittiği de sınanır. Yapay zekâ kullanılamadığında hazır seçmeli sorular devreye girer.",
+    "detayli": "Cevabın doğruluğu patron karşılaşmasının sonucunu belirlediği için bu kuralın ayrıca denenmesi gerekir. Ayrıca yanlış, kısmen doğru ve boş açıklama gibi farklı durumların her birinin ayrı yola gittiği de sınanır. Yapay zekâ kullanılamadığında hazır seçmeli sorular devreye girer. Bekleme sırasında düğmelerin ne yaptığı ve metnin korunması da ayrıca sınanır."
+   },
+   "nasil": {
+    "basit": "Test, patron karşılaşmasını bir dizi senaryoyla dener. Her senaryoda cevap verilir, puan hesaplanır ve sonuç kontrol edilir.",
+    "normal": "Test, patron karşılaşmasını bir dizi senaryoyla dener. Her senaryoda cevap verilir, puan hesaplanır ve sonuç kontrol edilir. Cevap, öğrencinin açıklamasından bir doğruluk puanı alır; bu puan fazın sonucunu belirler. Doğruluk puanı yüksekse doğru, orta düzeydeyse kısmen doğru sayılır.",
+    "gelismis": "Test, patron karşılaşmasını bir dizi senaryoyla dener. Her senaryoda cevap verilir, puan hesaplanır ve sonuç kontrol edilir. Cevap, öğrencinin açıklamasından bir doğruluk puanı alır; bu puan fazın sonucunu belirler. Doğruluk puanı yüksekse doğru, orta düzeydeyse kısmen doğru sayılır. Tam yanlış cevapta ikinci bir soru sorulur; bu da yanlışsa faz kapanır ve patronun canı yine düşer.",
+    "detayli": "Test, patron karşılaşmasını bir dizi senaryoyla dener. Her senaryoda cevap verilir, puan hesaplanır ve sonuç kontrol edilir. Cevap, öğrencinin açıklamasından bir doğruluk puanı alır; bu puan fazın sonucunu belirler. Doğruluk puanı yüksekse doğru, orta düzeydeyse kısmen doğru sayılır. Tam yanlış cevapta ikinci bir soru sorulur; bu da yanlışsa faz kapanır ve patronun canı yine düşer. Açıklama boş kaldığında cevap yanlış sayılır ve eminlik en düşük değerde kaydedilir. Voltaj tükenince kısa devre olur, cevap yanlış sayılır ve patron ekrandan gizlenir. Hata çıkarsa tekrar denemek ya da yedek soruya geçmek seçilebilir. Tamir modunda ekranda bir ipucu satırı belirir ve soruyu yeniden okumaya çağırır. Tarayıcıyı süren kütüphane bu depoda olmayan bir dış bağımlılıktır."
+   },
+   "detay": {
+    "girdiler": [
+     "Patron sayfası, öğrenci cevapları ve yapay zekâdan gelen puan ile açıklama yanıtları bu testin girdisidir."
+    ],
+    "ciktilar": [
+     "Her senaryo için tamam ya da hata satırı ve en sonda hepsinin geçip geçmediğini söyleyen bir satır."
+    ],
+    "degismezler": [
+     "Patronun fazları ve cevapların doğru, kısmen doğru ya da yanlış diye ayrılması, testin dayandığı sözdür."
+    ],
+    "kenar": [
+     "Yapay zekâ kullanılamadığında hazır seçmeli sorular devreye girer ve bu durum da test edilir."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Doğru, kısmen doğru ve yanlış sonuç adları ile sayfanın kullandığı sınıf adları bu testin dayandığı sözdür.",
+     "Her faz kapanışında patronun canının düşmesi ve yanlış cevapta ikinci şansın sunulması, sırası değişmeden korunmalı."
+    ],
+    "degisebilir": [
+     "Ekran görüntülerinin adları ve kaydedildiği yer, testin sonucunu değiştirmeden ayarlanabilir.",
+     "Gecikme ve zaman aşımı süreleri, testin yavaş makinede takılmaması için artırılabilir.",
+     "Yeni bir senaryo, mevcut senaryoların yanına test sırasına eklenerek yazılabilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa patron karşılaşmasının puanlaması yanlış sonuç verir; sayfanın kendisi ve oyunun geri kalanı bundan etkilenmez.",
+   "terimler": [
+    "dis-bagimlilik"
+   ],
+   "belirsiz": [
+    "Sayfa dosyasının içeriği bu pakette tam olarak gelmedi; patronun görünümü ve yedek soruların içeriği bu dosyadan görülmedi.",
+    "Seçeneklerin sayfada nasıl gösterildiği bu dosyadan görülmedi."
+   ],
+   "okunan": [
+    "oyun/test/obs-patron.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-patron.test.js::applies",
+   "tur": "alt",
+   "ozet": "e275368cbdb0",
+   "iskelet": "ff5a9b2f911f",
+   "ne": {
+    "cok_basit": "Kayıtların içinden cevap satırlarını ayıklayıp liste yapan küçük bir yardımcı.",
+    "normal": "Oyun sırasında kaydedilen cevap satırlarının başındaki işaret kısmını atıp kalan bilgiyi okunabilir hale getirir. Böylece her cevabın doğru, kısmen doğru ya da yanlış olup olmadığı testte tek tek bakılabilir."
+   },
+   "kritik_neden": "Bozulursa cevap kayıtlarını okuyan bütün kontroller yanlış veriyle çalışır; oyunun kendisi bundan etkilenmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/obs-patron.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-patron.test.js::test",
+   "tur": "alt",
+   "ozet": "03c7bd7d45db",
+   "iskelet": "6f4bcd99515c",
+   "ne": {
+    "cok_basit": "Bir kontrol senaryosuna ad veren ve onu sıraya koyan küçük bir yardımcı.",
+    "normal": "Bir senaryonun adını ve ne yaptığını gösteren işlevi alıp sıraya ekler; senaryoyu burada çalıştırmaz, yalnızca listeye yazar. Çalıştırma işi, dosyanın sonundaki bölümde sırayla yapılır."
+   },
+   "kritik_neden": "Bozulursa senaryolar listeye girmez ya da yanlış adla görünür; oyunun kendisi bundan etkilenmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/obs-patron.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-sandik.html",
+   "tur": "dosya",
+   "ozet": "ba73ebc53f05",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Sandık kartı testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, bir sandığı ve içindeki kartı tek başına denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, bir sandık açıldığında içinden çıkan bilgi kartının gösterilmesini ve kaydedilmesini tek başına çalıştırır. Kartta bir kişi, bir yıl, tek cümlelik bir özet ve kısa madde listesi bulunur."
+   },
+   "nasil": {
+    "normal": "Sayfa, sandığın bilgi kartını ve boş bir kayıt durumunu önceden hazırlar. Sandık açılınca kart gösterilir ve kaydetme işlemi çağrılır; yapılan her adım bir günlüğe yazılır. Sonuç sayfanın içinde tutulur."
+   },
+   "sinir": {
+    "sabit": [
+     "Sandık işleyicisinin giriş biçimi ve kart bilgisinin alan adları sayfadaki çağrıyla aynı kalmalıdır.",
+     "Kayıt durumunun ana yapısı, yani kart listesi ve kurulu liste, oyunun kayıt biçimiyle uyumlu kalmalıdır."
+    ],
+    "degisebilir": [
+     "Kartın tek cümlelik özeti ve madde metinleri içerik olarak serbestçe değiştirilebilir.",
+     "Sayfanın görünümü, yani kart çizimi ve renkler, test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa bilgi kartlı sandığı oyundan ayrı açar; bozulursa kartın gösterilip kaydedildiği değişiklikten sonra bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Kartın oyunun ilerlemesine nasıl bağlandığı ve kaydın dosyaya nasıl yazıldığı bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-sandik.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-tahmin.html",
+   "tur": "dosya",
+   "ozet": "ddc77bc2f55a",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Tahmin çukuru testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, bir tahmin sorusunu sahte bir deneyle denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, bir tahmin sorusunu seçenekleriyle ve bir güven ölçeğiyle gösterir. Her seçeneğin bir nedeni vardır; sahte deney önceki ve sonraki ayarlarla ayrı ayrı açılır."
+   },
+   "nasil": {
+    "normal": "Sayfa önce bir kutu ve sahte deneyi hazırlar. Adres satırında otomatik işareti varsa tahmin kısa bir bekleme ile kendiliğinden başlar. Sahte deney her değişiklikte yeni değerleri bir alana yazar ve tahmin bittiğinde sonuç sayfada gösterilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Tahmin işleyicisinin giriş biçimi ve sonuç bekleme biçimi sayfadaki çağrıyla aynı kalmalıdır.",
+     "Sahte deneyin kurulum, yıkım ve değer güncelleme çağrıları sayfanın beklediği biçimde kalmalıdır."
+    ],
+    "degisebilir": [
+     "Tahminin sorusu, seçeneklerin metni ve açıklamalar içerik olarak serbestçe değiştirilebilir.",
+     "Sayfanın görünümü, yani renkler ve kutu boyutları, test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa tahmin sorusunu oyundan ayrı çalıştırır; bozulursa seçeneklerin ve güven ölçeğinin değişiklikten sonra doğru çalışıp çalışmadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Güven ölçeğinin tahmin sonucunu nasıl etkilediği bu sayfadan tam görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-tahmin.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/obs-tuzak.html",
+   "tur": "dosya",
+   "ozet": "7047e8c3a066",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Yanlış parça tuzağı testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, yanlış cümle bulma engelini tek başına denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, bir iddiayı küçük parçalara ayırıp yanlış olan parçayı bulma engelini sahne üzerinde çalıştırır. Oyuncu parçalar arasından yanlış olanı seçer; ardından doğru açıklama gösterilir."
+   },
+   "nasil": {
+    "normal": "Sayfa, engelin kullandığı sahte bir ekranı ve güven ölçeğini hazırlar; sonra engeli bu ortamda çalıştırır. Parçalar seçim düğmeleri olarak gösterilir ve ardından güven düzeyi sorulur. Sonuç sayfada yazılır ve engelin durumu koşu alanına bildirilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Tuzak işleyicisinin giriş biçimi ve sonuç bekleme biçimi sayfadaki çağrıyla aynı kalmalıdır.",
+     "İddianın parçalara bölünmüş biçimi ve yanlış parçanın konumu, işleyicinin beklediği düzende kalmalıdır."
+    ],
+    "degisebilir": [
+     "İddianın cümlesi, parçaların metni ve düzeltme açıklaması içerik olarak serbestçe değiştirilebilir.",
+     "Sayfanın renkleri ve düğme boyutları test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa tuzak engelini oyundan ayrı çalıştırır; bozulursa engelin yanlış parçayı doğru tanıyıp tanımadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Düzeltme metninin ekranda nasıl gösterildiği ve engelin sonuç değerinin oyunda nasıl kullanıldığı bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/obs-tuzak.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/runner.test.js",
+   "tur": "dosya",
+   "ozet": "9a7f7bd7e645",
+   "iskelet": "547356c240f1",
+   "baslik": "Koşu bölümü kabul testi",
+   "ne": {
+    "cok_basit": "Bu dosya, oyunun koşu bölümünü tarayıcıda kendiliğinden dener ve sonucu yazar.",
+    "normal": "Bu dosya, koşu bölümünün beklenen davranışlarını tarayıcıda gerçekten çalıştırıp denetleyen bir kabul testidir. Her kontrol geçerse ekrana başarılı satırı, bozulursa hata satırı yazılır; bir hata varsa sonuç başarısız olur."
+   },
+   "nasil": {
+    "normal": "Dosya, koşu bölümünü tarayıcıda açar ve sahte engellerle bir istasyon kurar; engeller sırayla gelir ve her biri kendi işleyicisini çağırır. Yavaşlama süresi ile durma mesafesi her engelde ölçülüp beklenen aralıkta mı diye bakılır. Duraklatma, kısa devre sonrası dönüş ve hareket azaltma tercihi de ayrı senaryolarla sınanır."
+   },
+   "sinir": {
+    "sabit": [
+     "Test, koşu bölümünü başlatan çağrıyı ve sonuç değerinin biçimini aynen kullanır; bu biçim değişirse bütün kontroller bozulur.",
+     "Engellerin sırayla gelmesi ve her engelin kendi işleyicisini çağırması beklentisi, koşu motorunun sıra mantığına dayanır."
+    ],
+    "degisebilir": [
+     "Sahte engellerin türleri ve sayfa boyutları test amacına göre serbestçe değiştirilebilir.",
+     "Her kontrolün başarı satırının yazısı serbestçe düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu dosya koşu bölümünün yavaşlama, durma ve geri dönüş davranışlarını tarayıcıda denetler; bozulursa bu davranışlardaki gerilemeler fark edilmeden geçebilir.",
+   "terimler": [],
+   "belirsiz": [
+    "Testteki sahte engellerin oyunda hangi işleyicilerle eşleştiği ve yardımcı dosyanın ayrıntıları bu dosyadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/runner.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/sanat-chars.html",
+   "tur": "dosya",
+   "ozet": "c58c18516b93",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Karakter galerisi testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, oyundaki bütün karakterleri küçük ve büyük boyutta yan yana gösterir.",
+    "normal": "Bu sayfa, oyundaki karakterlerin her birini küçük ve büyük boyutta çizer; bir karakterin duygu hâllerini de yan yana sıralar. Böylece bir çizim değişikliğinin küçük ve büyük boyuttaki etkisi tek sayfada görülür."
+   },
+   "nasil": {
+    "normal": "Sayfa, karakter çizimlerini her boyut için ayrı kutularda ve adlarıyla birlikte dizer. Her karakter, bir ayrım listesine göre uygun çizim işleviyle çizilir; sayfa karakterleri sırayla alır. Duygu hâlleri için tek bir karakter seçilir ve her durum ayrı bir kutuda gösterilir."
+   },
+   "sinir": {
+    "sabit": [
+     "Karakter listesinin sırası ve ayrım listesinin adları, sayfadaki çizim çağrılarıyla aynı kalmalıdır.",
+     "Küçük ve büyük boyutların tuval ölçüleri, çizim işlevlerinin beklediği biçimde kalmalıdır."
+    ],
+    "degisebilir": [
+     "Duygu hâlleri için seçilen karakter ve kutuların başlıkları serbestçe değiştirilebilir.",
+     "Sayfanın renkleri ve kutu kenarlıkları, test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa karakter çizimlerini tek yerde gösterir; bozulursa bir çizim değişikliğinin karakteri küçük ya da büyük boyutta bozup bozmadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Hangi karakterin hangi çizim işleviyle çizildiğinin ayrım listesi dışında nasıl belirlendiği bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/sanat-chars.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/sanat.html",
+   "tur": "dosya",
+   "ozet": "01f66fe8a15b",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Koşucu ve engel resmi",
+   "ne": {
+    "cok_basit": "Bu sayfa, oyundaki koşucu, engel ve arka plan çizimlerini tek yerde gösterir.",
+    "normal": "Bu sayfa, koşucunun farklı hareketlerini, oyuncunun karşısına çıkan engelleri ve kayan dünya katmanlarını yan yana çizer. Böylece bir değişiklikten sonra çizimlerin bozulup bozulmadığı tek bakışta görülür."
+   },
+   "nasil": {
+    "normal": "Sayfa ayrı tuvaller hazırlar: üstte koşucu, ortada engeller, altta dünya. Koşucu ve engel levhaları daha seyrek, dünya ise her karede yeniden çizilir. Çizimlerin tümü, dış kitaplıkta tanımlanan ortak çizim işlevleriyle yapılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Sayfa, koşucu, engel ve dünya çizimlerini ilgili çizim işlevleriyle çağırır; bu işlevlerin adları değişirse sayfa bozulur.",
+     "Tuvallerin boyutları ve çizimlerin konum değerleri, çizim işlevlerinin beklediği düzende kalmalıdır."
+    ],
+    "degisebilir": [
+     "Levhalardaki durum adlarının sırası ve her durumun gösterim uzunluğu serbestçe değiştirilebilir.",
+     "Renkler, yazı boyutları ve levhaların altındaki açıklama metinleri içerik olarak serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa oyunun görsel parçalarını tek yerde gösterir; bozulursa bir görsel değişikliğin koşucuyu, engeli ya da dünyayı yanlış çizip çizmediği bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Levhaların gerçek oyunda nerede kullanıldığı bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/sanat.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/sim-fotoelektrik.html",
+   "tur": "dosya",
+   "ozet": "b324433781ab",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Işık ve elektron deneyi testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, ışığın rengini ve parlaklığını değiştiren deneyi tek başına açar.",
+    "normal": "Bu sayfa, ışığın rengine ve parlaklığına göre elektronların metalden kopup kopmadığını gösteren deneyi tek başına çalıştırır. Kaydırıcılarla ışığın rengi ve parlaklığı değişir; düğme deneyi başarı değerine getirir."
+   },
+   "nasil": {
+    "normal": "Sayfa, deneyi başlangıçta bir metal ve bir ayar kümesiyle kurar; kurulum sırasında başarı koşulu da deneye verilir. Düğmelerden biri kaydırıcıları doğrudan değiştirir, diğeri deneyi yeni bir ayar kümesiyle günceller, sonuncusu ise deneyi yok eder. Bitişte sonuç sayfada yazılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Deneyin kurulum çağrısı ve ayar değerlerinin adları sayfadaki çağrıyla aynı kalmalıdır.",
+     "Başarı koşulunun biçimi ile yok etme ve güncelleme çağrıları deneyin beklediği düzende kalmalıdır."
+    ],
+    "degisebilir": [
+     "Deneyin ilk ayar değerleri ve seçilen metal içerik olarak serbestçe değiştirilebilir.",
+     "Düğmelerin yazıları ve sayfanın renkleri, test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa ışık deneyini oyundan ayrı çalıştırır; bozulursa ayarlar değişince deneyin sonucunu doğru gösterip göstermediği bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Kaydırıcıların hangi aralıkta çalıştığı ve başarı koşulunun tam ölçütü bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/sim-fotoelektrik.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/sim-kafes.html",
+   "tur": "dosya",
+   "ozet": "ede19a97d1de",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kafes türü deneyi testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, düzenli bir yapı seçip içindeki parçacıkları saymayı tek başına dener.",
+    "normal": "Bu sayfa, atomların düzenli bir kafes içinde nasıl dizildiğini gösteren deneyi tek başına açar. Oyuncu kafesin türünü seçip atomları artırır ve kontrol eder; doğru sayıya ulaşınca sonuç görünür."
+   },
+   "nasil": {
+    "normal": "Sayfa, deneyi kafes türü ve bir başarı ölçütüyle kurar; adres satırındaki tür değeri verilmezse varsayılan bir tür kullanılır. Düğmeler sırayla kafes türünü seçer, atom sayısını birkaç kez artırır ve kontrol eder. Sonuç, deney bittiğinde sayfada yazdırılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Kafes işleyicisinin kurulum çağrısı ve başarı ölçütünün biçimi sayfadaki çağrıyla aynı kalmalıdır.",
+     "Düğmelerin yazıları, sayfanın düğmeleri bulurken kullandığı yazılarla aynı kalmalıdır."
+    ],
+    "degisebilir": [
+     "Kafesin görünümü, atom çizimleri ve renkler içerik olarak serbestçe değiştirilebilir.",
+     "Varsayılan tür ve başarı ölçütü deneme amacına göre değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa kafes deneyini oyundan ayrı çalıştırır; bozulursa düğmelerin ve kontrolün doğru sonuç verip vermediği bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Kontrolün sayıyı hangi kurala göre değerlendirdiği ve kafes türlerinin ayrıntıları bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/sim-kafes.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/sim-karacisim.html",
+   "tur": "dosya",
+   "ozet": "3720c2aef5f8",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Sıcaklık deneyi testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, sıcaklığı değişen bir deneyi tek başına denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, ısı ışımasını sıcaklığa bağlı olarak gösteren bir simülasyonu tek başına açar. Sıcaklık başlangıçta sabit bir değerde durur; düğmeyle başarı değerine geçilir ve sonuç ekranda yazılı görünür."
+   },
+   "nasil": {
+    "normal": "Sayfa, simülasyonu kendi hazırladığı sahte bir kayıt tablosuyla bağlar ve ilk değerleri bir ayar kümesi olarak verir. Adres satırında klasik gösterim işareti varsa başlangıç değeri de o ayarla açılır. Düğmeler değeri başarı değerine getirir ya da simülasyonu yok eder; sonuç alanı her işlemden sonra güncellenir."
+   },
+   "sinir": {
+    "sabit": [
+     "Simülasyonun kurulum çağrısı ve sıcaklık değeri alanının adı sayfadaki çağrıyla aynı kalmalıdır.",
+     "Başarı aralığı ile sıcaklık değeri aynı ayar biçiminde kalmalıdır."
+    ],
+    "degisebilir": [
+     "Düğme yazıları, sonuç alanının biçimi ve sayfanın renkleri serbestçe değiştirilebilir.",
+     "Başlangıç sıcaklık değeri ve klasik gösterim işaretinin varsayılan değeri deneme amacına göre değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa deneyi oyundan ayrı açıp sıcaklık değişimini denetler; bozulursa deneyin başarı değerini doğru tanıyıp tanımadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Deneyin fiziksel ayrıntıları ve başarının sayfa dışında nasıl kaydedildiği bu sayfadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/sim-karacisim.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/sim-kristal_tur.html",
+   "tur": "dosya",
+   "ozet": "d4d1473c25f6",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Kristal turu deneyi testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, düzenli bir yapı içinde gezinme deneyini denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, kristal içinde bir turun nasıl ilerlediğini gösteren deneyi tek başına açar. Tur modu ile serbest yol modu arasında geçiş yapılabilir; başarı ölçütü de kıyaslama ya da hepsini deneme biçiminde seçilebilir."
+   },
+   "nasil": {
+    "normal": "Sayfa, deneyi bir tur modu, bir başarı ölçütü ve bir gönderim işaretiyle açar; bu ayarlar adres satırından okunur. Düğmeler modu değiştirir, durumu gösterir ya da deneyi yok eder; deney her bitişte sonucunu sayfaya yazar."
+   },
+   "sinir": {
+    "sabit": [
+     "Deneyin kurulum çağrısı ve mod adlarının biçimi sayfadaki çağrıyla aynı kalmalıdır.",
+     "Başarı ölçütünün adları ve adres satırındaki işaret adları, deneyin okuduğu adlarla eşleşmelidir."
+    ],
+    "degisebilir": [
+     "Düğme yazıları, sayfanın yazı boyutu ve renkleri içerik olarak serbestçe değiştirilebilir.",
+     "Tur ve serbest yol modlarının sırası, sayfadaki düğme düzeniyle birlikte deneme amacına göre değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa kristal turu deneyini oyundan ayrı açar; bozulursa modlar arasında geçişin ve başarı ölçütünün çalışıp çalışmadığı bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Tur ve serbest yol modlarının oyunda ne anlama geldiği bu sayfadan tam görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/sim-kristal_tur.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/sim-miller.html",
+   "tur": "dosya",
+   "ozet": "9aff348bd115",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Düzlem ve yön deneyi testi",
+   "ne": {
+    "cok_basit": "Bu sayfa, sayılarla yer bulma deneyini tek başına denemek için hazırlanmıştır.",
+    "normal": "Bu sayfa, kristal içindeki bir düzlemi ya da yönü sayı kümeleriyle tarif etme deneyini tek başına çalıştırır. Oyuncu bir sayı kümesini hedef düzleme uydurmaya çalışır; başarıda sonuç görünür."
+   },
+   "nasil": {
+    "normal": "Sayfa, deneyi başlangıç sayı kümesi ve hedef düzlemle kurar; ipucu alanı ise bir yazı gösterir. Yön moduna geçmek için ayrı bir düğme vardır ve bu mod yeni bir hedef yönle yeniden başlatır. Başarı koşulu sonuç alanına yazılır."
+   },
+   "sinir": {
+    "sabit": [
+     "Deneyin kurulum çağrısı ve başlangıç sayı kümesinin biçimi, sayfadaki çağrıyla aynı kalmalıdır.",
+     "Hedef düzlem ve hedef yön biçimleri, deneyin beklediği yazım düzeninde kalmalıdır."
+    ],
+    "degisebilir": [
+     "Hedef düzlemin ve hedef yönün değerleri deneme amacına göre serbestçe değiştirilebilir.",
+     "Düğmelerin yazıları ve sayfanın renkleri, test için serbestçe değiştirilebilir."
+    ]
+   },
+   "kritik_neden": "Bu sayfa düzlem deneyini oyundan ayrı çalıştırır; bozulursa hedef düzlem ve yön kontrolünün doğru sonuç verip vermediği bu sayfayla görülemez.",
+   "terimler": [],
+   "belirsiz": [
+    "Sayı kümelerinin hangi kurala göre düzlemle eşleştiği bu sayfadan tam görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/sim-miller.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/smoke.js",
+   "tur": "dosya",
+   "ozet": "b22193024b97",
+   "iskelet": "ae29b8b82941",
+   "baslik": "Oyunun duman testi",
+   "ne": {
+    "cok_basit": "Oyunu baştan sona gezerek bozuk bir şey olup olmadığını kontrol eden bir deneme.",
+    "basit": "Oyunu baştan sona gezerek bozuk bir şey olup olmadığına bakan bir deneme. Oyunu açar, ilk istasyonu başlatır ve önemli anları sınar.",
+    "normal": "Oyunu baştan sona gezerek bozuk bir şey olup olmadığına bakan bir deneme. Oyunu açar, ilk istasyonu başlatır ve önemli anları sınar. Her adımın sonucunu tek tek yazar; beklenmeyen bir hata çıkarsa durup bunu da bir adım olarak bildirir.",
+    "gelismis": "Oyunu baştan sona gezerek bozuk bir şey olup olmadığına bakan bir deneme. Oyunu açar, ilk istasyonu başlatır ve önemli anları sınar. Her adımın sonucunu tek tek yazar; beklenmeyen bir hata çıkarsa durup bunu da bir adım olarak bildirir. Ayrıca kısa devre gibi özel anlar da sınanır.",
+    "detayli": "Oyunu baştan sona gezerek bozuk bir şey olup olmadığına bakan bir deneme. Oyunu açar, ilk istasyonu başlatır ve önemli anları sınar. Her adımın sonucunu tek tek yazar; beklenmeyen bir hata çıkarsa durup bunu da bir adım olarak bildirir. Ayrıca kısa devre gibi özel anlar da sınanır. Sonda kaç adımın geçtiği özetlenir ve başarısız adım varsa çıkış sonucu hata olarak bildirilir."
+   },
+   "mantik": {
+    "cok_basit": "Derlenen oyunun ana adımları çalışıyor mu diye hızlıca bakmak için var.",
+    "basit": "Derleme sonrası oyunun bir bütün olarak açılıp çalışıp çalışmadığını hızla görmeyi sağlar.",
+    "normal": "Derleme sonrası oyunun bir bütün olarak açılıp çalışıp çalışmadığını hızla görmeyi sağlar. Tek tek parçaları değil, hepsinin birlikte tarayıcıda çalışmasını sınar.",
+    "gelismis": "Derleme sonrası oyunun bir bütün olarak açılıp çalışıp çalışmadığını hızla görmeyi sağlar. Tek tek parçaları değil, hepsinin birlikte tarayıcıda çalışmasını sınar. Tarayıcıda çalıştığı için oyunun gerçek görünümüne ve tepkilerine bakar.",
+    "detayli": "Derleme sonrası oyunun bir bütün olarak açılıp çalışıp çalışmadığını hızla görmeyi sağlar. Tek tek parçaları değil, hepsinin birlikte tarayıcıda çalışmasını sınar. Tarayıcıda çalıştığı için oyunun gerçek görünümüne ve tepkilerine bakar. Konsol hatalarını ve ekran görüntülerini de toplayarak, bir hata olduğunda nerede olduğunu gösteren kanıt bırakır."
+   },
+   "nasil": {
+    "basit": "Önce oyunun derlenmiş hali var mı diye bakar. Yoksa durur ve derlemeyi hatırlatır. Varsa tarayıcıda açar ve adımları sırayla çalıştırır.",
+    "normal": "Önce oyunun derlenmiş hali var mı diye bakar. Yoksa durur ve derlemeyi hatırlatır. Varsa tarayıcıda açar ve adımları sırayla çalıştırır. Her adımda bir koşul kontrol edilir: istasyonun açık olup olmadığı, engelde durulup durulmadığı, kısa devrenin tetiklenip tetiklenmediği ve yazıların sınırı aşıp aşmadığı. Ekran görüntüleri de alınır.",
+    "gelismis": "Önce oyunun derlenmiş hali var mı diye bakar. Yoksa durur ve derlemeyi hatırlatır. Varsa tarayıcıda açar ve adımları sırayla çalıştırır. Her adımda bir koşul kontrol edilir: istasyonun açık olup olmadığı, engelde durulup durulmadığı, kısa devrenin tetiklenip tetiklenmediği ve yazıların sınırı aşıp aşmadığı. Ekran görüntüleri de alınır. Her beklemenin bir süre sınırı vardır; süre dolunca o adım kalmış sayılır. Konsol hatalarından yazı tipi ve ağ kaynaklı olanlar hariç tutulur, geri kalanı bir adım olarak raporlanır.",
+    "detayli": "Önce oyunun derlenmiş hali var mı diye bakar. Yoksa durur ve derlemeyi hatırlatır. Varsa tarayıcıda açar ve adımları sırayla çalıştırır. Her adımda bir koşul kontrol edilir: istasyonun açık olup olmadığı, engelde durulup durulmadığı, kısa devrenin tetiklenip tetiklenmediği ve yazıların sınırı aşıp aşmadığı. Ekran görüntüleri de alınır. Her beklemenin bir süre sınırı vardır; süre dolunca o adım kalmış sayılır. Konsol hatalarından yazı tipi ve ağ kaynaklı olanlar hariç tutulur, geri kalanı bir adım olarak raporlanır. Adımlar birbirine bağlıdır, çünkü önceki adımın açtığı ekranı sonraki adım kullanır. Beklenmeyen bir hata çıkarsa kalan adımlar hiç çalışmaz ve test o an biter. Tarayıcıyı süren kütüphane bu depoda olmayan bir dış bağımlılıktır. Son olarak her yere erişim ayarı açılıp son durumun ekran görüntüsü alınır."
+   },
+   "detay": {
+    "girdiler": [
+     "Derlenmiş oyun dosyası ve tarayıcıda açılacak sayfa bu testin girdisidir."
+    ],
+    "ciktilar": [
+     "Her adım için geçti ya da kaldı satırı, en sonda kaç adımın geçtiğinin özeti ve başarısızlıkta sıfırdan farklı bir çıkış kodu."
+    ],
+    "degismezler": [
+     "Oyun dosyası yoksa test hemen durur ve önce derlemenin yapılmasını ister."
+    ],
+    "kenar": [
+     "Ekran görüntüleri alınamazsa hata yutulur ve test yine de sonucunu bildirir."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Sonucun çıkış koduyla ve özet satırıyla bildirilmesi, bu çıktıyı okuyan her çağıranın dayandığı sözdür.",
+     "Oyun dosyasının derleme çıktısı olarak beklenmesi, derleme adımıyla birlikte çalışır."
+    ],
+    "degisebilir": [
+     "Ekran görüntülerinin adları ve kaydedildiği yer, testin sonucunu değiştirmeden ayarlanabilir.",
+     "Bekleme süreleri, yavaş makinelerde testin daha sabırlı olması için uzatılabilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa yalnız bu duman kontrolünün sonucu yanlış çıkar; başka parçalar buna dayanmadığı için oyunun kendisi etkilenmez.",
+   "terimler": [
+    "dis-bagimlilik"
+   ],
+   "belirsiz": [
+    "Testin hangi ortamda ve kimin tarafından otomatik olarak çalıştırıldığı bu dosyadan görülmedi."
+   ],
+   "okunan": [
+    "oyun/test/smoke.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/smoke.js::adim",
+   "tur": "alt",
+   "ozet": "514e4b0a9679",
+   "iskelet": "5c2575e01e48",
+   "ne": {
+    "cok_basit": "Her kontrolün sonucunu ekrana yazan küçük bir yardımcı.",
+    "normal": "Her kontrolün adını ve geçti ya da kaldı sonucunu kaydeder; bunu hem sonuç listesine ekler hem de ekrana yeşil ya da kırmızı olarak yazar. Varsa kısa bir ayrıntıyı da sonuna ekler."
+   },
+   "kritik_neden": "Bozulursa testin ekrana yazdığı sonuç satırları yanlış görünür; oyunun kendisi bundan etkilenmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/smoke.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/smoke.js::bekle",
+   "tur": "alt",
+   "ozet": "9f315404d66e",
+   "iskelet": "c0aa7a64ebf3",
+   "ne": {
+    "cok_basit": "Verilen süre kadar bekleyip sonra devam eden küçük bir yardımcı.",
+    "normal": "Verilen süre kadar bekleyip ardından devam eden bir yardımcıdır. Testte oyunun bir işlemi bitirmesine zaman tanımak için, sayfa açıldıktan ya da bir tıklamadan sonra çağrılır."
+   },
+   "kritik_neden": "Bu yardımcı bozulursa testin bekleme zamanlaması kayar; oyunun kendisi ve oyunun çalışma biçimi bundan etkilenmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/smoke.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/ui.html",
+   "tur": "dosya",
+   "ozet": "a86f209ea9ae",
+   "iskelet": "e3b0c44298fc",
+   "baslik": "Arayüz deneme sayfası",
+   "ne": {
+    "cok_basit": "Arayüz parçalarını tek tek göstermek için hazırlanmış deneme sayfası.",
+    "basit": "Oyunun ekran parçalarını tek tek görmek için hazırlanmış bir deneme sayfasıdır. Adresteki ada göre bir parça açılır.",
+    "normal": "Bu sayfa, oyunun ekran parçalarını gerçek oyunu oynamadan denemek için yapılmış bir ortamdır. Üst çubukta sahte bir istasyon, voltaj ve süre bilgisi gösterilir. Adresteki ada göre tek bir parça açılır.",
+    "gelismis": "Sayfa oyunun gerçek kabuğunu kopyalar: üst çubuk, koşu alanı, alt dock ve pencere kapları aynı kimliklerle durur. Ardından ortak arayüz dosyası yüklenir ve bir demo işlevi çalışır. Demo işlevleri seçenek, metin kutusu, onay ve bildirim gibi parçaları örnek verilerle gösterir.",
+    "detayli": "Sayfa, oyunun gerçek kabuğunu kopyalayarak tek bir ekranda deneme yapılmasını sağlar. Üst çubuk, koşu alanı ve alt dock aynı kimliklerle durur; bu bölüm asıl iskeletle birebir aynı tutulur. Adres çubuğundaki demo adı hangi işlevin çalışacağını seçer; ad verilmezse seçenek sorusu açılır. Her demo işlevi arayüzün bir parçasını örnek verilerle gösterir."
+   },
+   "mantik": {
+    "cok_basit": "Oyunu baştan oynamadan ekrandaki parçaları tek tek görmek için yapılmış.",
+    "basit": "Oyunu baştan oynamadan parçalara bakmak zordur. Bu sayfa her parçayı tek başına açar ve görünümü hemen denetlemeyi sağlar.",
+    "normal": "Ekran parçaları oyunun akışında ancak belli bir anda çıkar; bu yüzden tek tek denemek zordur. Sayfa her parçayı sahte veriyle hemen çıkarır, görünümü anında denetlenir. Adres değişikliğiyle başka bir parça seçilir.",
+    "gelismis": "Oyunun asıl kabuğu bir sayfa olarak kopyalanır ve her demo ortak arayüzün bir işlevini doğrudan çağırır. Böylece bir parçanın görünümü, onu tetikleyen oyun akışı olmadan ayrı ayrı denenebilir. Bu, bozulan parçanın hızlıca bulunmasını sağlar.",
+    "detayli": "Oyunun parçaları birbirine bağlı, akış içinde çıkar; bu yüzden tek bir ekranı değiştirince nereye bakılacağı belli olmaz. Bu sayfa her parçayı ayrı bir örnekle açarak görünümü izole eder. Üst çubuk, koşu alanı ve dock gerçek kabukla aynı tutulur; yerleşim farkları da burada görülür. Bu düzen, değişikliğin etkisini hızlıca görmeyi kolaylaştırır."
+   },
+   "nasil": {
+    "basit": "Sayfa önce üst çubuğa örnek istasyon ve voltaj bilgisini yazar. Sonra adrese bakıp o ada bağlı tek gösterimi çalıştırır.",
+    "normal": "Önce gerekli stil ve ortak arayüz dosyaları yüklenir, sonra sayfanın kendi betiği çalışır. Betik üst çubuğa sahte bir istasyon, voltaj ve süre bilgisi koyar, alt bölüme de örnek bir yol dizisi verir. Adresteki demo adına bakarak bir gösterim seçer ve onu çalıştırır. Seçilen gösterim bir balon ve seçenekler ya da bir pencere ekler.",
+    "gelismis": "Sayfanın kendi betiği tek bir kapsayıcı işlev içinde yazılmıştır ve adresteki değer okunur. Demo adı, ortak arayüz nesnesinin bir işlevini çalıştırır; işlev, konuşma balonu ya da seçenek kutusu gibi bir parçayı kendi kabına açar ve ona sahte bir girdi verir. Bazı gösterimler kullanıcının cevabını bekler, bazıları ise yalnız görünür kalır. Başka bir demo için adres değiştirilip sayfa yeniden açılır.",
+    "detayli": "Sayfa önce biçim dosyalarını ve ortak arayüz dosyasını yükler; ortak nesne onlardan sonra hazır olur. Betik, kabuğun içindeki kimliklere göre üst çubuğu sahte bir istasyon, voltaj ve süre bilgisiyle doldurur. Ardından adresteki demo değeri okunur; değer verilmemişse seçenek sorusu açılır. Seçilen işlev alt dock içinde yeni bir kap açar ve konuşma balonuyla örnek bir soru gösterir. Seçenek, metin kutusu ve onay gibi gösterimler kullanıcının cevabını bekler; modal ve bildirim yalnız görünür kalır. Gösterim işlevleri adlarıyla dışarıya açılır ve yalnız çağrıldığında çalışır."
+   },
+   "detay": {
+    "girdiler": [
+     "Adresteki demo adı; boş bırakılırsa seçenek sorusu gösterilir.",
+     "Ortak arayüz dosyası ve kabuğun kimlikleri; sayfa bunlara göre çalışır."
+    ],
+    "ciktilar": [
+     "Tarayıcıda tek bir arayüz parçasının örnek verilerle gösterilmesi.",
+     "Üst çubukta sahte istasyon, voltaj ve süre bilgisi."
+    ],
+    "degismezler": [
+     "Kabuk bölümünün asıl iskelet dosyasıyla birebir aynı kalması gerekir.",
+     "Demo betiğinin çağırdığı arayüz işlevlerinin adları; bu adlar değişirse demo çalışmaz."
+    ],
+    "kenar": [
+     "Tanınmayan bir demo adı verilirse hiçbir gösterim çalışmaz.",
+     "Çağrılan bir arayüz işlevi tanımlı değilse o demo çalışmaz."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Kabuk bölümündeki kimlikler, üst çubuğun ve alt bölümün betik tarafından bulunmasını sağlar; değişirse üst çubuk boş kalır.",
+     "Demo adları, adres çubuğundaki değerle birebir eşleşmelidir.",
+     "Ortak arayüz dosyası, demo betiğinden önce yüklenmelidir."
+    ],
+    "degisebilir": [
+     "Örnek metinler, sahte istasyon adı ve sayılar gibi demo verileri istenildiği gibi değişebilir.",
+     "Yeni bir gösterim eklemek, mevcut demoları etkilemeden betiğe bir işlev ekleyerek yapılabilir."
+    ]
+   },
+   "kritik_neden": "Bozulursa arayüz denemesi yapılamaz ve kabuk eşitliğini denetleyen test kırmızıya döner.",
+   "terimler": [],
+   "belirsiz": [
+    "Boss, fx ve card işlevlerinin nereden geldiği görülemedi; hud seçeneği ile kart gösterimi de yorumdaki listeyle eşleşmiyor.",
+    "Yüklenen stil ve betik dosyalarının içeriği okunmadı; onların işleyişi yazılmadı."
+   ],
+   "okunan": [
+    "oyun/test/ui.html"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/ui.test.js",
+   "tur": "dosya",
+   "ozet": "1638c984a682",
+   "iskelet": "3bcd6788ae1e",
+   "baslik": "Arayüz düzeni testi",
+   "ne": {
+    "cok_basit": "Ekranın düzenini ve düğmelerin çalışmasını denetleyen bir kontrol.",
+    "basit": "Ekranın düzenini ve düğmelerin çalışmasını denetleyen bir kontrol. Yazılar okunur mu, düğmeler klavyeyle çalışıyor mu diye bakar.",
+    "normal": "Ekranın düzenini ve düğmelerin çalışmasını denetleyen bir kontrol. Yazılar okunur mu, düğmeler klavyeyle çalışıyor mu diye bakar. Dar bir ekranda sayfanın kaydırılmadan sığdığı ve yazıların okunur büyüklükte olduğu denetlenir.",
+    "gelismis": "Ekranın düzenini ve düğmelerin çalışmasını denetleyen bir kontrol. Yazılar okunur mu, düğmeler klavyeyle çalışıyor mu diye bakar. Dar bir ekranda sayfanın kaydırılmadan sığdığı ve yazıların okunur büyüklükte olduğu denetlenir. Ayrıca ortak çerçevenin kaynağıyla aynı olduğu sınanır.",
+    "detayli": "Ekranın düzenini ve düğmelerin çalışmasını denetleyen bir kontrol. Yazılar okunur mu, düğmeler klavyeyle çalışıyor mu diye bakar. Dar bir ekranda sayfanın kaydırılmadan sığdığı ve yazıların okunur büyüklükte olduğu denetlenir. Ayrıca ortak çerçevenin kaynağıyla aynı olduğu sınanır. Göstergelerde voltaj değerinin, geçen sürenin ve istasyon adımlarının beklenen yazılarla eşleştiği de denetlenir."
+   },
+   "mantik": {
+    "cok_basit": "Ekran düzeninin bozulup bozulmadığını hızlıca görmek için var.",
+    "basit": "Oyuncu her şeyi ekrandan izler; düzen bozulursa metinler ve düğmeler görünmez ya da ulaşılamaz olabilir.",
+    "normal": "Oyuncu her şeyi ekrandan izler; düzen bozulursa metinler ve düğmeler görünmez ya da ulaşılamaz olabilir. Bu yüzden düzen, yazı büyüklüğü ve düğme davranışları ayrı ayrı sınanır; biri bozulduğunda hangisinin sorun olduğu hemen görülür.",
+    "gelismis": "Oyuncu her şeyi ekrandan izler; düzen bozulursa metinler ve düğmeler görünmez ya da ulaşılamaz olabilir. Bu yüzden düzen, yazı büyüklüğü ve düğme davranışları ayrı ayrı sınanır; biri bozulduğunda hangisinin sorun olduğu hemen görülür. Ortak çerçevenin de ayrıca denetlenmesi bu yüzden gerekir.",
+    "detayli": "Oyuncu her şeyi ekrandan izler; düzen bozulursa metinler ve düğmeler görünmez ya da ulaşılamaz olabilir. Bu yüzden düzen, yazı büyüklüğü ve düğme davranışları ayrı ayrı sınanır; biri bozulduğunda hangisinin sorun olduğu hemen görülür. Ortak çerçevenin de ayrıca denetlenmesi bu yüzden gerekir. Oyuncunun düğmeye ya da seçeneğe klavyeyle ulaşabilmesi de bu düzenin parçasıdır."
+   },
+   "nasil": {
+    "basit": "Test, arayüzü önce geniş bir ekranda, sonra daha dar bir ekranda açar ve her seferinde sayfanın taşıp taşmadığına bakar.",
+    "normal": "Test, arayüzü önce geniş bir ekranda, sonra daha dar bir ekranda açar ve her seferinde sayfanın taşıp taşmadığına bakar. Sonra seçenek tıklanır, güven düzeyi tuşla seçilir, yazı alanına uzun metin girilir ve pencereler onaylanarak kapatılır.",
+    "gelismis": "Test, arayüzü önce geniş bir ekranda, sonra daha dar bir ekranda açar ve her seferinde sayfanın taşıp taşmadığına bakar. Sonra seçenek tıklanır, güven düzeyi tuşla seçilir, yazı alanına uzun metin girilir ve pencereler onaylanarak kapatılır. Her ekran için bir görüntü alınır ve konsolda hata çıkmadığı denetlenir; yazı tipleri ve ağ isteklerinden kaynaklanan hatalar bu sınamanın dışında tutulur.",
+    "detayli": "Test, arayüzü önce geniş bir ekranda, sonra daha dar bir ekranda açar ve her seferinde sayfanın taşıp taşmadığına bakar. Sonra seçenek tıklanır, güven düzeyi tuşla seçilir, yazı alanına uzun metin girilir ve pencereler onaylanarak kapatılır. Her ekran için bir görüntü alınır ve konsolda hata çıkmadığı denetlenir; yazı tipleri ve ağ isteklerinden kaynaklanan hatalar bu sınamanın dışında tutulur. Oyun açıkken arayüzün kutu boyutları tek tek ölçülür ve en küçük yazının beklenen alt sınırın üstünde kalıp kalmadığı denetlenir. Her kontrol ayrı bir demo sayfasında açılır, böylece bir ekrandaki durum diğerini etkilemez. Tarayıcıyı süren kütüphane bu depoda olmayan bir dış bağımlılıktır."
+   },
+   "detay": {
+    "girdiler": [
+     "Demo sayfası, farklı ekran boyutları ve klavye ile fare olayları bu testin girdisidir."
+    ],
+    "ciktilar": [
+     "Her denetim için tamam ya da hata satırı ve en sonda hepsinin geçip geçmediğini söyleyen bir satır."
+    ],
+    "degismezler": [
+     "Ortak çerçevenin demo sayfasında da birebir aynı kalması ve ekrana sığma kuralı testin dayandığı sözdür."
+    ],
+    "kenar": [
+     "Konsolda yazı tipi ya da ağ kaynaklı bir hata çıktığında bu sınama hata saymaz ve test devam eder."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Ekrandaki kimliklerin ve ortak çerçevenin demo sayfasıyla birebir aynı kalması, testin dayandığı sözdür.",
+     "Ekran boyutlarında sayfanın kaydırılmadan sığması ve yazıların en küçük alt sınırın üstünde kalması sabit tutulmalı."
+    ],
+    "degisebilir": [
+     "Ekran görüntülerinin adları ve kaydedildiği klasör, testin sonucunu değiştirmeden ayarlanabilir.",
+     "Yeni bir ekran boyutu ya da yeni bir demo durumu, mevcut denetimlerin yanına eklenerek yazılabilir.",
+     "Ekran bekleme süreleri, yavaş makinelerde testin daha sabırlı olması için uzatılabilir."
+    ]
+   },
+   "kritik_neden": "Bu test bozulursa arayüz hataları fark edilmeden kalabilir; oyunun kendisi ve çalışma biçimi bundan etkilenmez.",
+   "terimler": [
+    "dis-bagimlilik"
+   ],
+   "belirsiz": [
+    "Demo sayfasının içeriği bu pakette tam gelmedi; düzenin ayrıntıları yalnız testin beklediği kimliklerden çıkarıldı.",
+    "Ortak çerçeve kaynağının testteki karşılaştırmadan başka nerede kullanıldığı bu dosyadan görülmedi."
+   ],
+   "okunan": [
+    "oyun/test/ui.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/ui.test.js::ok",
+   "tur": "alt",
+   "ozet": "7a55a23dce2b",
+   "iskelet": "dff70c1ed595",
+   "ne": {
+    "cok_basit": "Bir denetimin doğru çıkıp çıkmadığını yazan küçük bir yardımcı.",
+    "normal": "Verilen koşul doğruysa sonucu olumlu bir satır olarak, değilse hata satırı olarak yazar ve hata sayacını artırır. Böylece en sonda kaç denetimin başarısız olduğu bilinir."
+   },
+   "kritik_neden": "Bozulursa denetimlerin sonucu yanlış yazılır ve bir hata gözden kaçabilir; oyunun kendisi bundan etkilenmez.",
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/ui.test.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js",
+   "tur": "dosya",
+   "ozet": "bec5e72bdf1a",
+   "iskelet": "f726ef9473cf",
+   "baslik": "İstasyon verisi denetleyicisi",
+   "ne": {
+    "cok_basit": "Bu parça, oyunun istasyon bilgilerini tarayıp yanlış yazılanları bulur.",
+    "basit": "Her istasyonun sorularını ve cevaplarını sırayla kontrol eder. Sorun bulursa yerini yazar, yoksa temiz olduğunu söyler.",
+    "normal": "Program istasyon verilerini tarayıcı olmadan okur, her engeli kurallara göre denetler: soru ve seçenek sayılarını, kelime sınırlarını, kavram ve modül adlarını. Sorunlar ayrı satırlarda yazılır ve hata varsa program hata koduyla kapanır.",
+    "gelismis": "Program, istasyon verilerini ayrı bir ortamda çalıştırarak okur ve tarayıcıya gerek duymaz. Engel sırası sabit olmalı; metinler belirlenen kelime sınırlarını aşmamalı. Her seçenek grubunda tek doğru cevap bulunmalı. Bulunan her sorun, hangi dosyada ve hangi alanda olduğuyla yazılır.",
+    "detayli": "Bu program, her istasyonun veri dosyasını tarayıcı dışında okuyup kurallara uyup uymadığını denetleyen bir kontrol aracıdır. Engeller belirli sırayla gelmeli; soru, seçenek, kelime ve adlar kurallara uymalı. Sorun varsa dosya, alan ve sorun tek satırda yazılır; yoksa denetlenen istasyon sayısı bildirilir."
+   },
+   "mantik": {
+    "cok_basit": "Oyunun verileri elle kontrol edilemeyecek kadar çok, bu yüzden program bakar.",
+    "basit": "Tek bir eksik ya da yanlış veri oyunda fark edilmeden kalabilir. Bu yüzden değişiklikten sonra otomatik sınanır.",
+    "normal": "Veri hataları oyun çalışırken ancak yanlış bir yerde görülür. Program bu hataları oyun açılmadan, sabit kurallarla yakalar; aynı hata her seferinde aynı biçimde bulunur.",
+    "gelismis": "Veri metin olarak yazıldığı için bir hata sessizce geçebilir; oyun açılır ama istasyon eksik öğretir. Bu program sessiz hataları denetim sırasında ortaya çıkarır. Böylece her değişiklikten sonra kontrol aynı kurallarla yeniden yapılır.",
+    "detayli": "Oyun verileri metin, sayı ve ad olarak tutulur ve bunların birbirine uyması gerekir. Bir kavram adı ya da modül adı yazım hatası taşırsa sorun ancak oyuncu o noktaya gelince görünür. Program bu uyumu bütün istasyonlarda tek seferde sınayarak riski azaltır. Böylece bir değişiklik başka bir istasyonu bozmuş mu sorusuna hızlı yanıt verilir."
+   },
+   "nasil": {
+    "basit": "Program her istasyon dosyasını ayrı bir ortamda yükler. Sonra her engeli sırayla kontrol eder ve sorunları toplar. Sorun varsa hata koduyla çıkar, yoksa temiz olduğunu bildirir.",
+    "normal": "Program her istasyon dosyasını ayrı ortamda çalıştırıp veriyi okur; tarayıcı gerekmez. Engeller belirlenen sırayla denetlenir; soru, seçenek sayıları ve kelime sınırları kontrol edilir. Seçenek gruplarında tek doğru cevap aranır; kavram ve simülasyon adları listelerle karşılaştırılır. Her sorun dosya ve alanıyla tek satıra yazılır; sorun varsa program hata koduyla çıkar.",
+    "gelismis": "Program istasyon dosyalarını sırayla dener; dosya yoksa uyarı yazıp atlar, varsa veriyi ayrı bir ortamda alır. Yükleme hatası o istasyonda tek bir satır olarak kaydedilir. Veri alındıktan sonra engeller beklenen sırayla karşılaştırılır; her engel türü kendi kurallarıyla denetlenir. Seçenekli sorularda tek doğru cevap aranır; açık sorularda anahtar fikir ve yanlış kavram listeleri belirli uzunlukta olmalıdır. Son olarak tekrar havuzu ve temel tur kartları denetlenir; bütün sorunlar tek listede toplanır.",
+    "detayli": "Program komut satırından çalıştırılır ve istasyon dosyalarını tek tek ele alır. Dosya yoksa uyarı yazılır ve geçilir; eksik bir istasyon tüm kontrolü durdurmaz. Var olan dosya ayrı bir ortamda çalıştırılır ve yalnızca istasyonun tanımı alınır; yükleme hatası o istasyona bağlı tek satır olarak kaydedilir. Engel dizisi sabit sıraya göre karşılaştırılır, yanlış sıra için beklenen sıra da yazılır. Her engel kendi tipine göre denetlenir: hikaye satırları, kavram görevleri, düşman ve tahmin soruları, tuzak parçaları, köprü blokları, patron fazları ve sandık kartı ayrı kurallarla kontrol edilir. Son olarak tekrar havuzu ve temel tur kartları denetlenir. Bütün sorunlar tek listede toplanır; liste boşsa temiz olduğu bildirilir, değilse hata koduyla çıkılır."
+   },
+   "detay": {
+    "girdiler": [
+     "İstasyon veri dosyaları, her biri oyunun bir istasyonunu tanımlar.",
+     "Kavram ve simülasyon adları için istasyonun ve bilinen modüllerin listeleri okunur."
+    ],
+    "ciktilar": [
+     "Her sorun için dosya, alan ve açıklamayı içeren bir satır.",
+     "Sorun yoksa denetlenen istasyonların sayısını bildiren temiz mesajı."
+    ],
+    "degismezler": [
+     "Engel türleri şu sırayla gelmeli: hikaye, kavram, düşman, düşman, tahmin, tuzak, köprü, patron ve sandık.",
+     "Hata satırının dosya, alan ve sorun biçimi aynı kalmalı."
+    ],
+    "kenar": [
+     "Bir istasyon dosyası hiç yoksa uyarı verilir ve o istasyon atlanır.",
+     "Tekrar havuzundaki bir öğenin kavram alanı boşsa hata sayılır."
+    ]
+   },
+   "sinir": {
+    "sabit": [
+     "Engel türlerinin sırası aynı kalmalı; denetim bu sıraya göre yapılır.",
+     "Hata satırının dosya, alan ve sorun biçimi aynı kalmalı.",
+     "Sorun bulunduğunda çıkış kodu hata işareti olarak kalmalı.",
+     "Simülasyon modüllerinin bilinen adları listesi, oyundaki gerçek modül adlarıyla birebir eşleşmeli."
+    ],
+    "degisebilir": [
+     "Ekrana yazılan Türkçe mesajların ve renklerin metni serbestçe değiştirilebilir.",
+     "Yorumdaki kullanım notu, kodla uyuşacak biçimde yeniden yazılabilir.",
+     "Yardımcı işlevlerin adları ve sırası, sonuçları değiştirmeden düzenlenebilir."
+    ]
+   },
+   "kritik_neden": "Bu program bozulursa veri hataları oyuncuya ulaşana kadar fark edilmeyebilir, yani bir istasyon yanlış öğretir.",
+   "terimler": [],
+   "belirsiz": [
+    "Yorumdaki var olanlar seçeneğinin kodda bir karşılığı görünmüyor.",
+    "Bu programın hangi aşamada çalıştırıldığı bu parçadan görülemiyor."
+   ],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::acikSoru",
+   "tur": "alt",
+   "ozet": "1f82908d713f",
+   "iskelet": "f571171288a1",
+   "ne": {
+    "cok_basit": "Açık uçlu bir soruyu anahtar fikirleri ve yanlış kavramlarıyla denetler.",
+    "normal": "Açık sorunun metnini, beklenen cevap fikirlerini, yanlış kavramlarını ve yedek seçmeli sorusunu sınar. Fikir listesinin uzunluğu ve yanlış kavram sayısı kurallara uymalıdır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::engel",
+   "tur": "alt",
+   "ozet": "80da737318c5",
+   "iskelet": "e75749939e9c",
+   "ne": {
+    "cok_basit": "Her engeli türüne göre ayrı ayrı kontrol eden ana denetim işlevi.",
+    "normal": "Bir engelin başlığını, kavramını ve simülasyon adını kontrol eder; ardından türüne göre uygun denetimi çalıştırır. Hikaye, kavram, düşman, tahmin, tuzak, köprü, patron ve sandık için ayrı kurallar vardır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::hata",
+   "tur": "alt",
+   "ozet": "206028fd9e31",
+   "iskelet": "0583507e39b4",
+   "ne": {
+    "cok_basit": "Bulunan bir sorunu listeye ekler; sorunun nerede olduğu da yazılır.",
+    "normal": "Her denetim, bir sorun bulduğunda bu işlevi çağırır. İşlev sorunun dosyasını, alanını ve açıklamasını birleştirip ortak listeye ekler. Böylece sorunlar tek listede, aynı biçimde toplanır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::istasyon",
+   "tur": "alt",
+   "ozet": "794eb0e63ccf",
+   "iskelet": "b00c7ec718b6",
+   "ne": {
+    "cok_basit": "Bir istasyonun tüm engellerini, tekrar havuzunu ve temel turunu sırayla denetler.",
+    "normal": "Engellerin beklenen sırada olup olmadığına bakar ve her engeli denetime gönderir. Tekrar havuzundaki kavramların çeşitliliğini ve temel turun kart sayısını kontrol eder."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::kelime",
+   "tur": "alt",
+   "ozet": "d5d5709b0972",
+   "iskelet": "e0aeb6634e79",
+   "ne": {
+    "cok_basit": "Bir metnin kaç sözcükten oluştuğunu sayar.",
+    "normal": "Verilen metni boşluklara göre parçalara ayırır ve boş parçaları atar; kalan parça sayısını döndürür. Böylece sınır denetimi sözcük sayısına göre yapılır."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::secenekler",
+   "tur": "alt",
+   "ozet": "5410592faddf",
+   "iskelet": "199718f1270b",
+   "ne": {
+    "cok_basit": "Bir soru için seçeneklerin sayısını ve doğru cevabın tek olup olmadığını denetler.",
+    "normal": "Seçenek sayısını ve tek doğru cevabı denetler; her seçenek metni ile gerekçesinin uzunluğunu da kontrol eder. Böylece oyuncu birden çok doğru ya da hiç doğru olmayan bir soruyla karşılaşmaz."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::sinir",
+   "tur": "alt",
+   "ozet": "8a96ed820f63",
+   "iskelet": "e3b28eaffd7c",
+   "ne": {
+    "cok_basit": "Bir metnin boş olmadığını ve çok uzun olmadığını denetler.",
+    "normal": "Metin yoksa ya da boşsa hata yazar. Metin doluysa sözcük sayısını hesaplar ve üst sınırı aşıyorsa hangi alanda ve kaç sözcük olduğunu bildirir."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  },
+  {
+   "kimlik": "oyun/test/veri-dogrula.js::yukle",
+   "tur": "alt",
+   "ozet": "71b6ad64aa77",
+   "iskelet": "e591d6cd7577",
+   "ne": {
+    "cok_basit": "Bir istasyon dosyasını tarayıcı olmadan ayrı bir ortamda açıp veriyi alır.",
+    "normal": "Dosyayı, oyunun ortak veri yapısını taklit eden sahte bir ortamda çalıştırır ve istasyonun tanımını döndürür. Bu sayede veri, tarayıcı açılmadan denetlenebilir."
+   },
+   "terimler": [],
+   "belirsiz": [],
+   "okunan": [
+    "oyun/test/veri-dogrula.js"
+   ],
+   "yazan": {
+    "model": "haiku",
+    "ajan": "claude-code",
+    "tarih": "2026-11-14"
+   }
+  }
+ ]
+}

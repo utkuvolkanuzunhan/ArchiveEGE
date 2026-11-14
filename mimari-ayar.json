@@ -2,7 +2,16 @@
   "aciklama": "Görsel arayüz ayarı: volkan-merkez deposundaki araclar/mimari_cikar.py bu depoyu bu kurallarla okur ve mimarisini çizer. Kural: README.md, 'Mimari görünümü'.",
   "ad": "ArchiveEGE",
 
-  "haric": ["oyun/dist/", "oyun/test/ciktilar/", "oyun/test/ekran/"],
+  "yoksay": ["oyun/dist/", "oyun/test/ciktilar/", "oyun/test/ekran/"],
+
+  "bolumler": [
+    { "kimlik": "kaynak", "ad": "Oyun kaynağı", "aciklama": "Oyunun kendisi: motor, savaş, arayüz, istasyon verileri ve bunları tek dosyada birleştiren derleme.", "desenler": ["oyun/src/", "oyun/build.sh"] },
+    { "kimlik": "testler", "ad": "Testler ve denetim", "aciklama": "Kaynağı tarayıcıdaki sırayla yükleyip sınayan testler ve veri doğrulaması.", "desenler": ["oyun/test/", "oyun/denetim/"] },
+    { "kimlik": "istasyonlar", "ad": "İstasyon tasarımları", "aciklama": "Her istasyonun konusu, soruları ve engelleri için yazılmış tasarım notları.", "desenler": ["oyun/istasyonlar/"] },
+    { "kimlik": "ilerleme", "ad": "İlerleme kayıtları", "aciklama": "Yapım sırasında tutulan adım adım ilerleme notları.", "desenler": ["oyun/ilerleme/"] },
+    { "kimlik": "tasarim", "ad": "Tasarım belgeleri", "aciklama": "Oyunun genel tasarımı, veri şemaları, yapım yönergeleri ve başvuru belgeleri.", "desenler": ["oyun/"] },
+    { "kimlik": "diger", "ad": "Öteki çalışmalar ve depo ayarı", "aciklama": "Oyun dışındaki çalışma notları ile deponun tanıtımı ve görünüm ayarı.", "desenler": ["README.md", "kuantum-calisma-plani.md", "oyunteorisiispat/", "mimari-ayar.json"] }
+  ],
 
   "bekci": ["mimari-ayar.json"],
 
