@@ -6,34 +6,36 @@
   {
    "kimlik": "README.md",
    "tur": "dosya",
-   "ozet": "773a52a662d6",
+   "ozet": "1bc5f604296f",
    "iskelet": "bebdfc7c55d4",
-   "baslik": "Görsel düzen notu",
+   "baslik": "Mimari görünüm notu",
    "ne": {
-    "cok_basit": "Bu depoyu çizen görsel düzenin kurallarını anlatan bir not.",
-    "normal": "Bu depoyu çizen görsel düzenin kurallarını anlatan bir not. Bu depo, merkez depodaki görsel arayüzle çizilir: klasörler mahalle, dosyalar bina, ölçülen bağlar ise yol olarak gösterilir. Her değişiklik bu görünüme uymak zorundadır."
+    "cok_basit": "Bu depo bir çizimle gösterilir ve her değişiklik çizime uymalıdır.",
+    "normal": "Bu depo, merkez deposundaki görsel arayüzle çizilir. Klasörler mahalle, dosyalar bina olarak görünür. Ayar dosyası kökte durur ve bölümleri, test komutlarını, denetimleri ve akışları belirler. Her değişiklik bu görünüme uymak zorundadır."
    },
    "nasil": {
-    "normal": "Kökteki ayar dosyası ilk ekranın bölümlerini, yok sayılan çıktıları, test komutlarını, denetimleri ve akışları belirler. Üretilen çıktılar yok sayma listesine yazılır; gizleme listesi ise yalnız gizli yollar içindir ve o yollardaki dosya adlarını her metinde maskeler. Yeni klasör ya da test eklenirse ayar aynı değişiklikte güncellenir."
+    "normal": "Ayar dosyası ilk ekranın bölümlerini, dışarıda kalan üretilmiş çıktıları, test komutlarını, denetimleri ve akışları belirler. Üretilmiş çıktılar çizimin dışında tutulan listeye yazılır. Betik ve test dosyalarının kodu yalnız üretilen sayfaya gömülür ve kartın yanında istenince açılır. Yeni klasör ya da test eklenirse ayar aynı değişiklikte güncellenir."
    },
    "sinir": {
     "sabit": [
-     "Görünümün merkez depodaki kurallara birebir uyması, bu depodaki her değişikliğin dayandığı sözdür.",
-     "Ayar dosyasındaki bölüm, çıktı ve akış adlarının yeni değişikliklerde de eşleşmesi gerekir."
+     "Ayar dosyasının adı ve yeri, çizim yazılımının onu bulabilmesi için aynı kalmalıdır.",
+     "Ayar dosyasındaki anahtar adları çizimin okuyacağı adlardır ve değişirse okuma durur.",
+     "Ölçüm komutu merkez depodan çalıştırılır ve bu depo ölçüm çıktısının yazılacağı yer değildir.",
+     "Kart anlatımı yalnız merkez depodaki komutla yazılır, buradaki dosyalar elle düzenlenmez."
     ],
     "degisebilir": [
-     "Bu belgedeki açıklama cümleleri, kuralın kendisi değişmeden yeniden yazılabilir.",
-     "Yeni bir test komutu ya da yeni bir klasör, ayar güncellendiği sürece eklenebilir."
+     "Bölümlerin ve akışların adları ile açıklamaları serbestçe yeniden yazılabilir.",
+     "Bu belgedeki açıklama metinleri ve başlıklar çizimi bozmadan düzenlenebilir."
     ]
    },
-   "kritik_neden": "Bu not bozulursa yanlış bilgiyle değişiklik yapılabilir ve görünüm merkez depodaki kurallardan sapabilir; diğer parçalar bu belgeye dayanmaz.",
+   "kritik_neden": "Bozulursa bu depoyu değiştirenler görünüm kuralını yanlış öğrenir ve çizim ayarla uyumsuz kalır.",
    "terimler": [
     "mahalle",
-    "bina",
-    "yol"
+    "bina"
    ],
    "belirsiz": [
-    "Ayar dosyasının içeriği ve merkez depodaki kuralın ayrıntıları bu belgeden görülemedi; yalnız belgenin söylediği kadarı yazıldı."
+    "Ölçümün hangi sonuçta yeşil sayılacağı bu belgede ayrıntılı yazılmamış.",
+    "Gizli yolların ayrı bir listede tutulmasının çizimdeki etkisi bu belgeden tam anlaşılmıyor."
    ],
    "okunan": [
     "README.md"
@@ -41,7 +43,7 @@
    "yazan": {
     "model": "haiku",
     "ajan": "claude-code",
-    "tarih": "2026-11-14"
+    "tarih": "2026-11-15"
    }
   },
   {
@@ -440,70 +442,67 @@
   {
    "kimlik": "mimari-ayar.json",
    "tur": "dosya",
-   "ozet": "2329451d49b1",
+   "ozet": "2cbb1fa5e1e6",
    "iskelet": "15524deb8acc",
    "baslik": "Mimari görünüm ayarı",
    "ne": {
-    "cok_basit": "Bu dosya, çizim yapan yazılımın bu depoyu nasıl okuyacağını söyler.",
-    "basit": "Bu dosya, depoyu çizen yazılıma klasörlerin hangi grupta durduğunu, hangi dosyalara dikkat edileceğini ve testlerin nasıl çalıştığını söyler.",
-    "normal": "Bu dosya, depoyu çizen yazılımın okuma kurallarını tutar. Derleme ve test çıktıları çizimden gizlenir; kaynak, testler, istasyonlar ve belgeler ayrı gruplara ayrılır. Onay isteyen bekçi dosyaları ile test komutları da burada yazılıdır.",
-    "gelismis": "Ayar dosyası, depoyu çizen yazılım için anahtarlardan oluşur. Yoksay listesi çıktıları dışarıda tutar; bölümler klasör desenleriyle dosyaları gruplar. Bekçi listesi onay isteyen dosyaları işaretler. Komutlar ve denetimler test seçimini tanımlar. Akışlar sıralı adımları gösterir.",
-    "detayli": "Dosya, depoyu çizen yazılımın okuduğu tek ayar kaynağıdır. Yoksay kısmı derleme ve test çıktılarını çizimden çıkarır. Bölümler klasör desenlerine ad ve açıklama verir; bekçi listesi değişiklikte onay isteyen dosyaları belirler. Komutlar bir dosya desenine hangi testin koşulacağını söyler, denetimler adlandırılmış test takımlarını sıralar. Görünüm ayarı ve çalışma akışları da burada tutulur."
+    "cok_basit": "Bu ayar, depoyu çizen programa neyi nasıl göstereceğini söyler.",
+    "basit": "Bu ayar, depoyu çizen programa klasörleri gruplara nasıl ayıracağını ve hangi dosyalara dikkat edileceğini söyler.",
+    "normal": "Bu ayar, depoyu çizen yazılımın okuma kurallarını tutar. Klasörleri bölümlere ayırır, derleme ve test çıktılarını çizimden çıkarır ve onay isteyen bekçi dosyalarını işaretler. Test komutlarıyla denetim takımlarının listesi de burada yazılıdır.",
+    "gelismis": "Ayar, çizim yazılımının okuyacağı anahtarlardan ve listelerden oluşur. Önce yoksay listesi derleme ve test çıktılarını ayırır, sonra bölümler klasör desenleriyle dosyaları gruplara yerleştirir. Bekçi listesindeki dosyalar onay işaretiyle gösterilir. Komutlar test seçimini, denetimler test takımlarını belirler.",
+    "detayli": "Ayar dosyası, çizim yazılımının okuduğu tek ayar kaynağıdır. Yoksay listesi derleme ve test çıktılarını çizimden çıkarır. Bölümler klasör desenleriyle dosyaları konulara göre ayırır ve her birine ad ile açıklama verir. Bekçi listesi onay isteyen dosyaları belirler. Komutlar bir dosya değiştiğinde hangi testin koşulacağını söyler, denetimler test takımlarını tanımlar."
    },
    "mantik": {
-    "cok_basit": "Bu ayar olmasa çizim yazılımı depoyu kendi başına doğru gruplayamazdı.",
-    "basit": "Klasör adları tek başına yetmez; bu ayar hangisinin kaynak, hangisinin test ya da belge olduğunu söyler.",
-    "normal": "Harita klasörleri adlarından tahmin etmek yerine bu ayardaki bölümlerle gruplar. Bekçi ve komut listeleri aynı yerden okunduğu için, değiştirmeden önce hangi dosyanın onay gerektirdiği ve hangi testin koşacağı görünür.",
-    "gelismis": "Bu ayar, çizimin klasörleri yanlış gruplamasını ve yanlış testi önermesini engeller. Desenler açıkça yazıldığı için yeni bir klasör geldiğinde çizim kodunu değiştirmek gerekmez; yalnızca bu ayara bir desen eklenir.",
-    "detayli": "Bu ayar, kodu okumadan depoyu anlamanın yolunu açar. Yoksay listesi çıktı klasörlerini çizimden çıkarır. Bölümler klasörleri konuya göre ayırır; bekçi listesi onay isteyen dosyaları işaretler. Komutlar ve denetimler, bir dosya değişince hangi testin koşacağını belli eder. Akışlar, bir işin birden çok dosyadan nasıl geçtiğini gösterir."
+    "cok_basit": "Bu ayar olmasa çizim programı depoyu kendi başına doğru gruplayamazdı.",
+    "basit": "Klasör adları tek başına yetmez. Bu ayar hangisinin ana kaynak, hangisinin test ya da belge olduğunu söyler.",
+    "normal": "Klasörleri adlarından tahmin etmek yerine bu ayardaki bölümlerle gruplamak daha güvenlidir. Bekçi ve komut listeleri aynı yerden okunduğu için değişiklik öncesi onay ve doğru test bilgisi tek yerde durur.",
+    "gelismis": "Bu ayar, çizimin klasörleri yanlış gruplamasını ve yanlış testi önermesini engeller. Desenler açıkça yazıldığı için yeni bir klasör geldiğinde çizim kodunu değiştirmek gerekmez, yalnızca bu ayara bir desen eklenir.",
+    "detayli": "Bu ayar, kodu okumadan depoyu anlamanın kapısını açar. Yoksay listesi çıktı klasörlerini çizimden çıkarır. Bölümler klasörleri konuya göre ayırır. Bekçi listesi onay isteyen dosyaları işaretler. Komutlar ve denetimler, bir dosya değişince hangi testin koşacağını belli eder. Akışlar, bir işin birden çok dosyadan nasıl geçtiğini gösterir."
    },
    "nasil": {
-    "basit": "Dosya anahtarlar ve listelerden oluşur. Çizim yazılımı önce hangi klasörlerin atlanacağına bakar, sonra dosyaları klasör desenlerine göre gruplara koyar.",
-    "normal": "Çizim yazılımı ayarı okuyunca önce yoksay listesindeki klasörleri çizimden çıkarır. Sonra her bölümün klasör desenlerine bakarak dosyaları gruplara yerleştirir ve bölüm adını kartta gösterir. Bekçi listesindeki dosyalar ayrıca işaretlenir. Komutlar bir dosya desenine uyan dosyanın test komutunu belirler. Görünüm ayarı yüksekliği satır sayısına, rengi duruma göre seçer.",
-    "gelismis": "Ayar bir dizi anahtar ve listeden oluşur. Çizim yazılımı önce yoksay listesini okuyup derleme ve test çıktılarını ayırır. Sonra bölümlerin klasör desenlerini dosyalarla eşleştirir. Bekçi listesindeki dosyalar onay işaretiyle gösterilir. Komutlar dosya desenine göre test komutunu bulur; denetimler adlandırılmış test takımlarını sıralar. Görünüm ayarı yüksekliği satır sayısından, tabanı giren bağlantılardan, rengi durumdan alır. Akışlar, bir giriş noktasından başlayıp sırayla ilerleyen durak listeleridir.",
-    "detayli": "Ayar dosyası iç içe anahtarlardan oluşur ve çizim yazılımı onu baştan sona okur. Ad anahtarı deponun adını taşır. Yoksay listesindeki klasörler çizime alınmaz; bunlar derleme ve test çıktılarıdır. Her bölümün klasör desenleri, dosyaları o bölüme eşleştirir. Bekçi listesindeki dosyalar, değişiklikte onay istediği için ayrıca işaretlenir. Komutlar bir dosya desenine uyan dosya değiştiğinde hangi komutla test edileceğini belirler. Denetimler, her biri adlandırılmış bir test komutu olan test takımlarını tanımlar. Görünüm ayarı yüksekliği satır sayısından, tabanı giren bağlantılardan, rengi durumdan alır. Akış listesi her akışın adını, açıklamasını ve adımlarını tutar; adımlar bir dosyaya bağlıdır ve sıra korunur."
+    "basit": "Önce hangi klasörlerin atlanacağına bakılır, sonra kalan dosyalar klasör desenlerine göre gruplara konur.",
+    "normal": "Çizim yazılımı bu ayarı okuyunca önce yoksay listesindeki klasörleri çizimden çıkarır. Sonra her bölümün klasör desenlerine bakarak dosyaları o bölüme yerleştirir ve adını kartta gösterir. Bekçi listesindeki dosyalar ayrıca onay işaretiyle gösterilir. Komutlar, bir dosyanın hangi test komutuyla sınanacağını belirler.",
+    "gelismis": "Ayar bir dizi anahtar ve listeden oluşur. Çizim yazılımı önce yoksay listesini okuyup derleme ve test çıktılarını ayırır. Sonra bölümlerin klasör desenlerini dosyalarla eşleştirir. Bekçi listesindeki dosyalar onay işaretiyle gösterilir. Komutlar dosya desenine göre test komutunu bulur. Denetimler adlandırılmış test takımlarını sıralar. Akışlar, bir giriş noktasından başlayıp sırayla ilerleyen durak listeleridir.",
+    "detayli": "Ayar dosyası iç içe anahtarlardan oluşur ve çizim yazılımı onu baştan sona okur. Ad anahtarı deponun adını taşır. Yoksay listesindeki klasörler çizime alınmaz. Bunlar derleme ve test çıktılarıdır. Her bölümün klasör desenleri dosyaları o bölüme eşleştirir. Bekçi listesindeki dosyalar onay istediği için ayrıca işaretlenir. Komutlar, bir dosya desenine uyan dosya değiştiğinde hangi test komutunun koşulacağını belirler. Denetimler, her biri adlandırılmış bir test komutu olan test takımlarını tanımlar. Görünüm ayarı yükseklik için satır sayısını, taban için giren bağlantıları, renk için durumu kullanır. Akış listesi her akışın adını, açıklamasını ve adımlarını tutar. Adımlar bir dosyaya bağlıdır ve sıra korunur."
    },
    "detay": {
     "girdiler": [
-     "Depo klasörlerinin yapısı ve dosya adları, desenlerle eşleşecek dosyaları belirler.",
-     "Bekçi ve komut listeleri, değişen dosyanın hangi onay ve testle bağlı olduğunu belirlemek için okunur."
+     "Ayar dosyasının kendi metni, iç içe anahtar ve listelerden oluşan bir yapı."
     ],
     "ciktilar": [
-     "Bölümlere ayrılmış ve onay isteyen dosyaları işaretlenmiş bir çizim.",
-     "Değişen dosya için koşulacak test komutu ve adlandırılmış test takımları."
+     "Çizim yazılımına verilen bölüm, bekçi, komut, denetim ve akış bilgileri."
     ],
     "degismezler": [
-     "Anahtar adları, klasör desenleri ve komut biçimi aynı kalmalı.",
-     "Akış adımlarında geçen dosya adları depodaki gerçek adlarla eşleşmeli."
+     "Anahtar adları ve liste yapısı sabit kalmalıdır.",
+     "Görünüm alanındaki seçenek değerleri çizim yazılımının bildiği biçimde yazılır."
     ],
     "kenar": [
-     "Bekçi listesindeki bir dosya depodan silinirse onay işareti boşa çıkar.",
-     "Yoksay listesine kaynak klasörü yanlışlıkla girerse o kod çizimden kaybolur."
+     "Bekçi listesindeki dosya değiştiğinde onay gerekir.",
+     "Ayar dosyasının kendisi de bekçi listesindedir."
     ]
    },
    "sinir": {
     "sabit": [
-     "Ayardaki anahtar adları ve bölüm, komut, denetim, görünüm, akış yapısı aynı kalmalı; çizim yazılımı bu adlarla okur.",
-     "Akış adımlarında geçen dosyalar depodaki gerçek adlarıyla yazılı kalmalı.",
-     "Komut listesindeki dosya deseni ile komut biçimi birlikte kalmalı; komut içindeki yer tutucu çizim tarafından doldurulur.",
-     "Görünüm ayarında yalnızca çizimin tanıdığı seçenekler kullanılmalı."
+     "Anahtar adları çizim yazılımının okuduğu adlardır, birini değiştirmek o parçanın okunmasını bozar.",
+     "Bölümlerin klasör desenleri ve bekçi listesindeki dosya yolları aynı biçimde kalmalıdır, aksi halde eşleşme ve işaret kaybolur.",
+     "Akış adımlarındaki dosya bağları depoda var olan dosyalara işaret etmelidir, yoksa adım haritada kopar.",
+     "Komut ve denetim yapıları aynı biçimde kalmalı, her denetim adlandırılmış bir test komutu olmalıdır.",
+     "Görünüm ayarındaki yükseklik, taban ve renk seçenekleri çizim yazılımının bildiği değerlerde kalmalıdır."
     ],
     "degisebilir": [
-     "Bölümlerin ad ve açıklama metinleri, çizimin yapısını bozmadan yeniden yazılabilir.",
-     "Yeni bir bölüm ya da yeni bir test komutu eklenebilir; mevcut girişler yerinde kalır.",
-     "Yoksay listesine yeni çıktı klasörleri eklenebilir.",
-     "Akış adımlarının notları ve akış açıklamaları serbestçe yeniden yazılabilir."
+     "Bölümlerin adları ve açıklamaları, çizimin yapısını değiştirmeden yeniden yazılabilir.",
+     "Akış adları, açıklamaları ve adım notları serbestçe yeniden yazılabilir."
     ]
    },
-   "kritik_neden": "Bu ayar bozulursa harita dosyaları yanlış gruplara koyar, onay isteyen dosyalar işaretsiz kalır ve yanlış testler seçilir.",
+   "kritik_neden": "Bozulursa çizim yazılımı klasörleri yanlış gruplar, onay isteyen dosyaları ve test komutlarını yanlış gösterir.",
    "terimler": [
     "bekci",
     "akis",
     "giris-noktasi"
    ],
    "belirsiz": [
-    "Bölüm sırasının çizimdeki etkisi bilinmiyor.",
-    "Ad anahtarının kartta nerede gösterildiği bilinmiyor."
+    "Kod alanının kartta tam olarak nasıl açıldığı bu dosyadan görülmüyor.",
+    "Bölüm sırasının çizimdeki yerleşimi etkileyip etkilemediği bu dosyadan anlaşılmıyor."
    ],
    "okunan": [
     "mimari-ayar.json"
@@ -511,7 +510,7 @@
    "yazan": {
     "model": "haiku",
     "ajan": "claude-code",
-    "tarih": "2026-11-14"
+    "tarih": "2026-11-15"
    }
   },
   {
