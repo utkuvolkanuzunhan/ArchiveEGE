@@ -32,7 +32,7 @@
     { "ad": "Veri doğrulama", "komut": ["node", "oyun/test/veri-dogrula.js"] }
   ],
 
-  "gorunum": { "yukseklik": "satir", "taban": "giren", "renk": "durum" },
+  "gorunum": { "yukseklik": "satir", "taban": "giren", "renk": "durum", "kod": true },
 
   "akislar": [
     {
